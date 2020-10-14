@@ -146,8 +146,8 @@ class Server:
         """???
 
         Args:
-            data (???): ???
-
+            data (dictionnaire): un dictionnaire contenant les éléments d'une commande
+                exemple : {"com":"attaquer","attaquant":perso,"cible":ennemi}
         """
         # TODO
         pass
