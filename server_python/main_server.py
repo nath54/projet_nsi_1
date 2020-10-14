@@ -17,8 +17,8 @@ class Server:
         self.host = "" # si on ne met rien, écoute sur toutes les cartes réseaux.
         # Sinon, on met une adresse IP ou alias correspondant à ce qu'on veut.
         self.port = 9876 # On doit utiliser un port qui n'est pas déjà utilisé.
-        self.max_size=2048
-        self.clients={}
+        self.max_size=1024 #taille maximale d'un message recu ou envoyé
+        self.clients={} #dictionnaire ayant pour clé les clients et en valeur un dictionnaire de propriétés relatives au client
         self.server=None
         #
         #TODO
@@ -41,15 +41,19 @@ class Server:
 
     def handle(self,client,infos):
         self.on_accept(client,infos)
+        print()
         while True:
+            msg = client.recv(self.max_size)
+            self.on_message(client,infos,msg)
             try:
                 msg = client.recv(self.max_size)
                 self.on_message(client,infos,msg)
-            except:
-                print(sys.exc_info()[0])
+            except Exception as e:
+                print(e)
                 self.on_close(client,infos)
                 return
 
+    #fonction qui envoie un message a tous les autres clients
     def send_all_except_c(self,client,mes):
         mes=json.dumps(mes)
         mes=mes.encode(encoding="utf-8")
@@ -57,29 +61,33 @@ class Server:
             return
         for autre_client in self.clients.keys():
             if client!=autre_client:
-                autre_client.send(je)
-    
+                autre_client.send(mes)
+
+    #fonction qui envoie un message a un client précis
     def send(self,client, mes):
         mes=json.dumps(mes)
         mes=mes.encode(encoding="utf-8")
         size=sys.getsizeof(mes)
         if size>self.max_size:
-            print("ERROR : Le message est trop long ! "+str(s)+" bytes/"+str(self.max_size)+" bytes")
+            print("ERROR : Le message est trop long ! "+str(size)+" bytes/"+str(self.max_size)+" bytes")
             return
         else:
             client.send(mes)
 
     def on_accept(self,client,i): # Lorsqu'une connection entrante est acceptée
         self.clients[client]={} #on y mettra plus d'infos plus tard
-        #print("connection acceptée",self.clients[client])
+        print("connection acceptée",client)
 
     def on_message(self,client,infos,mes): # Lorsqu'une connection envoie un message
         mes=mes.decode(encoding="utf-8")
-        data=json.loads(mes)
-        self.commandes(data)
+        if len(mes)>0:
+            print("recu : ",mes)
+            if mes[0]=="{":
+                data=json.loads(mes)
+                self.commandes(data)
 
     def on_close(self,client,infos): # Lorsqu'une connection se ferme
-        #print("connection fermée",client)
+        print("connection fermée",client)
         del(self.clients[client])
 
     def commandes(self,data):

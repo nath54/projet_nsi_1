@@ -12,18 +12,18 @@ class Client:
         #infos pour le socket
         self.host = "localhost"  #ip de la machine, localhost pour travailler en local
         self.port = 9876 #port utilisé par le socket
-        self.max_size=2048 #taille maximale en bytes qu'un message peut avoir
+        self.max_size=1024 #taille maximale en bytes qu'un message peut avoir
         self.client=None
         #
         #TODO
         pass
 
-    #fonction pour envoyer le message 
+    #fonction pour envoyer le message
     def send(self, mes):
         mes=mes.encode(encoding="utf-8") #on encode le message
         size=sys.getsizeof(mes) #on regarde sa taille
         if size>self.max_size: #si la taille du message dépasse la taille maximale autorisée, on n'envoie pas le message
-            print("ERROR : Le message est trop long ! "+str(s)+" bytes/"+str(self.max_size)+" bytes")
+            print("ERROR : Le message est trop long ! "+str(size)+" bytes/"+str(self.max_size)+" bytes")
         else:
             self.client.send(mes)
 
@@ -36,24 +36,24 @@ class Client:
         # Le client est connecté. Il est prèt à envoyer et recevoir des messages.
         _thread.start_new_thread(self.handle,(self.client,))
         # On lance le handler en tant que thread pour ne pas bloquer le reste du programme.
-    
+
     #fonction qui gere les messages recus
     def handle(self):
-        self.on_connect(self.client)
+        self.on_connect()
         while True:
             try:
                 msg = self.client.recv(self.max_size)
                 if len(msg)==0: raise UserWarning("message vide")
                 self.on_message(msg)
-            except:
-                print(sys.exc_info()[0])
+            except Exception as e:
+                print(e)
                 self.on_close()
                 return
 
     def on_connect(self): # Lorsque la connection est acceptée
         #TODO
         pass
-    
+
     def on_message(self,mess): # Lorsqu'un message est reçu
         #TODO
         pass
@@ -65,12 +65,11 @@ class Client:
     #fonction principale du client
     def main(self):
         # Met en route le client
-        client = self.start()
+        self.start()
         # Ici on peut mettre du code après start ...
         #
         #TODO
         pass
-
 
 #le programme est lancé ici
 if __name__=="__main__":

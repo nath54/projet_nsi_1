@@ -1,7 +1,8 @@
 #CECI EST LE CLIENT QUI SE CONNECTE A MARIADB
 
-#Imports : 
+#Imports :
 import mariadb
+import sys
 
 #Classe du client mariadb
 class Client_mariadb:
