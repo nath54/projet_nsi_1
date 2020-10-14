@@ -1,31 +1,25 @@
+
+/*
+
+COMMUN A index.html ET A game.html
+
+*/
+
+html{
+    height:100%;
+}
+
 body{
-    background: linear-gradient(to bottom left, rgb(0,0,0), rgb(50,50,50));
+    background: linear-gradient(to bottom left, rgb(8,8,8), rgb(60,60,60));
     background-repeat: no-repeat;
     background-size: 100% 100%;
     width: 99%;
-    height:78.5%;
+    height:97%;
     color:white;
     font-size: large;
-}
-
-.bt_oeil{
-    position: relative;
-    top:-5px;
-    margin-left: 5px;
-    width:20px;
-    height:20px;
-    background: none;
-    background-image: url("../res/oeil.svg");
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    border:none;
-
-    -moz-transform: scaleX(-1);
-    -webkit-transform: scaleX(-1);
-    -o-transform: scaleX(-1);
-    transform: scaleX(-1);
-    -ms-filter: fliph; /*IE*/
-    filter: fliph; /*IE*/
+    font-family: "Courier New", Courier, monospace;
+    margin: 0;
+    padding:0;
 }
 
 .center{
@@ -52,3 +46,107 @@ body{
     flex-direction: row;
     flex-wrap: wrap;
 }
+
+/*
+
+JUSTE POUR index.html
+
+*/
+
+.bt_oeil{
+    position: relative;
+    top:-5px;
+    margin-left: 5px;
+    width:20px;
+    height:20px;
+    background: none;
+    background-image: url("../res/oeil.svg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    border:none;
+
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    -ms-filter: fliph; /*IE*/
+    filter: fliph; /*IE*/
+}
+
+
+/*
+
+JUSTE POUR client.html
+
+*/
+
+.main{
+    margin:20px;
+}
+
+#divinput{
+    margin-left:5%;
+    margin-right:5%;
+}
+
+#input{
+    background-color: black;
+    border: none;
+    color:white;
+    min-height:35px;
+    width:80%;
+}
+
+#bt{
+    background-color: white;
+    color:black;
+    width:10%;
+    min-height:35px;
+    border:none;
+    border-radius: 5px;
+}#bt:hover{
+    background-color: rgb(220,220,220);
+}#bt:active{
+    background-color: rgb(120,120,120);
+    border-radius: 10px;
+}
+
+#messages{
+    width:99%;
+    height: 90%;
+    border:none;
+    border-radius: 15px;
+    background-color: black;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow-y: scroll;
+}
+
+.mes{
+    margin:0;
+    padding: 2px;
+}
+#mm{
+    margin-top: auto;
+    position: relative;
+    bottom: 0;
+    padding-bottom: 20px;
+    margin-left: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
