@@ -15,9 +15,6 @@ function aff_message(txt,color="white"){
 
 
 function init(){
-    for(x=0; x<100; x++){
-        aff_message("a "+x);
-    }
 }
 
 
