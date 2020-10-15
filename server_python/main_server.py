@@ -22,8 +22,8 @@ class Server:
                     Sinon, on met l'adresse IP que l'on veut
         port (int): On utilise un port inutilisé
         max_size (int): Taille maximale d'un message, envoyé ou reçu
-        clients (dict): Clé --> Clients
-                        Val --> `dict` de propriétés relatives au client
+        clients (dict): Clé -- Clients
+                        Val -- `dict` de propriétés relatives au client
         server (socket): ???
     """
     def __init__(self):
