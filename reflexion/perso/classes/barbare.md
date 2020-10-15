@@ -15,4 +15,4 @@ Il ne connait pas la magie
 
 ## Sorts
 
-En fait, il ne connait pas la magie, mais par moments, il peut devenir un berserk
+En fait, il ne connait pas la magie, mais par moments, il peut devenir un berserker
