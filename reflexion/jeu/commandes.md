@@ -30,6 +30,3 @@
  - message (joueur/groupe) : envoie un message au joueur/groupe
  - attaquer (personnage) : attaque le personnage (exemple: attaque goblin => vous infligez 5pts de dégats au goblin)
  - sortilege (sortilege) (cible) : utilise un de vos sortileges
-
-
-

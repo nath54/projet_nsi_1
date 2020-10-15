@@ -21,10 +21,11 @@ class Server:
         host (str): Si vide, écoute toutes les cartes réseaux
                     Sinon, on met l'adresse IP que l'on veut
         port (int): On utilise un port inutilisé
-        max_size (int): Taille maximale d'un message, envoyé ou reçu
+        max_size (int): Taille maximale d'un message reçu
         clients (dict): Clé -- Clients
                         Val -- `dict` de propriétés relatives au client
         server (socket): ???
+
     """
     def __init__(self):
         self.host = ""
@@ -138,7 +139,7 @@ class Server:
         """
         message = message.decode(encoding="utf-8")
         if len(message) > 0:
-            print("Reçu : ", message)
+            print(f"{clients[client]} : {message}")
             if message[0] == "{":
                 data = json.loads(message)
                 self.commandes(data)
@@ -157,15 +158,69 @@ class Server:
         del(self.clients[client])
 
     def commandes(self, data):
-        """???
+        """Éxecute les commandes entrée par l'utilisateur.
 
         Args:
             data (dict): un dictionnaire contenant les éléments d'une commande
-                exemple : {"com":"attaquer","attaquant":perso,"cible":ennemi}
+                exemple : {"com": "attaquer",
+                           "attaquant": perso,
+                           "cible": ennemi}
 
         Author: ???
 
         """
+        data_len = len(data.keys())
+        action = data.get("com", "")
+
+        if action == "voir":
+            pass
+        elif action == "inventaire":
+            pass
+        elif action == "equipement":
+            pass
+        elif action == "stats":
+            pass
+        elif action == "quit":
+            pass
+        elif data_len <= 1:
+            pass  # Actions qui ont besoin de plus d'un paramètre au-delà
+        elif action == "desequiper":
+            pass
+        elif action == "equiper":
+            pass
+        elif action == "examiner":
+            pass
+        elif action == "fouiller":
+            pass
+        elif action == "prendre":
+            pass
+        elif action == "jeter":
+            pass
+        elif action == "utiliser":
+            if data_len == 3:
+                pass  # Utiliser un objet sur un autre
+            elif data_len == 2:
+                pass  # Utiliser un objet
+        elif action == "consommer":
+            pass
+        elif action == "ouvrir":
+            pass
+        elif action == "fermer":
+            pass
+        elif action == "aller":
+            pass
+        elif action == "parler":
+            pass
+        elif action == "message":
+            pass
+        elif action == "attaquer":
+            pass
+        elif data_len <= 2:
+            pass  # Action avec plus de 2 paramètres au-delà
+        elif action == "mettre":
+            pass
+        elif action == "sortilege":
+            pass
         # TODO
         pass
 
