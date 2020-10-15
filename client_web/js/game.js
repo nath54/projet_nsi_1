@@ -7,7 +7,7 @@ function aff_message(txt,color="white"){
     p.innerHTML=txt;
     p.setAttribute("class","mes")
     p.style.color=color;
-    //on l'ajoute 
+    //on l'ajoute
     document.getElementById("mm").appendChild(p);
     document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
 }
@@ -24,6 +24,8 @@ function init(){
 
 
 
-
+function text_click(){
+    //TODO
+}
 
 
