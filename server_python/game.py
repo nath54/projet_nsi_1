@@ -1,10 +1,19 @@
-#CECI EST LA PARTIE QUI GERE LE JEU
+# CECI EST LA PARTIE QUI GERE LE JEU
 
-#Imports :
+# Imports :
 
-#Classe de la partie
+# Classe de la partie
 class Game:
-    def __init__(self):
-        #TODO
-        pass
+    """Classe de la partie
 
+    Attributes:
+        ???
+    """
+    def __init__(self):
+        """???
+
+        Author: ???
+
+        """
+        # TODO
+        pass

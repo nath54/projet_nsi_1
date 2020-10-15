@@ -1,77 +1,121 @@
-#PROGRAMME PRINCIPAL DU CLIENT DU JEU
+# PROGRAMME PRINCIPAL DU CLIENT DU JEU
 
-#importations :
+# Importations :
 import socket
 import _thread
 import json
 import sys
 
-#classe principale du client
+
 class Client:
+    """Classe principale du client
+
+    Attributes:
+        host(str): IP de la machine à laquelle se connecter.
+        port(int): Port utilisé par le socket
+        max_size(int): Taille maximale d'un message en bits
+        client(socket): ???
+
+    """
     def __init__(self):
-        #infos pour le socket
-        self.host = "localhost"  #ip de la machine, localhost pour travailler en local
-        self.port = 9876 #port utilisé par le socket
-        self.max_size=1024 #taille maximale en bytes qu'un message peut avoir
-        self.client=None
-        #
-        #TODO
+        """Caractéristiques du socket
+
+        Author: ???
+
+        """
+        self.host = "localhost"
+        self.port = 9876
+        self.max_size = 1024
+        self.client = None
+        # TODO
         pass
 
-    #fonction pour envoyer le message
-    def send(self, mes):
-        mes=mes.encode(encoding="utf-8") #on encode le message
-        size=sys.getsizeof(mes) #on regarde sa taille
-        if size>self.max_size: #si la taille du message dépasse la taille maximale autorisée, on n'envoie pas le message
-            print("ERROR : Le message est trop long ! "+str(size)+" bytes/"+str(self.max_size)+" bytes")
+    def send(self, message):
+        """Permet d'envoyer un message
+
+        Args:
+            message(str): Le message à envoyer au serveur
+
+        Author: ???
+
+        """
+        message = message.encode(encoding="utf-8")
+        size = sys.getsizeof(message)
+        if size > self.max_size:
+            print(f"""ERREUR : Le message est trop long ! {+str(size)} bytes/
+                    {str(self.max_size)} bytes""")
         else:
-            self.client.send(mes)
+            self.client.send(message)
 
-     # ne pas toucher start et handle, sauf si vous savez ce que vous faites
     def start(self):
-        # On prépare le client
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # On utilisera protocole TCP/IP
-        self.client.connect((self.host,self.port))
-        # Le client est connecté. Il est prèt à envoyer et recevoir des messages.
-        _thread.start_new_thread(self.handle,(self.client,))
-        # On lance le handler en tant que thread pour ne pas bloquer le reste du programme.
+        """Permet de démarrer la connexion au serveur
 
-    #fonction qui gere les messages recus
+        Connexion avec le protocole TCP/IP, utilisation d'un thread pour la
+        fonction `handle()` afin de ne pas encombrer le thread principal.
+
+        Author: ???
+
+        """
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.client.connect((self.host, self.port))
+        _thread.start_new_thread(self.handle, (self.client,))
+
     def handle(self):
+        """Permet de gérer les messages reçus
+
+        Author: ???
+
+        """
         self.on_connect()
         while True:
             try:
                 msg = self.client.recv(self.max_size)
-                if len(msg)==0: raise UserWarning("message vide")
+                if len(msg) == 0:
+                    raise UserWarning("message vide")
                 self.on_message(msg)
             except Exception as e:
                 print(e)
                 self.on_close()
                 return
 
-    def on_connect(self): # Lorsque la connection est acceptée
-        #TODO
+    def on_connect(self):
+        """Réaction si la connexion est acceptée"""
+        # TODO
         pass
 
-    def on_message(self,mess): # Lorsqu'un message est reçu
-        #TODO
+    def on_message(self, mess):
+        """Réaction si un message est reçu
+
+        Args:
+            mess(str): Le message reçu (encodé en base 'utf-8')
+
+        Author: ???
+
+        """
+        # TODO
         pass
 
-    def on_close(self): # Lorsque la connection se ferme ou un problème a été rencontré
-        #TODO
+    def on_close(self):
+        """Réaction en cas de fermeture/problème
+
+        Author: ???
+
+        """
+        # TODO
         pass
 
-    #fonction principale du client
     def main(self):
-        # Met en route le client
+        """Fonction principale du client
+
+        Author: ???
+
+        """
         self.start()
-        # Ici on peut mettre du code après start ...
-        #
-        #TODO
+        # TODO
         pass
 
-#le programme est lancé ici
-if __name__=="__main__":
-    client=Client()
+
+# Le programme est lancé ici
+if __name__ == "__main__":
+    client = Client()
     client.main()

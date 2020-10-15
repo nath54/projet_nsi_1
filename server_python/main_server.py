@@ -41,6 +41,8 @@ class Server:
         Cette fonction permet de lancer le serveur en TCP/IP, acceptant
         jusqu'à 5 connexions simultanées.
 
+        Author: ???
+
         """
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind((self.host, self.port))
@@ -56,6 +58,8 @@ class Server:
         Args:
             client (???): Référence au client avec qui gérer l'interaction
             infos (???): ???
+
+        Author: ???
 
         """
         self.on_accept(client, infos)
@@ -77,6 +81,8 @@ class Server:
             client (???): Référence au client ayant envoyé le message
             message (str): Message à envoyer aux autres clients
 
+        Author: ???
+
         """
         message = json.dumps(message)
         message = message.encode(encoding="utf-8")
@@ -92,6 +98,8 @@ class Server:
         Args:
             client (???): Référence au client ayant envoyé le message
             message (str): Message à envoyer aux autres clients
+
+        Author: ???
 
         """
         message = json.dumps(message)
@@ -111,6 +119,8 @@ class Server:
             client (???): Référence au client qui s'est connecté
             i (???): ???
 
+        Author: ???
+
         """
         self.clients[client] = {}          # On y mettra plus d'infos plus tard
         print("Connexion acceptée", client)
@@ -122,6 +132,8 @@ class Server:
             client (???): Référence au client ayant envoyé le message
             infos (???): ???
             message (str): Message tapé par l'utilisateur.
+
+        Author: ???
 
         """
         message = message.decode(encoding="utf-8")
@@ -138,6 +150,8 @@ class Server:
             client (???): Référence au client ayant fermé son application
             infos (???): ???
 
+        Author: ???
+
         """
         print("Connexion fermée", client)
         del(self.clients[client])
@@ -146,14 +160,21 @@ class Server:
         """???
 
         Args:
-            data (dictionnaire): un dictionnaire contenant les éléments d'une commande
+            data (dict): un dictionnaire contenant les éléments d'une commande
                 exemple : {"com":"attaquer","attaquant":perso,"cible":ennemi}
+
+        Author: ???
+
         """
         # TODO
         pass
 
     def main(self):
-        """Met en route le serveur"""
+        """Met en route le serveur
+
+        Author: ???
+
+        """
         self.start()
         # TODO
         pass
