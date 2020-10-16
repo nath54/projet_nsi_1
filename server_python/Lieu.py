@@ -9,3 +9,5 @@ class Lieu:
         joueur(list<Perso>): Liste des persos présents
 
     """
+    def __init__(self):
+        self.lieux
