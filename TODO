@@ -1,16 +1,16 @@
-[] moteur du jeu
-  [] les commandes
-  [] les classes Etres et ses sous classes
-  [] les classes Objets
-  [] les zones
-  [] integrer tout cela a la base de donnée
-[] serveur du jeu
-  [] serveur socket
-  [] client mariadb
-  [] intergrer le moteur du jeu au serveur
-[] client du jeu (python)
-  [] client socket
-  [] interface textuelle agréable qui donne envie
-[] client du jeu (web)
-  [] client socket
+[ ] Moteur du jeu
+  [ ] Les commandes
+  [ ] Les classes `Etre` et ses sous-classes
+  [ ] Les classes Objets
+  [ ] Les zones
+  [ ] Intégrer tout cela à la base de données
+[ ] serveur du jeu
+  [ ] Serveur socket
+  [ ] Client mariadb
+  [ ] Intégrer le moteur du jeu au serveur
+[ ] Client du jeu (python)
+  [ ] Client socket
+  [ ] Interface textuelle agréable qui donne envie
+[ ] Client du jeu (web): nath54
+  [ ] Client socket
   [x] interface web
