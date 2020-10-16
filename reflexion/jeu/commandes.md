@@ -12,6 +12,7 @@
  - inventaire : affiche l'inventaire du personnage
  - equipement : affiche l'équipement du personnage
  - stats (perso): affiche les stats du perso (exemple : stats moi; stat ennemi)
+ - attendre : passe un tour
  - desequiper (nom de l'objet) : enleve de l'équipement l'objet demande
  - equiper (nom de l'objet) : équipe l'objet demande
  - examiner (nom de l'objet) : affiche les informations sur l'objet (exemple: examiner papier => vous pouvez lire le texte 'Bienvenue dans ce jeu !' sur le papier)
