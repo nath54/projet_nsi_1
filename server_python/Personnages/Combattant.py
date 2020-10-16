@@ -7,8 +7,10 @@ class Combattant(Etre):
     Attributes:
         vie_totale(int): Vie maximale
         vie(int): Vie restante
-        mana_total(int): Mana maximal
-        mana(int): Mana restant
-        effets(list): Effets appliqué sur l'instance du combattant
+        energie_totale(int): Énergie maximale
+        energie(int): Énergie restante
+        effets(list): Effets appliqués sur l'instance du combattant
     
     """
+    def __init__(self):
+        pass
