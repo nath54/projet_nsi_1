@@ -1,6 +1,6 @@
 
 
-//fonction qui ajoute du texte 
+//fonction qui ajoute du texte
 function aff_message(txt,color="white"){
     //on crée l'element
     var p = document.createElement("pre");
@@ -12,20 +12,11 @@ function aff_message(txt,color="white"){
     document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
 }
 
-
-
 function init(){
 }
 
-
-
-
-
-
-
-
-function text_click(){
-    //TODO
+function text_click(text){
+    document.getElementById("input").value+=text;
 }
 
 
