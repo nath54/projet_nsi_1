@@ -182,6 +182,8 @@ class Server:
             pass
         elif action == "quit":
             pass
+        elif action == "attendre":
+            pass
         elif data_len <= 1:
             pass  # Actions qui ont besoin de plus d'un paramètre au-delà
         elif action == "desequiper":
