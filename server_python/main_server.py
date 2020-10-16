@@ -139,7 +139,7 @@ class Server:
         """
         message = message.decode(encoding="utf-8")
         if len(message) > 0:
-            print(f"{clients[client]} : {message}")
+            print(f"{self.clients[client]} : {message}")
             if message[0] == "{":
                 data = json.loads(message)
                 self.commandes(data)
