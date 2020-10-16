@@ -10,6 +10,7 @@
 
  - voir : affiche les informations du lieu ou l'on est
  - inventaire : affiche l'inventaire du personnage
+ - inventaire utiliser (objet) : permet d'utiliser un objet dans son inventaire
  - equipement : affiche l'équipement du personnage
  - stats (perso): affiche les stats du perso (exemple : stats moi; stat ennemi)
  - attendre : passe un tour

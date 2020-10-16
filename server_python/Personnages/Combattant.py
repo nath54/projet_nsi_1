@@ -12,5 +12,5 @@ class Combattant(Etre):
         effets(list): Effets appliqués sur l'instance du combattant
 
     """
-    def __init__(self):
-        pass
+    def __init__(self, name, lieu):
+        super.__init__(name, lieu)

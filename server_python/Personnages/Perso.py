@@ -18,5 +18,5 @@ class Perso(Combattant):
         invent(list): Inventaire du personnage  
 
     """
-    def __init__():
-        pass
+    def __init__(self, nom, lieu):
+        super.__init__(nom, lieu)

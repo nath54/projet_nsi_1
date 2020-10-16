@@ -3,7 +3,9 @@ class Etre:
     
     Attributes:
         nom(str): Nom de l'instance
+        lieu(Lieu): Instance du lieu dans lequel l'Etre se trouve
     
     """
-    def __init__(self, name):
+    def __init__(self, name, lieu):
         self.nom = name
+        self.lieu = lieu

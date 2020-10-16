@@ -1,12 +1,15 @@
+import Personnages.Etre as etre
+
+
 class Lieu:
     """Classe de lieu
 
     Attributes:
         nom_lieu(str): Le nom du lieu
-        lieux(list<Lieu>): Lieux connectés à l'instance
-        objets(list<Objet>): Liste d'objet dans le lieu
-        ennemis(list<Ennemi>): Liste des ennemis dans la zone
-        pnj(list<PNJ>): Liste des PNJ dans la zone
+        lieux(dict<str, Lieu>): Lieux connectés à l'instance
+        objets(dict<str, Objet>): Liste d'objet dans le lieu
+        ennemis(dict<str, Ennemi>): Liste des ennemis dans la zone
+        pnj(dict<str, PNJ>): Liste des PNJ dans la zone
         joueurs(list<Perso>): Liste des persos présents
 
     """
@@ -58,3 +61,12 @@ class Lieu:
         else:
             res += "Vous êtes bloqué ici !"
         return res
+
+
+if __name__ == "__main__":
+    gob1 = etre.Etre("Gobel1")
+    gob2 = etre.Etre("Gobel2")
+    pnj1 = etre.Etre("Villageois1")
+    pnj2 = etre.Etre("Villageois2")
+    lieu1 = Lieu("le Jardin", ennemis=[gob1, gob2], pnj=[pnj1, pnj2])
+    print(lieu1)
