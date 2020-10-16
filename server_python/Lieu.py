@@ -13,7 +13,7 @@ class Lieu:
         joueurs(list<Perso>): Liste des persos présents
 
     """
-    def __init__(self, nom_lieu, lieux=[], objets=[], ennemis=[], pnj=[], 
+    def __init__(self, nom_lieu, lieux=[], objets=[], ennemis=[], pnj=[],
                  joueurs=[]):
         """Permet de créer un nouveau lieu
 
@@ -42,7 +42,7 @@ class Lieu:
 
         """
         res = f"Vous vous trouvez dans {self.nom_lieu}." + "\n"
-        if len(self.objets) != 0: 
+        if len(self.objets) != 0:
             res += "Voici les objets présents dans cette zone :\n"
             for objet in self.objets:
                 res += f"- {objet.nom}" + "\n"
