@@ -1,4 +1,5 @@
 import server_python.Personnages.Combattant
+from server_python.Personnages.Objet import Enum_Objet
 
 
 class Perso(Combattant):
@@ -15,8 +16,23 @@ class Perso(Combattant):
         discr(int): (Discrétion) Augmente les chances de vol d'objet et
                     d'infiltration discrète
         equip(dict): Équipement du personnage
-        invent(list): Inventaire du personnage
+        invent(list<Objet>): Inventaire du personnage
 
     """
     def __init__(self, nom, lieu):
+        """???
+
+        Author: ???
+
+        """
         super.__init__(nom, lieu)
+
+    def print_inventaire(self):
+        """Permet d'afficher le contenu de l'inventaire
+
+        Author: Hugo
+
+        """
+        print("Voici le contenu de votre inventaire :\n")
+        for item in self.invent:
+            print(f"- {item.name} ({item.type})" + "\n")

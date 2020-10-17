@@ -1,0 +1,1 @@
+(Potentiellement on peut aussi mettre la clause `Author` dans les docstrings qu'on fait, voire faire ça ET recenser ici après)

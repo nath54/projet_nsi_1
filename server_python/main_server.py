@@ -11,6 +11,7 @@ import sys
 # nos librairies
 import client_db
 import game
+import server_python.Personnages.Perso
 
 
 # Classe du serveur
@@ -177,7 +178,7 @@ class Server:
             print(perso.lieu)
         elif action == "inventaire":
             if data_len == 1:
-                pass  # TODO: Afficher l'inventaire
+                perso.print_inventaire()
             else:
                 pass  # TODO: Pouvoir utiliser un objet dans l'inventaire
         elif action == "equipement":
