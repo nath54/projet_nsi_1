@@ -1,3 +1,14 @@
+
+legende 
+ [ ] truc a faire
+ ( ) truc a faire mais optionnel
+ [x] truc fait
+ (x) truc optionnel fait
+
+[ ] jeu
+ [ ] Une Quete Principale
+ ( ) Autres quetes principales
+ ( ) Quetes secondaires
 [ ] Moteur du jeu
   [ ] Les commandes
   [ ] Les classes `Etre` et ses sous-classes
@@ -11,6 +22,6 @@
 [ ] Client du jeu (python)
   [ ] Client socket
   [ ] Interface textuelle agréable qui donne envie
-[ ] Client du jeu (web): nath54
-  [ ] Client socket
-  [x] interface web
+( ) Client du jeu (web): nath54
+  ( ) Client socket
+  (x) interface web
