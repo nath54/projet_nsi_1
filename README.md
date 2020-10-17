@@ -23,3 +23,30 @@ Exemples de projets possibles :
 Si vous avez une idée mais ne savez pas si ça rentre dans le cadre, n’hésitez pas à me demander.
 
 Ne partez pas dans un truc trop compliqué !
+
+## Membres du groupe : 
+  
+  - Nathan Cerisara (Compte Github)[https://github.com/nath54]
+  - Hugo Perrin (Compte Github)[https://github.com/er1t-h]
+  - Lea Smolareck (Compte Github)[https://github.com/AisuKetsueki]
+  - Alexis Lemoine (Compte Github)[https://github.com/ExTer3012]
+
+Les indications de ce que chaqun a fait seront dans le fichier `qui_a_fait_quoi.md` à la racine du projet.
+
+## Structure du projet : 
+
+Le projet est structuré en plusieurs parties, on a :
+ 
+ - `server_python` : C'est la la partie serveur du projet, c'est elle qui interagit avec les différents clients et qui accede a la base de donnée (on utilisera mariadb) pour y stocker des données
+ - `client_python` : C'est la partie client du projet, c'est à travers elle que les différents joueurs vont pouvoir interagir avec le serveur
+ - `client_web` : Je l'ai rajouté en bonus, car c'est quand même plus agréable de jouer à un jeu sur une page web bien organisée que sur un petit terminal python (avis personnel de Nathan Cerisara)
+
+## Instructions d'utilisation
+
+*Comming Soon...*
+
+(Arriveront quand le projet sera quasiment terminé)
+
+
+
+
