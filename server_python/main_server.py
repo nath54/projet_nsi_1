@@ -157,11 +157,12 @@ class Server:
         print("Connexion fermée", client)
         del(self.clients[client])
 
-    def commandes(self, data):
+    def commandes(self, perso, data):
         """Éxecute les commandes entrée par l'utilisateur.
 
         Args:
-            data (dict): un dictionnaire contenant les éléments d'une commande
+            perso(Perso): Personne qui a entré la commande
+            data(dict): un dictionnaire contenant les éléments d'une commande
                 exemple : {"com": "attaquer",
                            "attaquant": perso,
                            "cible": ennemi}
@@ -173,13 +174,19 @@ class Server:
         action = data.get("com", "")
 
         if action == "voir":
-            pass
+            print(perso.lieu)
         elif action == "inventaire":
-            pass
+            if data_len == 1:
+                pass  # TODO: Afficher l'inventaire
+            else:
+                pass  # TODO: Pouvoir utiliser un objet dans l'inventaire
         elif action == "equipement":
             pass
         elif action == "stats":
-            pass
+            if data_len == 1:
+                pass  # TODO: Affiche ses propres stats
+            else:
+                pass  # TODO: Afficher stats d'un autre Etre (niveau d'intel ?)
         elif action == "quit":
             pass
         elif action == "attendre":
@@ -199,10 +206,10 @@ class Server:
         elif action == "jeter":
             pass
         elif action == "utiliser":
-            if data_len == 3:
-                pass  # Utiliser un objet sur un autre
-            elif data_len == 2:
+            if data_len == 2:
                 pass  # Utiliser un objet
+            elif data_len == 3:
+                pass  # Utiliser un objet sur un autre
         elif action == "consommer":
             pass
         elif action == "ouvrir":
