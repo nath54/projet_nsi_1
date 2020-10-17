@@ -26,10 +26,10 @@ Ne partez pas dans un truc trop compliqué !
 
 ## Membres du groupe : 
   
-  - Nathan Cerisara (Compte Github)[https://github.com/nath54]
-  - Hugo Perrin (Compte Github)[https://github.com/er1t-h]
-  - Lea Smolareck (Compte Github)[https://github.com/AisuKetsueki]
-  - Alexis Lemoine (Compte Github)[https://github.com/ExTer3012]
+  - Nathan Cerisara : [Compte Github](https://github.com/nath54)
+  - Hugo Perrin : [Compte Github](https://github.com/er1t-h)
+  - Lea Smolareck : [Compte Github](https://github.com/AisuKetsueki)
+  - Alexis Lemoine : [Compte Github](https://github.com/ExTer3012)
 
 Les indications de ce que chaqun a fait seront dans le fichier `qui_a_fait_quoi.md` à la racine du projet.
 
