@@ -7,24 +7,24 @@
     <body onload="init();">
         <div class="center box">
             <p class="hcenter">Bienvenue sur ce super RPG multijoueur textuel !</p>
-            <div id="div_connection">
+            <div id="div_connection" class="hcenter">
                 <h2 class="hcenter">Vous connecter : </h2>
                 <div>
-                    <div class="hcenter"><label>Pseudo : </label><input type="text" id="c_pseudo" /></div>
-                    <div class="hcenter"><label>Mot de passe : </label><input type="password" id="c_password" /><button class="bt_oeil" onclick="toggle_password();"></button></div>
-                    <div class="hcenter"><button class="hcenter">Se connecter</button></div>
-                    <p class="hcenter">Vous n'avez pas de compte ? <a href="#" onclick="show_inscription();">inscrivez vous ici</a></p>
+                    <div class=""><label>Pseudo : </label><input type="text" id="c_pseudo" class="ac_input" /></div>
+                    <div class=""><label>Mot de passe : </label><input type="password" id="c_password" class="ac_input" /><button class="bt_oeil" onclick="toggle_password();"></button></div>
+                    <div class=""><button class="hcenter">Se connecter</button></div>
+                    <p class="">Vous n'avez pas de compte ? <a href="#" onclick="show_inscription();">inscrivez vous ici</a></p>
                 </div>
             </div>
-            <div id="div_inscription">
+            <div id="div_inscription" class="hcenter">
                 <h2 class="hcenter">Vous inscrire : </h2>
                 <div>
-                    <div class="hcenter"><label>Email : </label><input type="email" id="i_email" /></div>
-                    <div class="hcenter"><label>Pseudo : </label><input type="text" id="i_pseudo" /></div>
-                    <div class="hcenter"><label>Mot de passe : </label><input type="password" id="i_password" /><button class="bt_oeil" onclick="toggle_password();"></button></div>
-                    <div class="hcenter"><label>Mot de passe (Confirmation) : </label><input type="password" id="i_confirm_password" /><button class="bt_oeil" onclick="toggle_password();"></button></div>
-                    <div class="hcenter"><button class="hcenter">S'inscrire</button></div>
-                    <p class="hcenter">Vous avez déjà un compte ? <a href="#" onclick="show_connection();">connectez vous ici</a></p>
+                    <div class=""><label>Email : </label><input type="email" id="i_email" class="ac_input" /></div>
+                    <div class=""><label>Pseudo : </label><input type="text" id="i_pseudo" class="ac_input" /></div>
+                    <div class=""><label>Mot de passe : </label><input type="password" id="i_password" class="ac_input" /><button class="bt_oeil" onclick="toggle_password();"></button></div>
+                    <div class=""><label>Mot de passe (Confirm) : </label><input type="password" id="i_confirm_password" class="ac_input" /><button class="bt_oeil" onclick="toggle_password();"></button></div>
+                    <div class=""><button class="hcenter">S'inscrire</button></div>
+                    <p class="">Vous avez déjà un compte ? <a href="#" onclick="show_connection();">connectez vous ici</a></p>
                 </div>
             </div>
         </div>

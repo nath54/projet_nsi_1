@@ -22,6 +22,14 @@ body{
     padding:0;
 }
 
+a{
+    color: gold;
+}a:hover{
+    color:goldenrod;
+}a:active{
+    color:orange;
+}
+
 .center{
     margin:auto;
     margin-top: 10%;
@@ -29,7 +37,8 @@ body{
 
 .hcenter{
     margin-left:25%;
-    margin-right:25%;
+    margin-right:10%;
+    margin-bottom: 5px;
 }
 
 .box{
@@ -73,7 +82,18 @@ JUSTE POUR index.html
     filter: fliph; /*IE*/
 }
 
-
+.ac_input{
+    background-color: black;
+    color:white;
+    font-family: "Courier New", Courier, monospace;
+    text-align:center;
+    border:none;
+    text-decoration: none;
+    font-size: 20px;
+    min-height: 30px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
 /*
 
 JUSTE POUR client.html
@@ -95,6 +115,9 @@ JUSTE POUR client.html
     color:white;
     min-height:35px;
     width:80%;
+    padding:5px;
+    padding-left: 5%;
+    padding-right: 5%;
 }
 
 #bt{
