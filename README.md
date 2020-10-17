@@ -43,7 +43,7 @@ Le projet est structuré en plusieurs parties, on a :
 
 ## Instructions d'utilisation
 
-*Comming Soon...*
+*Coming Soon...*
 
 (Arriveront quand le projet sera quasiment terminé)
 
