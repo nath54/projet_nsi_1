@@ -1,6 +1,7 @@
 # PROGRAMME PRINCIPAL DU SERVEUR
 
 # TODO: Remplacer les ??? dans les docstrings
+# TODO: `send_to_perso(Perso, str)` pourrait être utile pour `commandes`
 
 # Importations :
 # librairie python
@@ -158,29 +159,31 @@ class Server:
         print("Connexion fermée", client)
         del(self.clients[client])
 
+    # region Commandes
     def commandes(self, perso, data):
         """Éxecute les commandes entrée par l'utilisateur.
 
         Args:
             perso(Perso): Personne qui a entré la commande
             data(dict): un dictionnaire contenant les éléments d'une commande
-                exemple : {"com": "attaquer",
-                           "attaquant": perso,
-                           "cible": ennemi}
+                exemple : {"command": "attaquer",
+                           "arg_1": ennemi}
 
         Author: ???
 
         """
         data_len = len(data.keys())
-        action = data.get("com", "")
+        action = data.get("command", "")
 
         if action == "voir":
             print(perso.lieu)
+            # TODO: send_to_perso(perso)
         elif action == "inventaire":
             if data_len == 1:
-                perso.print_inventaire()
+                print(perso.format_invent())
+                # TODO: send_to_perso(perso)
             else:
-                pass  # TODO: Pouvoir utiliser un objet dans l'inventaire
+                self.invent_multi_args(perso, data)
         elif action == "equipement":
             pass
         elif action == "stats":
@@ -234,6 +237,40 @@ class Server:
         # TODO
         pass
 
+    def invent_multi_args(self, perso, data):
+        """Si la commande entrée est 'inventaire ...'
+
+        Gère le cas où la commande entrée est 'inventaire voir ...' ou
+        'inventaire utiliser ...'
+
+        Args:
+            perso(Perso): Personnage demandant l'action
+            data(dict): Dict contenant les informations de la commande
+
+        Author: Hugo
+
+        """
+        compl = data.get("arg_1", "")
+        nom_obj = data.get("arg_2", "")
+        if compl in ["voir", "examiner"]:
+            objet = perso.search_invent(nom_obj)
+            if objet != None:
+                print(objet)
+                # TODO: send_to_perso(perso)
+            else:
+                print("Désolé, vous ne possédez pas cet objet.")
+                # TODO: send_to_perso(perso)
+        elif compl == "utiliser":
+            objet = perso.search_invent(nom_obj)
+            if objet != None:
+                perso.consomme_item(objet)
+                print(f"{nom_obj} a été consommé !")
+                # TODO: send_to_perso(perso)
+            else:
+                print("Désolé, vous ne possédez pas cet objet.")
+                # TODO: send_to_perso(perso)
+    # endregion
+
     def main(self):
         """Met en route le serveur
 
@@ -243,7 +280,6 @@ class Server:
         self.start()
         # TODO
         pass
-
 
 # On lance le programme ici
 if __name__ == "__main__":
