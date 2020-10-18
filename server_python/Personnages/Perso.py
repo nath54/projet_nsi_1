@@ -1,5 +1,5 @@
-import server_python.Personnages.Combattant
-from server_python.Personnages.Objet import Enum_Objet
+from Personnages.Combattant import Combattant
+from Personnages.Objet import Objet
 
 
 class Perso(Combattant):

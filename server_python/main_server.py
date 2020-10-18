@@ -11,8 +11,7 @@ import sys
 # nos librairies
 import client_db
 import game
-import server_python.Personnages.Perso
-
+from Personnages.Perso import Perso
 
 # Classe du serveur
 class Server:
@@ -49,6 +48,7 @@ class Server:
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind((self.host, self.port))
         self.server.listen(5)
+        
         print("Server started.")
         while 1:
             (client, info) = self.server.accept()

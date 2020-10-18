@@ -1,3 +1,4 @@
+
 class Objet:
     """Classe définissant les objets
 

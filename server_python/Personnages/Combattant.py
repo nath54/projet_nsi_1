@@ -1,4 +1,4 @@
-import server_python.Personnages.Etre
+from Personnages.Etre import Etre
 
 
 class Combattant(Etre):

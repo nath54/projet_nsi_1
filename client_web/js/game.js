@@ -35,4 +35,10 @@ function text_click(text){
     document.getElementById("input").value+=" "+text;
 }
 
+function sende(){
+    var texte=document.getElementById("input").value;
+    var j={"type":"text","value":texte};
+    var jt=JSON.stringify(j);
+    websocket.send(jt);
+}
 
