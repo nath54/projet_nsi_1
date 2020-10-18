@@ -1,5 +1,5 @@
-from Personnages.Combattant import Combattant
-from Personnages.Objet import Objet
+from Game.Etres.Combattant import Combattant
+from Game.Etres.Objet import Objet
 
 
 class Perso(Combattant):

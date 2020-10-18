@@ -1,4 +1,4 @@
-from Personnages.Etre import Etre
+from Game.Etres.Etre import Etre
 
 
 class Combattant(Etre):
@@ -14,3 +14,4 @@ class Combattant(Etre):
     """
     def __init__(self, name, lieu):
         super.__init__(name, lieu)
+

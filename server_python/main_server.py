@@ -10,8 +10,8 @@ import json
 import sys
 # nos librairies
 import client_db
-import game
-from Personnages.Perso import Perso
+import Game.Game
+from Game.Etres.Perso import Perso
 
 # Classe du serveur
 class Server:
