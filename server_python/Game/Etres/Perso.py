@@ -83,7 +83,7 @@ class Perso(Combattant):
         self.vie += nombre
         if self.vie > self.vie_totale:
             self.vie = self.vie_totale
-    
+
     def soigne_EN(self, nombre):
         """Soigne la vie du personnage
 

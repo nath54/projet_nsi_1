@@ -14,6 +14,7 @@ import client_db
 import Game.Game
 from Game.Etres.Perso import Perso
 
+
 # Classe du serveur
 class Server:
     """Classe du serveur du jeu
@@ -49,7 +50,7 @@ class Server:
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind((self.host, self.port))
         self.server.listen(5)
-        
+
         print("Server started.")
         while 1:
             (client, info) = self.server.accept()
@@ -254,7 +255,7 @@ class Server:
         nom_obj = data.get("arg_2", "")
         if compl in ["voir", "examiner"]:
             objet = perso.search_invent(nom_obj)
-            if objet != None:
+            if objet is not None:
                 print(objet)
                 # TODO: send_to_perso(perso)
             else:
@@ -262,7 +263,7 @@ class Server:
                 # TODO: send_to_perso(perso)
         elif compl == "utiliser":
             objet = perso.search_invent(nom_obj)
-            if objet != None:
+            if objet is not None:
                 perso.consomme_item(objet)
                 print(f"{nom_obj} a été consommé !")
                 # TODO: send_to_perso(perso)
@@ -280,6 +281,7 @@ class Server:
         self.start()
         # TODO
         pass
+
 
 # On lance le programme ici
 if __name__ == "__main__":

@@ -14,4 +14,3 @@ class Combattant(Etre):
     """
     def __init__(self, name, lieu):
         super.__init__(name, lieu)
-

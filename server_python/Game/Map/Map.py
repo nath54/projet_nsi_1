@@ -1,10 +1,5 @@
-
 class Map:
-    """Classe qui gerera la map du jeu
-
-
-    """
+    """Classe qui gérera la map du jeu"""
     def __init__(self):
-        #TODO
+        # TODO
         pass
-
