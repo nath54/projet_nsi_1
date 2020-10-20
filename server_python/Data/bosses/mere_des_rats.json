@@ -1,0 +1,9 @@
+{
+    "type":"boss",
+    "race":"rat",
+    "name":"La mère des rats",
+    "description":"Un rat qui fait deux fois la taille et le poids d'un homme normal, c'est elle qui dirige tous les rats de la ville, elle peut vraiment etre dangereuse",
+    "vie":[40,50],
+    "attaque":[5,10],
+    "attaque_effets":{"peste":30}
+}
