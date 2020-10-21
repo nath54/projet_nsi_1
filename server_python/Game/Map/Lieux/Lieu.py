@@ -17,7 +17,6 @@ class Lieu:
     def __init__(self):
         self.nom = "Nom"
         self.description = "Description"
-
         self.ennemis = set()
         self.pnjs = set()
         self.persos = set()

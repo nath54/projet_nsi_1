@@ -17,6 +17,10 @@ class Map:
             print(data)
             f.close()
 
+    def create_lieu(self,datalieu):
+        #TODO
+        pass
+
 if __name__=="__main__":
     map=Map()
     map.load_from_json()
