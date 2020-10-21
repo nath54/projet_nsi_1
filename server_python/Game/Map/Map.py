@@ -1,9 +1,10 @@
 import io,json,os
+from Lieux.Lieu import Lieu
 
 class Map:
     """Classe qui gérera la map du jeu"""
     def __init__(self):
-        # TODO
+        self.lieus=[]
         pass
 
     def load_from_json(self):
@@ -18,8 +19,13 @@ class Map:
             f.close()
 
     def create_lieu(self,datalieu):
-        #TODO
-        pass
+        lieu=Lieu()
+        dk=datalieu.keys()
+        if "nom" in dk: lieu.nom=datalieu["nom"]
+        if "description" in dk: lieu.description=datalieu["description"]
+        
+        #
+        self.lieus.append(lieu)
 
 if __name__=="__main__":
     map=Map()

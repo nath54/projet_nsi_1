@@ -9,7 +9,7 @@ class Objet:
         effet(str): Écrit comme du code Python, effet de l'objet consommé
 
     """
-    def __init__(self, nom, description, type_, effet):
+    def __init__(self, nom, description, type_, effet=[]):
         """Créer un objet
 
         Args:

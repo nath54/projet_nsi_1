@@ -15,8 +15,8 @@ class Lieu:
 
     """
     def __init__(self):
-        self.nom = "Nom"
-        self.description = "Description"
+        self.nom = "Lieu"
+        self.description = "Un lieu"
         self.ennemis = set()
         self.pnjs = set()
         self.persos = set()
