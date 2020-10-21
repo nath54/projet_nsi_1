@@ -47,3 +47,6 @@ class Client_mariadb:
 
     def close(self):
         self.connection.close()
+    
+    def inscription(self,pseudo,email,password):
+        pass
