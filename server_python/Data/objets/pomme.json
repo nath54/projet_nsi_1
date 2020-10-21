@@ -1,0 +1,5 @@
+{
+    "nom":"pomme",
+    "description":"Une belle pomme bien rouge, elle a l'air vraiment délicieuse",
+    "action":{"santé":[2,4],"usage_unique":true}
+}
