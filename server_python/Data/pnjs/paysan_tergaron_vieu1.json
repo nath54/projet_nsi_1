@@ -1,7 +1,7 @@
 {
     "id":0,
     "type":"pnj",
-    "name":"Vieux paysan",
+    "nom":"Vieux paysan",
     "race":"humain",
     "description":"Un vieux paysan qui se balade sur la place.",
     "lieu":[0],
