@@ -15,6 +15,7 @@ class Perso(Combattant):
                      des prix réduits dans les boutiques...
         discr(int): (Discrétion) Augmente les chances de vol d'objet et
                     d'infiltration discrète
+        monnaie(int): L'argent du personnage
         equip(dict): Équipement du personnage
         invent(list<[Objet, int]>): Inventaire du personnage :
                                     `int` est la quantité d'`Objet détenue`
@@ -25,20 +26,69 @@ class Perso(Combattant):
 
         Author: ???
 
+        TODO: Changer stats de base ?
+
         """
         super.__init__(nom, lieu)
-        self.inventaire=[]
+        self.equip = {"Amulette": None, "Casque": None, "Armure": None,
+                      "Bottes": None, "Arme": None}
+        self.inventaire = []
+        self.monnaie = 0
+        self.charme = 0
+        self.classe = None  # TODO
+        self.force = 0
+        self.intel = 0
+        self.discr = 0
 
+    # region Format
     def format_invent(self):
-        """Permet d'afficher le contenu de l'inventaire
+        """Renvoie le contenu de l'inventaire
+
+        Returns:
+            str: Contenu de l'inventaire (présentable)
 
         Author: Hugo
 
         """
         res = "Voici le contenu de votre inventaire :\n"
         for item[0] in self.inventaire:
-            res += f"- {item.name} ({item.type})" + "\n"
+            res += "\t" + f"- {item.name} ({item.type})" + "\n"
         return res
+
+    def format_equip(self):
+        """Formate l'équipement du personnage
+
+        Returns:
+            str: Équipement du personnage (présentable)
+
+        Author: Hugo
+
+        """
+        res = "Voici votre équipement :\n"
+        for type_, equip in self.equip:
+            nom = "Rien" if equip is None else equip.nom
+            res += "\t" + f"- {type_} : {nom}"
+        return res
+
+    def format_stats(self):
+        """Formate les stats du personnage
+
+        Returns:
+            str: Stats du personnage (présentable)
+
+        Author: Hugo
+
+        """
+        res = f"""Voici vos statistiques :
+            - Force : {self.force}
+            - Intelligence : {self.intel}
+            - Charme : {self.charme}
+            - Discrétion : {self.discr}
+            - Vie : {self.vie}/{self.vie_totale}
+            - Énergie : {self.energie}/{self.energie_totale}
+            - Argent : {self.monnaie}"""
+        return res
+    # endregion
 
     def search_invent(self, nom_obj, id_obj=None):
         """Renvoie l'objet s'il est dans l'inventaire, sinon ne renvoie rien
@@ -49,13 +99,12 @@ class Perso(Combattant):
         Author: Hugo
 
         """
-
-        if id_obj==None:
-            for objet,_ in self.inventaire:
+        if id_obj is None:
+            for objet, _ in self.inventaire:
                 if objet.nom == nom_obj:
                     return objet
         else:
-            for objet,_ in self.inventaire:
+            for objet, _ in self.inventaire:
                 if objet.id == id_obj:
                     return objet
 

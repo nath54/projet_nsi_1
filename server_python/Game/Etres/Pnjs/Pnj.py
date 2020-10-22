@@ -1,5 +1,5 @@
 
-import os, sys
+import os,sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # import ../Etre.py
 from Etre import Etre
@@ -10,6 +10,7 @@ import json
 data_pnjs=[
     "../../../Data/pnjs/paysan_tergaron_vieu1.json"
 ]
+
 
 class Pnj(Etre):
     def __init__(self,index):

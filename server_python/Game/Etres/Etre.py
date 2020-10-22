@@ -7,13 +7,11 @@ class Etre:
 
     """
     def __init__(self,
-                 nom="Quelqun",
+                 nom="Quelqu'un",
                  lieu=None,
-                 description="Quelqun de tout a fait normal comme on en trouve partout",
-                 race="humain",
-                 tp="pnj/ennemi/perso"):
+                 description="Quelqu'un de tout a fait normal, comme on en trouve partout",
+                 race="humain"):
         self.nom = nom
         self.lieu = lieu
-        self.description=description
-        self.race=race
-        self.tp=tp
+        self.description = description
+        self.race = race

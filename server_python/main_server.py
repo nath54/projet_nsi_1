@@ -1,18 +1,19 @@
 # PROGRAMME PRINCIPAL DU SERVEUR
 
 # TODO: Remplacer les ??? dans les docstrings
-# TODO: `send_to_perso(Perso, str)` pourrait être utile pour `commandes`
 
-# Importations :
+# region Importations :
 # librairie python
 import socket
 import _thread
 import json
 import sys
+
 # nos librairies
 import client_db
 import Game.Game
 from Game.Etres.Perso import Perso
+# endregion
 
 
 # Classe du serveur
@@ -160,6 +161,20 @@ class Server:
         print("Connexion fermée", client)
         del(self.clients[client])
 
+    def print_and_send(self, perso, message):
+        """Envoie un message sur le client associé à perso
+
+        Args:
+            perso(Perso): Personne à qui envoyer le message
+            message(str): Message destiné au personnage
+
+        Author: ???
+
+        """
+        print(message)
+        # TODO: Faire que cela envoie un message à perso
+        pass
+
     # region Commandes
     def commandes(self, perso, data):
         """Éxecute les commandes entrée par l'utilisateur.
@@ -177,19 +192,17 @@ class Server:
         action = data.get("command", "")
 
         if action == "voir":
-            print(perso.lieu)
-            # TODO: send_to_perso(perso)
+            print_and_send(perso, perso.lieu)
         elif action == "inventaire":
             if data_len == 1:
-                print(perso.format_invent())
-                # TODO: send_to_perso(perso)
+                print_and_send(perso, perso.format_invent())
             else:
                 self.invent_multi_args(perso, data)
         elif action == "equipement":
-            pass
+            print_and_send(perso, perso.format_equip())
         elif action == "stats":
             if data_len == 1:
-                pass  # TODO: Affiche ses propres stats
+                print_and_send(perso, perso.format_stats())
             else:
                 pass  # TODO: Afficher stats d'un autre Etre (niveau d'intel ?)
         elif action == "quit":

@@ -64,9 +64,14 @@ class Lieu:
         Author: Nathan
 
         TODO: À améliorer/revoir
+
         """
 
-        txt_objets,txt_pnjs,txt_ennemis,txt_persos,txt_lieux="","","","",""
+        txt_objets = ""
+        txt_pnjs = ""
+        txt_ennemis = ""
+        txt_persos = ""
+        txt_lieux = ""
 
         if len(self.objets)>=1: txt_objets = "\n"+random.choice(p_objs)+" :\n    -"+'\n\t- '.join([objet.nom for objet in self.objets])
         if len(self.pnjs)>=1: txt_pnjs = "\n"+random.choice(p_pnjs)+" :\n    -"+'\n\t- '.join([pnj.nom for pnj in self.pnjs])
