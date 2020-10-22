@@ -1,32 +1,46 @@
-import io,json,os
+import io
+import json
+import os
 from Lieux.Lieu import Lieu
+
 
 class Map:
     """Classe qui gérera la map du jeu"""
     def __init__(self):
-        self.lieus=[]
+        self.lieux = []
         pass
 
     def load_from_json(self):
-        """
+        """Permet de charger la map depuis un fichier .json
+
+        Author: Nathan
 
         """
-        emplacement="Data/map/"
+        emplacement = "Data/map/"
         for fichier in os.listdir(emplacement):
-            f=io.open(emplacement+fichier,"r",encoding="utf-8")
-            data=json.loads(f.read())
+            f = io.open(emplacement+fichier, "r", encoding="utf-8")
+            data = json.loads(f.read())
             print(data)
             f.close()
 
-    def create_lieu(self,datalieu):
-        lieu=Lieu()
-        dk=datalieu.keys()
-        if "nom" in dk: lieu.nom=datalieu["nom"]
-        if "description" in dk: lieu.description=datalieu["description"]
-        
-        #
-        self.lieus.append(lieu)
+    def create_lieu(self, datalieu):
+        """Instancie un lieu
 
-if __name__=="__main__":
-    map=Map()
+        Args:
+            datalieu(dict): ???
+
+        Author: Nathan
+
+        """
+        lieu = Lieu()
+        dk = datalieu.keys()
+        if "nom" in dk:
+            lieu.nom = datalieu["nom"]
+        if "description" in dk:
+            lieu.description = datalieu["description"]
+        self.lieux.append(lieu)
+
+
+if __name__ == "__main__":
+    map = Map()
     map.load_from_json()
