@@ -53,5 +53,5 @@ class Map:
 
 
 if __name__ == "__main__":
-    map = Map()
-    map.load_from_json()
+    mape = Map()
+    mape.load_from_json()
