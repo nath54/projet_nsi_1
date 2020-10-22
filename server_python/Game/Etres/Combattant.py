@@ -14,18 +14,14 @@ class Combattant(Etre):
     """
     def __init__(self, name="", lieu=None):
         super.__init__(name, lieu)
-        self.vie_totale=0
-        self.vie=self.vie_totale
-        self.energie_totale=0
-        self.enegie=self.energie_totale
-        self.effets={}
+        self.vie_totale = 0
+        self.vie = self.vie_totale
+        self.energie_totale = 0
+        self.energie = self.energie_totale
+        self.effets = {}
 
     def full_vie(self):
-        self.vie=self.vie_totale
+        self.vie = self.vie_totale
 
     def full_energie(self):
-        self.enegie=self.energie_totale
-
-    
-        
-        
+        self.energie = self.energie_totale

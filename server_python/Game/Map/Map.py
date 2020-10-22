@@ -2,6 +2,7 @@ import io
 import json
 import os
 
+
 class Map:
     """Classe qui gérera la map du jeu"""
     def __init__(self):
@@ -37,16 +38,16 @@ class Map:
         if "description" in dk:
             lieu.description = datalieu["description"]
         if "pnjs" in dk:
-            #TODO
+            # TODO
             pass
         if "ennemis" in dk:
-            #TODO
+            # TODO
             pass
         if "objets" in dk:
-            #TODO
+            # TODO
             pass
         if "lieux" in dk:
-            #TODO
+            # TODO
             pass
         self.lieux.append(lieu)
 

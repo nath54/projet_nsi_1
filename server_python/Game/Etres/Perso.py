@@ -27,7 +27,7 @@ class Perso(Combattant):
 
         """
         super.__init__(nom, lieu)
-        self.inventaire=[]
+        self.inventaire = []
 
     def format_invent(self):
         """Permet d'afficher le contenu de l'inventaire
@@ -50,12 +50,12 @@ class Perso(Combattant):
 
         """
 
-        if id_obj==None:
-            for objet,_ in self.inventaire:
+        if id_obj is None:
+            for objet, _ in self.inventaire:
                 if objet.nom == nom_obj:
                     return objet
         else:
-            for objet,_ in self.inventaire:
+            for objet, _ in self.inventaire:
                 if objet.id == id_obj:
                     return objet
 
