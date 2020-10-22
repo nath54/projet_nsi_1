@@ -26,7 +26,7 @@ class Lieu:
         pass
         # TODO
 
-    def affiche(self):
+    def __repr__(self):
         """Permet d'afficher
 
         Fonction appelée par le serveur qui affiche le lieu lors de l'arrivée
@@ -37,29 +37,21 @@ class Lieu:
         TODO: À améliorer/revoir
         """
 
-        txt_objets = '\n\t- '.join([objet.nom for objet in self.objets])
-        txt_pnjs = '\n\t- '.join([pnj.nom for pnj in self.pnjs])
-        txt_ennemis = '\n\t- '.join([ennemi.nom for ennemi in self.ennemis])
-        txt_persos = '\n\t- '.join([perso.nom for perso in self.persos])
-        txt_lieux = '\n\t- '.join([action + " : " +
-                                  self.lieux_accessibles[action].nom
-                                  for action in self.lieu])
+        txt_objets,txt_pnjs,txt_ennemis,txt_persos,txt_lieux="","","","",""
+
+        if len(self.objets)>=1: txt_objets = "\nDes objets sont présents dans ce lieu :\n    -"+'\n\t- '.join([objet.nom for objet in self.objets])
+        if len(self.pnjs)>=1: txt_pnjs = "\nVous pouvez voir quelques personnages dans le coin : :\n    -"+'\n\t- '.join([pnj.nom for pnj in self.pnjs])
+        if len(self.ennemis)>=1: txt_ennemis = "\nVous pouvez voir des ennemis à votre portée :\n    -"+'\n\t- '.join([ennemi.nom for ennemi in self.ennemis])
+        if len(self.persos)>=1: txt_persos = "\nDes objets sont présents dans ce lieu :\n    -"+'\n\t- '.join([perso.nom for perso in self.persos])
+        if len(self.lieux_accessibles)>=1: txt_lieux = "\nVous pouvez aussi aller à :\n    -"+'\n\t- '.join([action+" : "+self.lieux_accessibles[action].nom for action in self.lieu])
 
         txt = f"""
 Vous êtes dans {self.nom}
 {self.description}
-
-Des objets sont présents dans ce lieu :
-    -{txt_objets}
-
-Vous pouvez voir quelques personnages dans le coin :
-    -{txt_pnjs}
-
-Vous pouvez voir des ennemis à votre portée :
-    -{txt_ennemis}
-
-Vous pouvez aussi aller à :
-    -{txt_lieux}
-
+{txt_objets}
+{txt_pnjs}
+{txt_ennemis}
+{txt_lieux}
+{txt_persos}
         """
         return txt
