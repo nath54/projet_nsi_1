@@ -46,7 +46,18 @@ class Client_mariadb:
         pass
 
     def close(self):
+        """Ferme la connexion"""
         self.connection.close()
-    
-    def inscription(self,pseudo,email,password):
+
+    def inscription(self, pseudo, email, password):
+        """Permet de créer un compte
+
+        Args:
+            pseudo(str): Pseudo du compte à créer TODO: Pas de double
+            email(str): E-mail associé au nouveau compte TODO: Pas de double
+            password(str): Mot de passe du compte
+
+        Author: ???
+
+        """
         pass
