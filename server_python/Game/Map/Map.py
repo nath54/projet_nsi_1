@@ -1,8 +1,6 @@
 import io
 import json
 import os
-from Lieux.Lieu import Lieu
-
 
 class Map:
     """Classe qui gérera la map du jeu"""
@@ -23,7 +21,7 @@ class Map:
             print(data)
             f.close()
 
-    def create_lieu(self, datalieu):
+    def create_lieu(self, datalieu, Lieu, Objet, Pnj, Perso, Ennemi):
         """Instancie un lieu
 
         Args:
@@ -38,6 +36,18 @@ class Map:
             lieu.nom = datalieu["nom"]
         if "description" in dk:
             lieu.description = datalieu["description"]
+        if "pnjs" in dk:
+            #TODO
+            pass
+        if "ennemis" in dk:
+            #TODO
+            pass
+        if "objets" in dk:
+            #TODO
+            pass
+        if "lieux" in dk:
+            #TODO
+            pass
         self.lieux.append(lieu)
 
 

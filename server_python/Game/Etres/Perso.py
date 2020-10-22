@@ -20,13 +20,14 @@ class Perso(Combattant):
                                     `int` est la quantité d'`Objet détenue`
 
     """
-    def __init__(self, nom, lieu):
+    def __init__(self, nom="", lieu=None):
         """???
 
         Author: ???
 
         """
         super.__init__(nom, lieu)
+        self.inventaire=[]
 
     def format_invent(self):
         """Permet d'afficher le contenu de l'inventaire
@@ -35,11 +36,11 @@ class Perso(Combattant):
 
         """
         res = "Voici le contenu de votre inventaire :\n"
-        for item[0] in self.invent:
+        for item[0] in self.inventaire:
             res += f"- {item.name} ({item.type})" + "\n"
         return res
 
-    def search_invent(self, nom_obj):
+    def search_invent(self, nom_obj, id_obj=None):
         """Renvoie l'objet s'il est dans l'inventaire, sinon ne renvoie rien
 
         Args:
@@ -48,9 +49,15 @@ class Perso(Combattant):
         Author: Hugo
 
         """
-        for objet[0] in self.invent:
-            if objet.nom == nom_obj:
-                return objet
+
+        if id_obj==None:
+            for objet,_ in self.inventaire:
+                if objet.nom == nom_obj:
+                    return objet
+        else:
+            for objet,_ in self.inventaire:
+                if objet.id == id_obj:
+                    return objet
 
     def consomme_item(self, objet):
         """Utilise un objet
@@ -63,11 +70,11 @@ class Perso(Combattant):
         Author: Hugo
 
         """
-        for obj in self.invent:
+        for obj in self.inventaire:
             if obj[0] == objet:
                 exec(obj[0].effet)
                 if obj[1] == 1:
-                    self.invent = [i for i in self.invent if i != obj]
+                    self.inventaire = [i for i in self.inventaire if i != obj]
                 else:
                     obj[1] -= 1
 
@@ -85,10 +92,10 @@ class Perso(Combattant):
             self.vie = self.vie_totale
 
     def soigne_EN(self, nombre):
-        """Soigne la vie du personnage
+        """Soigne l'énergie du personnage
 
         Args:
-            nombre(int): Quantité de vie à récupérer
+            nombre(int): Quantité d'énergie à récupérer
 
         Author: Hugo
 
