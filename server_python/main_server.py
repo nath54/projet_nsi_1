@@ -101,7 +101,7 @@ class Server:
             client (???): Référence au client ayant envoyé le message
             message (str): Message à envoyer aux autres clients
 
-        Author: ???
+        Author: Nathan
 
         """
         message = json.dumps(message)
@@ -119,7 +119,7 @@ class Server:
             client (???): Référence au client ayant envoyé le message
             message (str): Message à envoyer aux autres clients
 
-        Author: ???
+        Author: Nathan
 
         """
         message = json.dumps(message)
@@ -162,7 +162,14 @@ class Server:
             if message[0] == "{":
                 data = json.loads(message)
                 if data["type"]=="commande":
-                    self.commandes(None,data)
+                    if len(self.clients[client])==0 or self.clients[client][0]==None:
+                        self.send(client,json.dumps({"type":"not connected","value":"Veuillez vous connecter avant de jouer"}))
+                    else:
+                        self.commandes(None,data)
+                elif data["type"]=="inscription":
+                    pass
+                elif data["type"]=="connection":
+                    pass
                 else:
                     #TODO
                     pass
@@ -180,19 +187,18 @@ class Server:
         print("Connexion fermée", client)
         del(self.clients[client])
 
-    def print_and_send(self, perso, message):
+    def print_and_send(self, client, message):
         """Envoie un message sur le client associé à perso
 
         Args:
-            perso(Perso): Personne à qui envoyer le message
+            client(Client): Personne à qui envoyer le message
             message(str): Message destiné au personnage
 
         Author: ???
 
         """
         print(message)
-        # TODO: Faire que cela envoie un message à perso
-        pass
+        self.send(client,message)
 
     # region Commandes
     def commandes(self, perso, data):
