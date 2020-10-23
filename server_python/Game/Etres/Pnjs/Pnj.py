@@ -3,9 +3,9 @@ import os
 import sys
 import json
 # import ../Etre.py
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Etre import Etre
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # triés par leurs id
 data_pnjs = [
@@ -15,7 +15,7 @@ data_pnjs = [
 
 class Pnj(Etre):
     def __init__(self, index):
-        super.__init__(self)
+        Etre.__init__(self)
         self.index = index
         self.dialogue = None
         if self.index > len(data_pnjs)-1:
