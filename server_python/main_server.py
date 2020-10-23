@@ -10,11 +10,10 @@ import json
 import sys
 
 # nos librairies
-import client_db
-import Game.Game
+from client_db import Client_mariadb
+from Game.Game import Game
 from Game.Etres.Perso import Perso
 # endregion
-
 
 # Classe du serveur
 class Server:
@@ -36,6 +35,8 @@ class Server:
         self.max_size = 1024
         self.clients = {}
         self.server = None
+        self.client_db = Client_mariadb()
+        self.game = Game()
         # TODO
         pass
 
@@ -44,10 +45,24 @@ class Server:
 
         Cette fonction permet de lancer le serveur en TCP/IP, acceptant
         jusqu'à 5 connexions simultanées.
+        On va aussi lancer le jeu ici, bdd, Game, ...
 
-        Author: ???
+        Author: Nathan
 
         """
+
+        #lance le jeu
+
+        # teste si c'est la bdd est initialisée, si non, on l'initialise
+        if self.client_db.test_first_time():
+            print("premier lancement")
+            self.client_db.init_database()
+
+        #faudra aussi lancer les différents éléments du jeu
+        #on lance le jeu ici
+        self.game.start()
+
+        #lance le serveur socket
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind((self.host, self.port))
         self.server.listen(5)

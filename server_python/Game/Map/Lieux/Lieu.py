@@ -71,16 +71,16 @@ class Lieu:
         txt_lieux = ""
 
         if len(self.objets) >= 1:
-            txt_objets = ("\n" + random.choice(p_objs) + " :\n    -"
+            txt_objets = ("\n" + random.choice(p_objs) + " :\n    -"+
                           '\n\t- '.join([objet.nom for objet in self.objets]))
         if len(self.pnjs) >= 1:
-            txt_pnjs = ("\n" + random.choice(p_pnjs) + " :\n    -"
+            txt_pnjs = ("\n" + random.choice(p_pnjs) + " :\n    -"+
                         '\n\t- '.join([pnj.nom for pnj in self.pnjs]))
         if len(self.ennemis) >= 1:
-            txt_ennemis = ("\n" + random.choice(p_ennemis) + " :\n    -"
+            txt_ennemis = ("\n" + random.choice(p_ennemis) + " :\n    -"+
                            '\n\t- '.join([enn.nom for enn in self.ennemis]))
         if len(self.persos) >= 1:
-            txt_persos = ("\n" + random.choice(p_persos) + " :\n    -"
+            txt_persos = ("\n" + random.choice(p_persos) + " :\n    -"+
                           '\n\t- '.join([perso.nom for perso in self.persos]))
         if len(self.lieux_accessibles) >= 1:
             txt_lieux = ("\n" + random.choice(p_lieux)+" :\n    -" +

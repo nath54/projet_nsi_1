@@ -9,7 +9,7 @@ from Etre import Etre
 
 # triés par leurs id
 data_pnjs = [
-    "../../../Data/pnjs/paysan_tergaron_vieu1.json"
+    "Data/pnjs/paysan_tergaron_vieu1.json"
 ]
 
 
