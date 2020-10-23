@@ -1,2 +1,3 @@
 /.vscode/*
 *.pyc
+server_python/__pycache__/client_db.cpython-38.pyc
