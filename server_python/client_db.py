@@ -60,21 +60,22 @@ class Client_mariadb:
         Auteur : Nathan
         """
         self.cursor.execute("SHOW TABLES LIKE 'accounts'; ")
-        # on va regarder si l'output contient des elements
+        # On regarde si l'output contient des éléments
         output = [elt for elt in self.cursor]
-        # s'il n'y en a pas, on va dire que c'est la premiere fois que l'on lance le serveur
-        return len(output)==0
+        # S'il n'y en a pas, c'est la premiere fois que l'on lance le serveur
+        return len(output) == 0
 
     def init_database(self):
-        """
-        fonction qui va créer toutes les tables que l'on aura besoin
-        lors du premier lancement du serveur
+        """Permet de créer toutes les tables au premier lancement
 
-        pour l'instant, il n'y a que accounts, mais faudra rajouter les autres
+        TODO: Ajouter les autres autres tables
 
-        Auteur : Nathan
+        Author : Nathan
+
         """
-        self.cursor.execute("CREATE TABLE accounts (id INT PRIMARY KEY AUTO_INCREMENT, pseudo TEXT, email TEXT, password TEXT, perso_id INT);")
+        query = ("CREATE TABLE accounts (id INT PRIMARY KEY AUTO_INCREMENT," +
+                 "pseudo TEXT, email TEXT, password TEXT, perso_id INT);")
+        self.cursor.execute(query)
         self.connection.commit()
 
     def inscription(self, pseudo, email, password):

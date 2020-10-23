@@ -24,15 +24,13 @@ class Game:
 
         """
 
-        self.map_=Map()
+        self.map_ = Map()
 
         # TODO
         pass
 
     def start(self):
-        self.map_.load_from_json( Lieu, Objet, Pnj, Perso, Ennemi)
+        self.map_.load_from_json(Lieu, Objet, Pnj, Perso, Ennemi)
         print("débugage (on vérifie que ca a bien tout créé)")
         print("\nListe des lieux : ")
         print(self.map_.lieux)
-
-    

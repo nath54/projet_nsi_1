@@ -15,7 +15,7 @@ from Game.Game import Game
 from Game.Etres.Perso import Perso
 # endregion
 
-# Classe du serveur
+
 class Server:
     """Classe du serveur du jeu
 
@@ -50,19 +50,16 @@ class Server:
         Author: Nathan
 
         """
-
-        #lance le jeu
-
-        # teste si c'est la bdd est initialisée, si non, on l'initialise
+        # Teste si c'est la bdd est initialisée, si non, on l'initialise
         if self.client_db.test_first_time():
             print("premier lancement")
             self.client_db.init_database()
 
-        #faudra aussi lancer les différents éléments du jeu
-        #on lance le jeu ici
+        # TODO: Faudra aussi lancer les différents éléments du jeu
+        # On lance le jeu ici
         self.game.start()
 
-        #lance le serveur socket
+        # Lance le serveur socket
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind((self.host, self.port))
         self.server.listen(5)
@@ -161,17 +158,20 @@ class Server:
             print(f"{self.clients[client]} : {message}")
             if message[0] == "{":
                 data = json.loads(message)
-                if data["type"]=="commande":
-                    if len(self.clients[client])==0 or self.clients[client][0]==None:
-                        self.send(client,json.dumps({"type":"not connected","value":"Veuillez vous connecter avant de jouer"}))
+                if data["type"] == "commande":
+                    cl = self.clients[client]
+                    if len(cl) == 0 or cl[0] is None:
+                        dict_ = {"type": "not connected",
+                                 "value": "Veuillez vous connecter pour jouer"}
+                        self.send(client, json.dumps(dict_))
                     else:
-                        self.commandes(None,data)
-                elif data["type"]=="inscription":
+                        self.commandes(None, data)
+                elif data["type"] == "inscription":
                     pass
-                elif data["type"]=="connection":
+                elif data["type"] == "connection":
                     pass
                 else:
-                    #TODO
+                    # TODO
                     pass
 
     def on_close(self, client, infos):
@@ -198,7 +198,7 @@ class Server:
 
         """
         print(message)
-        self.send(client,message)
+        self.send(client, message)
 
     # region Commandes
     def commandes(self, perso, data):

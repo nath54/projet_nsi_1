@@ -19,7 +19,7 @@ class Map:
         for fichier in os.listdir(emplacement):
             f = io.open(emplacement+fichier, "r", encoding="utf-8")
             data = json.loads(f.read())
-            self.create_lieu( data, Lieu, Objet, Pnj, Perso, Ennemi)
+            self.create_lieu(data, Lieu, Objet, Pnj, Perso, Ennemi)
             f.close()
 
     def create_lieu(self, datalieu, Lieu, Objet, Pnj, Perso, Ennemi):
@@ -50,5 +50,3 @@ class Map:
             # TODO
             pass
         self.lieux.append(lieu)
-
-

@@ -61,7 +61,7 @@ class Client:
         """
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client.connect((self.host, self.port))
-        _thread.start_new_thread(self.handle ,())
+        _thread.start_new_thread(self.handle, ())
 
     def handle(self):
         """Permet de gérer les messages reçus
@@ -113,14 +113,13 @@ class Client:
         Auteur : ???
         """
         while self.encours:
-            txt=input("")
-            t=txt.split(" ")
-            if len(t)>=1:
-                c=t[0]
-                a=" ".join(t[1:])
-                self.send(json.dumps({"type":"commande","commande":c,"arguments":a}))
-            
-
+            txt = input("")
+            t = txt.split(" ")
+            if len(t) >= 1:
+                c = t[0]
+                a = " ".join(t[1:])
+                dict_ = {"type": "commande", "commande": c, "arguments": a}
+                self.send(json.dumps(dict_))
 
     def main(self):
         """Fonction principale du client
