@@ -1,31 +1,28 @@
-
-
 import random
 
-p_objs=[
+p_objs = [
     "Il y a des objets ici"
 ]
 
-p_pnjs=[
+p_pnjs = [
     "Vous pouvez parler avec",
     "Des pnjs sont dans le coin"
 ]
 
-p_ennemis=[
+p_ennemis = [
     "Des ennemis sont a votre porté",
     "Vous pouvez frapper",
     "Attention, vous pouvez vous faire attaquer par"
 ]
 
-p_persos=[
+p_persos = [
     "D'autres joueurs sont dans la même zone que vous",
     "Vous avez des amis ici"
 ]
 
-p_lieux=[
+p_lieux = [
     "Vous pouvez aller à"
 ]
-
 
 
 class Lieu:
@@ -73,11 +70,23 @@ class Lieu:
         txt_persos = ""
         txt_lieux = ""
 
-        if len(self.objets)>=1: txt_objets = "\n"+random.choice(p_objs)+" :\n    -"+'\n\t- '.join([objet.nom for objet in self.objets])
-        if len(self.pnjs)>=1: txt_pnjs = "\n"+random.choice(p_pnjs)+" :\n    -"+'\n\t- '.join([pnj.nom for pnj in self.pnjs])
-        if len(self.ennemis)>=1: txt_ennemis = "\n"+random.choice(p_ennemis)+" :\n    -"+'\n\t- '.join([ennemi.nom for ennemi in self.ennemis])
-        if len(self.persos)>=1: txt_persos = "\n"+random.choice(p_persos)+" :\n    -"+'\n\t- '.join([perso.nom for perso in self.persos])
-        if len(self.lieux_accessibles)>=1: txt_lieux = "\n"+random.choice(p_lieux)+" :\n    -"+'\n\t- '.join([action+" : "+self.lieux_accessibles[action].nom for action in self.lieu])
+        if len(self.objets) >= 1:
+            txt_objets = ("\n" + random.choice(p_objs) + " :\n    -"
+                          '\n\t- '.join([objet.nom for objet in self.objets]))
+        if len(self.pnjs) >= 1:
+            txt_pnjs = ("\n" + random.choice(p_pnjs) + " :\n    -"
+                        '\n\t- '.join([pnj.nom for pnj in self.pnjs]))
+        if len(self.ennemis) >= 1:
+            txt_ennemis = ("\n" + random.choice(p_ennemis) + " :\n    -"
+                           '\n\t- '.join([enn.nom for enn in self.ennemis]))
+        if len(self.persos) >= 1:
+            txt_persos = ("\n" + random.choice(p_persos) + " :\n    -"
+                          '\n\t- '.join([perso.nom for perso in self.persos]))
+        if len(self.lieux_accessibles) >= 1:
+            txt_lieux = ("\n" + random.choice(p_lieux)+" :\n    -" +
+                         '\n\t- '.join([act + " : " +
+                                        self.lieux_accessibles[act].nom
+                                        for act in self.lieu]))
 
         txt = f"""
 Vous êtes dans {self.nom}
