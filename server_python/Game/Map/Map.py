@@ -9,7 +9,7 @@ class Map:
         self.lieux = []
         pass
 
-    def load_from_json(self):
+    def load_from_json(self, Lieu, Objet, Pnj, Perso, Ennemi):
         """Permet de charger la map depuis un fichier .json
 
         Author: Nathan
@@ -19,7 +19,7 @@ class Map:
         for fichier in os.listdir(emplacement):
             f = io.open(emplacement+fichier, "r", encoding="utf-8")
             data = json.loads(f.read())
-            print(data)
+            self.create_lieu(data, Lieu, Objet, Pnj, Perso, Ennemi)
             f.close()
 
     def create_lieu(self, datalieu, Lieu, Objet, Pnj, Perso, Ennemi):
@@ -38,20 +38,15 @@ class Map:
         if "description" in dk:
             lieu.description = datalieu["description"]
         if "pnjs" in dk:
-            # TODO
-            pass
+            for pid in datalieu["pnjs"]:
+                lieu.pnjs.add(Pnj(pid))
         if "ennemis" in dk:
             # TODO
             pass
         if "objets" in dk:
-            # TODO
-            pass
+            for pid in datalieu["objets"]:
+                lieu.objets.add(Objet(pid))
         if "lieux" in dk:
             # TODO
             pass
         self.lieux.append(lieu)
-
-
-if __name__ == "__main__":
-    mape = Map()
-    mape.load_from_json()

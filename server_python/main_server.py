@@ -10,13 +10,12 @@ import json
 import sys
 
 # nos librairies
-import client_db
-import Game.Game
+from client_db import Client_mariadb
+from Game.Game import Game
 from Game.Etres.Perso import Perso
 # endregion
 
 
-# Classe du serveur
 class Server:
     """Classe du serveur du jeu
 
@@ -36,6 +35,8 @@ class Server:
         self.max_size = 1024
         self.clients = {}
         self.server = None
+        self.client_db = Client_mariadb()
+        self.game = Game()
         # TODO
         pass
 
@@ -44,10 +45,21 @@ class Server:
 
         Cette fonction permet de lancer le serveur en TCP/IP, acceptant
         jusqu'à 5 connexions simultanées.
+        On va aussi lancer le jeu ici, bdd, Game, ...
 
-        Author: ???
+        Author: Nathan
 
         """
+        # Teste si c'est la bdd est initialisée, si non, on l'initialise
+        if self.client_db.test_first_time():
+            print("premier lancement")
+            self.client_db.init_database()
+
+        # TODO: Faudra aussi lancer les différents éléments du jeu
+        # On lance le jeu ici
+        self.game.start()
+
+        # Lance le serveur socket
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind((self.host, self.port))
         self.server.listen(5)
@@ -86,7 +98,7 @@ class Server:
             client (???): Référence au client ayant envoyé le message
             message (str): Message à envoyer aux autres clients
 
-        Author: ???
+        Author: Nathan
 
         """
         message = json.dumps(message)
@@ -104,7 +116,7 @@ class Server:
             client (???): Référence au client ayant envoyé le message
             message (str): Message à envoyer aux autres clients
 
-        Author: ???
+        Author: Nathan
 
         """
         message = json.dumps(message)
@@ -146,7 +158,21 @@ class Server:
             print(f"{self.clients[client]} : {message}")
             if message[0] == "{":
                 data = json.loads(message)
-                self.commandes(data)
+                if data["type"] == "commande":
+                    cl = self.clients[client]
+                    if len(cl) == 0 or cl[0] is None:
+                        dict_ = {"type": "not connected",
+                                 "value": "Veuillez vous connecter pour jouer"}
+                        self.send(client, json.dumps(dict_))
+                    else:
+                        self.commandes(None, data)
+                elif data["type"] == "inscription":
+                    pass
+                elif data["type"] == "connection":
+                    pass
+                else:
+                    # TODO
+                    pass
 
     def on_close(self, client, infos):
         """Réaction si une connexion se ferme
@@ -161,19 +187,18 @@ class Server:
         print("Connexion fermée", client)
         del(self.clients[client])
 
-    def print_and_send(self, perso, message):
+    def print_and_send(self, client, message):
         """Envoie un message sur le client associé à perso
 
         Args:
-            perso(Perso): Personne à qui envoyer le message
+            client(Client): Personne à qui envoyer le message
             message(str): Message destiné au personnage
 
         Author: ???
 
         """
         print(message)
-        # TODO: Faire que cela envoie un message à perso
-        pass
+        self.send(client, message)
 
     # region Commandes
     def commandes(self, perso, data):
@@ -189,7 +214,7 @@ class Server:
 
         """
         data_len = len(data.keys())
-        action = data.get("command", "")
+        action = data["commande"]
 
         if action == "voir":
             print_and_send(perso, perso.lieu)

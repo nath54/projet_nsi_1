@@ -25,11 +25,13 @@ class Client_mariadb:
         Author: ???
 
         """
-        self.user = "user"
-        self.password = "password"
+        # faudra se mettre d'accord sur ca
+        # la c'est juste pour faire des tests
+        self.user = "pyuser"
+        self.password = "pypassword"
         self.host = "localhost"
         self.port = 3307
-        self.database = "database"
+        self.database = "projet_nsi_1"
         try:
             self.connection = mariadb.connect(
                 user=self.user,
@@ -37,6 +39,7 @@ class Client_mariadb:
                 host=self.host,
                 port=self.port,
                 database=self.database)
+            print("connecté a la database")
         except mariadb.Error as e:
             print(f"Error connecting to MariaDB Platform: {e}")
             sys.exit(1)
@@ -48,6 +51,32 @@ class Client_mariadb:
     def close(self):
         """Ferme la connexion"""
         self.connection.close()
+
+    def test_first_time(self):
+        """
+        fonction qui va tester si la table accounts est créée
+        pour savoir si c'est le premier lancement du serveur
+
+        Auteur : Nathan
+        """
+        self.cursor.execute("SHOW TABLES LIKE 'accounts'; ")
+        # On regarde si l'output contient des éléments
+        output = [elt for elt in self.cursor]
+        # S'il n'y en a pas, c'est la premiere fois que l'on lance le serveur
+        return len(output) == 0
+
+    def init_database(self):
+        """Permet de créer toutes les tables au premier lancement
+
+        TODO: Ajouter les autres autres tables
+
+        Author : Nathan
+
+        """
+        query = ("CREATE TABLE accounts (id INT PRIMARY KEY AUTO_INCREMENT," +
+                 "pseudo TEXT, email TEXT, password TEXT, perso_id INT);")
+        self.cursor.execute(query)
+        self.connection.commit()
 
     def inscription(self, pseudo, email, password):
         """Permet de créer un compte
