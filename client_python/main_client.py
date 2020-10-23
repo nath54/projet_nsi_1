@@ -27,6 +27,9 @@ class Client:
         self.port = 9876
         self.max_size = 1024
         self.client = None
+
+        self.encours = True
+
         # TODO
         pass
 
@@ -58,7 +61,7 @@ class Client:
         """
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client.connect((self.host, self.port))
-        _thread.start_new_thread(self.handle, (self.client,))
+        _thread.start_new_thread(self.handle ,())
 
     def handle(self):
         """Permet de gérer les messages reçus
@@ -101,8 +104,23 @@ class Client:
         Author: ???
 
         """
-        # TODO
-        pass
+        print("connection fermée")
+        exit()
+
+    def interface(self):
+        """fonction où l'utilisateur peut écrire et envoyer des messages
+
+        Auteur : ???
+        """
+        while self.encours:
+            txt=input("")
+            t=txt.split(" ")
+            if len(t)>=1:
+                c=t[0]
+                a=" ".join(t[1:])
+                self.send(json.dumps({"type":"commande","commande":c,"arguments":a}))
+            
+
 
     def main(self):
         """Fonction principale du client
@@ -111,6 +129,8 @@ class Client:
 
         """
         self.start()
+
+        self.interface()
         # TODO
         pass
 

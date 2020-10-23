@@ -161,7 +161,11 @@ class Server:
             print(f"{self.clients[client]} : {message}")
             if message[0] == "{":
                 data = json.loads(message)
-                self.commandes(data)
+                if data["type"]=="commande":
+                    self.commandes(None,data)
+                else:
+                    #TODO
+                    pass
 
     def on_close(self, client, infos):
         """Réaction si une connexion se ferme
@@ -204,7 +208,7 @@ class Server:
 
         """
         data_len = len(data.keys())
-        action = data.get("command", "")
+        action = data["commande"]
 
         if action == "voir":
             print_and_send(perso, perso.lieu)
