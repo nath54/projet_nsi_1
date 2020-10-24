@@ -1,10 +1,11 @@
 {
     "id":0,
+    "appelations":["place","fontaine","place de Tergaron","place Tergaron","place de la ville Tergaron","Tergaron place","fontaine Tergaron"],
     "nom":"la place de la ville Tergaron",
     "region":"Larion",
     "description":"Une jolie petite place, avec une petite fontaine au milieu.",
     "pnjs":[0],
     "objets":[0],
     "ennemis":[],
-    "lieux":[]
+    "lieux":[ [1, null] ]
 }

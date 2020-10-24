@@ -1,0 +1,11 @@
+{
+    "id":1,
+    "appellations":["maison abandonnée","vieille maison","vieille maison abandonnée"],
+    "nom":"une vieille maison abandonnée",
+    "region":"Larion",
+    "description":"Cette maison à l'air abandonnée, ça peut être dangereux",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[0],
+    "lieux":[ [0,null] ]
+}

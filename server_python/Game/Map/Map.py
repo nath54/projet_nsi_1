@@ -6,7 +6,7 @@ import os
 class Map:
     """Classe qui gérera la map du jeu"""
     def __init__(self):
-        self.lieux = []
+        self.lieux = {}
         pass
 
     def load_from_json(self, Lieu, Objet, Pnj, Perso, Ennemi):
@@ -32,7 +32,12 @@ class Map:
 
         """
         lieu = Lieu()
+        lieu.map_ = self
         dk = datalieu.keys()
+        if not "id" in dk:
+            #on pourrait aussi renvoyer un raise indexError, mais c'est un peu violent quand même
+            return
+        idl=datalieu["id"]
         if "nom" in dk:
             lieu.nom = datalieu["nom"]
         if "description" in dk:
@@ -41,12 +46,25 @@ class Map:
             for pid in datalieu["pnjs"]:
                 lieu.pnjs.add(Pnj(pid))
         if "ennemis" in dk:
-            # TODO
-            pass
+            for pid in datalieu["ennemis"]:
+                if type(pid)==int:
+                    lieu.ennemis.add(Ennemi(pid))
+                #TODO : trouver un systeme où il pourrait y avoir plusieurs fois le même objet, je pensais à un attribut nombre moi
+                """
+                elif type(pid)==list:
+                    for _ in range(pid[1]):
+                        lieu.ennemis.add(Ennemi(pid[0]))
+                """
         if "objets" in dk:
             for pid in datalieu["objets"]:
-                lieu.objets.add(Objet(pid))
+                if type(pid)==int:
+                    lieu.objets.add(Objet(pid))
+                #TODO : trouver un systeme où il pourrait y avoir plusieurs fois le même objet, je pensais à un attribut nombre moi
+                """
+                elif type(pid)==list:
+                    for _ in range(pid[1]):
+                        lieu.objets.add(Objet(pid[0]))
+                """
         if "lieux" in dk:
-            # TODO
-            pass
+            lieu.lieux_accessibles = datalieu["lieux"]
         self.lieux.append(lieu)

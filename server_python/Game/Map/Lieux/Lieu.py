@@ -35,9 +35,8 @@ class Lieu:
         pnjs(set) : Liste des pnjs qui sont sur le lieu
         persos(set) : Liste des persos qui sont sur le lieu
         objets(set) : Liste des objets qui sont sur le lieu
-        lieux_accessibles(set) : Dictionnaire sous la forme {action : lieu} des
-                                 lieux qui sont accessibles depuis ce lieu avec
-                                 l'action à faire pour pouvoir y accéder
+        lieux_accessibles(liste) : liste de liste [id lieu, action] des lieux accessibles
+        map_ (Map) : l'instance de la map pour y acceder plus facilement
 
     """
     def __init__(self):
@@ -47,7 +46,8 @@ class Lieu:
         self.pnjs = set()
         self.persos = set()
         self.objets = set()
-        self.lieux_accessibles = dict()
+        self.lieux_accessibles = list()
+        self.map_ = None
 
         pass
         # TODO
@@ -84,9 +84,7 @@ class Lieu:
                           '\n\t- '.join([perso.nom for perso in self.persos]))
         if len(self.lieux_accessibles) >= 1:
             txt_lieux = ("\n" + random.choice(p_lieux)+" :\n    -" +
-                         '\n\t- '.join([act + " : " +
-                                        self.lieux_accessibles[act].nom
-                                        for act in self.lieu]))
+                         '\n\t- '.join([Map.lieux[l[0]].nom for l in self.lieux_accessibles]))
 
         txt = f"""
 Vous êtes dans {self.nom}
