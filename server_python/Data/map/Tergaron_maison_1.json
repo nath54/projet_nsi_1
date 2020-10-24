@@ -7,5 +7,5 @@
     "pnjs":[],
     "objets":[],
     "ennemis":[0],
-    "lieux":[ [0,null] ]
+    "lieux":[ [0,"sortir"] ]
 }

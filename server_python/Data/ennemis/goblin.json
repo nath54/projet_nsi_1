@@ -1,0 +1,10 @@
+{
+    "id":1,
+    "type":"ennemi",
+    "nom":"goblin",
+    "race":"goblin",
+    "description":"Les goblins aiment trainer dans les forêts, ils ne sont pas très forts individuellement, mais en meutes, ils peuvent être très dangereux !",
+    "vie":[10,15],
+    "attaque":[2,4],
+    "attaque_effets":{}
+}

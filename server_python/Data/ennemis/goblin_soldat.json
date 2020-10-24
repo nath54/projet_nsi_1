@@ -1,0 +1,10 @@
+{
+    "id":2,
+    "type":"ennemi",
+    "nom":"goblin soldat",
+    "race":"goblin",
+    "description":"Les goblins soldats sont des goblins entrainés pour combattre, ils sont plus forts que les goblins normaux.",
+    "vie":[20,25],
+    "attaque":[5,8],
+    "attaque_effets":{"critique":20}
+}
