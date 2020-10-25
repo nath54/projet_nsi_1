@@ -43,7 +43,7 @@ Le projet est structuré en plusieurs parties, on a :
 
 ## Instructions d'utilisation
 
-*Coming Soon...*
+Vous pouvez voir les instructions [ici](instructions.md)
 
 (Arriveront quand le projet sera quasiment terminé)
 
