@@ -1,9 +1,19 @@
 # CECI EST LE CLIENT QUI SE CONNECTE A MARIADB
 
 # Imports :
-import mariadb
-import sys
 
+#methode 1 : mariadb
+try:
+    import mariadb
+except:
+    #methode 2 : mysql
+    try:
+        import mysql.connector as mariadb
+    except:
+        #rien n'est installé
+        print("Il faut que vous installiez la librairie mariadb ou la librairie mysql pour python !")
+
+import sys
 
 class Client_mariadb:
     """Classe du client MariaDB
