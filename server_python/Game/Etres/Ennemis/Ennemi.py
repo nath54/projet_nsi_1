@@ -1,24 +1,25 @@
-
 import os
 import json
 import random
 from Game.Etres.Etre import Etre
 
-data_ens=[
+data_ens = [
     "Data/ennemis/rat.json"
 ]
+
 
 class Ennemi(Etre):
     """Classe de base de l'Ennemi
 
     Attributes:
+        index(int): ???
 
     """
-    def __init__(self,index):
+    def __init__(self, index):
         Etre.__init__(self)
-        self.index=index
-        if self.index > len(data_ens)-1:
-            raise IndexError("Problème avec pnj, mauvais index :", self.index)
+        self.index = index
+        if self.index > len(data_ens) - 1:
+            raise IndexError("Problème avec PNJ, mauvais index :", self.index)
         self.load()
 
     def __str__(self):
@@ -50,9 +51,11 @@ Pnj :
             if "race" in dk:
                 self.race = data["race"]
             if "vie" in dk:
-                self.vie_totale = random.randint(data["vie"][0],data["vie"][1])
+                self.vie_totale = random.randint(data["vie"][0],
+                                                 data["vie"][1])
                 self.vie = self.vie_totale
             if "attaque" in dk:
-                self.attaque = random.randint(data["attaque"][0],data["attaque"][1])
+                self.attaque = random.randint(data["attaque"][0],
+                                              data["attaque"][1])
             if "attaque_effets" in dk:
                 self.attaque_effets = data["attaque_effets"]

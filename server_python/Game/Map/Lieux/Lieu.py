@@ -29,13 +29,13 @@ class Lieu:
     """Classe d'un Lieu
 
     Attributes:
-        nom(string) : Le nom du lieu
-        description(string) : La description du lieu
+        nom(str) : Le nom du lieu
+        description(str) : La description du lieu
         ennemis(set) : Liste des Ennemis qui sont sur le lieu
         pnjs(set) : Liste des pnjs qui sont sur le lieu
         persos(set) : Liste des persos qui sont sur le lieu
         objets(set) : Liste des objets qui sont sur le lieu
-        lieux_accessibles(liste) : liste de liste [id lieu, action] des lieux accessibles
+        lieux_accessibles(list<int, str>) : Liste des lieux accessibles
         map_ (Map) : l'instance de la map pour y acceder plus facilement
 
     """
@@ -84,7 +84,8 @@ class Lieu:
                           '\n\t- '.join([perso.nom for perso in self.persos]))
         if len(self.lieux_accessibles) >= 1:
             txt_lieux = ("\n" + random.choice(p_lieux)+" :\n    -" +
-                         '\n\t- '.join([Map.lieux[l[0]].nom for l in self.lieux_accessibles]))
+                         '\n\t- '.join([Map.lieux[lieu[0]].nom
+                                        for lieu in self.lieux_accessibles]))
 
         txt = f"""
 Vous êtes dans {self.nom}

@@ -34,10 +34,10 @@ class Map:
         lieu = Lieu()
         lieu.map_ = self
         dk = datalieu.keys()
-        if not "id" in dk:
-            #on pourrait aussi renvoyer un raise indexError, mais c'est un peu violent quand même
+        if "id" not in dk:
+            # On pourrait aussi renvoyer une indexError
             return
-        idl=datalieu["id"]
+        idl = datalieu["id"]
         if "nom" in dk:
             lieu.nom = datalieu["nom"]
         if "description" in dk:
@@ -47,9 +47,10 @@ class Map:
                 lieu.pnjs.add(Pnj(pid))
         if "ennemis" in dk:
             for pid in datalieu["ennemis"]:
-                if type(pid)==int:
+                if type(pid) == int:
                     lieu.ennemis.add(Ennemi(pid))
-                #TODO : trouver un systeme où il pourrait y avoir plusieurs fois le même objet, je pensais à un attribut nombre moi
+                # TODO : Trouver un système où il pourrait y avoir plusieurs
+                #        fois le même objet, je pensais à un attribut nombre
                 """
                 elif type(pid)==list:
                     for _ in range(pid[1]):
@@ -57,9 +58,10 @@ class Map:
                 """
         if "objets" in dk:
             for pid in datalieu["objets"]:
-                if type(pid)==int:
+                if type(pid) == int:
                     lieu.objets.add(Objet(pid))
-                #TODO : trouver un systeme où il pourrait y avoir plusieurs fois le même objet, je pensais à un attribut nombre moi
+                # TODO : Trouver un système où il pourrait y avoir plusieurs
+                #        fois le même objet, je pensais à un attribut nombre
                 """
                 elif type(pid)==list:
                     for _ in range(pid[1]):
