@@ -17,7 +17,7 @@ import sys
 
 
 class Client_mariadb:
-    """Classe du client MariaDB
+    """Classe du client MariaDB.
 
     Attributes:
         user(str): Utilisateur de la base
@@ -30,8 +30,9 @@ class Client_mariadb:
         cursor(cursor): Curseur de la base de donnée `database`
 
     """
+
     def __init__(self):
-        """Initialise les caractéristiques de la base de données
+        """Initialise les caractéristiques de la base de données.
 
         Author: ???
 
@@ -60,15 +61,18 @@ class Client_mariadb:
         pass
 
     def close(self):
-        """Ferme la connexion"""
+        """Ferme la connexion."""
         self.connection.close()
 
     def test_first_time(self):
-        """
-        fonction qui va tester si la table accounts est créée
-        pour savoir si c'est le premier lancement du serveur
+        """Teste si la table accounts existe.
 
-        Auteur : Nathan
+        Returns:
+            bool: False = Ce n'est pas le premier lancement du serveur
+                  True = C'est la première fois qu'on lance le serveur
+
+        Author: Nathan
+
         """
         self.cursor.execute("SHOW TABLES LIKE 'accounts';")
         # On regarde si l'output contient des éléments
@@ -77,9 +81,9 @@ class Client_mariadb:
         return len(output) == 0
 
     def init_database(self):
-        """Permet de créer toutes les tables au premier lancement
+        """Permet de créer toutes les tables au premier lancement.
 
-        TODO: Ajouter les autres autres tables
+        TODO: Ajouter les autres tables
 
         Author : Nathan
 
@@ -90,14 +94,27 @@ class Client_mariadb:
         self.connection.commit()
 
     def inscription(self, pseudo, email, password):
-        """Permet de créer un compte
+        """Permet de créer un compte.
 
         Args:
             pseudo(str): Pseudo du compte à créer TODO: Pas de double
             email(str): E-mail associé au nouveau compte TODO: Pas de double
             password(str): Mot de passe du compte
 
-        Author: ???
+        Returns:
+            bool: False = L'inscription n'a pas pu être complétée
+                  True = Inscription réussie
+
+        Author: Hugo
 
         """
-        pass
+        c = self.cursor.execute("SELECT pseudo, email, password FROM accounts")
+        for pseudo_, email_, _ in c:
+            if pseudo == pseudo_ or email == email_:
+                # TODO: Faire que l'inscription gère le return False
+                return False
+        query = ("INSERT INTO accounts (pseudo, email, password) VALUES " +
+                 "(%s,%s,%s)", pseudo, email, password)
+        self.cursor.execute(query)
+        self.connection.commit()
+        return True

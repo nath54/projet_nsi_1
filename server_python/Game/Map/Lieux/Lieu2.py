@@ -2,7 +2,7 @@ import Personnages.Etre as etre
 
 
 class Lieu:
-    """Classe de lieu
+    """Classe de lieu.
 
     Attributes:
         nom_lieu(str): Le nom du lieu
@@ -13,9 +13,10 @@ class Lieu:
         joueurs(list<Perso>): Liste des persos présents
 
     """
+
     def __init__(self, nom_lieu, lieux=[], objets=[], ennemis=[], pnj=[],
                  joueurs=[]):
-        """Permet de créer un nouveau lieu
+        """Permet de créer un nouveau lieu.
 
         Attributes:
             nom_lieu(str): Le nom du lieu
@@ -34,7 +35,7 @@ class Lieu:
         self.joueurs = joueurs
 
     def __repr__(self):
-        """Permet de dresser une description du lieu où l'on se trouve
+        """Permet de dresser une description du lieu où l'on se trouve.
 
         Pourra être utile quand un joueur utilisera la commande "voir"
 

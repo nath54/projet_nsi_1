@@ -1,5 +1,5 @@
 class Etre:
-    """Classe abstraite qui servira de base pour tous les personnages
+    """Classe abstraite qui servira de base pour tous les personnages.
 
     Attributes:
         nom(str): Nom de l'instance
@@ -8,12 +8,14 @@ class Etre:
         race(str): Race de l'instance de l'Etre
 
     """
+
     def __init__(self,
                  nom="Quelqu'un",
                  lieu=None,
                  description="Quelqu'un de tout a fait normal,"
                              "comme on en trouve partout",
                  race="humain"):
+        """Instancie un Être."""
         self.nom = nom
         self.lieu = lieu
         self.description = description

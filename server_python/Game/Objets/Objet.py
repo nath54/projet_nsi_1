@@ -7,7 +7,7 @@ data_objs = [
 
 
 class Objet:
-    """Classe définissant les objets
+    """Classe définissant les objets.
 
     Attributes:
         nom(str): Le nom de l'objet
@@ -20,8 +20,9 @@ class Objet:
         Si un effet_utilise est None, on ne peut pas utiliser l'objet
 
     """
+
     def __init__(self, index):
-        """Créer un objet
+        """Créer un objet.
 
         Args:
             index(int): Index de l'objet à utiliser
@@ -41,7 +42,7 @@ class Objet:
         self.load()
 
     def load(self):
-        """Charge l'objet
+        """Charge l'objet.
 
         Author: Nathan
 
@@ -64,7 +65,7 @@ class Objet:
             # Il faudra sans doute rajouter d'autres effets dans le futur
 
     def __repr__(self):
-        """Permet d'afficher une description de l'objet
+        """Permet d'afficher une description de l'objet.
 
         Author: Hugo
 

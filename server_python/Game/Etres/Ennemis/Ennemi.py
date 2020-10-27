@@ -9,27 +9,37 @@ data_ens = [
 
 
 class Ennemi(Etre):
-    """Classe de base de l'Ennemi
+    """Classe de base de l'Ennemi.
 
     Attributes:
-        index(int): ???
+        index(int): Identifiant unique de l'ennemi
 
     """
+
     def __init__(self, index):
+        """Instancie l'ennemi.
+
+        Args:
+            index(int): Identifiant unique de l'ennemi
+
+        Author: Nathan
+
+        """
         Etre.__init__(self)
         self.index = index
         if self.index > len(data_ens) - 1:
-            raise IndexError("Problème avec PNJ, mauvais index :", self.index)
+            raise IndexError("Mauvais index d'ennemi :", self.index)
         self.load()
 
     def __str__(self):
+        """Renvoie une description de l'ennemi."""
         return f"""
-Pnj :
+Ennemi :
   - nom : {self.nom}
   - description : {self.description}"""
 
     def load(self):
-        """Crée un Ennemi à partir de son ID
+        """Crée un Ennemi à partir de son ID.
 
         Les infos du Ennemi sont récupérées à partir d'un fichier .json
 

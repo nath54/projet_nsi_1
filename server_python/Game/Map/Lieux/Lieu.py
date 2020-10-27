@@ -26,7 +26,7 @@ p_lieux = [
 
 
 class Lieu:
-    """Classe d'un Lieu
+    """Classe d'un Lieu.
 
     Attributes:
         nom(str) : Le nom du lieu
@@ -39,7 +39,9 @@ class Lieu:
         map_ (Map) : l'instance de la map pour y acceder plus facilement
 
     """
+
     def __init__(self):
+        """Permet d'initialiser les caractéristiques d'un lieu."""
         self.nom = "Lieu"
         self.description = "Un lieu"
         self.ennemis = set()
@@ -53,7 +55,7 @@ class Lieu:
         # TODO
 
     def __repr__(self):
-        """Permet d'afficher
+        """Permet d'afficher la description d'un lieu.
 
         Fonction appelée par le serveur qui affiche le lieu lors de l'arrivée
         dans celui-ci lors d'un evenement important, ou à la demande du joueur.
@@ -63,7 +65,6 @@ class Lieu:
         TODO: À améliorer/revoir
 
         """
-
         txt_objets = ""
         txt_pnjs = ""
         txt_ennemis = ""

@@ -1,5 +1,5 @@
 class Quete:
-    """Classe d'une quête
+    """Classe d'une quête.
 
     Cet objet est créé lorsqu'un joueur accepte une quête
     (ou est forcé d'en faire une)
@@ -21,8 +21,9 @@ class Quete:
     vérifie s'il n'y a pas eu de changements dans les quêtes
 
     """
+
     def __init__(self):
-        """Initialise la quête"""
+        """Initialise la quête."""
         self.id = 0
         self.nom = "Nom"
         self.description = "Description"
@@ -35,6 +36,12 @@ class Quete:
         pass
 
     def finir(self):
+        """Permet de mettre fin à une quête.
+
+        Doit donner les récompenses au joueur et l'enlever de son journal de
+        quête.
+
+        """
         # TODO
         pass
 

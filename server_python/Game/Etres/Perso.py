@@ -3,7 +3,7 @@ from Game.Objets.Objet import Objet
 
 
 class Perso(Combattant):
-    """Classe de base pour les personnages
+    """Classe de base pour les personnages.
 
     Attributes:
         classe(??? Enum/Constante/str): Classe du personnage
@@ -21,10 +21,11 @@ class Perso(Combattant):
                                     `int` est la quantité d'`Objet détenue`
 
     """
-    def __init__(self, nom="", lieu=None):
-        """???
 
-        Author: ???
+    def __init__(self, nom="", lieu=None):
+        """Instancie le personnage.
+
+        Author: Hugo
 
         TODO: Changer stats de base ?
 
@@ -42,7 +43,7 @@ class Perso(Combattant):
 
     # region Format
     def format_invent(self):
-        """Renvoie le contenu de l'inventaire
+        """Renvoie le contenu de l'inventaire.
 
         Returns:
             str: Contenu de l'inventaire (présentable)
@@ -56,7 +57,7 @@ class Perso(Combattant):
         return res
 
     def format_equip(self):
-        """Formate l'équipement du personnage
+        """Formate l'équipement du personnage.
 
         Returns:
             str: Équipement du personnage (présentable)
@@ -71,7 +72,7 @@ class Perso(Combattant):
         return res
 
     def format_stats(self):
-        """Formate les stats du personnage
+        """Formate les stats du personnage.
 
         Returns:
             str: Stats du personnage (présentable)
@@ -91,7 +92,7 @@ class Perso(Combattant):
     # endregion
 
     def search_invent(self, nom_obj, id_obj=None):
-        """Renvoie l'objet s'il est dans l'inventaire, sinon ne renvoie rien
+        """Renvoie l'objet s'il est dans l'inventaire, sinon ne renvoie rien.
 
         Args:
             nom_obj(str): Nom de l'objet à trouver
@@ -109,7 +110,7 @@ class Perso(Combattant):
                     return objet
 
     def consomme_item(self, objet):
-        """Utilise un objet
+        """Utilise un objet.
 
         Supprime un exemplaire d'un objet de l'inventaire et applique son effet
 
@@ -128,7 +129,7 @@ class Perso(Combattant):
                     obj[1] -= 1
 
     def soigne_PV(self, nombre):
-        """Soigne la vie du personnage
+        """Soigne la vie du personnage.
 
         Args:
             nombre(int): Quantité de vie à récupérer
@@ -141,7 +142,7 @@ class Perso(Combattant):
             self.vie = self.vie_totale
 
     def soigne_EN(self, nombre):
-        """Soigne l'énergie du personnage
+        """Soigne l'énergie du personnage.
 
         Args:
             nombre(int): Quantité d'énergie à récupérer
