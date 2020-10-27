@@ -14,15 +14,32 @@ data_pnjs = [
 
 
 class Pnj(Etre):
+    """Classe des PNJ.
+    
+    Attributes:
+        index(int): Identifiant unique du PNJ
+        dialogue(str ???): Dialogue tenu par le PNJ quand on l'interpelle.
+
+    """
+
     def __init__(self, index):
+        """Instancie le PNJ.
+        
+        Args:
+            index(int): Identiant unique du PNJ
+
+        Author: Nathan
+
+        """
         Etre.__init__(self)
         self.index = index
         self.dialogue = None
-        if self.index > len(data_pnjs)-1:
+        if self.index > len(data_pnjs) - 1:
             raise IndexError("Problème avec pnj, mauvais index :", self.index)
         self.load()
 
     def __str__(self):
+        """Renvoie une description du PNJ."""
         return f"""
 Pnj :
   - nom : {self.nom}
@@ -30,7 +47,7 @@ Pnj :
   - race : {self.race}"""
 
     def load(self):
-        """Crée un PNJ à partir de son ID
+        """Crée un PNJ à partir de son ID.
 
         Les infos du PNJ sont récupérées à partir d'un fichier .json
 

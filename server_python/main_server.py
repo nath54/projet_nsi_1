@@ -18,7 +18,7 @@ from webserver import WebServer
 
 
 class Server:
-    """Classe du serveur du jeu
+    """Classe du serveur du jeu.
 
     Attributes:
         host (str): Si vide, écoute toutes les cartes réseaux
@@ -30,7 +30,9 @@ class Server:
         server (socket): ???
 
     """
+
     def __init__(self):
+        """Initie le serveur de jeu."""
         self.host = ""
         self.port = 9876
         self.max_size = 1024
@@ -38,15 +40,16 @@ class Server:
         self.server = None
         self.client_db = Client_mariadb()
         self.game = Game()
-        self.webserver=None
-        #
-        if(input("Voulez vous activez les websockets pour autoriser les clients web ?\n : ").lower() in ["yes","y","o","oui"]):
-            self.webserver=WebServer(self.port)
+        self.webserver = None
+        rep = input("Voulez vous activez les websockets pour autoriser " +
+                    " les clients web ? : ")
+        if(rep.lower() in ["yes", "y", "o", "oui"]):
+            self.webserver = WebServer(self.port)
         # TODO
         pass
 
     def start(self):
-        """Lance le serveur
+        """Lance le serveur.
 
         Cette fonction permet de lancer le serveur en TCP/IP, acceptant
         jusqu'à 5 connexions simultanées.
@@ -65,7 +68,7 @@ class Server:
         self.game.start()
 
         # On lance le server websocket
-        if self.webserver!=None:
+        if self.webserver is not None:
             self.webserver.main()
 
         # Lance le serveur socket
@@ -79,7 +82,7 @@ class Server:
             _thread.start_new_thread(self.handle, (client, info))
 
     def handle(self, client, infos):
-        """Gère l'interaction serveur-client
+        """Gère l'interaction serveur-client.
 
         Args:
             client (???): Référence au client avec qui gérer l'interaction
@@ -101,7 +104,7 @@ class Server:
                 return
 
     def send_all_except_c(self, client, message):
-        """Fonction qui envoie un message a tous les autres clients
+        """Fonction qui envoie un message a tous les autres clients.
 
         Args:
             client (???): Référence au client ayant envoyé le message
@@ -119,7 +122,7 @@ class Server:
                 autre_client.send(message)
 
     def send(self, client, message):
-        """Envoie un message a un client précis
+        """Envoie un message a un client précis.
 
         Args:
             client (???): Référence au client ayant envoyé le message
@@ -139,7 +142,7 @@ class Server:
             client.send(message)
 
     def on_accept(self, client, i):
-        """Réaction si une connexion entrante est acceptée
+        """Réaction si une connexion entrante est acceptée.
 
         Args:
             client (???): Référence au client qui s'est connecté
@@ -152,7 +155,7 @@ class Server:
         print("Connexion acceptée", client)
 
     def on_message(self, client, infos, message):
-        """Réaction si un message est reçu
+        """Réaction si un message est reçu.
 
         Args:
             client (???): Référence au client ayant envoyé le message
@@ -184,7 +187,7 @@ class Server:
                     pass
 
     def on_close(self, client, infos):
-        """Réaction si une connexion se ferme
+        """Réaction si une connexion se ferme.
 
         Args:
             client (???): Référence au client ayant fermé son application
@@ -197,7 +200,7 @@ class Server:
         del(self.clients[client])
 
     def print_and_send(self, client, message):
-        """Envoie un message sur le client associé à perso
+        """Envoie un message sur le client associé à perso.
 
         Args:
             client(Client): Personne à qui envoyer le message
@@ -286,7 +289,7 @@ class Server:
         pass
 
     def invent_multi_args(self, perso, data):
-        """Si la commande entrée est 'inventaire ...'
+        """Si la commande entrée est 'inventaire ...'.
 
         Gère le cas où la commande entrée est 'inventaire voir ...' ou
         'inventaire utiliser ...'
@@ -320,7 +323,7 @@ class Server:
     # endregion
 
     def main(self):
-        """Met en route le serveur
+        """Met en route le serveur.
 
         Author: ???
 

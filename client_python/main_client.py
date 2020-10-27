@@ -8,7 +8,7 @@ import sys
 
 
 class Client:
-    """Classe principale du client
+    """Classe principale du client.
 
     Attributes:
         host(str): IP de la machine à laquelle se connecter.
@@ -17,8 +17,9 @@ class Client:
         client(socket): ???
 
     """
+
     def __init__(self):
-        """Caractéristiques du socket
+        """Caractéristiques du socket.
 
         Author: ???
 
@@ -34,7 +35,7 @@ class Client:
         pass
 
     def send(self, message):
-        """Permet d'envoyer un message
+        """Permet d'envoyer un message.
 
         Args:
             message(str): Le message à envoyer au serveur
@@ -51,7 +52,7 @@ class Client:
             self.client.send(message)
 
     def start(self):
-        """Permet de démarrer la connexion au serveur
+        """Permet de démarrer la connexion au serveur.
 
         Connexion avec le protocole TCP/IP, utilisation d'un thread pour la
         fonction `handle()` afin de ne pas encombrer le thread principal.
@@ -64,7 +65,7 @@ class Client:
         _thread.start_new_thread(self.handle, ())
 
     def handle(self):
-        """Permet de gérer les messages reçus
+        """Permet de gérer les messages reçus.
 
         Author: ???
 
@@ -82,12 +83,12 @@ class Client:
                 return
 
     def on_connect(self):
-        """Réaction si la connexion est acceptée"""
+        """Réaction si la connexion est acceptée."""
         # TODO
         pass
 
     def on_message(self, mess):
-        """Réaction si un message est reçu
+        """Réaction si un message est reçu.
 
         Args:
             mess(str): Le message reçu (encodé en base 'utf-8')
@@ -99,7 +100,7 @@ class Client:
         pass
 
     def on_close(self):
-        """Réaction en cas de fermeture/problème
+        """Réaction en cas de fermeture/problème.
 
         Author: ???
 
@@ -108,9 +109,10 @@ class Client:
         exit()
 
     def interface(self):
-        """fonction où l'utilisateur peut écrire et envoyer des messages
+        """Permet à l'utilisateur d'écrire et d'envoyer des messages.
 
-        Auteur : ???
+        Author: ???
+
         """
         while self.encours:
             txt = input("")
@@ -122,7 +124,7 @@ class Client:
                 self.send(json.dumps(dict_))
 
     def main(self):
-        """Fonction principale du client
+        """Fonction principale du client.
 
         Author: ???
 

@@ -4,13 +4,20 @@ import os
 
 
 class Map:
-    """Classe qui gérera la map du jeu"""
+    """Classe qui gérera la map du jeu.
+    
+    Attributes:
+        lieux(dict<Lieu>): ???
+
+    """
+
     def __init__(self):
+        """Instancie la map du jeu."""
         self.lieux = {}
         pass
 
     def load_from_json(self, Lieu, Objet, Pnj, Perso, Ennemi):
-        """Permet de charger la map depuis un fichier .json
+        """Permet de charger la map depuis un fichier `.json`.
 
         Author: Nathan
 
@@ -23,10 +30,10 @@ class Map:
             f.close()
 
     def create_lieu(self, datalieu, Lieu, Objet, Pnj, Perso, Ennemi):
-        """Instancie un lieu
+        """Instancie un lieu.
 
         Args:
-            datalieu(dict): ???
+            datalieu(dict<???>): ???
 
         Author: Nathan
 
@@ -69,4 +76,4 @@ class Map:
                 """
         if "lieux" in dk:
             lieu.lieux_accessibles = datalieu["lieux"]
-        self.lieux[idl]=lieu
+        self.lieux[idl] = lieu

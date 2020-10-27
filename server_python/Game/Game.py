@@ -10,27 +10,31 @@ from Game.Etres.Pnjs.Pnj import Pnj
 from Game.Etres.Ennemis.Ennemi import Ennemi
 
 
-# Classe de la partie
 class Game:
-    """Classe de la partie
+    """Classe de la partie.
 
     Attributes:
-        ???
+        map_(Map): Référence à la map du jeu
+
     """
+
     def __init__(self):
-        """???
+        """Initie ce qui est essentiel pour le jeu (Map).
 
         Author: ???
 
         """
-
         self.map_ = Map()
-
         # TODO
         pass
 
     def start(self):
+        """???
+
+        Author: Nathan
+
+        """
         self.map_.load_from_json(Lieu, Objet, Pnj, Perso, Ennemi)
-        print("débugage (on vérifie que ca a bien tout créé)")
+        print("Débuggage (on vérifie que ça a bien tout créé)")
         print("\nListe des lieux : ")
         print(self.map_.lieux)
