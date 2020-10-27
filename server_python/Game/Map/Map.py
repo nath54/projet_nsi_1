@@ -69,4 +69,4 @@ class Map:
                 """
         if "lieux" in dk:
             lieu.lieux_accessibles = datalieu["lieux"]
-        self.lieux[idl]=lieu
+        self.lieux[idl] = lieu

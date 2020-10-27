@@ -38,10 +38,11 @@ class Server:
         self.server = None
         self.client_db = Client_mariadb()
         self.game = Game()
-        self.webserver=None
-        #
-        if(input("Voulez vous activez les websockets pour autoriser les clients web ?\n : ").lower() in ["yes","y","o","oui"]):
-            self.webserver=WebServer(self.port)
+        self.webserver = None
+        rep = input("Voulez vous activez les websockets pour autoriser " +
+                    " les clients web ? : ")
+        if(rep.lower() in ["yes", "y", "o", "oui"]):
+            self.webserver = WebServer(self.port)
         # TODO
         pass
 
@@ -65,7 +66,7 @@ class Server:
         self.game.start()
 
         # On lance le server websocket
-        if self.webserver!=None:
+        if self.webserver is not None:
             self.webserver.main()
 
         # Lance le serveur socket

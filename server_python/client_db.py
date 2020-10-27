@@ -1,19 +1,20 @@
-# CECI EST LE CLIENT QUI SE CONNECTE A MARIADB
+# CECI EST LE CLIENT QUI SE CONNECTE À MARIADB
 
 # Imports :
 
-#methode 1 : mariadb
+# Méthode 1 : mariadb
 try:
     import mariadb
 except:
-    #methode 2 : mysql
+    # Méthode 2 : mysql
     try:
         import mysql.connector as mariadb
     except:
-        #rien n'est installé
-        print("Il faut que vous installiez la librairie mariadb ou la librairie mysql pour python !")
+        # Rien n'est installé
+        print("Merci d'installer la librairie mariadb ou mysql pour Python !")
 
 import sys
+
 
 class Client_mariadb:
     """Classe du client MariaDB
@@ -35,8 +36,8 @@ class Client_mariadb:
         Author: ???
 
         """
-        # faudra se mettre d'accord sur ca
-        # la c'est juste pour faire des tests
+        # Faudra se mettre d'accord sur ça
+        # Là c'est juste pour faire des tests
         self.user = "pyuser"
         self.password = "pypassword"
         self.host = "localhost"
@@ -69,7 +70,7 @@ class Client_mariadb:
 
         Auteur : Nathan
         """
-        self.cursor.execute("SHOW TABLES LIKE 'accounts'; ")
+        self.cursor.execute("SHOW TABLES LIKE 'accounts';")
         # On regarde si l'output contient des éléments
         output = [elt for elt in self.cursor]
         # S'il n'y en a pas, c'est la premiere fois que l'on lance le serveur
