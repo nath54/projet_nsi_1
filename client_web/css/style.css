@@ -94,6 +94,17 @@ JUSTE POUR index.html
     border-radius: 5px;
     margin-bottom: 5px;
 }
+
+.good_input{
+    border:1px solid green;
+    text-shadow: green 1px 0 10px;
+}
+
+.false_input{
+    border:1px solid red;
+    text-shadow: red 1px 0 10px;
+}
+
 /*
 
 JUSTE POUR client.html

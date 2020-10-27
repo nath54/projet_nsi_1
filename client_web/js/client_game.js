@@ -1,8 +1,5 @@
-var websocket = new WebSocket("ws://127.0.0.1:9876/");
-websocket.onerror=cantconnect;
-console.log(websocket);
 
-function randchoice(liste){ return liste[parseInt(Math.random()*liste.length)]; }
+websocket=sessionStorage.getItem("websocket");
 
 websocket.onmessage = function (event) {
     data = JSON.parse(event.data);
