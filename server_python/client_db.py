@@ -85,11 +85,48 @@ class Client_mariadb:
 
         TODO: Ajouter les autres tables
 
-        Author : Nathan
+        Author : Nathan, Hugo
 
         """
-        query = ("CREATE TABLE accounts (id INT PRIMARY KEY AUTO_INCREMENT," +
+        query = ("CREATE TABLE IF NOT EXISTS accounts "
+                 "(id INT PRIMARY KEY AUTO_INCREMENT,"
                  "pseudo TEXT, email TEXT, password TEXT, perso_id INT);")
+        self.cursor.execute(query)
+        self.connection.commit()
+
+        query = ("CREATE TABLE IF NOT EXISTS persos "
+                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, classe TEXT,"
+                 "race TEXT, niveau INT, force INT, intelligence INT, "
+                 "charme INT, discretion INT, experience_totale INT, "
+                 "experience INT, vie_totale INT, vie INT, energie_totale INT,"
+                 "energie INT, equipement TEXT, quetes TEXT, lieu INT);")
+        self.cursor.execute(query)
+        self.connection.commit()
+
+        query = ("CREATE TABLE IF NOT EXISTS objets "
+                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "
+                 "description TEXT, type_ TEXT, effet_utilise TEXT);")
+        self.cursor.execute(query)
+        self.connection.commit()
+
+        query = ("CREATE TABLE IF NOT EXISTS pnj "
+                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "
+                 "description TEXT, race TEXT, dialogue TEXT);")
+        self.cursor.execute(query)
+        self.connection.commit()
+
+        query = ("CREATE TABLE IF NOT EXISTS ennemi "
+                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "
+                 "description TEXT, vie_max INT);")
+        self.cursor.execute(query)
+        self.connection.commit()
+
+        query = ("CREATE TABLE IF NOT EXISTS lieux "
+                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "
+                 "description TEXT, ennemis TEXT, pnjs TEXT, objets TEXT, "
+                 "lieux TEXT);")
+        # ennemis, pnjs, objets et lieux contiennent les ID des éléments, avec
+        # "/" comme séparateur entre chaque ID
         self.cursor.execute(query)
         self.connection.commit()
 
@@ -97,8 +134,8 @@ class Client_mariadb:
         """Permet de créer un compte.
 
         Args:
-            pseudo(str): Pseudo du compte à créer TODO: Pas de double
-            email(str): E-mail associé au nouveau compte TODO: Pas de double
+            pseudo(str): Pseudo du compte à créer
+            email(str): E-mail associé au nouveau compte
             password(str): Mot de passe du compte
 
         Returns:

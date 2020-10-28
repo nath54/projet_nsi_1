@@ -28,4 +28,4 @@ Modèle incomplet, à compléter...
 
 ## Commande pour créer la table :
 
-`CREATE TABLE persos (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, classe TEXT, race TEXT, niveau INT, force INT, intelligence INT, charme INT, discression INT, experience_totale INT, experience INT, vie_totale INT, vie INT, energie_totale INT, energie INT, equipement TEXT, quetes TEXT);`
+`CREATE TABLE persos (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, classe TEXT, race TEXT, niveau INT, force INT, intelligence INT, charme INT, discretion INT, experience_totale INT, experience INT, vie_totale INT, vie INT, energie_totale INT, energie INT, equipement TEXT, quetes TEXT);`
