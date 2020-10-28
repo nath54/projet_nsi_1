@@ -7,6 +7,7 @@ class Player:
         perso(Perso): Référence au personnage du compte
 
     """
+
     def __init__(self):
         """Initie le compte du joueur."""
         self.pseudo = ""

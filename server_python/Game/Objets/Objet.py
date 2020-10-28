@@ -12,7 +12,7 @@ class Objet:
     Attributes:
         nom(str): Le nom de l'objet
         description(str): Description de l'objet
-        type_(str): Le type de l'objet
+        type(str): Le type de l'objet
         effet_utilise(list/None): Effet qu'aura l'action d'utiliser l'objet
 
     Note:
