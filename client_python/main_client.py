@@ -6,6 +6,54 @@ import _thread
 import json
 import sys
 
+
+#la liste des characteres autorisés pour les pseudos, les emails, ou bien les mot de passes
+chars=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
+       "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
+       "1","2","3","4","5","6","7","8","9","0",
+       "-","_","@","."]
+
+#fonction qui teste les emails
+def test_email(txt):
+    t=txt.split("@")
+    if len(t)!=2:
+        print("ERREUR /!\\ L'email doit être composé de 2 parties séparées par un @ !")
+        return True
+    if len(t[1].split("."))!=2:
+        print("ERREUR /!\\ La partie de l'email située après @ doit être constituée de deux parties séparées par un point !")
+        return True
+    for c in txt:
+        if not c in chars:
+            print(f"ERREUR /!\\ Charactere non autorisé dans l'email : '{c}' !")
+            return True
+    return False
+
+def test_pseudo(txt):
+    if len(txt)<4:
+        print("ERREUR /!\\ Un pseudo doit avoir au moin 4 characteres !")
+        return True
+    if len(txt)>12:
+        print("ERREUR /!\\ Un pseudo doit avoir au maximum 12 characteres !")
+        return True
+    for c in txt:
+        if not c in chars:
+            print(f"ERREUR /!\\ Charactere non autorisé dans le pseudo : '{c}' !")
+            return True
+    return False
+
+def test_password(txt):
+    if len(txt)<8:
+        print("ERREUR /!\\ Un mot de passe doit avoir au moin 8 characteres !")
+        return True
+    if len(txt)>32:
+        print("ERREUR /!\\ Un mot de passe doit avoir au maximum 32 characteres !")
+        return True
+    for c in txt:
+        if not c in chars:
+            print(f"ERREUR /!\\ Charactere non autorisé dans le mot de passe : '{c}' !")
+            return True
+    return False
+
 class Client:
     """Classe principale du client.
 
@@ -23,16 +71,23 @@ class Client:
         Author: ???
 
         """
-        self.host = "localhost"
+        self.host = input("Host ? (si vide sera localshost)\n : ")
+        if self.host == "":
+            self.host = "localhost"
         self.port = 9876
         self.max_size = 1024
         self.client = None
 
         self.encours = True
 
-        # TODO
-        pass
-    
+        i=input("Voulez vous que ce soit un client websocket ?")
+        if i.lower() in ["o","oui","y","yes"]:
+            self.ws=True
+            from webserver import WebServer
+            self.webserver=WebServer()
+        else:
+            self.ws=False
+
     def debut(self):
         print("Voulez vous : \n  1) Vous inscrire ?\n  2) Vous connecter ?")
         r=input(": ")
@@ -44,10 +99,37 @@ class Client:
             self.connection()
 
     def connection(self):
-        pass
+        #pseudo
+        pseudo=input("pseudo : ")
+        while test_pseudo(pseudo):
+            pseudo=input("pseudo : ")
+        #password
+        password=input("mot de passe : ")
+        while test_password(password):
+            password=input("mot de passe : ")
+        #
+        self.send(json.dumps({"type":"connection","pseudo":pseudo,"password":password}))
 
     def inscription(self):
-        pass
+        #email
+        email=input("email : ")
+        while test_email(email):
+            email=input("email : ")
+        #pseudo
+        pseudo=input("pseudo : ")
+        while test_pseudo(pseudo):
+            pseudo=input("pseudo : ")
+        #password
+        password=input("mot de passe : ")
+        while test_password(password):
+            password=input("mot de passe : ")
+        password_confirm=input("mot de passe (confirmation) : ")
+        if password_confirm!=password:
+            print("ERREUR /!\\ Les mots de passes sont différents !")
+            self.debut()
+        else:
+            #on peut envoyer les infos
+            self.send(json.dumps({"type":"inscription","pseudo":pseudo,"password":password,"email":email}))
 
     def send(self, message):
         """Permet d'envoyer un message.
@@ -55,7 +137,7 @@ class Client:
         Args:
             message(str): Le message à envoyer au serveur
 
-        Author: ???
+        Author: Nathan
 
         """
         message = message.encode(encoding="utf-8")
@@ -72,7 +154,7 @@ class Client:
         Connexion avec le protocole TCP/IP, utilisation d'un thread pour la
         fonction `handle()` afin de ne pas encombrer le thread principal.
 
-        Author: ???
+        Author: Nathan
 
         """
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -82,7 +164,7 @@ class Client:
     def handle(self):
         """Permet de gérer les messages reçus.
 
-        Author: ???
+        Author: Nathan
 
         """
         self.on_connect()
@@ -91,7 +173,10 @@ class Client:
                 msg = self.client.recv(self.max_size)
                 if len(msg) == 0:
                     raise UserWarning("message vide")
-                self.on_message(msg)
+                if not self.ws:
+                    self.on_message(msg)
+                else:
+                    self.webserver.on_message(msg)
             except Exception as e:
                 print(e)
                 self.on_close()
@@ -108,7 +193,7 @@ class Client:
         Args:
             mess(str): Le message reçu (encodé en base 'utf-8')
 
-        Author: ???
+        Author: Nathan
 
         """
         if mess.startswith("{"):
@@ -125,13 +210,11 @@ class Client:
             elif data["type"]=="inscription refusée":
                 print("Inscription refusée\nerreur : "+data["value"])
                 self.debut()
-        # TODO
-        pass
 
     def on_close(self):
         """Réaction en cas de fermeture/problème.
 
-        Author: ???
+        Author: Nathan
 
         """
         print("connection fermée")
@@ -140,7 +223,7 @@ class Client:
     def interface(self):
         """Permet à l'utilisateur d'écrire et d'envoyer des messages.
 
-        Author: ???
+        Author: Nathan
 
         """
         while self.encours:
@@ -155,15 +238,15 @@ class Client:
     def main(self):
         """Fonction principale du client.
 
-        Author: ???
+        Author: Nathan
 
         """
         self.start()
 
-        self.debut()
-        # TODO
-        pass
-
+        if not self.ws:
+            self.debut()
+        else:
+            self.webserver.main()
 
 # Le programme est lancé ici
 if __name__ == "__main__":

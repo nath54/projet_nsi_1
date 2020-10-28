@@ -13,7 +13,6 @@ import sys
 from client_db import Client_mariadb
 from Game.Game import Game
 from Game.Etres.Perso import Perso
-from webserver import WebServer
 # endregion
 
 class Server:
@@ -38,11 +37,6 @@ class Server:
         self.server = None
         self.client_db = Client_mariadb()
         self.game = Game()
-        self.webserver = None
-        rep = input("Voulez vous activez les websockets pour autoriser " +
-                    " les clients web ? : ")
-        if rep.lower() in ["yes", "y", "o", "oui"]:
-            self.webserver = WebServer(self.port)
         # TODO
         pass
 
@@ -64,10 +58,6 @@ class Server:
         # TODO: Faudra aussi lancer les différents éléments du jeu
         # On lance le jeu ici
         self.game.start()
-
-        # On lance le server websocket
-        if self.webserver is not None:
-            self.webserver.main()
 
         # Lance le serveur socket
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
