@@ -6,7 +6,6 @@ import _thread
 import json
 import sys
 
-
 class Client:
     """Classe principale du client.
 
@@ -33,6 +32,8 @@ class Client:
 
         # TODO
         pass
+    
+    def inscription():
 
     def send(self, message):
         """Permet d'envoyer un message.
