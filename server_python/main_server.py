@@ -16,7 +16,6 @@ from Game.Etres.Perso import Perso
 from webserver import WebServer
 # endregion
 
-
 class Server:
     """Classe du serveur du jeu.
 
@@ -28,7 +27,6 @@ class Server:
         clients (dict): Clé -- Clients
                         Val -- `dict` de propriétés relatives au client
         server (socket): ???
-
     """
 
     def __init__(self):
@@ -43,7 +41,7 @@ class Server:
         self.webserver = None
         rep = input("Voulez vous activez les websockets pour autoriser " +
                     " les clients web ? : ")
-        if(rep.lower() in ["yes", "y", "o", "oui"]):
+        if rep.lower() in ["yes", "y", "o", "oui"]:
             self.webserver = WebServer(self.port)
         # TODO
         pass

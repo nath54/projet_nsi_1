@@ -8,7 +8,6 @@ import _thread
 import json
 import sys
 
-
 class Client_socket:
     def __init__(self, parent_websocket, ws, port=9876):
         self.parent_websocket = parent_websocket
@@ -16,9 +15,7 @@ class Client_socket:
         self.host = "localhost"
         self.port = port
         self.max_size = 1024
-        self.client = None
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        print((self.host, self.port))
         self.client.connect((self.host, self.port))
         _thread.start_new_thread(self.handle, ())
 
@@ -42,7 +39,6 @@ class Client_socket:
                 print(e)
                 self.on_close()
                 return
-
 
 class WebServer():
     def __init__(self, port_client_socket=None):
@@ -72,7 +68,7 @@ class WebServer():
             client_sock = Client_socket(self, websocket)
         else:
             client_sock = Client_socket(self, websocket,
-                                        port=self.port_client_socket)
+                                        port = self.port_client_socket)
         try:
             async for message in websocket:
                 Client_socket.send(message)
@@ -86,11 +82,11 @@ class WebServer():
         print("Websocket server starting...")
         self.start_server = websockets.serve(self.main_server, self.IP,
                                              self.PORT)
-
+        
         print("Websocket server started.")
         asyncio.get_event_loop().run_until_complete(self.start_server)
         asyncio.get_event_loop().run_forever()
-
+        
 
 if __name__ == "__main__":
     ws = WebServer()
