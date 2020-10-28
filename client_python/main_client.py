@@ -15,42 +15,43 @@ chars=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","
 
 #fonction qui teste les emails
 def test_email(txt):
-    t=txt.split("@")
-    if len(t)!=2:
+    t = txt.split("@")
+    if len(t) != 2:
         print("ERREUR /!\\ L'email doit être composé de 2 parties séparées par un @ !")
         return True
-    if len(t[1].split("."))!=2:
-        print("ERREUR /!\\ La partie de l'email située après @ doit être constituée de deux parties séparées par un point !")
+    if len(t[1].split(".")) != 2:
+        print("ERREUR /!\\ La partie de l'email située après @ doit être "
+              "constituée de deux parties séparées par un point !")
         return True
     for c in txt:
         if not c in chars:
-            print(f"ERREUR /!\\ Charactere non autorisé dans l'email : '{c}' !")
+            print(f"ERREUR /!\\ Email, Caractère non autorisé : '{c}' !")
             return True
     return False
 
 def test_pseudo(txt):
-    if len(txt)<4:
-        print("ERREUR /!\\ Un pseudo doit avoir au moin 4 characteres !")
+    if len(txt) < 4:
+        print("ERREUR /!\\ Pseudo : Minimum 4 caractères !")
         return True
-    if len(txt)>12:
-        print("ERREUR /!\\ Un pseudo doit avoir au maximum 12 characteres !")
+    if len(txt) > 12:
+        print("ERREUR /!\\ Pseudo : Maximum 12 caractères !")
         return True
     for c in txt:
         if not c in chars:
-            print(f"ERREUR /!\\ Charactere non autorisé dans le pseudo : '{c}' !")
+            print(f"ERREUR /!\\ Pseudo, Caractère non autorisé : '{c}' !")
             return True
     return False
 
 def test_password(txt):
-    if len(txt)<8:
-        print("ERREUR /!\\ Un mot de passe doit avoir au moin 8 characteres !")
+    if len(txt) < 8:
+        print("ERREUR /!\\ Mot de passe : Minimum 8 caractères !")
         return True
-    if len(txt)>32:
-        print("ERREUR /!\\ Un mot de passe doit avoir au maximum 32 characteres !")
+    if len(txt) > 32:
+        print("ERREUR /!\\ Mot de passe : Maximum 32 caractères !")
         return True
     for c in txt:
         if not c in chars:
-            print(f"ERREUR /!\\ Charactere non autorisé dans le mot de passe : '{c}' !")
+            print(f"ERREUR /!\\ Mot de passe, Caractère non autorisé : '{c}'")
             return True
     return False
 
@@ -89,16 +90,16 @@ class Client:
             self.ws=False
 
     def debut(self):
-        print("Voulez vous : \n  1) Vous inscrire ?\n  2) Vous connecter ?")
+        print("Voulez vous :\n  1) Vous inscrire ?\n  2) Vous connecter ?")
         r=input(": ")
         while not r in ["1","2"]:
             r=input(": ")
         if r=="1":
             self.inscription()
         else:
-            self.connection()
+            self.connexion()
 
-    def connection(self):
+    def connexion(self):
         #pseudo
         pseudo=input("pseudo : ")
         while test_pseudo(pseudo):
@@ -107,8 +108,8 @@ class Client:
         password=input("mot de passe : ")
         while test_password(password):
             password=input("mot de passe : ")
-        #
-        self.send(json.dumps({"type":"connection","pseudo":pseudo,"password":password}))
+        self.send(json.dumps({"type": "connection","pseudo": pseudo,
+                              "password": password}))
 
     def inscription(self):
         #email
@@ -129,7 +130,8 @@ class Client:
             self.debut()
         else:
             #on peut envoyer les infos
-            self.send(json.dumps({"type":"inscription","pseudo":pseudo,"password":password,"email":email}))
+            self.send(json.dumps({"type": "inscription", "pseudo": pseudo, 
+                                  "password": password, "email": email}))
 
     def send(self, message):
         """Permet d'envoyer un message.
