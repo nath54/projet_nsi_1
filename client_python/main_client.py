@@ -33,7 +33,21 @@ class Client:
         # TODO
         pass
     
-    def inscription():
+    def debut(self):
+        print("Voulez vous : \n  1) Vous inscrire ?\n  2) Vous connecter ?")
+        r=input(": ")
+        while not r in ["1","2"]:
+            r=input(": ")
+        if r=="1":
+            self.inscription()
+        else:
+            self.connection()
+
+    def connection(self):
+        pass
+
+    def inscription(self):
+        pass
 
     def send(self, message):
         """Permet d'envoyer un message.
@@ -97,6 +111,20 @@ class Client:
         Author: ???
 
         """
+        if mess.startswith("{"):
+            data=json.loads(mess)
+            if data["type"]=="connection acceptée":
+                print("Connection acceptée")
+                self.interface()
+            elif data["type"]=="inscription acceptée":
+                print("Inscription acceptée")
+                self.interface()
+            elif data["type"]=="connection refusée":
+                print("Connection refusée\nerreur : "+data["value"])
+                self.debut()
+            elif data["type"]=="inscription refusée":
+                print("Inscription refusée\nerreur : "+data["value"])
+                self.debut()
         # TODO
         pass
 
@@ -132,7 +160,7 @@ class Client:
         """
         self.start()
 
-        self.interface()
+        self.debut()
         # TODO
         pass
 
