@@ -1,0 +1,9 @@
+{
+    "id":0,
+    "name":"poison 1",
+    "description":"Un poison parcours le sang de la cible",
+    "durée":6,
+    "actions":{
+        "degats":2
+    }
+}

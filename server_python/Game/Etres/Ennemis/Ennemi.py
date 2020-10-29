@@ -1,14 +1,14 @@
 import os
 import json
 import random
-from Game.Etres.Etre import Etre
+from Game.Etres.Combattant import Combattant
 
 data_ens = [
     "Data/ennemis/rat.json"
 ]
 
 
-class Ennemi(Etre):
+class Ennemi(Combattant):
     """Classe de base de l'Ennemi.
 
     Attributes:
@@ -25,7 +25,7 @@ class Ennemi(Etre):
         Author: Nathan
 
         """
-        Etre.__init__(self)
+        Combattant.__init__(self)
         self.index = index
         if self.index > len(data_ens) - 1:
             raise IndexError("Mauvais index d'ennemi :", self.index)

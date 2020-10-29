@@ -30,13 +30,13 @@ class Perso(Combattant):
         TODO: Changer stats de base ?
 
         """
-        super.__init__(nom, lieu)
+        Combattant.__init__(self, nom, lieu)
         self.equip = {"Amulette": None, "Casque": None, "Armure": None,
                       "Bottes": None, "Arme": None}
         self.inventaire = []
         self.monnaie = 0
+        self.classe = ""  # TODO
         self.charme = 0
-        self.classe = None  # TODO
         self.force = 0
         self.intel = 0
         self.discr = 0

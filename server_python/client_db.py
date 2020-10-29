@@ -96,11 +96,12 @@ class Client_mariadb:
         self.connection.commit()
 
         query = ("CREATE TABLE IF NOT EXISTS persos "+
-                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, classe TEXT,"+
+                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, classe TEXT, "+
                  "race TEXT, niveau INT, force INT, intelligence INT, "+
                  "charme INT, discretion INT, experience_totale INT, "+
                  "experience INT, vie_totale INT, vie INT, energie_totale INT,"+
                  "energie INT, equipement TEXT, quetes TEXT, lieu INT);")
+        print(query)
         self.cursor.execute(query)
         self.connection.commit()
 
