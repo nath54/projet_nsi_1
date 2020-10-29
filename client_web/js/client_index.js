@@ -29,10 +29,10 @@ function main_client(txt){
                 document.getElementById("alert_wait").style.display="none";
                 break;
             case 'inscription successed':
-                    document.getElementById("alert_wait").style.display="none";
-                    sessionStorage.setItem("websocket",websocket)
-                    window.location.href="game.html";
-                    break;
+                document.getElementById("alert_wait").style.display="none";
+                sessionStorage.setItem("websocket",websocket)
+                window.location.href="game.html";
+                break;
             case "info account":
                 alert("get infos account");
                 actualise_infos(account);
