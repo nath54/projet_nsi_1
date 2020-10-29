@@ -17,15 +17,19 @@ function main_client(txt){
         switch (data.type) {
             case 'connection failed':
                 alert("Connection failed : \n"+data.error);
+                document.getElementById("alert_wait").style.display="none";
                 break;
             case 'connection successed':
+                document.getElementById("alert_wait").style.display="none";
                 sessionStorage.setItem("websocket",websocket)
                 window.location.href="game.html";
                 break;
             case 'inscription failed':
                 alert("Inscription failed : \n"+data.error);
+                document.getElementById("alert_wait").style.display="none";
                 break;
             case 'inscription successed':
+                    document.getElementById("alert_wait").style.display="none";
                     sessionStorage.setItem("websocket",websocket)
                     window.location.href="game.html";
                     break;

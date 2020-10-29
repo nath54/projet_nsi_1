@@ -29,7 +29,7 @@ class Server:
     """
 
     def __init__(self):
-        """Initie le serveur de jeu."""
+        """Initialise le serveur de jeu."""
         self.host = ""
         self.port = 9876
         self.max_size = 1024
@@ -76,7 +76,7 @@ class Server:
             client (???): Référence au client avec qui gérer l'interaction
             infos (???): ???
 
-        Author: ???
+        Author: Nathan
 
         """
         self.on_accept(client, infos)
@@ -109,7 +109,7 @@ class Server:
             if client != autre_client:
                 autre_client.send(message)
 
-    def send(self, client, message):
+    def send(self, client, message, print_ = False):
         """Envoie un message a un client précis.
 
         Args:
@@ -119,6 +119,8 @@ class Server:
         Author: Nathan
 
         """
+        if print_:
+            print(message)
         message = json.dumps(message)
         message = message.encode(encoding="utf-8")
         size = sys.getsizeof(message)
@@ -136,10 +138,10 @@ class Server:
             client (???): Référence au client qui s'est connecté
             i (???): ???
 
-        Author: ???
+        Author: Nathan
 
         """
-        self.clients[client] = {}          # On y mettra plus d'infos plus tard
+        self.clients[client] = {"player":None}      # On y mettra plus d'infos plus tard
         print("Connexion acceptée", client)
 
     def on_message(self, client, infos, message):
@@ -150,7 +152,7 @@ class Server:
             infos (???): ???
             message (str): Message tapé par l'utilisateur.
 
-        Author: ???
+        Author: Nathan
 
         """
         message = message.decode(encoding="utf-8")
@@ -160,15 +162,33 @@ class Server:
                 data = json.loads(message)
                 if data["type"] == "commande":
                     cl = self.clients[client]
-                    if len(cl) == 0 or cl[0] is None:
+                    if not "player" in cl.keys()  or cl["player"] == None:
                         dict_ = {"type": "not connected",
                                  "value": "Veuillez vous connecter pour jouer"}
                         self.send(client, json.dumps(dict_))
                     else:
                         self.commandes(None, data)
                 elif data["type"] == "inscription":
+                    pseudo=data["pseudo"]
+                    email=data["email"]
+                    password=data["password"]
+                    erreur=self.client_db.test_compte_inscrit(pseudo,email)
+                    if erreur:
+                        self.send(client,json.dumps({"type":"inscription failed","value":erreur}))
+                    else:
+                        reussi=self.client_db.inscription(pseudo,email,password)
+                        self.send(client,json.dumps({"type":"inscription successed"}))
+                        #il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
+                    #TODO
                     pass
                 elif data["type"] == "connection":
+                    erreur=self.client_db.test_connection(pseudo,password)
+                    if erreur:
+                        self.send(client,json.dumps({"type":"connection failed","value":erreur}))
+                    else:
+                        self.send(client,json.dumps({"type":"connection successed"}))
+                        #il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
+                    #TODO
                     pass
                 else:
                     # TODO
@@ -181,24 +201,11 @@ class Server:
             client (???): Référence au client ayant fermé son application
             infos (???): ???
 
-        Author: ???
+        Author: Nathan
 
         """
         print("Connexion fermée", client)
         del(self.clients[client])
-
-    def print_and_send(self, client, message):
-        """Envoie un message sur le client associé à perso.
-
-        Args:
-            client(Client): Personne à qui envoyer le message
-            message(str): Message destiné au personnage
-
-        Author: ???
-
-        """
-        print(message)
-        self.send(client, message)
 
     # region Commandes
     def commandes(self, perso, data):
@@ -210,24 +217,24 @@ class Server:
                 exemple : {"command": "attaquer",
                            "arg_1": ennemi}
 
-        Author: ???
+        Author: Nathan, Hugo
 
         """
         data_len = len(data.keys())
         action = data["commande"]
 
         if action == "voir":
-            print_and_send(perso, perso.lieu)
+            self.send(perso, perso.lieu,True)
         elif action == "inventaire":
             if data_len == 1:
-                print_and_send(perso, perso.format_invent())
+                self.send(perso, perso.format_invent(),True)
             else:
                 self.invent_multi_args(perso, data)
         elif action == "equipement":
-            print_and_send(perso, perso.format_equip())
+            self.send(perso, perso.format_equip(),True)
         elif action == "stats":
             if data_len == 1:
-                print_and_send(perso, perso.format_stats())
+                self.send(perso, perso.format_stats(),True)
             else:
                 pass  # TODO: Afficher stats d'un autre Etre (niveau d'intel ?)
         elif action == "quit":
@@ -313,7 +320,7 @@ class Server:
     def main(self):
         """Met en route le serveur.
 
-        Author: ???
+        Author: Nathan
 
         """
         self.start()

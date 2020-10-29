@@ -11,7 +11,8 @@ except:
         import mysql.connector as mariadb
     except:
         # Rien n'est installé
-        print("Merci d'installer la librairie mariadb ou mysql pour Python !")
+        raise UserWarning("Merci d'installer la librairie 'mariadb' ou 'mysql' pour Python !")
+        
 
 import sys
 
@@ -34,7 +35,7 @@ class Client_mariadb:
     def __init__(self):
         """Initialise les caractéristiques de la base de données.
 
-        Author: ???
+        Author: Nathan
 
         """
         # Faudra se mettre d'accord sur ça
@@ -65,7 +66,7 @@ class Client_mariadb:
         self.connection.close()
 
     def test_first_time(self):
-        """Teste si la table accounts existe.
+        """Teste si la table comptes existe.
 
         Returns:
             bool: False = Ce n'est pas le premier lancement du serveur
@@ -74,7 +75,7 @@ class Client_mariadb:
         Author: Nathan
 
         """
-        self.cursor.execute("SHOW TABLES LIKE 'accounts';")
+        self.cursor.execute("SHOW TABLES LIKE 'comptes';")
         # On regarde si l'output contient des éléments
         output = [elt for elt in self.cursor]
         # S'il n'y en a pas, c'est la premiere fois que l'on lance le serveur
@@ -88,17 +89,17 @@ class Client_mariadb:
         Author : Nathan, Hugo
 
         """
-        query = ("CREATE TABLE IF NOT EXISTS accounts "
+        query = ("CREATE TABLE IF NOT EXISTS comptes "
                  "(id INT PRIMARY KEY AUTO_INCREMENT,"
                  "pseudo TEXT, email TEXT, password TEXT, perso_id INT);")
         self.cursor.execute(query)
         self.connection.commit()
 
-        query = ("CREATE TABLE IF NOT EXISTS persos "
-                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, classe TEXT,"
-                 "race TEXT, niveau INT, force INT, intelligence INT, "
-                 "charme INT, discretion INT, experience_totale INT, "
-                 "experience INT, vie_totale INT, vie INT, energie_totale INT,"
+        query = ("CREATE TABLE IF NOT EXISTS persos "+
+                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, classe TEXT,"+
+                 "race TEXT, niveau INT, force INT, intelligence INT, "+
+                 "charme INT, discretion INT, experience_totale INT, "+
+                 "experience INT, vie_totale INT, vie INT, energie_totale INT,"+
                  "energie INT, equipement TEXT, quetes TEXT, lieu INT);")
         self.cursor.execute(query)
         self.connection.commit()
@@ -109,13 +110,13 @@ class Client_mariadb:
         self.cursor.execute(query)
         self.connection.commit()
 
-        query = ("CREATE TABLE IF NOT EXISTS pnj "
+        query = ("CREATE TABLE IF NOT EXISTS pnjs "
                  "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "
                  "description TEXT, race TEXT, dialogue TEXT);")
         self.cursor.execute(query)
         self.connection.commit()
 
-        query = ("CREATE TABLE IF NOT EXISTS ennemi "
+        query = ("CREATE TABLE IF NOT EXISTS ennemis "
                  "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "
                  "description TEXT, vie_max INT);")
         self.cursor.execute(query)
@@ -145,13 +146,42 @@ class Client_mariadb:
         Author: Hugo
 
         """
-        c = self.cursor.execute("SELECT pseudo, email, password FROM accounts")
-        for pseudo_, email_, _ in c:
-            if pseudo == pseudo_ or email == email_:
-                # TODO: Faire que l'inscription gère le return False
-                return False
-        query = ("INSERT INTO accounts (pseudo, email, password) VALUES " +
+        query = ("INSERT INTO comptes (pseudo, email, password) VALUES " +
                  "(%s,%s,%s)", pseudo, email, password)
         self.cursor.execute(query)
         self.connection.commit()
         return True
+
+    def test_compte_inscrit(self,pseudo,email):
+        """
+
+        Author : Hugo, Nathan
+        """
+        c = self.cursor.execute("SELECT pseudo, email FROM comptes")
+        for pseudo_, email_ in c:
+            if pseudo == pseudo_:
+                return "Le pseudo est déjà utilisé"
+            elif email == email_:
+                return "L'email est déjà utilisé"
+        return False
+
+    def test_connection(self,pseudo,password):
+        c = self.cursor.execute("SELECT password FROM comptes WHERE pseudo=%s",(pseudo))
+        if len(c)==0: return f"Il n'y a pas de compte avec le pseudo '{pseudo}'"
+        elif len(c)>1:
+            return "probleme de comptes, veuillez contacter un administateur au plus vite (il y a plusieurs comptes avec le même pseudonyme)"
+        else:
+            password_=c[0]
+            if password==password_:
+                return False
+            else:
+                return "Le mot de passe est erroné !"
+        
+    def transfert_json_to_bdd(self):
+        """ A faire : transférer toutes les données des fichiers json vers la bdd
+        
+        Author : 
+        """
+        #TODO
+        pass
+
