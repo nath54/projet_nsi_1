@@ -224,7 +224,6 @@ class Client:
         Author: Nathan
 
         """
-        
         if is_json(mess):
             self.attente = False
             data=json.loads(mess)

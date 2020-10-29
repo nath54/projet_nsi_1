@@ -30,9 +30,14 @@ class Perso(Combattant):
         TODO: Changer stats de base ?
 
         """
+<<<<<<< Updated upstream
         Combattant.__init__(self, nom, lieu)
         self.equip = {"Amulette": None, "Casque": None, "Armure": None,
                       "Bottes": None, "Arme": None}
+=======
+        Combattant.__init__(self, nom, lieu)
+        self.equip = {"Amulette": None, "Armure": None, "Arme": None}
+>>>>>>> Stashed changes
         self.inventaire = []
         self.monnaie = 0
         self.classe = ""  # TODO
@@ -153,3 +158,25 @@ class Perso(Combattant):
         self.energie += nombre
         if self.energie > self.energie_totale:
             self.energie = self.energie_totale
+
+    def desequiper(self, nom_obj, id_obj=None):
+        for key, val in self.equip:
+            if val.index == id_obj or val.nom == nom_obj:
+                self.equip[key] = None
+                self.add_to_invent(val.index)
+                return True
+        return False
+
+    def add_to_invent(self, id_obj):
+        # TODO: obj = Objet(id_obj) qui créé l'objet depuis la DB
+        self.inventaire.append(obj)
+
+    def equiper(self, nom_obj, id_obj=None):
+        for i in range(len(self.inventaire)):
+            t_obj = self.inventaire[i]
+            if t_obj.index == id_obj or t_obj.nom == nom_obj:
+                if t_obj.type in ["Amulette", "Arme", "Armure"]:
+                    del self.inventaire[i]
+                    self.equip[t_obj.type] = t_obj
+                    return True
+        return False

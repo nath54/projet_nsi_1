@@ -98,7 +98,7 @@ class Server:
                 self.on_message(client, infos, msg)
             except Exception as e:
                 print(e)
-                self.on_close(client, infos)
+                self.on_close(client)
                 return
 
     def send_all_except_c(self, client, message):
@@ -179,7 +179,7 @@ class Server:
                                  "value": "Veuillez vous connecter pour jouer"}
                         self.send(client, json.dumps(dict_))
                     else:
-                        self.commandes(None, data)
+                        self.commandes(client, data)
                 elif data["type"] == "inscription":
                     pseudo=data["pseudo"]
                     email=data["email"]
@@ -208,7 +208,7 @@ class Server:
                     # TODO
                     pass
 
-    def on_close(self, client, infos):
+    def on_close(self, client):
         """Réaction si une connexion se ferme.
 
         Args:
@@ -222,11 +222,11 @@ class Server:
         del(self.clients[client])
 
     # region Commandes
-    def commandes(self, perso, data):
+    def commandes(self, client, data):
         """Éxecute les commandes entrée par l'utilisateur.
 
         Args:
-            perso(Perso): Personne qui a entré la commande
+            client(???): Personne qui a entré la commande
             data(dict): un dictionnaire contenant les éléments d'une commande
                 exemple : {"command": "attaquer",
                            "arg_1": ennemi}
@@ -236,31 +236,42 @@ class Server:
         """
         data_len = len(data.keys())
         action = data["commande"]
+        perso = self.clients[client]["player"].perso
 
         if action == "voir":
-            self.send(perso, perso.lieu,True)
+            self.send(client, perso.lieu, True)
         elif action == "inventaire":
             if data_len == 1:
-                self.send(perso, perso.format_invent(),True)
+                self.send(client, perso.format_invent(), True)
             else:
-                self.invent_multi_args(perso, data)
+                self.invent_multi_args(client, data)
         elif action == "equipement":
-            self.send(perso, perso.format_equip(),True)
+            self.send(client, perso.format_equip(), True)
         elif action == "stats":
             if data_len == 1:
-                self.send(perso, perso.format_stats(),True)
+                self.send(client, perso.format_stats(), True)
             else:
-                pass  # TODO: Afficher stats d'un autre Etre (niveau d'intel ?)
+                pass  # TODO: Afficher stats d'un autre Etre (bof)
         elif action == "quit":
-            pass
-        elif action == "attendre":
+            self.on_close(client)
+        elif action == "attendre":  # Bof
             pass
         elif data_len <= 1:
-            pass  # Actions qui ont besoin de plus d'un paramètre au-delà
+            self.send(client, "Commande inconnue", True)
         elif action == "desequiper":
-            pass
+            b = perso.desequiper(data["arg_1"])
+            if b:
+                mess = f"Vous avez retiré {data["arg_1"]} !"
+            else:
+                mess = f"Vous n'aviez pas de {data["arg_1"]} sur vous..."
+            self.send(client, mess, True)
         elif action == "equiper":
-            pass
+            b = perso.equiper(data["arg_1"])
+            if b:
+                mess = f"Vous avez équipé {data["arg_1"]}"
+            else:
+                mess = f"Vous ne possédez pas '{data["arg_1"]}'"
+            self.send(client, mess, True)
         elif action == "examiner":
             pass
         elif action == "fouiller":

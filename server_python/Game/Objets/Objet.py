@@ -10,6 +10,7 @@ class Objet:
     """Classe définissant les objets.
 
     Attributes:
+        index(int): Identifiant unique d'un objet.
         nom(str): Le nom de l'objet
         description(str): Description de l'objet
         type(str): Le type de l'objet
