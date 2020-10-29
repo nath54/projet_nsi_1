@@ -15,6 +15,16 @@ from Game.Game import Game
 from Game.Etres.Perso import Perso
 # endregion
 
+
+#fonction qui teste si un texte est du format json
+def is_json(myjson):
+    try:
+        json_object = json.loads(myjson)
+    except ValueError as e:
+        return False
+    return True
+
+
 class Server:
     """Classe du serveur du jeu.
 
@@ -109,7 +119,7 @@ class Server:
             if client != autre_client:
                 autre_client.send(message)
 
-    def send(self, client, message, print_ = False):
+    def send(self, client, message, print_ = False, important=False):
         """Envoie un message a un client précis.
 
         Args:
@@ -125,6 +135,8 @@ class Server:
         message = message.encode(encoding="utf-8")
         size = sys.getsizeof(message)
         if size > self.max_size:
+            if important:
+                raise UserWarning(f"ERREUR : Le message est trop long ! {str(size)} bytes/{str(self.max_size)} bytes")
             print(f"""ERREUR : Le message est trop long ! {str(size)} bytes/
                    {str(self.max_size)} bytes""")
             return
@@ -158,7 +170,7 @@ class Server:
         message = message.decode(encoding="utf-8")
         if len(message) > 0:
             print(f"{self.clients[client]} : {message}")
-            if message[0] == "{":
+            if is_json(message):
                 data = json.loads(message)
                 if data["type"] == "commande":
                     cl = self.clients[client]
@@ -182,6 +194,8 @@ class Server:
                     #TODO
                     pass
                 elif data["type"] == "connection":
+                    pseudo=data["pseudo"]
+                    password=data["password"]
                     erreur=self.client_db.test_connection(pseudo,password)
                     if erreur:
                         self.send(client,json.dumps({"type":"connection failed","value":erreur}))

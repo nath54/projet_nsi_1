@@ -33,8 +33,8 @@ class WebServer():
         finally:
             await self.unregister(websocket)
 
-    def on_message(self, message):
-        self.USER.send(message)
+    async def on_message(self, message):
+        await self.USER.send(message)
 
     def main(self):
         print("Websocket server starting...")

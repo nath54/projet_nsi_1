@@ -5,6 +5,7 @@ import socket
 import _thread
 import json
 import sys
+import asyncio
 
 
 #la liste des characteres autorisés pour les pseudos, les emails, ou bien les mot de passes
@@ -54,6 +55,15 @@ def test_password(txt):
             print(f"ERREUR /!\\ Mot de passe, Caractère non autorisé : '{c}'")
             return True
     return False
+
+#fonction qui teste si un texte est du format json
+def is_json(myjson):
+    try:
+        json_object = json.loads(myjson)
+    except ValueError as e:
+        return False
+    return True
+
 
 class Client:
     """Classe principale du client.
@@ -143,7 +153,7 @@ class Client:
             print("En attente du serveur ... ")
             self.attente_serv()
 
-    def send(self, message):
+    def send(self, message, important=False):
         """Permet d'envoyer un message.
 
         Args:
@@ -155,6 +165,8 @@ class Client:
         message = message.encode(encoding="utf-8")
         size = sys.getsizeof(message)
         if size > self.max_size:
+            if important:
+                raise UserWarning(f"ERREUR : Le message est trop long ! {+str(size)} bytes/{str(self.max_size)} bytes")
             print(f"""ERREUR : Le message est trop long ! {+str(size)} bytes/
                     {str(self.max_size)} bytes""")
         else:
@@ -181,18 +193,22 @@ class Client:
         """
         self.on_connect()
         while True:
-            try:
+            #try:
                 msg = self.client.recv(self.max_size)
+                msg = msg.decode(encoding="utf-8")
+                print("recu : "+json.loads(msg))
                 if len(msg) == 0:
                     raise UserWarning("message vide")
                 if not self.ws:
                     self.on_message(msg)
                 else:
-                    self.webserver.on_message(msg)
-            except Exception as e:
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+                    loop.run_until_complete( self.webserver.on_message(msg) )
+                """except Exception as e:
                 print(e)
                 self.on_close()
-                return
+                return"""
 
     def on_connect(self):
         """Réaction si la connexion est acceptée."""
@@ -203,24 +219,30 @@ class Client:
         """Réaction si un message est reçu.
 
         Args:
-            mess(str): Le message reçu (encodé en base 'utf-8')
+            mess(str): Le message reçu
 
         Author: Nathan
 
         """
-        if mess.startswith("{"):
+        
+        if is_json(mess):
             self.attente = False
             data=json.loads(mess)
-            if data["type"] == "connection acceptée":
+            while type(data)==str:
+                if is_json(data):
+                    data=json.loads(data)
+                else:
+                    return
+            if data["type"] == "connection successed":
                 print("Connection acceptée")
                 self.interface()
-            elif data["type"] == "inscription acceptée":
+            elif data["type"] == "inscription successed":
                 print("Inscription acceptée")
                 self.interface()
-            elif data["type"] == "connection refusée":
+            elif data["type"] == "connection failed":
                 print("Connection refusée\nerreur : "+data["value"])
                 self.debut()
-            elif data["type"] == "inscription refusée":
+            elif data["type"] == "inscription failed":
                 print("Inscription refusée\nerreur : "+data["value"])
                 self.debut()
 

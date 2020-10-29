@@ -89,8 +89,8 @@ class Client_mariadb:
         Author : Nathan, Hugo
 
         """
-        query = ("CREATE TABLE IF NOT EXISTS comptes "
-                 "(id INT PRIMARY KEY AUTO_INCREMENT,"
+        query = ("CREATE TABLE IF NOT EXISTS comptes "+
+                 "(id INT PRIMARY KEY AUTO_INCREMENT,"+
                  "pseudo TEXT, email TEXT, password TEXT, perso_id INT);")
         self.cursor.execute(query)
         self.connection.commit()
@@ -104,27 +104,27 @@ class Client_mariadb:
         self.cursor.execute(query)
         self.connection.commit()
 
-        query = ("CREATE TABLE IF NOT EXISTS objets "
-                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "
+        query = ("CREATE TABLE IF NOT EXISTS objets "+
+                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "+
                  "description TEXT, type_ TEXT, effet_utilise TEXT);")
         self.cursor.execute(query)
         self.connection.commit()
 
-        query = ("CREATE TABLE IF NOT EXISTS pnjs "
-                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "
+        query = ("CREATE TABLE IF NOT EXISTS pnjs "+
+                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "+
                  "description TEXT, race TEXT, dialogue TEXT);")
         self.cursor.execute(query)
         self.connection.commit()
 
-        query = ("CREATE TABLE IF NOT EXISTS ennemis "
-                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "
+        query = ("CREATE TABLE IF NOT EXISTS ennemis "+
+                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "+
                  "description TEXT, vie_max INT);")
         self.cursor.execute(query)
         self.connection.commit()
 
-        query = ("CREATE TABLE IF NOT EXISTS lieux "
-                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "
-                 "description TEXT, ennemis TEXT, pnjs TEXT, objets TEXT, "
+        query = ("CREATE TABLE IF NOT EXISTS lieux "+
+                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "+
+                 "description TEXT, ennemis TEXT, pnjs TEXT, objets TEXT, "+
                  "lieux TEXT);")
         # ennemis, pnjs, objets et lieux contiennent les ID des éléments, avec
         # "/" comme séparateur entre chaque ID
@@ -146,9 +146,8 @@ class Client_mariadb:
         Author: Hugo
 
         """
-        query = ("INSERT INTO comptes (pseudo, email, password) VALUES " +
-                 "(%s,%s,%s)", pseudo, email, password)
-        self.cursor.execute(query)
+        self.cursor.execute("INSERT INTO comptes (pseudo, email, password) VALUES " +
+                 "(%s,%s,%s)", (pseudo, email, password))
         self.connection.commit()
         return True
 
@@ -157,7 +156,8 @@ class Client_mariadb:
 
         Author : Hugo, Nathan
         """
-        c = self.cursor.execute("SELECT pseudo, email FROM comptes")
+        self.cursor.execute("SELECT pseudo, email FROM comptes")
+        c=self.cursor
         for pseudo_, email_ in c:
             if pseudo == pseudo_:
                 return "Le pseudo est déjà utilisé"
@@ -166,16 +166,18 @@ class Client_mariadb:
         return False
 
     def test_connection(self,pseudo,password):
-        c = self.cursor.execute("SELECT password FROM comptes WHERE pseudo=%s",(pseudo))
-        if len(c)==0: return f"Il n'y a pas de compte avec le pseudo '{pseudo}'"
-        elif len(c)>1:
+        self.cursor.execute("SELECT password FROM comptes WHERE pseudo=%s",(pseudo,))
+        c=self.cursor
+        lc=[e for e in c]
+        if len(lc)==0: return f"Il n'y a pas de compte avec le pseudo '{pseudo}'"
+        elif len(lc)>1:
             return "probleme de comptes, veuillez contacter un administateur au plus vite (il y a plusieurs comptes avec le même pseudonyme)"
         else:
-            password_=c[0]
+            password_=lc[0]
             if password==password_:
                 return False
             else:
-                return "Le mot de passe est erroné !"
+                return "Le mot de passe est faux !"
         
     def transfert_json_to_bdd(self):
         """ A faire : transférer toutes les données des fichiers json vers la bdd
