@@ -57,11 +57,11 @@ function show_inscription(){
 //function qui test si un pseudo est bon
 function test_pseudo(txt="",ind=""){
     //
-    console.log("psuedo changed");
+    console.log("pseudo changed");
     //
     var elt=null;
     var erreur=false;
-    if(txt==""){
+    if(ind!=""){
         elt=document.getElementById(ind)
         txt=elt.value;
     }
@@ -99,7 +99,7 @@ function test_email(txt="",ind=""){
     //
     var elt=null;
     var erreur=false;
-    if(txt==""){
+    if(ind!=""){
         elt=document.getElementById(ind)
         txt=elt.value;
     }
@@ -207,7 +207,13 @@ function inscription(){
     var email=document.getElementById("i_email").value;
     var password=document.getElementById("i_password").value;
     var password_confirm=document.getElementById("i_confirm_password").value;
-    //on vérifie que les pseudos et les password ont la bonne syntaxe
+    //on vérifie que les emails, les pseudos et les password ont la bonne syntaxe
+    //emails
+    var erreur=test_email(email);
+    if(erreur!=false){
+        alert(erreur);
+        return ;
+    }
     //pseudo
     var erreur=test_pseudo(pseudo);
     if(erreur!=false){
@@ -243,6 +249,8 @@ function inscription(){
 function send_infos(dicte){
     txt=JSON.stringify(dicte);
     main_client(txt);
+    //
+    document.getElementById("alert_wait").style.display="initial";
 }
 
 

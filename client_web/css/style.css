@@ -32,7 +32,7 @@ a{
 
 .center{
     margin:auto;
-    margin-top: 10%;
+    margin-top: 15%;
 }
 
 .hcenter{
@@ -103,6 +103,28 @@ JUSTE POUR index.html
 .false_input{
     border:1px solid red;
     text-shadow: red 1px 0 10px;
+}
+
+#alert_wait{
+    display: none;
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    border-radius:10px;
+    background-color: rgba(0,0,0,0.8);
+    color:white;
+    padding-top:auto;
+    text-align:center;
+}
+
+#alert_text{
+    position: absolute;
+    top:35%;
+    bottom:35%;
+    left:25%;
+    right:25%;
 }
 
 /*

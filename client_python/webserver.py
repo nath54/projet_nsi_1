@@ -9,10 +9,11 @@ import json
 import sys
 
 class WebServer():
-    def __init__(self):
+    def __init__(self,client):
         self.IP = "localhost"
         self.PORT = 6789
         self.USER = None
+        self.client=client
 
     async def register(self, websocket):
         if self.USER == None:

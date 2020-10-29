@@ -1,6 +1,11 @@
 
 websocket=sessionStorage.getItem("websocket");
 
+if(websocket==undefined){
+    alert("Erreur, vous n'êtes pas connecté")
+    window.SharedWorker.location="index.html";
+}
+
 websocket.onmessage = function (event) {
     data = JSON.parse(event.data);
     switch (data.type) {

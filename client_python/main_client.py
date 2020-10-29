@@ -8,7 +8,7 @@ import sys
 
 
 #la liste des characteres autorisés pour les pseudos, les emails, ou bien les mot de passes
-chars=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
+chars = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
        "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
        "1","2","3","4","5","6","7","8","9","0",
        "-","_","@","."]
@@ -80,58 +80,68 @@ class Client:
         self.client = None
 
         self.encours = True
+        self.attente = False
 
         i=input("Voulez vous que ce soit un client websocket ?")
         if i.lower() in ["o","oui","y","yes"]:
             self.ws=True
             from webserver import WebServer
-            self.webserver=WebServer()
+            self.webserver = WebServer(self)
         else:
             self.ws=False
 
     def debut(self):
         print("Voulez vous :\n  1) Vous inscrire ?\n  2) Vous connecter ?")
-        r=input(": ")
+        r = input(": ")
         while not r in ["1","2"]:
-            r=input(": ")
-        if r=="1":
+            r = input(": ")
+        if r == "1":
             self.inscription()
         else:
             self.connexion()
 
+    def attente_serv(self):
+        self.attente = True
+        while self.attente:
+            pass
+
     def connexion(self):
         #pseudo
-        pseudo=input("pseudo : ")
+        pseudo = input("pseudo : ")
         while test_pseudo(pseudo):
-            pseudo=input("pseudo : ")
+            pseudo = input("pseudo : ")
         #password
-        password=input("mot de passe : ")
+        password = input("mot de passe : ")
         while test_password(password):
-            password=input("mot de passe : ")
+            password = input("mot de passe : ")
         self.send(json.dumps({"type": "connection","pseudo": pseudo,
                               "password": password}))
+        print("En attente du serveur ... ")
+        self.attente_serv()
 
     def inscription(self):
         #email
-        email=input("email : ")
+        email = input("email : ")
         while test_email(email):
-            email=input("email : ")
+            email = input("email : ")
         #pseudo
-        pseudo=input("pseudo : ")
+        pseudo = input("pseudo : ")
         while test_pseudo(pseudo):
-            pseudo=input("pseudo : ")
+            pseudo = input("pseudo : ")
         #password
-        password=input("mot de passe : ")
+        password = input("mot de passe : ")
         while test_password(password):
-            password=input("mot de passe : ")
-        password_confirm=input("mot de passe (confirmation) : ")
-        if password_confirm!=password:
+            password = input("mot de passe : ")
+        password_confirm = input("mot de passe (confirmation) : ")
+        if password_confirm != password:
             print("ERREUR /!\\ Les mots de passes sont différents !")
             self.debut()
         else:
             #on peut envoyer les infos
             self.send(json.dumps({"type": "inscription", "pseudo": pseudo, 
                                   "password": password, "email": email}))
+            print("En attente du serveur ... ")
+            self.attente_serv()
 
     def send(self, message):
         """Permet d'envoyer un message.
@@ -199,17 +209,18 @@ class Client:
 
         """
         if mess.startswith("{"):
+            self.attente = False
             data=json.loads(mess)
-            if data["type"]=="connection acceptée":
+            if data["type"] == "connection acceptée":
                 print("Connection acceptée")
                 self.interface()
-            elif data["type"]=="inscription acceptée":
+            elif data["type"] == "inscription acceptée":
                 print("Inscription acceptée")
                 self.interface()
-            elif data["type"]=="connection refusée":
+            elif data["type"] == "connection refusée":
                 print("Connection refusée\nerreur : "+data["value"])
                 self.debut()
-            elif data["type"]=="inscription refusée":
+            elif data["type"] == "inscription refusée":
                 print("Inscription refusée\nerreur : "+data["value"])
                 self.debut()
 
