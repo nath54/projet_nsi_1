@@ -22,7 +22,7 @@ class Perso(Combattant):
 
     """
 
-    def __init__(self, nom="", lieu=None):
+    def __init__(self, game):
         """Instancie le personnage.
 
         Author: Hugo
@@ -30,14 +30,8 @@ class Perso(Combattant):
         TODO: Changer stats de base ?
 
         """
-<<<<<<< Updated upstream
-        Combattant.__init__(self, nom, lieu)
-        self.equip = {"Amulette": None, "Casque": None, "Armure": None,
-                      "Bottes": None, "Arme": None}
-=======
-        Combattant.__init__(self, nom, lieu)
+        Combattant.__init__(self, game)
         self.equip = {"Amulette": None, "Armure": None, "Arme": None}
->>>>>>> Stashed changes
         self.inventaire = []
         self.monnaie = 0
         self.classe = ""  # TODO

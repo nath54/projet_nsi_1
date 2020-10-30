@@ -22,7 +22,7 @@ class Objet:
 
     """
 
-    def __init__(self, index):
+    def __init__(self, index, game):
         """Créer un objet.
 
         Args:
@@ -35,6 +35,7 @@ class Objet:
         if self.index > len(data_objs) - 1:
             raise IndexError(f"Index de l'objet trop grand : {self.index}")
 
+        self.game = game
         self.nom = "Objet"
         self.description = "Un objet"
         self.type = "objet"

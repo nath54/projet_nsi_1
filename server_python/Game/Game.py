@@ -34,7 +34,7 @@ class Game:
         Author: Nathan
 
         """
-        self.map_.load_from_json(Lieu, Objet, Pnj, Perso, Ennemi)
+        self.map_.load_from_json(Lieu, Objet, Pnj, Perso, Ennemi, self)
         print("Débuggage (on vérifie que ça a bien tout créé)")
         print("\nListe des lieux : ")
         print(self.map_.lieux)

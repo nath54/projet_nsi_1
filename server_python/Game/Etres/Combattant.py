@@ -15,10 +15,9 @@ class Combattant(Etre):
         effets(dict): Effets appliqués sur l'instance du combattant {effet: temps restant}
         attaque(couple): attaque min et attaque max du combattant
         esquive(int): % de chance d'esquiver une attaque
-
     """
 
-    def __init__(self):
+    def __init__(self,game):
         """Instancie le Combattant.
 
         Args:
@@ -26,7 +25,7 @@ class Combattant(Etre):
         Author: Nathan, Hugo
 
         """
-        super.__init__(name, lieu)
+        Etre.__init__(self,game)
         self.vie_totale = 0
         self.full_vie()
         self.energie_totale = 0
@@ -51,6 +50,9 @@ class Combattant(Etre):
 
         """
         self.energie = self.energie_totale
+
+    def debut_tour(self):
+        pass
 
     def attaque_cible(self, cible):
         r = random.randint(0, 100)

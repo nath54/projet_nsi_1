@@ -15,23 +15,23 @@ data_pnjs = [
 
 class Pnj(Etre):
     """Classe des PNJ.
-    
+
     Attributes:
         index(int): Identifiant unique du PNJ
         dialogue(str ???): Dialogue tenu par le PNJ quand on l'interpelle.
 
     """
 
-    def __init__(self, index):
+    def __init__(self, index,game):
         """Instancie le PNJ.
-        
+
         Args:
             index(int): Identiant unique du PNJ
 
         Author: Nathan
 
         """
-        Etre.__init__(self)
+        Etre.__init__(self,game)
         self.index = index
         self.dialogue = None
         if self.index > len(data_pnjs) - 1:

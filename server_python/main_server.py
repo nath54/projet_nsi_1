@@ -33,7 +33,7 @@ class Server:
                     Sinon, on met l'adresse IP que l'on veut
         port (int): On utilise un port inutilisé
         max_size (int): Taille maximale d'un message reçu
-        clients (dict): Clé -- Clients
+        clients (dict): Clé -- socket.socket
                         Val -- `dict` de propriétés relatives au client
         server (socket): ???
     """
@@ -83,8 +83,8 @@ class Server:
         """Gère l'interaction serveur-client.
 
         Args:
-            client (???): Référence au client avec qui gérer l'interaction
-            infos (???): ???
+            client (socket.socket): Référence au client avec qui gérer l'interaction
+            infos (couple): couple d'informations : ip, ???
 
         Author: Nathan
 
@@ -105,7 +105,7 @@ class Server:
         """Fonction qui envoie un message a tous les autres clients.
 
         Args:
-            client (???): Référence au client ayant envoyé le message
+            client (socket.socket): Référence au client ayant envoyé le message
             message (str): Message à envoyer aux autres clients
 
         Author: Nathan
@@ -123,7 +123,7 @@ class Server:
         """Envoie un message a un client précis.
 
         Args:
-            client (???): Référence au client ayant envoyé le message
+            client (socket.socket): Référence au client ayant envoyé le message
             message (str): Message à envoyer aux autres clients
 
         Author: Nathan
@@ -147,21 +147,22 @@ class Server:
         """Réaction si une connexion entrante est acceptée.
 
         Args:
-            client (???): Référence au client qui s'est connecté
-            i (???): ???
+            client (socket.socket) Référence au client qui s'est connecté
+            i (couple): couple d'informations : ip, ???
 
         Author: Nathan
 
         """
         self.clients[client] = {"player":None}      # On y mettra plus d'infos plus tard
         print("Connexion acceptée", client)
+        print(type(client), i)
 
     def on_message(self, client, infos, message):
         """Réaction si un message est reçu.
 
         Args:
-            client (???): Référence au client ayant envoyé le message
-            infos (???): ???
+            client (socket.socket): Référence au client ayant envoyé le message
+            infos (couple): couple d'informations : ip, ???
             message (str): Message tapé par l'utilisateur.
 
         Author: Nathan
@@ -212,8 +213,7 @@ class Server:
         """Réaction si une connexion se ferme.
 
         Args:
-            client (???): Référence au client ayant fermé son application
-            infos (???): ???
+            client (socket.socket): Référence au client ayant fermé son application
 
         Author: Nathan
 
@@ -226,7 +226,7 @@ class Server:
         """Éxecute les commandes entrée par l'utilisateur.
 
         Args:
-            client(???): Personne qui a entré la commande
+            client(socket.socket): Personne qui a entré la commande
             data(dict): un dictionnaire contenant les éléments d'une commande
                 exemple : {"command": "attaquer",
                            "arg_1": ennemi}
@@ -261,16 +261,16 @@ class Server:
         elif action == "desequiper":
             b = perso.desequiper(data["arg_1"])
             if b:
-                mess = f"Vous avez retiré {data["arg_1"]} !"
+                mess = f"Vous avez retiré {data['arg_1']} !"
             else:
-                mess = f"Vous n'aviez pas de {data["arg_1"]} sur vous..."
+                mess = f"Vous n'aviez pas de {data['arg_1']} sur vous..."
             self.send(client, mess, True)
         elif action == "equiper":
             b = perso.equiper(data["arg_1"])
             if b:
-                mess = f"Vous avez équipé {data["arg_1"]}"
+                mess = f"Vous avez équipé {data['arg_1']}"
             else:
-                mess = f"Vous ne possédez pas '{data["arg_1"]}'"
+                mess = f"Vous ne possédez pas '{data['arg_1']}'"
             self.send(client, mess, True)
         elif action == "examiner":
             pass

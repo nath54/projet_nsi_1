@@ -97,7 +97,7 @@ class Client_mariadb:
 
         query = ("CREATE TABLE IF NOT EXISTS persos "+
                  "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, classe TEXT, "+
-                 "race TEXT, niveau INT, force INT, intelligence INT, "+
+                 "race TEXT, niveau INT, force_ INT, intelligence INT, "+
                  "charme INT, discretion INT, experience_totale INT, "+
                  "experience INT, vie_totale INT, vie INT, energie_totale INT,"+
                  "energie INT, equipement TEXT, quetes TEXT, lieu INT);")

@@ -4,7 +4,10 @@ import random
 from Game.Etres.Combattant import Combattant
 
 data_ens = [
-    "Data/ennemis/rat.json"
+    "Data/ennemis/rat.json",
+    "Data/ennemis/goblin.json",
+    "Data/ennemis/goblin_soldat.json",
+    "Data/ennemis/goblin_assassin.json",
 ]
 
 
@@ -16,7 +19,7 @@ class Ennemi(Combattant):
 
     """
 
-    def __init__(self, index):
+    def __init__(self, index, game):
         """Instancie l'ennemi.
 
         Args:
@@ -25,7 +28,7 @@ class Ennemi(Combattant):
         Author: Nathan
 
         """
-        Combattant.__init__(self)
+        Combattant.__init__(self, game)
         self.index = index
         if self.index > len(data_ens) - 1:
             raise IndexError("Mauvais index d'ennemi :", self.index)

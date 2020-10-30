@@ -9,14 +9,10 @@ class Etre:
 
     """
 
-    def __init__(self,
-                 nom="Quelqu'un",
-                 lieu=None,
-                 description="Quelqu'un de tout a fait normal,"
-                             "comme on en trouve partout",
-                 race="humain"):
+    def __init__(self,game):
         """Instancie un Être."""
-        self.nom = nom
-        self.lieu = lieu
-        self.description = description
-        self.race = race
+        self.nom = ""
+        self.lieu = None
+        self.description = ""
+        self.race = ""
+        self.game = game
