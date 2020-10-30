@@ -72,14 +72,14 @@ class Client:
         host(str): IP de la machine à laquelle se connecter.
         port(int): Port utilisé par le socket
         max_size(int): Taille maximale d'un message en bits
-        client(socket): ???
+        client(socket): socket.socket
 
     """
 
     def __init__(self):
         """Caractéristiques du socket.
 
-        Author: ???
+        Author: Nathan
 
         """
         self.host = input("Host ? (si vide sera localshost)\n : ")
@@ -102,6 +102,12 @@ class Client:
             self.ws=False
 
     def debut(self):
+        """
+        Fonction qui se lance au début pour savoir si tu veux t'inscrire ou te connecter
+
+        Author : Nathan
+
+        """
         print("Voulez vous :\n  1) Vous inscrire ?\n  2) Vous connecter ?")
         r = input(": ")
         while not r in ["1","2"]:
@@ -112,6 +118,13 @@ class Client:
             self.connexion()
 
     def attente_serv(self):
+        """
+        Fonction qui attends qu'un message a été recu (dans un autre thread)
+        pour continuer dans le thread actuel
+
+        Auteur : Nathan
+
+        """
         self.attente = True
         while self.attente:
             pass

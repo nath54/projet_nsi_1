@@ -1,5 +1,16 @@
 
-websocket=sessionStorage.getItem("websocket");
+var ip = sessionStorage.getItem("ip");
+var port = sessionStorage.getItem("port");
+
+if(!(ip!=undefined && port!=undefined)){
+    alert("Probleme de connection ! (ip et port manquant)");
+    window.href.location="index.html";
+}
+
+websocket = new WebSocket("ws://"+ip+":"+port+"/");
+
+console.log(typeof websocket);
+console.log(websocket);
 
 if(websocket==undefined){
     alert("Erreur, vous n'êtes pas connecté")

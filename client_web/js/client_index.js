@@ -3,9 +3,12 @@ function main_client(txt){
     var ip=document.getElementById("inpip").value;
     var port=document.getElementById("inport").value;
 
+    sessionStorage.setItem("ip",ip);
+    sessionStorage.setItem("port",port);
+
     var websocket = new WebSocket("ws://"+ip+":"+port+"/");
     websocket.onerror=cantconnect;
-    console.log(websocket);
+    
 
     // Connection opened
     websocket.addEventListener('open', (event) => {
@@ -14,23 +17,24 @@ function main_client(txt){
 
     websocket.onmessage = function (event) {
         data = JSON.parse(event.data);
+        data = JSON.parse(data);
         switch (data.type) {
-            case 'connection failed':
+            case "connection failed":
                 alert("Connection failed : \n"+data.error);
                 document.getElementById("alert_wait").style.display="none";
                 break;
-            case 'connection successed':
+            case "connection successed":
                 document.getElementById("alert_wait").style.display="none";
-                sessionStorage.setItem("websocket",websocket)
+                websocket.close()
                 window.location.href="game.html";
                 break;
-            case 'inscription failed':
+            case "inscription failed":
                 alert("Inscription failed : \n"+data.error);
                 document.getElementById("alert_wait").style.display="none";
                 break;
-            case 'inscription successed':
+            case "inscription successed":
                 document.getElementById("alert_wait").style.display="none";
-                sessionStorage.setItem("websocket",websocket)
+                websocket.close()
                 window.location.href="game.html";
                 break;
             case "info account":
