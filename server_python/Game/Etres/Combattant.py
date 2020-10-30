@@ -33,7 +33,7 @@ class Combattant(Etre):
         self.effets_attaque = {}
         self.effets = {}
         self.attaque = (0,1)
-        self.esquive=0
+        self.esquive = 0
 
     def full_vie(self):
         """Rend toute sa santé au personnage.

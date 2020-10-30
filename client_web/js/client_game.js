@@ -21,7 +21,7 @@ websocket.onmessage = function (event) {
     data = JSON.parse(event.data);
     switch (data.type) {
         case "message":
-            console.log(data.value);
+            aff_message(txt = data.value, color = "rgb(200,200,200)");
             break;
         default:
             console.error("unsupported event", data);

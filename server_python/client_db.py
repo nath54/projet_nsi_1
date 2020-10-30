@@ -153,7 +153,9 @@ class Client_mariadb:
         return True
 
     def test_compte_inscrit(self,pseudo,email):
-        """
+        """Fonction qui teste si on peut inscrire un compte
+        renvoie False s'il n'y a pas d'erreurs
+        renvoie un string contenant un message d'erreur s'il y a une erreur
 
         Author : Hugo, Nathan
         """
@@ -167,6 +169,12 @@ class Client_mariadb:
         return False
 
     def test_connection(self,pseudo,password):
+        """Fonction qui teste la connection d'un compte,
+        renvoie False s'il n'y a pas d'erreurs
+        renvoie un string contenant un message d'erreur s'il y a une erreur
+
+        Author : Nathan
+        """
         self.cursor.execute("SELECT password FROM comptes WHERE pseudo=%s",(pseudo,))
         c=self.cursor
         lc=[e for e in c]
@@ -192,7 +200,9 @@ class Client_mariadb:
         """
         Fonction qui récupère les données du personnage
 
-        Author : Nathan
+        Author :
         """
+        data_perso = {}
+        #TODO
         return data_perso
 
