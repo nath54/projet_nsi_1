@@ -27,8 +27,6 @@ class Perso(Combattant):
 
         Author: Hugo, Nathan
 
-        TODO: Changer stats de base ?
-
         """
         Combattant.__init__(self, game)
         self.equip = {"Amulette": None, "Armure": None, "Arme": None}
@@ -38,8 +36,8 @@ class Perso(Combattant):
         self.race = ""
         self.charme = 0
         self.force = 0
-        self.intelligence = 0
-        self.discrection = 0
+        self.intel = 0
+        self.discr = 0
 
     # region Format
     def format_invent(self):

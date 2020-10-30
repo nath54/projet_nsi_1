@@ -15,6 +15,7 @@ except:
         
 
 import sys
+from server_python.Game.Objets.Objet import Objet
 
 
 class Client_mariadb:
@@ -45,6 +46,7 @@ class Client_mariadb:
         self.host = "localhost"
         self.port = 3307
         self.database = "projet_nsi_1"
+        self.game = game
         try:
             self.connection = mariadb.connect(
                 user=self.user,
@@ -89,44 +91,45 @@ class Client_mariadb:
         Author : Nathan, Hugo
 
         """
-        query = ("CREATE TABLE IF NOT EXISTS comptes "+
-                 "(id INT PRIMARY KEY AUTO_INCREMENT,"+
-                 "pseudo TEXT, email TEXT, password TEXT, perso_id INT);")
+        query = ("""CREATE TABLE IF NOT EXISTS comptes 
+                    (id INT PRIMARY KEY AUTO_INCREMENT, pseudo TEXT, 
+                    email TEXT, password TEXT, perso_id INT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
-        query = ("CREATE TABLE IF NOT EXISTS persos "+
-                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, classe TEXT, "+
-                 "race TEXT, niveau INT, force_ INT, intelligence INT, "+
-                 "charme INT, discretion INT, experience_totale INT, "+
-                 "experience INT, vie_totale INT, vie INT, energie_totale INT,"+
-                 "energie INT, equipement TEXT, quetes TEXT, lieu INT);")
+        query = ("""CREATE TABLE IF NOT EXISTS persos 
+                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, classe TEXT,
+                    race TEXT, niveau INT, force_ INT, intelligence INT, 
+                    charme INT, discretion INT, experience_totale INT, 
+                    experience INT, vie_totale INT, vie INT,
+                    energie_totale INT, energie INT, equipement TEXT, 
+                    quetes TEXT, lieu INT);""")
         print(query)
         self.cursor.execute(query)
         self.connection.commit()
 
-        query = ("CREATE TABLE IF NOT EXISTS objets "+
-                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "+
-                 "description TEXT, type_ TEXT, effet_utilise TEXT);")
+        query = ("""CREATE TABLE IF NOT EXISTS objets
+                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, 
+                    description TEXT, type_ TEXT, effet_utilise TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
-        query = ("CREATE TABLE IF NOT EXISTS pnjs "+
-                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "+
-                 "description TEXT, race TEXT, dialogue TEXT);")
+        query = ("""CREATE TABLE IF NOT EXISTS pnjs 
+                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, 
+                    description TEXT, race TEXT, dialogue TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
-        query = ("CREATE TABLE IF NOT EXISTS ennemis "+
-                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "+
-                 "description TEXT, vie_max INT);")
+        query = ("""CREATE TABLE IF NOT EXISTS ennemis
+                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, 
+                    description TEXT, vie_max INT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
-        query = ("CREATE TABLE IF NOT EXISTS lieux "+
-                 "(id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, "+
-                 "description TEXT, ennemis TEXT, pnjs TEXT, objets TEXT, "+
-                 "lieux TEXT);")
+        query = ("""CREATE TABLE IF NOT EXISTS lieux 
+                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, 
+                    description TEXT, ennemis TEXT, pnjs TEXT, objets TEXT, 
+                    lieux TEXT);""")
         # ennemis, pnjs, objets et lieux contiennent les ID des éléments, avec
         # "/" comme séparateur entre chaque ID
         self.cursor.execute(query)
@@ -206,3 +209,20 @@ class Client_mariadb:
         #TODO
         return data_perso
 
+    def get_obj_from_DB(self, id):
+        """Renvoie l'objet demandé
+
+        Args:
+            id(int): ID de l'objet à chercher
+
+        Returns:
+            Objet/None: Objet d'id `id` ou None si pas trouvé
+
+        Author: Hugo
+
+        """
+        query = ("SELECT * FROM objets WHERE id=%s", str(id))
+        self.cursor.execute(query)
+        for id, nom, desc, type_, effet in self.cursor:
+            return (nom, desc, type_, effet)
+        return None
