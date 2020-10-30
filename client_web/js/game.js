@@ -1,4 +1,5 @@
 
+debug = true; 
 
 //fonction qui ajoute du texte
 function aff_message(txt , color, text_on_click, elts_speciaux){
@@ -143,6 +144,8 @@ function commandes_client(txt){
                 mm.children = [];
                 mm.innerHTML = "";
                 return false;
+            case "perso_creator":
+                perso_creator();
             default:
                 break;
         }

@@ -153,16 +153,16 @@ JUSTE POUR client.html
     padding-right: 5%;
 }
 
-#bt{
+button{
     background-color: white;
     color:black;
     width:10%;
     min-height:35px;
     border:none;
     border-radius: 5px;
-}#bt:hover{
+}button:hover{
     background-color: rgb(220,220,220);
-}#bt:active{
+}button:active{
     background-color: rgb(120,120,120);
     border-radius: 10px;
 }

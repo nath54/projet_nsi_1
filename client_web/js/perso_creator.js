@@ -36,7 +36,7 @@ const classes = {
 function perso_creator(){
     document.getElementById("div_creation_perso").style.display = "initial";
     //genres
-    for(e of getComputedStyle){
+    for(e of genres){
         var o = document.createElement("option");
         o.innerHTML = e;
         document.getElementById("select_genre").appendChild(o)

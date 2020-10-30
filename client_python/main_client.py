@@ -294,6 +294,11 @@ class Client:
 
         lst_classes = ["guerrier","archer","mage blanc","mage noir","mage guerrier","assassin","voleur","paladin","barbare","tank"] #il faut que ca s'adapte à la taille de la liste car elle va changer
         lst_race = ["humain","drakonien","elfe","elfe noir","orc","nain","demi-elfe","fée"] #pareil, ca va changer
+        lst_genres = ["homme","femme","agenre","androgyne","bigender","non-binaire","autre"] #c'est pour faire plaisir à tout le monde 
+
+        #TODO
+        #TODO
+        #TODO
 
         return data_perso
 
