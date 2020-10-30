@@ -16,7 +16,7 @@ class Map:
         self.lieux = {}
         pass
 
-    def load_from_json(self, Lieu, Objet, Pnj, Perso, Ennemi, game):
+    def load_from_json(self, game):
         """Permet de charger la map depuis un fichier `.json`.
 
         Author: Nathan
@@ -27,10 +27,10 @@ class Map:
             if fichier.endswith("json"):
                 f = io.open(emplacement+fichier, "r", encoding="utf-8")
                 data = json.loads(f.read())
-                self.create_lieu(data, Lieu, Objet, Pnj, Perso, Ennemi, game)
+                self.create_lieu(data, game)
                 f.close()
 
-    def create_lieu(self, datalieu, Lieu, Objet, Pnj, Perso, Ennemi, game):
+    def create_lieu(self, datalieu, game):
         """Instancie un lieu.
 
         Args:
@@ -39,7 +39,7 @@ class Map:
         Author: Nathan
 
         """
-        lieu = Lieu()
+        lieu = game.Lieu()
         lieu.map_ = self
         dk = datalieu.keys()
         if "id" not in dk:
@@ -52,14 +52,14 @@ class Map:
             lieu.description = datalieu["description"]
         if "pnjs" in dk:
             for pid in datalieu["pnjs"]:
-                lieu.pnjs.add(Pnj(pid,game))
+                lieu.pnjs.add(game.Pnj(pid,game))
         if "ennemis" in dk:
             for pid in datalieu["ennemis"]:
                 if type(pid) == int:
-                    lieu.ennemis.add(Ennemi(pid,game))
+                    lieu.ennemis.add(game.Ennemi(pid,game))
                 elif type(pid)==list:
                     for _ in range(pid[1]):
-                        lieu.ennemis.add(Ennemi(pid[0],game))
+                        lieu.ennemis.add(game.Ennemi(pid[0],game))
 
                 # TODO : Trouver un système où il pourrait y avoir plusieurs
                 #        fois le même objet
@@ -67,12 +67,12 @@ class Map:
         if "objets" in dk:
             for pid in datalieu["objets"]:
                 if type(pid) == int:
-                    lieu.objets.add(Objet(pid, game))
+                    lieu.objets.add(game.Objet(pid, game))
                 # TODO : Trouver un système où il pourrait y avoir plusieurs
                 #        fois le même objet
                 elif type(pid)==list:
                     for _ in range(pid[1]):
-                        lieu.objets.add(Objet(pid[0],game))
+                        lieu.objets.add(game.Objet(pid[0],game))
 
         if "lieux" in dk:
             lieu.lieux_accessibles = datalieu["lieux"]

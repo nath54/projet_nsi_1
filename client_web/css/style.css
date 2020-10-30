@@ -201,7 +201,9 @@ JUSTE POUR client.html
 }
 
 #div_creation_perso{
+    
     display:none;
+    
     position: absolute;
     top: 0;
     bottom: 0;

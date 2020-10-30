@@ -24,6 +24,13 @@ class Game:
         Author: ???
 
         """
+        self.Map = Map
+        self.Lieu = Lieu
+        self.Objet = Objet
+        self.Quete = Quete
+        self.Perso = Perso
+        self.Pnj = Pnj
+        self.Ennemi = Ennemi
         self.map_ = Map()
         # TODO
         pass
@@ -34,7 +41,7 @@ class Game:
         Author: Nathan
 
         """
-        self.map_.load_from_json(Lieu, Objet, Pnj, Perso, Ennemi, self)
+        self.map_.load_from_json(self)
         print("Débuggage (on vérifie que ça a bien tout créé)")
         print("\nListe des lieux : ")
         print(self.map_.lieux)
