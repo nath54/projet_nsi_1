@@ -1,6 +1,9 @@
 import os
 import json
 
+from server_python.client_db import Client_mariadb
+from server_python.Game.Game import Game
+
 data_objs = [
     "Data/objets/pomme.json"
 ]
@@ -22,11 +25,12 @@ class Objet:
 
     """
 
-    def __init__(self, index, game):
+    def __init__(self, game, id):
         """Créer un objet.
 
         Args:
-            index(int): Index de l'objet à utiliser
+            game(Game): Référence à la partie
+            id(int): Index de l'objet à utiliser
 
         Author: Hugo, Nathan
 
@@ -43,28 +47,28 @@ class Objet:
         # on charge l'objet
         self.load()
 
-    def load(self):
+    def load(self, important=True):
         """Charge l'objet.
 
-        Author: Nathan
+        Args:
+            important(bool):  True: L'absence de l'objet provoque une erreur
+                             False: L'absence de l'objet provoque un print
+
+        Author: Hugo (d'une idée originale de Nathan)
 
         """
-        if os.path.exists(data_objs[self.index]):
-            f = open(data_objs[self.index])
-            data = json.loads(f.read())
-            f.close()
-
-            dk = data.keys()
-            if "type" in dk:
-                self.type = data["type"]
-            if "nom" in dk:
-                self.nom = data["nom"]
-            if "description" in dk:
-                self.description = data["description"]
-            if "effets_utilise" in dk:
-                self.effet_utilise = data["effets_utilise"]
-
-            # Il faudra sans doute rajouter d'autres effets dans le futur
+        datas = self.game.client_db.get_obj_from_DB(self.index)
+        if datas is not None:
+            self.nom = datas[0]
+            self.description = datas[1]
+            self.type = datas[2]
+            self.effet_utilise = datas[3]
+        else:
+            err = f"L'indice {self.index} ne correspond à aucun objet"
+            if important:
+                raise IndexError(err)
+            else:
+                print(err)
 
     def __repr__(self):
         """Permet d'afficher une description de l'objet.
