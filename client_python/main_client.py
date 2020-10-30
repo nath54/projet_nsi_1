@@ -91,6 +91,7 @@ class Client:
 
         self.encours = True
         self.attente = False
+        self.etat = "None"
 
         i=input("Voulez vous que ce soit un client websocket ?")
         if i.lower() in ["o","oui","y","yes"]:
@@ -128,6 +129,13 @@ class Client:
                               "password": password}))
         print("En attente du serveur ... ")
         self.attente_serv()
+        print("recu !")
+        if self.etat == "connecté":
+            print("Connecté")
+            self.interface()
+        else:
+            self.debut()
+        
 
     def inscription(self):
         #email
@@ -152,6 +160,12 @@ class Client:
                                   "password": password, "email": email}))
             print("En attente du serveur ... ")
             self.attente_serv()
+            print("recu !")
+            if self.etat == "connecté":
+                print("Connecté")
+                self.interface()
+            else:
+                self.debut()
 
     def send(self, message, important=False):
         """Permet d'envoyer un message.
@@ -234,16 +248,17 @@ class Client:
                     return
             if data["type"] == "connection successed":
                 print("Connection acceptée")
-                _thread.start_new_thread ( self.interface , ())
+                self.etat = "connecté"
+                
             elif data["type"] == "inscription successed":
                 print("Inscription acceptée")
-                _thread.start_new_thread ( self.interface , ())
+                self.etat = "connecté"
+                
             elif data["type"] == "connection failed":
                 print("Connection refusée\nerreur : "+data["value"])
-                _thread.start_new_thread ( self.debut , ())
+                
             elif data["type"] == "inscription failed":
                 print("Inscription refusée\nerreur : "+data["value"])
-                _thread.start_new_thread ( self.debut , ())
 
     def on_close(self):
         """Réaction en cas de fermeture/problème.
