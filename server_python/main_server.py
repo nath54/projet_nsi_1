@@ -191,6 +191,7 @@ class Server:
                     else:
                         reussi=self.client_db.inscription(pseudo,email,password)
                         self.send(client,json.dumps({"type":"inscription successed"}))
+                        self.send(client,json.dumps({"type":"creation perso"}))
                         #il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
                     #TODO
                     pass
@@ -202,6 +203,7 @@ class Server:
                         self.send(client,json.dumps({"type":"connection failed","value":erreur}))
                     else:
                         self.send(client,json.dumps({"type":"connection successed"}))
+                        self.send(client,json.dumps({"type":"creation perso"}))
                         #il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
                     #TODO
                     pass

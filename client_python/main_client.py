@@ -273,6 +273,10 @@ class Client:
             elif data["type"] == "inscription failed":
                 print("Inscription refusée\nerreur : "+data["value"])
 
+            elif data["type"] == "creation perso":
+                data_perso = self.creation_perso()
+                self.send(json.dumps(data_perso))
+
     def on_close(self):
         """Réaction en cas de fermeture/problème.
 
@@ -281,6 +285,17 @@ class Client:
         """
         print("connection fermée")
         exit()
+
+    def creation_perso(self):
+        data_perso = { "nom":None, "race":None, "class":None , "sexe":None }
+        #TODO : Faire que l'utilisateur peut créer son perso
+        #Attenion ! Il faut faire un systeme sécurisé 
+        #(il faut bien vérifier les réponses de l'utilisateur, et lui redemander si ca ne va pas)
+
+        lst_classes = ["guerrier","archer","mage blanc","mage noir","assassin","voleur","paladin","barbare","bouclier humain"] #il faut que ca s'adapte à la taille de la liste car elle va changer
+        lst_race = ["humain","goblin","homme-dragon","elfe","elfe noir","troll","nain","demi elfe"] #pareil, ca va changer
+
+        return data_perso
 
     def interface(self):
         """Permet à l'utilisateur d'écrire et d'envoyer des messages.
