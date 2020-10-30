@@ -5,17 +5,26 @@
 # Méthode 1 : mariadb
 try:
     import mariadb
-except:
+except Exception as e:
     # Méthode 2 : mysql
     try:
         import mysql.connector as mariadb
-    except:
+    except Exception as e:
         # Rien n'est installé
-        raise UserWarning("Merci d'installer la librairie 'mariadb' ou 'mysql' pour Python !")
-        
+        raise UserWarning("Il faut installer la librairie mariadb ou mysql !")
+
 
 import sys
-from server_python.Game.Objets.Objet import Objet
+import os
+import json
+import io
+
+
+def jload(path_to_file):
+    f = io.open(path_to_file, "r", encoding="utf-8")
+    txt = f.read()
+    f.close()
+    return json.loads(txt)
 
 
 class Client_mariadb:
@@ -33,7 +42,7 @@ class Client_mariadb:
 
     """
 
-    def __init__(self):
+    def __init__(self, game):
         """Initialise les caractéristiques de la base de données.
 
         Author: Nathan
@@ -91,45 +100,48 @@ class Client_mariadb:
         Author : Nathan, Hugo
 
         """
-        query = ("""CREATE TABLE IF NOT EXISTS comptes 
-                    (id INT PRIMARY KEY AUTO_INCREMENT, pseudo TEXT, 
+        query = ("""CREATE TABLE IF NOT EXISTS comptes
+                    (id INT PRIMARY KEY AUTO_INCREMENT, pseudo TEXT,
                     email TEXT, password TEXT, perso_id INT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
-        query = ("""CREATE TABLE IF NOT EXISTS persos 
+        query = ("""CREATE TABLE IF NOT EXISTS persos
                     (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, classe TEXT,
-                    race TEXT, niveau INT, force_ INT, intelligence INT, 
-                    charme INT, discretion INT, experience_totale INT, 
+                    race TEXT, niveau INT, force_ INT, intelligence INT,
+                    charme INT, discretion INT, experience_totale INT,
                     experience INT, vie_totale INT, vie INT,
-                    energie_totale INT, energie INT, equipement TEXT, 
+                    energie_totale INT, energie INT, equipement TEXT,
                     quetes TEXT, lieu INT);""")
         print(query)
         self.cursor.execute(query)
         self.connection.commit()
 
         query = ("""CREATE TABLE IF NOT EXISTS objets
-                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, 
-                    description TEXT, type_ TEXT, effet_utilise TEXT);""")
+                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT,
+                    description_ TEXT, type_ TEXT, effet_utilise TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
-        query = ("""CREATE TABLE IF NOT EXISTS pnjs 
-                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, 
-                    description TEXT, race TEXT, dialogue TEXT);""")
+        query = ("""CREATE TABLE IF NOT EXISTS pnjs
+                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT,
+                    description_ TEXT, race TEXT, dialogue TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
         query = ("""CREATE TABLE IF NOT EXISTS ennemis
-                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, 
-                    description TEXT, vie_max INT);""")
+                    (id INT PRIMARY KEY AUTO_INCREMENT, type_ TEXT, nom TEXT,
+                    race TEXT, description_ TEXT
+                    vie_min INT, vie_max INT, attaque_min INT,
+                    attaque_max INT, attaque_effets: TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
-        query = ("""CREATE TABLE IF NOT EXISTS lieux 
-                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, 
-                    description TEXT, ennemis TEXT, pnjs TEXT, objets TEXT, 
+        query = ("""CREATE TABLE IF NOT EXISTS lieux
+                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT,
+                    description_ TEXT, ennemis TEXT, pnjs TEXT, objets TEXT,
                     lieux TEXT);""")
+
         # ennemis, pnjs, objets et lieux contiennent les ID des éléments, avec
         # "/" comme séparateur entre chaque ID
         self.cursor.execute(query)
@@ -150,12 +162,21 @@ class Client_mariadb:
         Author: Hugo
 
         """
-        self.cursor.execute("INSERT INTO comptes (pseudo, email, password) VALUES " +
-                 "(%s,%s,%s)", (pseudo, email, password))
+        self.cursor.execute("""INSERT INTO comptes (pseudo, email, password)
+                 VALUES
+                 (%s,%s,%s)""", (pseudo, email, password))
         self.connection.commit()
-        return True
+        # on récupère ensuite l'id
+        self.cursor.execute("SELECT id FROM comptes WHERE pseudo=%s",
+                            (pseudo,))
+        lc = [e for e in self.cursor]
+        if len(lc) == 1:
+            id_ = lc[0][0]
+        else:
+            raise UserWarning("Probleme with comptes, il n'y a pas q'un elt")
+        return True, id_
 
-    def test_compte_inscrit(self,pseudo,email):
+    def test_compte_inscrit(self, pseudo, email):
         """Fonction qui teste si on peut inscrire un compte
         renvoie False s'il n'y a pas d'erreurs
         renvoie un string contenant un message d'erreur s'il y a une erreur
@@ -163,7 +184,7 @@ class Client_mariadb:
         Author : Hugo, Nathan
         """
         self.cursor.execute("SELECT pseudo, email FROM comptes")
-        c=self.cursor
+        c = self.cursor
         for pseudo_, email_ in c:
             if pseudo == pseudo_:
                 return "Le pseudo est déjà utilisé"
@@ -171,42 +192,78 @@ class Client_mariadb:
                 return "L'email est déjà utilisé"
         return False
 
-    def test_connection(self,pseudo,password):
+    def test_connection(self, pseudo, password):
         """Fonction qui teste la connection d'un compte,
         renvoie False s'il n'y a pas d'erreurs
         renvoie un string contenant un message d'erreur s'il y a une erreur
 
         Author : Nathan
         """
-        self.cursor.execute("SELECT password FROM comptes WHERE pseudo=%s",(pseudo,))
-        c=self.cursor
-        lc=[e for e in c]
-        if len(lc)==0: return f"Il n'y a pas de compte avec le pseudo '{pseudo}'"
-        elif len(lc)>1:
-            return "probleme de comptes, veuillez contacter un administateur au plus vite (il y a plusieurs comptes avec le même pseudonyme)"
+        self.cursor.execute("SELECT password, id FROM comptes WHERE pseudo=%s",
+                            (pseudo,))
+        c = self.cursor
+        lc = [e for e in c]
+        if len(lc) == 0:
+            return f"Il n'y a pas de compte avec le pseudo '{pseudo}'", None
+        elif len(lc) > 1:
+            return ("probleme de comptes, veuillez contacter un administateur"
+                    " au plus vite "
+                    "(il y a plusieurs comptes avec le même pseudo)", None)
         else:
-            password_=lc[0][0]
-            if password==password_:
-                return False
+            password_ = lc[0][0]
+            id_ = lc[0][1]
+            if password == password_:
+                return False, id_
             else:
-                return "Le mot de passe est faux !"
+                return "Le mot de passe est faux !", None
 
     def transfert_json_to_bdd(self):
-        """ A faire : transférer toutes les données des fichiers json vers la bdd
+        """ 
+        A faire : transférer toutes les données des fichiers json vers la bdd
+
+        Author : Nathan
+        """
+
+        # Les ennemis :
+        pathd = "Data/ennemis/"
+        for fich in os.listdir(pathd):
+            d = jload(pathd+fich)
+            self.cursor.execute("""INSERT INTO ennemis (id, type_, nom, race,
+                                description_, vie_min, vie_max, attaque_min,
+                                attaque_max, attaque_effets)
+                                VALUES
+                                (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                                (
+                                    d["id"], d["type"], d["nom"], d["race"],
+                                    d["goblin"], d["description"],
+                                    d["vie"][0], d["vie"][1],
+                                    d["attaque"][0], d["attaque"][1],
+                                    json.dumps(d["attaque_effets"])
+                                ))
+
+        # A faire les autres
+        # (il y aura sans doutes la table à changer
+        #  comme j'ai du changer pour ennemi)
+        # TODO
+        pass
+
+    def set_perso(self, perso):
+        """
+        Fonction qui enregistre un perso dans la bdd
 
         Author :
         """
-        #TODO
+        # TODO
         pass
 
-    def get_player(self,pseudo):
+    def get_perso(self, pseudo):
         """
         Fonction qui récupère les données du personnage
 
         Author :
         """
         data_perso = {}
-        #TODO
+        # TODO
         return data_perso
 
     def get_obj_from_DB(self, id):
@@ -218,11 +275,16 @@ class Client_mariadb:
         Returns:
             Objet/None: Objet d'id `id` ou None si pas trouvé
 
-        Author: Hugo
+        Author: Hugo, Nathan
 
         """
-        query = ("SELECT * FROM objets WHERE id=%s", str(id))
+        query = ("SELECT * FROM objets WHERE id=%s", (str(id),))
         self.cursor.execute(query)
         for id, nom, desc, type_, effet in self.cursor:
-            return (nom, desc, type_, effet)
+            obj = self.game.Objet()
+            obj.nom = nom
+            obj.description = desc
+            obj.type = type_
+            obj.effet = effet
+            return obj
         return None

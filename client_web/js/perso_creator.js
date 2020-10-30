@@ -69,7 +69,7 @@ function send_perso(){
     var race = document.getElementById("select_race").value;
     var classe = document.getElementById("select_classe").value;
     //
-    var jt = JSON.stringify({"type":"data_creation_perso","nom":nom,"genre":genre,"race":race,"classe":classe})
+    var jt = JSON.stringify({"type":"perso_cree","nom":nom,"genre":genre,"race":race,"classe":classe})
     websocket.send(jt);
     //
     document.getElementById("div_creation_perso").style.display = "none";

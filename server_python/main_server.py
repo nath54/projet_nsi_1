@@ -17,7 +17,7 @@ from Player import Player
 # endregion
 
 
-#fonction qui teste si un texte est du format json
+# fonction qui teste si un texte est du format json
 def is_json(myjson):
     try:
         json_object = json.loads(myjson)
@@ -46,8 +46,8 @@ class Server:
         self.max_size = 1024
         self.clients = {}
         self.server = None
-        self.client_db = Client_mariadb()
         self.game = Game()
+        self.client_db = Client_mariadb(self.game)
         # TODO
         pass
 
@@ -84,7 +84,8 @@ class Server:
         """Gère l'interaction serveur-client.
 
         Args:
-            client (socket.socket): Référence au client avec qui gérer l'interaction
+            client (socket.socket): Référence au client avec
+                                    qui gérer l'interaction
             infos (couple): couple d'informations : ip, ???
 
         Author: Nathan
@@ -120,7 +121,7 @@ class Server:
             if client != autre_client:
                 autre_client.send(message)
 
-    def send(self, client, message, print_ = False, important=False):
+    def send(self, client, message, print_=False, important=False):
         """Envoie un message a un client précis.
 
         Args:
@@ -137,7 +138,8 @@ class Server:
         size = sys.getsizeof(message)
         if size > self.max_size:
             if important:
-                raise UserWarning(f"ERREUR : Le message est trop long ! {str(size)} bytes/{str(self.max_size)} bytes")
+                raise UserWarning(f"ERREUR : Le message est trop long !"
+                                  "{str(size)}/{str(self.max_size)} bytes")
             print(f"""ERREUR : Le message est trop long ! {str(size)} bytes/
                    {str(self.max_size)} bytes""")
             return
@@ -154,7 +156,8 @@ class Server:
         Author: Nathan
 
         """
-        self.clients[client] = {"player":None}      # On y mettra plus d'infos plus tard
+        self.clients[client] = {"player": None}
+        # On y mettra plus d'infos plus tard
         print("Connexion acceptée", client)
         print(type(client), i)
 
@@ -176,39 +179,40 @@ class Server:
                 data = json.loads(message)
                 if data["type"] == "commande":
                     cl = self.clients[client]
-                    if not "player" in cl.keys()  or cl["player"] == None:
+                    if (not ("player" in cl.keys())) or (cl["player"] is None):
                         dict_ = {"type": "not connected",
                                  "value": "Veuillez vous connecter pour jouer"}
                         self.send(client, json.dumps(dict_))
                     else:
                         self.commandes(client, data)
                 elif data["type"] == "inscription":
-                    pseudo=data["pseudo"]
-                    email=data["email"]
-                    password=data["password"]
-                    erreur=self.client_db.test_compte_inscrit(pseudo,email)
+                    pseudo = data["pseudo"]
+                    email = data["email"]
+                    password = data["password"]
+                    erreur = self.client_db.test_compte_inscrit(pseudo, email)
                     if erreur:
-                        self.send(client,json.dumps({"type":"inscription failed","value":erreur}))
+                        self.send(client, json.dumps({"type": "inscription failed", "value": erreur}))
                     else:
-                        reussi=self.client_db.inscription(pseudo,email,password)
-                        self.send(client,json.dumps({"type":"inscription successed"}))
-                        self.send(client,json.dumps({"type":"creation perso"}))
-                        #il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
-                    #TODO
-                    pass
+                        reussi, id_ = self.client_db.inscription(pseudo, email, password)
+                        self.clients[client]["player"] = Player(pseudo, self.game, id_)
+                        self.send(client, json.dumps({"type": "inscription successed"}))
+                        self.send(client, json.dumps({"type": "creation perso"}))
+                        # il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
                 elif data["type"] == "connection":
-                    pseudo=data["pseudo"]
-                    password=data["password"]
-                    erreur=self.client_db.test_connection(pseudo,password)
+                    pseudo = data["pseudo"]
+                    password = data["password"]
+                    erreur, id_ = self.client_db.test_connection(pseudo, password)
                     if erreur:
-                        self.send(client,json.dumps({"type":"connection failed","value":erreur}))
+                        self.send(client, json.dumps({"type": "connection failed", "value": erreur}))
                     else:
-                        self.send(client,json.dumps({"type":"connection successed"}))
-                        data_perso = self.client_db.get_player(pseudo)
-                        self.clients[client] = Player(pseudo,data_perso, self.game)
+                        self.send(client, json.dumps({"type": "connection successed"}))
+                        data_perso = self.client_db.get_perso(pseudo)
+                        self.clients[client]["player"] = Player(pseudo, self.game, id_)
+                        self.clients[client]["player"].load_perso(data_perso)
                         #il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
-                    #TODO
-                    pass
+                elif data["type"] == "perso_cree":
+                    self.clients[client]["player"].create_perso(data)
+                    self.client_db.set_perso(self.clients[client]["player"].perso)
                 else:
                     # TODO
                     pass

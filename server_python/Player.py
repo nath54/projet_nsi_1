@@ -1,6 +1,7 @@
 
 from Game.Etres.Perso import Perso
 
+
 class Player:
     """Classe du joueur.
 
@@ -8,18 +9,26 @@ class Player:
         pseudo(str): Pseudo du compte
         password(str): Mot de passe du compte
         perso(Perso): Référence au personnage du compte
+        id(int) : l'identifiant du player dans la table comptes
 
     """
 
-    def __init__(self,pseudo,data_perso,game):
+    def __init__(self, pseudo, data_perso, game):
         """Initie le compte du joueur."""
         self.pseudo = pseudo
         self.perso = None
-        self.init_perso(data_perso)
+        self.game = game
+        self.id = 0
 
-    def load_perso(self,data_perso):
-        self.perso = Perso()
-        
+    def load_perso(self, data_perso):
+        self.perso = Perso(self.game)
+        self.player = self
+
+        self.perso.nom = data_perso["nom"]
+        self.perso.genre = data_perso["genre"]
+        self.perso.race = data_perso["race"]
+        self.perso.classe = data_perso["classe"]
+
         self.perso.charme = data_perso["charme"]
         self.perso.discretion = data_perso["discretion"]
         self.perso.force = data_perso["force"]
@@ -34,55 +43,57 @@ class Player:
         self.perso.resistances = data_perso["resistances"]
         self.perso.faiblesses = data_perso["faiblesses"]
 
-    def creation(self,data_creation,game):
+    def creation(self, data_creation):
         #
+        self.perso.nom = data_creation["nom"]
+        self.perso.genre = data_creation["genre"]
         self.perso.race = data_creation["race"]
         self.perso.classe = data_creation["classe"]
-        #on met en place la base des valeurs
+        # on met en place la base des valeurs
         valeurs = {
-            "charme":5,
-            "discretion":5,
-            "force":5,
-            "agilite":5,
-            "magie":5,
-            "energie":20,
-            "vie":20,
-            "inventaire":[],
-            "effets_attaque":{},
-            "bonus_esquive":0,
-            "sorts":{},
-            "resitances":{},
-            "faiblesses":{}
+            "charme": 5,
+            "discretion": 5,
+            "force": 5,
+            "agilite": 5,
+            "magie": 5,
+            "energie": 20,
+            "vie": 20,
+            "inventaire": [],
+            "effets_attaque": {},
+            "bonus_esquive": 0,
+            "sorts": {},
+            "resitances": {},
+            "faiblesses": {}
         }
 
-        #on applique les valeurs des races
-        for attribut in game.races[self.race].keys():
+        # on applique les valeurs des races
+        for attribut in self.game.races[self.perso.race].keys():
             if attribut in valeurs.keys():
                 if type(valeurs[attribut]) == int:
-                    valeurs[attribut]+=game.races[self.race][attribut]
+                    valeurs[attribut] += self.game.races[self.perso.race][attribut]
                 elif type(valeurs[attribut]) == dict:
-                    for k,v in game.races[self.race][attribut].items():
-                        if not k in valeurs[attribut].keys():
-                            valeurs[attribut][k]=v
+                    for k, v in self.game.races[self.perso.race][attribut].items():
+                        if not (k in valeurs[attribut].keys()):
+                            valeurs[attribut][k] = v
                         elif type(v)==int:
-                            valeurs[attribut][k]+=v
+                            valeurs[attribut][k] += v
                 elif type(valeurs[attribut]) == list:
-                    for v in game.races[self.race][attribut]:
+                    for v in self.game.races[self.perso.race][attribut]:
                         valeurs[attribut].append(v)
 
         #on applique les valeurs des classes
-        for attribut in game.classes[self.classe].keys():
+        for attribut in self.game.classes[self.perso.classe].keys():
             if attribut in valeurs.keys():
                 if type(valeurs[attribut]) == int:
-                    valeurs[attribut]+=game.classes[self.classe][attribut]
+                    valeurs[attribut]+=self.game.classes[self.perso.classe][attribut]
                 elif type(valeurs[attribut]) == dict:
-                    for k,v in game.classes[self.classe][attribut].items():
+                    for k,v in self.game.classes[self.perso.classe][attribut].items():
                         if not k in valeurs[attribut].keys():
                             valeurs[attribut][k]=v
                         elif type(v)==int:
                             valeurs[attribut][k]+=v
                 elif type(valeurs[attribut]) == list:
-                    for v in game.classes[self.classe][attribut]:
+                    for v in self.game.classes[self.perso.classe][attribut]:
                         valeurs[attribut].append(v)
 
         #on donne les valeurs
@@ -99,5 +110,3 @@ class Player:
         self.perso.sorts = valeurs["sorts"]
         self.perso.resistances = valeurs["resistances"]
         self.perso.faiblesses = valeurs["faiblesses"]
-        
-
