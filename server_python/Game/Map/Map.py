@@ -24,10 +24,11 @@ class Map:
         """
         emplacement = "Data/map/"
         for fichier in os.listdir(emplacement):
-            f = io.open(emplacement+fichier, "r", encoding="utf-8")
-            data = json.loads(f.read())
-            self.create_lieu(data, Lieu, Objet, Pnj, Perso, Ennemi, game)
-            f.close()
+            if fichier.endswith("json"):
+                f = io.open(emplacement+fichier, "r", encoding="utf-8")
+                data = json.loads(f.read())
+                self.create_lieu(data, Lieu, Objet, Pnj, Perso, Ennemi, game)
+                f.close()
 
     def create_lieu(self, datalieu, Lieu, Objet, Pnj, Perso, Ennemi, game):
         """Instancie un lieu.

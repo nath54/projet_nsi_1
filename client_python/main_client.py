@@ -148,7 +148,7 @@ class Client:
             self.debut()
         else:
             #on peut envoyer les infos
-            self.send(json.dumps({"type": "inscription", "pseudo": pseudo, 
+            self.send(json.dumps({"type": "inscription", "pseudo": pseudo,
                                   "password": password, "email": email}))
             print("En attente du serveur ... ")
             self.attente_serv()
@@ -234,16 +234,16 @@ class Client:
                     return
             if data["type"] == "connection successed":
                 print("Connection acceptée")
-                self.interface()
+                _thread.start_new_thread ( self.interface , ())
             elif data["type"] == "inscription successed":
                 print("Inscription acceptée")
-                self.interface()
+                _thread.start_new_thread ( self.interface , ())
             elif data["type"] == "connection failed":
                 print("Connection refusée\nerreur : "+data["value"])
-                self.debut()
+                _thread.start_new_thread ( self.debut , ())
             elif data["type"] == "inscription failed":
                 print("Inscription refusée\nerreur : "+data["value"])
-                self.debut()
+                _thread.start_new_thread ( self.debut , ())
 
     def on_close(self):
         """Réaction en cas de fermeture/problème.
