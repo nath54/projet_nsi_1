@@ -1,31 +1,22 @@
 
 
 //fonction qui ajoute du texte
-function aff_message(txt = "", color = "white", text_on_click = null, elts_speciaux = []){
-    console.log("eeeeeeeee   elts spéciaux : ", elts_speciaux,"   txt : '",txt,"'");
+function aff_message(txt , color, text_on_click, elts_speciaux){
     var div=document.createElement("div");
     div.setAttribute("class","mes")
     //on crée l'element
+    var p = document.createElement("pre");
+    p.innerHTML=txt;
+    p.style.color=color;
+    //on l'ajoute
+    div.appendChild(p);
+    if(elts_speciaux!=null){
+        for(el of elts_speciaux){
+            div.appendChild(el);
+        }
+    }
     if(text_on_click!=null){
-        var p = document.createElement("pre");
-        p.innerHTML=txt;
-        p.style.color=color;
-        var s = document.createElement("span");
-        s.appendChild(p);
-        s.setAttribute("onclick",'text_click("'+text_on_click+'");');
-        //on l'ajoute
-        div.appendChild(s);
-    }
-    else{
-        var p = document.createElement("p");
-        p.innerHTML=txt;
-        p.style.color=color;
-        //on l'ajoute
-        div.appendChild(p);
-    }
-    for(el of elts_speciaux){
-        console.log(el);
-        div.appendChild(el);
+        div.setAttribute("onclick",'text_click("'+text_on_click+'");');
     }
     document.getElementById("mm").appendChild(div);
     document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
@@ -39,11 +30,13 @@ function text_click(text){
 }
 
 function create_text(txts){
-    var p = document.createElement("p");
+    var p = document.createElement("span");
+    p.setAttribute("class","txt_commande")
     for(t of txts){
-        var s = document.createElement("span");
+        var s = document.createElement("pre");
         s.innerHTML = t[0];
         s.style.color = t[1];
+        p.appendChild(s);
     }
     return p;
 }
@@ -53,38 +46,82 @@ function colorie_commande(txt){
     t = txt.split(" ");
     if(t.length>0){
         switch (t[0]){
+            //commandes à 0 arguments
             case "inventaire":
+            case "equipement":
+            case "attendre":
+            case "voir":
                 var nl = [];
                 for(x=1; x<t.length; x++){
                     nl.push(t[x]);
                 }
-                var p = create_text([[t[0],"red"],[nl.join(" "),"blue"]]);
+                var p = create_text([[t[0],"red"],[" "+nl.join(" "),"blue"]]);
                 elts_s.push(p);
                 break;
-    
-            case "commande suivante":
+            
+            //commandes à 1 arguments sur
+            case "desequiper":
+            case "equiper":
+            case "examiner":
+            case "fouiller":
+            case "prendre":
+            case "jeter":
+            case "consommer":
+            case "ouvrir":
+            case "fermer":
+            case "aller":
+            case "parler":
+            case "attaquer":
+                if(t.length>=2){
+                    var nl = [];
+                    for(x=2; x<t.length; x++){
+                        nl.push(t[x]);
+                    }
+                    var p = create_text([[t[0],"red"],[" "+t[1],"yellow"],[" "+nl.join(" "),"blue"]]);
+                    elts_s.push(p);
+                    break;
+                }
+            
+            //commandes à 2 arguments sur
+            case "mettre":
+            case "sortilege":
+                if(t.length>=3){
+                    var nl = [];
+                    for(x=3; x<t.length; x++){
+                        nl.push(t[x]);
+                    }
+                    var p = create_text([[t[0],"red"],[" "+t[1],"yellow"],[" "+t[2],"yellow"],[" "+nl.join(" "),"blue"]]);
+                    elts_s.push(p);
+                    break;
+                }
+
+            //commandes à 3 arguments sur
+            case "commande à 3 arguments":
+                if(t.length>=4){
+                    var nl = [];
+                    for(x=4; x<t.length; x++){
+                        nl.push(t[x]);
+                    }
+                    var p = create_text([[t[0],"red"],[" "+t[1],"yellow"],[" "+t[2],"yellow"],[" "+t[3],"yellow"],[" "+nl.join(" "),"blue"]]);
+                    elts_s.push(p);
+                    break;
+                }
+
+            //commandes à n arguments sur
+            case "commande avec tout comme arguments":
+                var nl = [];
+                for(x=1; x<t.length; x++){
+                    nl.push(t[x]);
+                }
+                var p = create_text([[t[0],"red"],[" "+nl.join(" "),"yellow"]]);
+                elts_s.push(p);
                 break;
-    
-            case "commande suivante":
-                break;
-    
-            case "commande suivante":
-                break;
-    
-            case "commande suivante":
-                break;
-    
-            case "commande suivante":
-                break;
-    
-            case "commande suivante":
-                break;
-    
-            case "commande suivante":
-                break;
-    
+            
+            //Des commandes à nombre d'arguments multiples ici :
+            
+            //quand il y a rien
             default:
-                var p = document.createElement("p");
+                var p = document.createElement("pre");
                 p.innerHTML = txt;
                 p.style.color = "blue";
                 elts_s.push(p);
@@ -94,19 +131,40 @@ function colorie_commande(txt){
     return elts_s;
 }
 
+function commandes_client(txt){
+    t = txt.split(" ");
+    if(t.length>0){
+        switch (t[0]){
+            case "clear":
+                var mm=document.getElementById("mm");
+                for(child of mm.children){
+                    mm.removeChild(child)
+                }
+                mm.children = [];
+                mm.innerHTML = "";
+                return false;
+            default:
+                break;
+        }
+    }
+    return true;
+}
+
 function sende(){
     var texte = document.getElementById("input").value;
     var j = {"type":"text","value":texte};
     var jt = JSON.stringify(j);
     websocket.send(jt);
+    if(commandes_client(texte)){
+        elts_s = colorie_commande(texte);
+        if(elts_s.length==0){
+            aff_message("> "+texte, "white", texte, null);
+        }
+        else{
+            aff_message("> ", "white" , texte , elts_s);
+        }
+    }
     document.getElementById("input").value = "";
-    elts_s = colorie_commande(texte);
-    if(elts_s.length==0){
-        aff_message(txt = "> "+texte, color = "white");
-    }
-    else{
-        aff_message(txt = "> ", color = "white" , elts_speciaux = elts_s);
-    }
 }
 
 function checkEnter(e) {

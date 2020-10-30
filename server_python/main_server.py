@@ -241,6 +241,7 @@ class Server:
         action = data["commande"]
         perso = self.clients[client]["player"].perso
 
+        #Les premieres commandes sont des commandes à 0 ou plus arguments
         if action == "voir":
             self.send(client, perso.lieu, True)
         elif action == "inventaire":
@@ -259,8 +260,11 @@ class Server:
             self.on_close(client)
         elif action == "attendre":  # Bof
             pass
+        #
         elif data_len <= 1:
             self.send(client, "Commande inconnue", True)
+
+        #Ce qui suit sont des commandes avec au moins 1 argument
         elif action == "desequiper":
             b = perso.desequiper(data["arg_1"])
             if b:
@@ -302,12 +306,17 @@ class Server:
             pass
         elif action == "attaquer":
             pass
+        #
         elif data_len <= 2:
+            self.send(client, "Commande inconnue", True)
             pass  # Action avec plus de 2 paramètres au-delà
+
+        #Ce qui suit sont des commandes avec au moin 1 argument
         elif action == "mettre":
             pass
         elif action == "sortilege":
             pass
+
         # TODO
         pass
 

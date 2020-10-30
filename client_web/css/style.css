@@ -183,6 +183,8 @@ JUSTE POUR client.html
 .mes{
     margin:0;
     padding: 2px;
+    display: flex;
+    flex-direction: row;
 }
 #mm{
     margin-top: auto;
@@ -192,7 +194,11 @@ JUSTE POUR client.html
     margin-left: 20px;
 }
 
-
+.txt_commande{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
 
 
 
