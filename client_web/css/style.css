@@ -200,6 +200,23 @@ JUSTE POUR client.html
     flex-wrap: wrap;
 }
 
+#div_creation_perso{
+    display:none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgb(8,8,8);
+}
+
+.marge_a_gauche{
+    margin-left: 30px;
+}
+
+.elt{
+    margin-top: 10px;
+}
 
 
 

@@ -13,6 +13,7 @@ import sys
 from client_db import Client_mariadb
 from Game.Game import Game
 from Game.Etres.Perso import Perso
+from Player import Player
 # endregion
 
 
@@ -204,7 +205,7 @@ class Server:
                     else:
                         self.send(client,json.dumps({"type":"connection successed"}))
                         data_perso = self.client_db.get_player(pseudo)
-                        self.clients[client] = Player(pseudo,data_perso)
+                        self.clients[client] = Player(pseudo,data_perso, self.game)
                         #il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
                     #TODO
                     pass
