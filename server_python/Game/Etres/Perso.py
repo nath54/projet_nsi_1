@@ -25,7 +25,7 @@ class Perso(Combattant):
     def __init__(self, game):
         """Instancie le personnage.
 
-        Author: Hugo
+        Author: Hugo, Nathan
 
         TODO: Changer stats de base ?
 
@@ -35,10 +35,11 @@ class Perso(Combattant):
         self.inventaire = []
         self.monnaie = 0
         self.classe = ""  # TODO
+        self.race = ""
         self.charme = 0
         self.force = 0
-        self.intel = 0
-        self.discr = 0
+        self.intelligence = 0
+        self.discrection = 0
 
     # region Format
     def format_invent(self):
@@ -127,33 +128,12 @@ class Perso(Combattant):
                 else:
                     obj[1] -= 1
 
-    def soigne_PV(self, nombre):
-        """Soigne la vie du personnage.
-
-        Args:
-            nombre(int): Quantité de vie à récupérer
-
-        Author: Hugo
-
-        """
-        self.vie += nombre
-        if self.vie > self.vie_totale:
-            self.vie = self.vie_totale
-
-    def soigne_EN(self, nombre):
-        """Soigne l'énergie du personnage.
-
-        Args:
-            nombre(int): Quantité d'énergie à récupérer
-
-        Author: Hugo
-
-        """
-        self.energie += nombre
-        if self.energie > self.energie_totale:
-            self.energie = self.energie_totale
-
     def desequiper(self, nom_obj, id_obj=None):
+        """
+        Fonction qui déséquipe le personnage d'un objet
+
+        Author : Hugo
+        """
         for key, val in self.equip:
             if val.index == id_obj or val.nom == nom_obj:
                 self.equip[key] = None
@@ -162,10 +142,21 @@ class Perso(Combattant):
         return False
 
     def add_to_invent(self, id_obj):
+        """
+        Fonction qui ajoute à l'inventaire un objet
+
+        Author : Hugo
+        """
         # TODO: obj = Objet(id_obj) qui créé l'objet depuis la DB
+        obj=None
         self.inventaire.append(obj)
 
     def equiper(self, nom_obj, id_obj=None):
+        """
+        Fonction qui équipe le personnage d'un objet
+
+        Author : Hugo
+        """
         for i in range(len(self.inventaire)):
             t_obj = self.inventaire[i]
             if t_obj.index == id_obj or t_obj.nom == nom_obj:

@@ -1,0 +1,14 @@
+{
+    "nom":"épée de bois",
+    "description":"",
+    "attaque corps à corps":[0,3],
+    "attaque à distance":[0,1],
+    "attaque magique":null,
+    "perte de l'arme en attaquant à distance":true,
+    "type":"attaque légère",
+    "réponse adversaire":true,
+    "élément":"bois",
+    "coup énergie corps à corps":0.5,
+    "coup énergie à distance":0.5,
+    "coup énergie magique":null
+}

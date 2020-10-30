@@ -51,7 +51,38 @@ class Combattant(Etre):
         """
         self.energie = self.energie_totale
 
+
+    def soigne_PV(self, nombre):
+        """Soigne la vie du personnage.
+
+        Args:
+            nombre(int): Quantité de vie à récupérer
+
+        Author: Hugo
+
+        """
+        self.vie += nombre
+        if self.vie > self.vie_totale:
+            self.vie = self.vie_totale
+
+    def soigne_EN(self, nombre):
+        """Soigne l'énergie du personnage.
+
+        Args:
+            nombre(int): Quantité d'énergie à récupérer
+
+        Author: Hugo
+
+        """
+        self.energie += nombre
+        if self.energie > self.energie_totale:
+            self.energie = self.energie_totale
+
+
     def debut_tour(self):
+        """
+        Fonction qui applique au personnage les effets qu'il a
+        """
         pass
 
     def attaque_cible(self, cible):

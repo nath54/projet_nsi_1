@@ -292,8 +292,8 @@ class Client:
         #Attenion ! Il faut faire un systeme sécurisé 
         #(il faut bien vérifier les réponses de l'utilisateur, et lui redemander si ca ne va pas)
 
-        lst_classes = ["guerrier","archer","mage blanc","mage noir","assassin","voleur","paladin","barbare","bouclier humain"] #il faut que ca s'adapte à la taille de la liste car elle va changer
-        lst_race = ["humain","goblin","homme-dragon","elfe","elfe noir","troll","nain","demi elfe"] #pareil, ca va changer
+        lst_classes = ["guerrier","archer","mage blanc","mage noir","mage guerrier","assassin","voleur","paladin","barbare","tank"] #il faut que ca s'adapte à la taille de la liste car elle va changer
+        lst_race = ["humain","homme-dragon","elfe","elfe noir","orc","nain","demi-elfe","fée"] #pareil, ca va changer
 
         return data_perso
 

@@ -4,6 +4,7 @@
     "nom":"une vieille maison abandonnée",
     "region":"Larion",
     "description":"Cette maison à l'air abandonnée, ça peut être dangereux",
+    "type":"ville",
     "pnjs":[],
     "objets":[],
     "ennemis":[0],

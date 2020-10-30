@@ -203,7 +203,8 @@ class Server:
                         self.send(client,json.dumps({"type":"connection failed","value":erreur}))
                     else:
                         self.send(client,json.dumps({"type":"connection successed"}))
-                        self.send(client,json.dumps({"type":"creation perso"}))
+                        data_perso = self.client_db.get_player(pseudo)
+                        self.clients[client] = Player(pseudo,data_perso)
                         #il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
                     #TODO
                     pass

@@ -2,5 +2,6 @@
     "id":2,
     "nom":"Lisiere de la foret de Tergaron",
     "description":"Vous êtes à la lisière de la forêt à l'Est de la ville de Tergaron, vous pouvez voir que la forêt s'enfonce à perte de vue une l'obscurité opressante",
+    "type":"foret",
     "lieux":[ [0,"ouest"] , [3,"est"] ]
 }

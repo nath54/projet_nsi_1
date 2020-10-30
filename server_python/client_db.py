@@ -188,3 +188,11 @@ class Client_mariadb:
         #TODO
         pass
 
+    def get_player(self,pseudo):
+        """
+        Fonction qui récupère les données du personnage
+
+        Author : Nathan
+        """
+        return data_perso
+
