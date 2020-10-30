@@ -29,7 +29,18 @@ class WebServer():
         await self.register(websocket)
         try:
             async for message in websocket:
-                self.client.send(message)
+                cs=True
+                try:
+                    data=json.loads(message)
+                    if data["type"]=="veut changer de page":
+                        cs = False
+                        await websocket.send(json.dumps({"type":"autorisation changement page"}))
+                        await websocket.close()
+                except:
+                    pass
+                #
+                if cs:
+                    self.client.send(message)
         finally:
             await self.unregister(websocket)
 
