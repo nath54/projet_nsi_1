@@ -2,6 +2,8 @@ import io
 import json
 import os
 
+from server_python.Game.Objets.Objet import Objet
+
 
 class Map:
     """Classe qui gérera la map du jeu.
@@ -67,12 +69,14 @@ class Map:
         if "objets" in dk:
             for pid in datalieu["objets"]:
                 if type(pid) == int:
-                    lieu.objets.add(game.client_db.get_obj_from_DB(pid))
+                    obj = Objet(pid, game)
+                    lieu.objets.add(obj)
                 # TODO : Trouver un système où il pourrait y avoir plusieurs
                 #        fois le même objet
                 elif type(pid) == list:
                     for _ in range(pid[1]):
-                        lieu.objets.add(game.client_db.get_obj_from_DB(pid[0]))
+                        obj = Objet(pid[0], game)
+                        lieu.objets.add(obj)
 
         if "lieux" in dk:
             lieu.lieux_accessibles = datalieu["lieux"]
