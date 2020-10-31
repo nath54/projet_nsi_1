@@ -22,9 +22,11 @@ class Game:
     def __init__(self):
         """Initie ce qui est essentiel pour le jeu (Map).
 
-        Author: ???
+        Author: Nathan
 
         """
+        self.client_db = None
+
         self.Map = Map
         self.Lieu = Lieu
         self.Objet = Objet

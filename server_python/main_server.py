@@ -38,6 +38,8 @@ class Server:
         clients (dict): Clé -- socket.socket
                         Val -- `dict` de propriétés relatives au client
         server (socket): ???
+
+        version(int) : version du jeu (pour la comparer avec la version de la bdd)
     """
 
     def __init__(self):
@@ -49,6 +51,7 @@ class Server:
         self.server = None
         self.game = Game()
         self.client_db = Client_mariadb(self.game)
+        self.version = 1
         # TODO
         pass
 
@@ -62,6 +65,12 @@ class Server:
         Author: Nathan
 
         """
+
+        # On recupere la version du jeu (pour la comparer a celle de la db)
+        f = open("version", "r")
+        self.version = int(f.read())
+        f.close()
+
         # Teste si c'est la bdd est initialisée, si non, on l'initialise
         if self.client_db.test_first_time():
             print("premier lancement")

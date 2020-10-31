@@ -29,14 +29,22 @@ class Player:
         self.perso.race = data_perso["race"]
         self.perso.classe = data_perso["classe"]
 
+        self.perso.experient = data_perso["experience"]
+        self.perso.inventaire = data_perso["inventaire"]
+        self.perso.equipement = data_perso["equipement"]
+        self.perso.lieu = data_perso["lieu"]
+        self.perso.quetes = data_perso["quetes"]
+
+        self.perso.vie = data_perso["vie"]
+        self.perso.vie_totale = data_perso["vie_totale"]
+        self.perso.energie = data_perso["energie"]
+        self.perso.energie_totale = data_perso["energie_totale"]
+
         self.perso.charme = data_perso["charme"]
         self.perso.discretion = data_perso["discretion"]
         self.perso.force = data_perso["force"]
         self.perso.agilite = data_perso["agilite"]
         self.perso.magie = data_perso["magie"]
-        self.perso.energie_totale = data_perso["energie"]
-        self.perso.vie_totale = data_perso["vie"]
-        self.perso.inventaire = data_perso["inventaire"]
         self.perso.effets_attaque = data_perso["effets_attaque"]
         self.perso.bonus_esquive = data_perso["bonus_esquive"]
         self.perso.sorts = data_perso["sorts"]
@@ -49,6 +57,16 @@ class Player:
         self.perso.genre = data_creation["genre"]
         self.perso.race = data_creation["race"]
         self.perso.classe = data_creation["classe"]
+        self.perso.experience = {
+            "force": [0, 100],
+            "charme": [0, 100],
+            "agilite": [0, 100],
+            "discretion": [0, 100],
+            "magie": [0, 100],
+            "vie": [0, 100],
+        }
+        self.perso.lieu = 0
+        self.perso.quetes = {}
         # on met en place la base des valeurs
         valeurs = {
             "charme": 5,
@@ -59,6 +77,7 @@ class Player:
             "energie": 20,
             "vie": 20,
             "inventaire": [],
+            "equipement": {"Amulette": None, "Armure": None, "Arme": None},
             "effets_attaque": {},
             "bonus_esquive": 0,
             "sorts": {},
@@ -103,7 +122,9 @@ class Player:
         self.perso.agilite = valeurs["agilite"]
         self.perso.magie = valeurs["magie"]
         self.perso.energie_totale = valeurs["energie"]
+        self.perso.energie = self.perso.energie_totale
         self.perso.vie_totale = valeurs["vie"]
+        self.perso.vie = self.perso.vie_totale
         self.perso.inventaire = valeurs["inventaire"]
         self.perso.effets_attaque = valeurs["effets_attaque"]
         self.perso.bonus_esquive = valeurs["bonus_esquive"]

@@ -62,6 +62,7 @@ class Client_mariadb:
         self.port = 3307
         self.database = "projet_nsi_1"
         self.game = game
+        #self.game.client_db = self
         try:
             self.connection = mariadb.connect(
                 user=self.user,
@@ -82,6 +83,23 @@ class Client_mariadb:
         """Ferme la connexion."""
         self.connection.close()
 
+    def test_update(self, version):
+        self.cursor.execute("SHOW TABLES LIKE 'version';")
+        results = [elt for elt in self.cursor]
+        if len(results) == 0:
+            return True
+        else:
+            self.cursor.execute("SELECT version FROM version;")
+            results = [elt for elt in self.cursor]
+            if len(results) == 0:
+                return True
+            else:
+                version_bdd = results[0][0]
+                if version_bdd < version:
+                    return True
+                else:
+                    return False
+
     def test_first_time(self):
         """Teste si la table comptes existe.
 
@@ -98,43 +116,72 @@ class Client_mariadb:
         # S'il n'y en a pas, c'est la premiere fois que l'on lance le serveur
         return len(output) == 0
 
-    def init_database(self):
-        """Permet de créer toutes les tables au premier lancement.
-
-        TODO: Ajouter les autres tables
-
-        Author : Nathan, Hugo
-
+    def get_schema(self, table_name):
         """
+        """
+        self.cursor.execute("select * from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME=%s;", (table_name,))
+        results = [elt for elt in self.cursor]
+        schema = {}
+        for elt in results:
+            schema[elt[3]] = elt[7]
+        return schema
+
+    def update(self):
+        """On va supprimer et recreer les tables qui ne sont pas dans le bon format
+
+        Author : Nathan
+        """
+        # comptes
+        if self.get_schema("comptes") != {'id': 'int', 'pseudo': 'text', 'email': 'text', 'password': 'text', 'perso_id': 'int'}:
+            self.cursor.execute("""DROP TABLE %s""", ("comptes",))
+            self.connection.commit()
+            self.create_table_comptes()
+        # persos
+        if self.get_schema("persos") != {}:
+            self.cursor.execute("""DROP TABLE %s""", ("comptes",))
+            self.connection.commit()
+            self.create_table_comptes()
+
+    def create_table_comptes(self):
+        """Fonction qui crée la table comptes dans la bdd."""
         query = ("""CREATE TABLE IF NOT EXISTS comptes
                     (id INT PRIMARY KEY AUTO_INCREMENT, pseudo TEXT,
                     email TEXT, password TEXT, perso_id INT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
+    def create_table_persos(self):
+        """Fonction qui crée la table perso dans la bdd."""
+
         query = ("""CREATE TABLE IF NOT EXISTS persos
-                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT, classe TEXT,
-                    race TEXT, niveau INT, force_ INT, intelligence INT,
-                    charme INT, discretion INT, experience_totale INT,
-                    experience INT, vie_totale INT, vie INT,
-                    energie_totale INT, energie INT, equipement TEXT,
-                    quetes TEXT, lieu INT);""")
-        print(query)
+                    (id INT PRIMARY KEY AUTO_INCREMENT,
+                    nom TEXT, genre TEXT, race TEXT, classe TEXT, experience TEXT,
+                    inventaire TEXT, lieu INT, quetes TEXT, equipement TEXT,
+                    vie INT, vie_totale INT, energie INT, energie_totale INT,
+                    charme INT, discretion INT, force_ INT, agilite INT, magie INT,
+                    effets_attaque TEXT, bonus_esquive INT, sorts TEXT,
+                    resistances TEXT, faiblesses TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
+    def create_table_objets(self):
+        """Fonction qui crée la table perso dans la bdd."""
         query = ("""CREATE TABLE IF NOT EXISTS objets
                     (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT,
                     description_ TEXT, type_ TEXT, effet_utilise TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
+    def create_table_pnjs(self):
+        """Fonction qui crée la table perso dans la bdd."""
         query = ("""CREATE TABLE IF NOT EXISTS pnjs
                     (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT,
                     description_ TEXT, race TEXT, dialogue TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
+    def create_table_ennemis(self):
+        """Fonction qui crée la table perso dans la bdd."""
         query = ("""CREATE TABLE IF NOT EXISTS ennemis
                     (id INT PRIMARY KEY AUTO_INCREMENT, type_ TEXT, nom TEXT,
                     race TEXT, description_ TEXT
@@ -143,15 +190,31 @@ class Client_mariadb:
         self.cursor.execute(query)
         self.connection.commit()
 
+    def create_table_lieux(self):
+        """Fonction qui crée la table perso dans la bdd."""
         query = ("""CREATE TABLE IF NOT EXISTS lieux
                     (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT,
                     description_ TEXT, ennemis TEXT, pnjs TEXT, objets TEXT,
                     lieux TEXT);""")
-
         # ennemis, pnjs, objets et lieux contiennent les ID des éléments, avec
         # "/" comme séparateur entre chaque ID
         self.cursor.execute(query)
         self.connection.commit()
+
+    def init_database(self):
+        """Permet de créer toutes les tables au premier lancement.
+
+        TODO: Ajouter les autres tables
+
+        Author : Nathan, Hugo
+
+        """
+        self.create_table_comptes()
+        self.create_table_persos()
+        self.create_table_objets()
+        self.create_table_pnjs()
+        self.create_table_ennemis()
+        self.create_table_lieux()
 
     def inscription(self, pseudo, email, password):
         """Permet de créer un compte.
@@ -261,13 +324,48 @@ class Client_mariadb:
         # TODO
         pass
 
-    def get_perso(self, pseudo):
+    def get_perso(self, id_):
         """Fonction qui récupère les données du personnage.
 
-        Author :
+        Author : Nathan
         """
-        data_perso = {}
-        # TODO
+        query = """SELECT (nom, genre, race, classe, experience,
+                    inventaire, lieu, quetes, equipement,
+                    vie, vie_totale, energie, energie_totale,
+                    charme, discretion, force_, agilite, magie,
+                    effets_attaque, bonus_esquive, sorts,
+                    resistances, faiblesses) FROM comptes WHERE id=%s"""
+        self.cursor.execute(query, (id_,))
+        results = [elt for elt in self.cursor]
+        if len(results) == 0:
+            raise UserWarning(f"Il n'y a pas de perso avec l'id {id_}")
+        #
+        d = results[0]
+        data_perso = {
+            "nom": d[0],
+            "genre": d[1],
+            "race": d[2],
+            "classe": d[3],
+            "experience": d[4],
+            "inventaire": d[5],
+            "lieu": d[6],
+            "quetes": d[7],
+            "equipement": d[8],
+            "vie": d[9],
+            "vie_totale": d[10],
+            "energie": d[11],
+            "energie_totale": d[12],
+            "charme": d[13],
+            "discretion": d[14],
+            "force_": d[15],
+            "agilite": d[16],
+            "magie": d[17],
+            "effets_attaque": d[18],
+            "bonus_esquive": d[19],
+            "sorts": d[20],
+            "resistances": d[21],
+            "faiblesses": d[22]
+        }
         return data_perso
 
     def get_obj_from_DB(self, id):
@@ -282,8 +380,7 @@ class Client_mariadb:
         Author: Hugo, Nathan
 
         """
-        query = ("SELECT * FROM objets WHERE id=%s", (str(id),))
-        self.cursor.execute(query)
+        self.cursor.execute("SELECT * FROM objets WHERE id=%s", (str(id),))
         for id, nom, desc, type_, effet in self.cursor:
             obj = self.game.Objet()
             obj.nom = nom

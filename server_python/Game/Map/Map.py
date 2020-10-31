@@ -5,7 +5,7 @@ import os
 
 class Map:
     """Classe qui gérera la map du jeu.
-    
+
     Attributes:
         lieux(dict<Lieu>): ???
 
@@ -25,7 +25,7 @@ class Map:
         emplacement = "Data/map/"
         for fichier in os.listdir(emplacement):
             if fichier.endswith("json"):
-                f = io.open(emplacement+fichier, "r", encoding="utf-8")
+                f = io.open(emplacement + fichier, "r", encoding="utf-8")
                 data = json.loads(f.read())
                 self.create_lieu(data, game)
                 f.close()
@@ -52,14 +52,14 @@ class Map:
             lieu.description = datalieu["description"]
         if "pnjs" in dk:
             for pid in datalieu["pnjs"]:
-                lieu.pnjs.add(game.Pnj(pid,game))
+                lieu.pnjs.add(game.Pnj(pid, game))
         if "ennemis" in dk:
             for pid in datalieu["ennemis"]:
                 if type(pid) == int:
-                    lieu.ennemis.add(game.Ennemi(pid,game))
-                elif type(pid)==list:
+                    lieu.ennemis.add(game.Ennemi(pid, game))
+                elif type(pid) == list:
                     for _ in range(pid[1]):
-                        lieu.ennemis.add(game.Ennemi(pid[0],game))
+                        lieu.ennemis.add(game.Ennemi(pid[0], game))
 
                 # TODO : Trouver un système où il pourrait y avoir plusieurs
                 #        fois le même objet
@@ -70,9 +70,9 @@ class Map:
                     lieu.objets.add(game.Objet(pid, game))
                 # TODO : Trouver un système où il pourrait y avoir plusieurs
                 #        fois le même objet
-                elif type(pid)==list:
+                elif type(pid) == list:
                     for _ in range(pid[1]):
-                        lieu.objets.add(game.Objet(pid[0],game))
+                        lieu.objets.add(game.Objet(pid[0], game))
 
         if "lieux" in dk:
             lieu.lieux_accessibles = datalieu["lieux"]

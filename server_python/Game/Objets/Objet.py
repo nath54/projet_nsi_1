@@ -1,9 +1,6 @@
 import os
 import json
 
-from server_python.client_db import Client_mariadb
-from server_python.Game.Game import Game
-
 data_objs = [
     "Data/objets/pomme.json"
 ]
@@ -25,7 +22,7 @@ class Objet:
 
     """
 
-    def __init__(self, game, id):
+    def __init__(self, index, game):
         """Créer un objet.
 
         Args:
