@@ -33,16 +33,16 @@ class Objet:
 
         """
         self.index = index
-        if self.index > len(data_objs) - 1:
+        self.game = game
+        datas = self.game.client_db.get_data_obj_DB(self.index)
+
+        if datas is None:
             raise IndexError(f"Index de l'objet trop grand : {self.index}")
 
-        self.game = game
-        self.nom = "Objet"
-        self.description = "Un objet"
-        self.type = "objet"
-        self.effet_utilise = None
-        # on charge l'objet
-        # self.load()
+        self.nom = datas[0]
+        self.description = datas[1]
+        self.type = datas[2]
+        self.effet_utilise = datas[3]
 
     # def load(self, important=True):
     #     """Charge l'objet.

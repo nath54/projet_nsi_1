@@ -429,24 +429,20 @@ class Client_mariadb:
         }
         return data_perso
 
-    def get_obj_from_DB(self, id_):
+    def get_data_obj_DB(self, id_):
         """Renvoie l'objet demandé.
 
         Args:
-            id(int): ID de l'objet à chercher
+            id_(int): ID de l'objet à chercher
 
         Returns:
-            Objet/None: Objet d'id `id` ou None si pas trouvé
+            Objet/None: Objet d'id `id_` ou None si pas trouvé
 
         Auteur: Hugo, Nathan
 
         """
-        self.cursor.execute("SELECT id, nom, description_, effets FROM objets WHERE id=%s", (id_,))
-        for id_, nom, desc, effets in self.cursor:
-            print(id_, nom, desc, effets)
-            obj = self.game.Objet(id_, self.game)
-            obj.nom = nom
-            obj.description = desc
-            obj.effet = effets
-            return obj
+        self.cursor.execute("SELECT nom, description_, type_, effets FROM objets WHERE id=%s", (id_,))
+        for nom, desc, type_, effets in self.cursor:
+            print(id_, nom, desc, type_, effets)
+            return (nom, desc, type_, effets)
         return None
