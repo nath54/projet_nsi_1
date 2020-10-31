@@ -62,7 +62,7 @@ class Client_mariadb:
         self.port = 3307
         self.database = "projet_nsi_1"
         self.game = game
-        #self.game.client_db = self
+        self.game.client_db = self
         try:
             self.connection = mariadb.connect(
                 user=self.user,
@@ -83,7 +83,11 @@ class Client_mariadb:
         """Ferme la connexion."""
         self.connection.close()
 
-    def test_update(self, version):
+    def test_version(self, version):
+        """Fonction qui vérifie si la version de la base de donnée est inférieure à celle du serveur.
+
+        Author: Nathan
+        """
         self.cursor.execute("SHOW TABLES LIKE 'version';")
         results = [elt for elt in self.cursor]
         if len(results) == 0:
@@ -117,7 +121,10 @@ class Client_mariadb:
         return len(output) == 0
 
     def get_schema(self, table_name):
-        """
+        """Fonction qui récupère la structure de la table demandée sous forme de dictionnaire : .
+          {nom de la colonne : type de la colonne (int, text, ...)}
+
+        renvoie un dictionnaire vide si la table n'existe pas
         """
         self.cursor.execute("select * from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME=%s;", (table_name,))
         results = [elt for elt in self.cursor]
@@ -127,7 +134,7 @@ class Client_mariadb:
         return schema
 
     def update(self):
-        """On va supprimer et recreer les tables qui ne sont pas dans le bon format
+        """Fonction qui supprime et qui recrée les tables qui ne sont pas dans le bon format ou qui n'existent pas.
 
         Author : Nathan
         """
@@ -136,11 +143,20 @@ class Client_mariadb:
             self.cursor.execute("""DROP TABLE %s""", ("comptes",))
             self.connection.commit()
             self.create_table_comptes()
+            print("La table comptes a été mise à jour !")
         # persos
-        if self.get_schema("persos") != {}:
+        if self.get_schema("persos") != {"id": "int", "nom": "text", "genre": "text",
+                                         "race": "text", "classe": "text", "experience": "text",
+                                         "inventaire": "texte", "lieu": "int", "quetes": "text",
+                                         "equipement": "text", "vie": "int", "vie_totale": "int",
+                                         "energie": "int", "energie_totale": "int", "charme": "int",
+                                         "discretion": "int", "force_": "int", "agilite": "int",
+                                         "magie": "int", "effets_attaque": "text", "bonus_esquive": "int",
+                                         "sorts": "text", "resistances": "text", "faiblesses": "text"}:
             self.cursor.execute("""DROP TABLE %s""", ("comptes",))
             self.connection.commit()
             self.create_table_comptes()
+            print("La table persos a été mise à jour !")
 
     def create_table_comptes(self):
         """Fonction qui crée la table comptes dans la bdd."""
@@ -311,16 +327,23 @@ class Client_mariadb:
                                 ))
 
         # A faire les autres
-        # (il y aura sans doutes la table à changer
-        #  comme j'ai du changer pour ennemi)
+        # (il y aura sans doutes la table à changer comme j'ai du changer pour ennemi)
         # TODO
         pass
 
-    def set_perso(self, perso):
+    def set_perso(self, player):
         """Fonction qui enregistre un perso dans la bdd.
 
-        Author :
+        Author : Nathan
         """
+        query = ""
+        self.cursor.execute(query, ())
+        results = [elt for elt in self.cursor]
+        if len(results) == 0:
+            raise UserWarning("Probleme avec player !")
+        #
+        id_ = results[0][0]
+        # je continuerai cette aprem
         # TODO
         pass
 
