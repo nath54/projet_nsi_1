@@ -1,3 +1,6 @@
+window.ip_ = null;
+window.port_ = null;
+window.websocket = null;
 
 function main_client(txt){
     var ip=document.getElementById("inpip").value;
@@ -6,7 +9,16 @@ function main_client(txt){
     sessionStorage.setItem("ip",ip);
     sessionStorage.setItem("port",port);
 
-    var websocket = new WebSocket("ws://"+ip+":"+port+"/");
+    if(window.websocket == null || window.ip_ != ip  || window.port_ != port){
+        var websocket = new WebSocket("ws://"+ip+":"+port+"/");
+        window.websocket = websocket;
+    }
+    else{
+        websocket = window.websocket;
+    }
+    window.ip_ = ip;
+    window.port_ = port;
+    
     websocket.onerror=cantconnect;
     
     var change = false;
@@ -37,7 +49,7 @@ function main_client(txt){
                 change=true;
                 break;
             case "connection failed":
-                alert("Connection failed : \n"+data.error);
+                alert("Connection failed : \n"+data.value);
                 document.getElementById("alert_wait").style.display="none";
                 break;
             case "connection successed":
@@ -45,7 +57,7 @@ function main_client(txt){
                 websocket.send(JSON.stringify({"type":"veut changer de page"}))
                 break;
             case "inscription failed":
-                alert("Inscription failed : \n"+data.error);
+                alert("Inscription failed : \n"+data.value);
                 document.getElementById("alert_wait").style.display="none";
                 break;
             case "inscription successed":

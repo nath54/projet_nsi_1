@@ -7,6 +7,7 @@ import socket
 import _thread
 import json
 import sys
+import time
 
 
 class WebServer():
@@ -15,6 +16,7 @@ class WebServer():
         self.PORT = 6789
         self.USER = None
         self.client = client
+        self.messages_en_attente = []
 
     async def register(self, websocket):
         if self.USER is None:
@@ -28,6 +30,9 @@ class WebServer():
             print("Un utilisateur a voulu se connecter alors que la place n'était pas libre")
             return
         await self.register(websocket)
+        for mes in self.messages_en_attente:
+            await self.USER.send(mes)
+            time.sleep(0.1)
         try:
             async for message in websocket:
                 cs = True
@@ -46,7 +51,10 @@ class WebServer():
             await self.unregister(websocket)
 
     async def on_message(self, message):
-        await self.USER.send(message)
+        if self.USER is not None:
+            await self.USER.send(message)
+        else:
+            self.messages_en_attente.append(message)
 
     def main(self):
         print("Websocket server starting...")

@@ -9,9 +9,6 @@ if(!(ip!=undefined && port!=undefined)){
 
 websocket = new WebSocket("ws://"+ip+":"+port+"/");
 
-console.log(typeof websocket);
-console.log(websocket);
-
 if(websocket==undefined){
     alert("Erreur, vous n'êtes pas connecté")
     window.SharedWorker.location="index.html";
@@ -19,9 +16,16 @@ if(websocket==undefined){
 
 websocket.onmessage = function (event) {
     data = JSON.parse(event.data);
-    switch (data.type) {
+    if(typeof data == "string"){
+        data = JSON.parse(data);
+    }
+    console.log(data, typeof data, "creation perso", data.type=="creation perso");
+    switch (data["type"]) {
         case "message":
             aff_message(txt = data.value, color = "rgb(200,200,200)");
+            break;
+        case "creation perso":
+            perso_creator();
             break;
         default:
             console.error("unsupported event", data);
