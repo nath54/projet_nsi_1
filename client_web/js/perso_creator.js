@@ -1,12 +1,11 @@
 
-const genres = [
+var genres = [
     "homme",
     "femme",
     "agenre",
     "androgyne",
     "bigender",
     "non-binaire",
-    "autre"
 ];
 
 const classes = {
@@ -41,6 +40,9 @@ function perso_creator(){
         o.innerHTML = e;
         document.getElementById("select_genre").appendChild(o)
     }
+    var o = document.createElement("option");
+    o.innerHTML = "autre";
+    document.getElementById("select_genre").appendChild(o)
     //races
     for(e of Object.keys(races)){
         var o = document.createElement("option");

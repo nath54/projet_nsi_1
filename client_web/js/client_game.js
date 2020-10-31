@@ -24,6 +24,9 @@ websocket.onmessage = function (event) {
         case "message":
             aff_message(txt = data.value, color = "rgb(200,200,200)");
             break;
+        case "genre":
+            genres = JSON.parse(data.genres);
+            break;
         case "creation perso":
             perso_creator();
             break;

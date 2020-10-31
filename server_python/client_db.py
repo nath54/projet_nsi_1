@@ -198,6 +198,9 @@ class Client_mariadb:
                     (genre TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
+        for genre in ["homme", "femme", "agenre", "androgyne", "bigender", "non-binaire"]:
+            self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)", (genre, ))
+            self.connection.commit()
 
     def update(self, force=True):
         """Fonction qui supprime et qui recrée les tables qui ne sont pas dans le bon format ou qui n'existent pas.
@@ -465,5 +468,5 @@ class Client_mariadb:
         return results
 
     def new_genre(self, genre):
-        self.cursor.execute("INSERT INTO genres (genre) VALUES %s", (genre,))
+        self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)", (genre,))
         self.connection.commit()
