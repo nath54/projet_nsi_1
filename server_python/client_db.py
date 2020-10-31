@@ -208,7 +208,7 @@ class Client_mariadb:
         # persos
         if self.get_schema("persos") != {"id": "int", "nom": "text", "genre": "text",
                                          "race": "text", "classe": "text", "experience": "text",
-                                         "inventaire": "texte", "lieu": "int", "quetes": "text",
+                                         "inventaire": "text", "lieu": "int", "quetes": "text",
                                          "equipement": "text", "vie": "int", "vie_totale": "int",
                                          "energie": "int", "energie_totale": "int", "charme": "int",
                                          "discretion": "int", "force_": "int", "agilite": "int",
@@ -219,8 +219,8 @@ class Client_mariadb:
             self.create_table_persos()
             print("La table persos a été mise à jour !")
         # ennemis
-        if self.get_schema("ennemis") != {"id": "int", "type": "text", "nom": "text",
-                                          "race": "text", "description": "text", "vie_min": "int",
+        if self.get_schema("ennemis") != {"id": "int", "type_": "text", "nom": "text",
+                                          "race": "text", "description_": "text", "vie_min": "int",
                                           "vie_max": "int", "attaque_min": "int", "attaque_max": "int",
                                           "attaque_effets": "text"}:
             self.cursor.execute("DROP TABLE IF EXISTS ennemis")
@@ -331,6 +331,8 @@ class Client_mariadb:
         Auteur : Nathan
         """
         # Les ennemis :
+        self.cursor.execute("TRUNCATE TABLE `ennemis`")
+        self.connection.commit()
         pathd = "Data/ennemis/"
         for fich in os.listdir(pathd):
             d = jload(pathd + fich)
@@ -348,6 +350,8 @@ class Client_mariadb:
             self.connection.commit()
 
         # Les objets :
+        self.cursor.execute("TRUNCATE TABLE `objets`")
+        self.connection.commit()
         pathd = "Data/objets/"
         for fich in os.listdir(pathd):
             d = jload(pathd + fich)

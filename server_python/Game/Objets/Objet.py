@@ -44,28 +44,28 @@ class Objet:
         # on charge l'objet
         self.load()
 
-    def load(self, important=True):
-        """Charge l'objet.
+    # def load(self, important=True):
+    #     """Charge l'objet.
 
-        Args:
-            important(bool):  True: L'absence de l'objet provoque une erreur
-                             False: L'absence de l'objet provoque un print
+    #     Args:
+    #         important(bool):  True: L'absence de l'objet provoque une erreur
+    #                          False: L'absence de l'objet provoque un print
 
-        Auteur: Hugo (d'une idée originale de Nathan)
+    #     Auteur: Hugo (d'une idée originale de Nathan)
 
-        """
-        self = self.game.client_db.get_obj_from_DB(self.index)
-        if datas is not None:
-            self.nom = datas[0]
-            self.description = datas[1]
-            self.type = datas[2]
-            self.effet_utilise = datas[3]
-        else:
-            err = f"L'indice {self.index} ne correspond à aucun objet"
-            if important:
-                raise IndexError(err)
-            else:
-                print(err)
+    #     """
+    #     self = self.game.client_db.get_obj_from_DB(self.index)
+    #     if datas is not None:
+    #         self.nom = datas[0]
+    #         self.description = datas[1]
+    #         self.type = datas[2]
+    #         self.effet_utilise = datas[3]
+    #     else:
+    #         err = f"L'indice {self.index} ne correspond à aucun objet"
+    #         if important:
+    #             raise IndexError(err)
+    #         else:
+    #             print(err)
 
     def __repr__(self):
         """Permet d'afficher une description de l'objet.
