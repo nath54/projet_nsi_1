@@ -8,6 +8,7 @@ import socket
 import _thread
 import json
 import sys
+import time
 
 # nos librairies
 from client_db import Client_mariadb
@@ -214,6 +215,7 @@ class Server:
                         if reussi:
                             self.clients[client]["player"] = Player(pseudo, self.game, id_)
                             self.send(client, json.dumps({"type": "inscription successed"}))
+                            time.sleep(0.1)
                             self.send(client, json.dumps({"type": "creation perso"}))
                             # il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
                         else:

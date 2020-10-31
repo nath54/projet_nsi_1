@@ -192,13 +192,13 @@ class Client_mariadb:
         self.cursor.execute(query)
         self.connection.commit()
 
-    def update(self):
+    def update(self, force=True):
         """Fonction qui supprime et qui recrée les tables qui ne sont pas dans le bon format ou qui n'existent pas.
 
         Auteur : Nathan
         """
         # comptes
-        if self.get_schema("comptes") != {'id': 'int', 'pseudo': 'text',
+        if force or self.get_schema("comptes") != {'id': 'int', 'pseudo': 'text',
                                           'email': 'text', 'password': 'text',
                                           'perso_id': 'int'}:
             self.cursor.execute("DROP TABLE comptes")
@@ -206,7 +206,7 @@ class Client_mariadb:
             self.create_table_comptes()
             print("La table comptes a été mise à jour !")
         # persos
-        if self.get_schema("persos") != {"id": "int", "nom": "text", "genre": "text",
+        if force or self.get_schema("persos") != {"id": "int", "nom": "text", "genre": "text",
                                          "race": "text", "classe": "text", "experience": "text",
                                          "inventaire": "text", "lieu": "int", "quetes": "text",
                                          "equipement": "text", "vie": "int", "vie_totale": "int",
@@ -219,7 +219,7 @@ class Client_mariadb:
             self.create_table_persos()
             print("La table persos a été mise à jour !")
         # ennemis
-        if self.get_schema("ennemis") != {"id": "int", "type_": "text", "nom": "text",
+        if force or self.get_schema("ennemis") != {"id": "int", "type_": "text", "nom": "text",
                                           "race": "text", "description_": "text", "vie_min": "int",
                                           "vie_max": "int", "attaque_min": "int", "attaque_max": "int",
                                           "attaque_effets": "text"}:
@@ -228,7 +228,7 @@ class Client_mariadb:
             self.create_table_ennemis()
             print("La table ennemis a été mise à jour !")
         # objets
-        if self.get_schema("objets") != {"id": "int", "nom": "text",
+        if force or self.get_schema("objets") != {"id": "int", "nom": "text",
                                          "description_": "text",
                                          "type_": "text",
                                          "effets": "text"}:
@@ -444,7 +444,7 @@ class Client_mariadb:
         self.cursor.execute("SELECT id, nom, description_, effets FROM objets WHERE id=%s", (id_,))
         for id_, nom, desc, effets in self.cursor:
             print(id_, nom, desc, effets)
-            obj = self.game.Objet()
+            obj = self.game.Objet(id_, self.game)
             obj.nom = nom
             obj.description = desc
             obj.effet = effets

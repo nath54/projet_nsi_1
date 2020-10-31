@@ -42,7 +42,7 @@ class Objet:
         self.type = "objet"
         self.effet_utilise = None
         # on charge l'objet
-        self.load()
+        # self.load()
 
     # def load(self, important=True):
     #     """Charge l'objet.
