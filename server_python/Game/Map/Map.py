@@ -67,12 +67,12 @@ class Map:
         if "objets" in dk:
             for pid in datalieu["objets"]:
                 if type(pid) == int:
-                    lieu.objets.add(game.Objet(pid, game))
+                    lieu.objets.add(game.client_db.get_obj_from_DB(pid))
                 # TODO : Trouver un système où il pourrait y avoir plusieurs
                 #        fois le même objet
                 elif type(pid) == list:
                     for _ in range(pid[1]):
-                        lieu.objets.add(game.Objet(pid[0], game))
+                        lieu.objets.add(game.client_db.get_obj_from_DB(pid[0]))
 
         if "lieux" in dk:
             lieu.lieux_accessibles = datalieu["lieux"]

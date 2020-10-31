@@ -54,7 +54,7 @@ class Objet:
         Auteur: Hugo (d'une idée originale de Nathan)
 
         """
-        datas = self.game.client_db.get_obj_from_DB(self.index)
+        self = self.game.client_db.get_obj_from_DB(self.index)
         if datas is not None:
             self.nom = datas[0]
             self.description = datas[1]

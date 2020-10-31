@@ -75,14 +75,14 @@ class Server:
         if self.client_db.test_first_time():
             print("premier lancement")
             self.client_db.init_database()
-            self.client_db.transfert_json_to_bdd()
+        
+        # On va aussi essayer de mettre à jour la bdd
+        self.client_db.update()
 
         # On va vérifier les différentes versions des données de la bdd
         if self.client_db.test_version(self.version):
             self.client_db.transfert_json_to_bdd()
 
-        # On va aussi essayer de mettre à jour la bdd
-        self.client_db.update()
 
         # TODO: Faudra aussi lancer les différents éléments du jeu
         # On lance le jeu ici

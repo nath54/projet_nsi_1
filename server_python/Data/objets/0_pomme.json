@@ -2,5 +2,7 @@
     "id":0,
     "nom":"Pomme",
     "description":"Une belle pomme bien rouge, elle a l'air vraiment délicieuse",
-    "effets_manger":{"santé":[2,4],"usage_unique":true}
+    "effets":{
+        "manger":{"santé":[2,4],"usage_unique":true}
+    }
 }

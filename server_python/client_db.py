@@ -133,31 +133,6 @@ class Client_mariadb:
             schema[elt[3]] = elt[7]
         return schema
 
-    def update(self):
-        """Fonction qui supprime et qui recrée les tables qui ne sont pas dans le bon format ou qui n'existent pas.
-
-        Auteur : Nathan
-        """
-        # comptes
-        if self.get_schema("comptes") != {'id': 'int', 'pseudo': 'text', 'email': 'text', 'password': 'text', 'perso_id': 'int'}:
-            self.cursor.execute("""DROP TABLE %s""", ("comptes",))
-            self.connection.commit()
-            self.create_table_comptes()
-            print("La table comptes a été mise à jour !")
-        # persos
-        if self.get_schema("persos") != {"id": "int", "nom": "text", "genre": "text",
-                                         "race": "text", "classe": "text", "experience": "text",
-                                         "inventaire": "texte", "lieu": "int", "quetes": "text",
-                                         "equipement": "text", "vie": "int", "vie_totale": "int",
-                                         "energie": "int", "energie_totale": "int", "charme": "int",
-                                         "discretion": "int", "force_": "int", "agilite": "int",
-                                         "magie": "int", "effets_attaque": "text", "bonus_esquive": "int",
-                                         "sorts": "text", "resistances": "text", "faiblesses": "text"}:
-            self.cursor.execute("""DROP TABLE %s""", ("comptes",))
-            self.connection.commit()
-            self.create_table_comptes()
-            print("La table persos a été mise à jour !")
-
     def create_table_comptes(self):
         """Fonction qui crée la table comptes dans la bdd."""
         query = ("""CREATE TABLE IF NOT EXISTS comptes
@@ -183,15 +158,15 @@ class Client_mariadb:
     def create_table_objets(self):
         """Fonction qui crée la table perso dans la bdd."""
         query = ("""CREATE TABLE IF NOT EXISTS objets
-                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT,
-                    description_ TEXT, type_ TEXT, effet_utilise TEXT);""")
+                    (id INT PRIMARY KEY, nom TEXT,
+                    description_ TEXT, type_ TEXT, effets TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
     def create_table_pnjs(self):
         """Fonction qui crée la table perso dans la bdd."""
         query = ("""CREATE TABLE IF NOT EXISTS pnjs
-                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT,
+                    (id INT PRIMARY KEY, nom TEXT,
                     description_ TEXT, race TEXT, dialogue TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
@@ -199,23 +174,68 @@ class Client_mariadb:
     def create_table_ennemis(self):
         """Fonction qui crée la table perso dans la bdd."""
         query = ("""CREATE TABLE IF NOT EXISTS ennemis
-                    (id INT PRIMARY KEY AUTO_INCREMENT, type_ TEXT, nom TEXT,
-                    race TEXT, description_ TEXT
+                    (id INT PRIMARY KEY, type_ TEXT, nom TEXT,
+                    race TEXT, description_ TEXT,
                     vie_min INT, vie_max INT, attaque_min INT,
-                    attaque_max INT, attaque_effets: TEXT);""")
+                    attaque_max INT, attaque_effets TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
     def create_table_lieux(self):
         """Fonction qui crée la table perso dans la bdd."""
         query = ("""CREATE TABLE IF NOT EXISTS lieux
-                    (id INT PRIMARY KEY AUTO_INCREMENT, nom TEXT,
+                    (id INT PRIMARY KEY, nom TEXT,
                     description_ TEXT, ennemis TEXT, pnjs TEXT, objets TEXT,
                     lieux TEXT);""")
         # ennemis, pnjs, objets et lieux contiennent les ID des éléments, avec
         # "/" comme séparateur entre chaque ID
         self.cursor.execute(query)
         self.connection.commit()
+
+    def update(self):
+        """Fonction qui supprime et qui recrée les tables qui ne sont pas dans le bon format ou qui n'existent pas.
+
+        Auteur : Nathan
+        """
+        # comptes
+        if self.get_schema("comptes") != {'id': 'int', 'pseudo': 'text',
+                                          'email': 'text', 'password': 'text',
+                                          'perso_id': 'int'}:
+            self.cursor.execute("DROP TABLE comptes")
+            self.connection.commit()
+            self.create_table_comptes()
+            print("La table comptes a été mise à jour !")
+        # persos
+        if self.get_schema("persos") != {"id": "int", "nom": "text", "genre": "text",
+                                         "race": "text", "classe": "text", "experience": "text",
+                                         "inventaire": "texte", "lieu": "int", "quetes": "text",
+                                         "equipement": "text", "vie": "int", "vie_totale": "int",
+                                         "energie": "int", "energie_totale": "int", "charme": "int",
+                                         "discretion": "int", "force_": "int", "agilite": "int",
+                                         "magie": "int", "effets_attaque": "text", "bonus_esquive": "int",
+                                         "sorts": "text", "resistances": "text", "faiblesses": "text"}:
+            self.cursor.execute("DROP TABLE IF EXISTS persos")
+            self.connection.commit()
+            self.create_table_persos()
+            print("La table persos a été mise à jour !")
+        # ennemis
+        if self.get_schema("ennemis") != {"id": "int", "type": "text", "nom": "text",
+                                          "race": "text", "description": "text", "vie_min": "int",
+                                          "vie_max": "int", "attaque_min": "int", "attaque_max": "int",
+                                          "attaque_effets": "text"}:
+            self.cursor.execute("DROP TABLE IF EXISTS ennemis")
+            self.connection.commit()
+            self.create_table_ennemis()
+            print("La table ennemis a été mise à jour !")
+        # objets
+        if self.get_schema("objets") != {"id": "int", "nom": "text",
+                                         "description_": "text",
+                                         "type_": "text",
+                                         "effets": "text"}:
+            self.cursor.execute("DROP TABLE IF EXISTS objets")
+            self.connection.commit()
+            self.create_table_objets()
+            print("La table objets a été mise à jour !")
 
     def init_database(self):
         """Permet de créer toutes les tables au premier lancement.
@@ -325,6 +345,20 @@ class Client_mariadb:
                                     d["attaque"][0], d["attaque"][1],
                                     json.dumps(d["attaque_effets"])
                                 ))
+            self.connection.commit()
+
+        # Les objets :
+        pathd = "Data/objets/"
+        for fich in os.listdir(pathd):
+            d = jload(pathd + fich)
+            """(id, nom, description, effets)"""
+            self.cursor.execute("""INSERT INTO objets (id, nom, description_, effets)
+                                VALUES (%s, %s, %s, %s)""",
+                                (
+                                    d["id"], d["nom"], d["description"],
+                                    json.dumps(d["effets"])
+                                ))
+            self.connection.commit()
 
         # A faire les autres
         # (il y aura sans doutes la table à changer comme j'ai du changer pour ennemi)
@@ -391,7 +425,7 @@ class Client_mariadb:
         }
         return data_perso
 
-    def get_obj_from_DB(self, id):
+    def get_obj_from_DB(self, id_):
         """Renvoie l'objet demandé.
 
         Args:
@@ -403,12 +437,12 @@ class Client_mariadb:
         Auteur: Hugo, Nathan
 
         """
-        self.cursor.execute("SELECT * FROM objets WHERE id=%s", (str(id),))
-        for id, nom, desc, type_, effet in self.cursor:
+        self.cursor.execute("SELECT id, nom, description_, effets FROM objets WHERE id=%s", (id_,))
+        for id_, nom, desc, effets in self.cursor:
+            print(id_, nom, desc, effets)
             obj = self.game.Objet()
             obj.nom = nom
             obj.description = desc
-            obj.type = type_
-            obj.effet = effet
+            obj.effet = effets
             return obj
         return None
