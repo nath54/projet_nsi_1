@@ -93,7 +93,7 @@ class Client:
     def __init__(self):
         """Caractéristiques du socket.
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         self.host = input("Host ? (si vide sera localshost)\n : ")
@@ -118,7 +118,7 @@ class Client:
     def debut(self):
         """Fonction qui demanse si tu veux t'inscrire ou te connecter.
 
-        Author : Nathan
+        Auteur : Nathan
 
         """
         print("Voulez vous :\n  1) Vous inscrire ?\n  2) Vous connecter ?")
@@ -145,7 +145,7 @@ class Client:
     def connexion(self):
         """Fonction qui demandes les informations pour se connecter.
 
-        Author : Nathan
+        Auteur : Nathan
         """
         # pseudo
         pseudo = input("pseudo : ")
@@ -169,7 +169,7 @@ class Client:
     def inscription(self):
         """Fonction qui demandes les informations pour s'inscrire.
 
-        Author : Nathan
+        Auteur : Nathan
         """
         # email
         email = input("email : ")
@@ -206,7 +206,7 @@ class Client:
         Args:
             message(str): Le message à envoyer au serveur
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         message = message.encode(encoding="utf-8")
@@ -226,7 +226,7 @@ class Client:
         Connexion avec le protocole TCP/IP, utilisation d'un thread pour la
         fonction `handle()` afin de ne pas encombrer le thread principal.
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -236,7 +236,7 @@ class Client:
     def handle(self):
         """Permet de gérer les messages reçus.
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         self.on_connect()
@@ -269,7 +269,7 @@ class Client:
         Args:
             mess(str): Le message reçu
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         if is_json(mess):
@@ -302,7 +302,7 @@ class Client:
     def on_close(self):
         """Réaction en cas de fermeture/problème.
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         print("connection fermée")
@@ -311,7 +311,7 @@ class Client:
     def creation_perso(self):
         """Fonction qui demande les informations pour crééer un personnage.
 
-        Author :
+        Auteur :
         """
         data_perso = {"nom": None, "race": None, "classe": None, "genre": None}
         # TODO : Faire que l'utilisateur peut créer son perso
@@ -339,7 +339,7 @@ class Client:
     def interface(self):
         """Permet à l'utilisateur d'écrire et d'envoyer des messages.
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         while self.encours:
@@ -354,7 +354,7 @@ class Client:
     def main(self):
         """Fonction principale du client.
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         self.start()

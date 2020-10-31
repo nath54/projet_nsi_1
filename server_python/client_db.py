@@ -24,7 +24,7 @@ def jload(path_to_file):
     """
     Fonction qui charge ouvre un fichier et qui le charge en json.
 
-    Author : Nathan
+    Auteur : Nathan
     """
     f = io.open(path_to_file, "r", encoding="utf-8")
     txt = f.read()
@@ -51,7 +51,7 @@ class Client_mariadb:
     def __init__(self, game):
         """Initialise les caractéristiques de la base de données.
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         # Faudra se mettre d'accord sur ça
@@ -86,7 +86,7 @@ class Client_mariadb:
     def test_version(self, version):
         """Fonction qui vérifie si la version de la base de donnée est inférieure à celle du serveur.
 
-        Author: Nathan
+        Auteur: Nathan
         """
         self.cursor.execute("SHOW TABLES LIKE 'version';")
         results = [elt for elt in self.cursor]
@@ -111,7 +111,7 @@ class Client_mariadb:
             bool: False = Ce n'est pas le premier lancement du serveur
                   True = C'est la première fois qu'on lance le serveur
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         self.cursor.execute("SHOW TABLES LIKE 'comptes';")
@@ -136,7 +136,7 @@ class Client_mariadb:
     def update(self):
         """Fonction qui supprime et qui recrée les tables qui ne sont pas dans le bon format ou qui n'existent pas.
 
-        Author : Nathan
+        Auteur : Nathan
         """
         # comptes
         if self.get_schema("comptes") != {'id': 'int', 'pseudo': 'text', 'email': 'text', 'password': 'text', 'perso_id': 'int'}:
@@ -222,7 +222,7 @@ class Client_mariadb:
 
         TODO: Ajouter les autres tables
 
-        Author : Nathan, Hugo
+        Auteur : Nathan, Hugo
 
         """
         self.create_table_comptes()
@@ -244,7 +244,7 @@ class Client_mariadb:
             bool: False = L'inscription n'a pas pu être complétée
                   True = Inscription réussie
 
-        Author: Hugo
+        Auteur: Hugo
 
         """
         self.cursor.execute("""INSERT INTO comptes (pseudo, email, password)
@@ -267,7 +267,7 @@ class Client_mariadb:
         renvoie False s'il n'y a pas d'erreurs
         renvoie un string contenant un message d'erreur s'il y a une erreur
 
-        Author : Hugo, Nathan
+        Auteur : Hugo, Nathan
         """
         self.cursor.execute("SELECT pseudo, email FROM comptes")
         c = self.cursor
@@ -284,7 +284,7 @@ class Client_mariadb:
         renvoie False s'il n'y a pas d'erreurs
         renvoie un string contenant un message d'erreur s'il y a une erreur
 
-        Author : Nathan
+        Auteur : Nathan
         """
         self.cursor.execute("SELECT password, id FROM comptes WHERE pseudo=%s",
                             (pseudo,))
@@ -308,7 +308,7 @@ class Client_mariadb:
         """Transférer toutes les données des fichiers json vers la bdd.
 
         Etat : Commencé, à continuer
-        Author : Nathan
+        Auteur : Nathan
         """
         # Les ennemis :
         pathd = "Data/ennemis/"
@@ -319,8 +319,8 @@ class Client_mariadb:
                                 attaque_max, attaque_effets)
                                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
                                 (
-                                    d["id"], d["type"], d["nom"], d["race"],
-                                    d["goblin"], d["description"],
+                                    d["id"], d["type"], d["nom"],
+                                    d["race"], d["description"],
                                     d["vie"][0], d["vie"][1],
                                     d["attaque"][0], d["attaque"][1],
                                     json.dumps(d["attaque_effets"])
@@ -334,7 +334,7 @@ class Client_mariadb:
     def set_perso(self, player):
         """Fonction qui enregistre un perso dans la bdd.
 
-        Author : Nathan
+        Auteur : Nathan
         """
         query = ""
         self.cursor.execute(query, ())
@@ -350,7 +350,7 @@ class Client_mariadb:
     def get_perso(self, id_):
         """Fonction qui récupère les données du personnage.
 
-        Author : Nathan
+        Auteur : Nathan
         """
         query = """SELECT (nom, genre, race, classe, experience,
                     inventaire, lieu, quetes, equipement,
@@ -400,7 +400,7 @@ class Client_mariadb:
         Returns:
             Objet/None: Objet d'id `id` ou None si pas trouvé
 
-        Author: Hugo, Nathan
+        Auteur: Hugo, Nathan
 
         """
         self.cursor.execute("SELECT * FROM objets WHERE id=%s", (str(id),))

@@ -22,7 +22,7 @@ class Game:
     def __init__(self):
         """Initie ce qui est essentiel pour le jeu (Map).
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         self.client_db = None
@@ -41,7 +41,7 @@ class Game:
     def start(self):
         """???.
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         self.map_.load_from_json(self)

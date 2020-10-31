@@ -41,6 +41,7 @@ class Quete:
         Doit donner les récompenses au joueur et l'enlever de son journal de
         quête.
 
+        Auteur :
         """
         # TODO
         pass
@@ -50,6 +51,7 @@ class Quete:
 
         Fonction qui permettra d'afficher une présentation de la quête.
 
+        Auteur :
         """
         # TODO
         pass

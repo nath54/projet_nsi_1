@@ -25,7 +25,7 @@ class Ennemi(Combattant):
         Args:
             index(int): Identifiant unique de l'ennemi
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         Combattant.__init__(self, game)
@@ -46,7 +46,7 @@ Ennemi :
 
         Les infos du Ennemi sont récupérées à partir d'un fichier .json
 
-        Author : Nathan
+        Auteur : Nathan
 
         """
         if os.path.exists(data_ens[self.index]):

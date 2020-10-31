@@ -25,7 +25,7 @@ class Perso(Combattant):
     def __init__(self, game):
         """Instancie le personnage.
 
-        Author: Hugo, Nathan
+        Auteur: Hugo, Nathan
 
         """
         Combattant.__init__(self, game)
@@ -46,7 +46,7 @@ class Perso(Combattant):
         Returns:
             str: Contenu de l'inventaire (présentable)
 
-        Author: Hugo
+        Auteur: Hugo
 
         """
         res = "Voici le contenu de votre inventaire :\n"
@@ -60,7 +60,7 @@ class Perso(Combattant):
         Returns:
             str: Équipement du personnage (présentable)
 
-        Author: Hugo
+        Auteur: Hugo
 
         """
         res = "Voici votre équipement :\n"
@@ -75,7 +75,7 @@ class Perso(Combattant):
         Returns:
             str: Stats du personnage (présentable)
 
-        Author: Hugo
+        Auteur: Hugo
 
         """
         res = f"""Voici vos statistiques :
@@ -95,7 +95,7 @@ class Perso(Combattant):
         Args:
             nom_obj(str): Nom de l'objet à trouver
 
-        Author: Hugo
+        Auteur: Hugo
 
         """
         if id_obj is None:
@@ -115,7 +115,7 @@ class Perso(Combattant):
         Args:
             objet(Objet): L'Objet à consommer
 
-        Author: Hugo
+        Auteur: Hugo
 
         """
         for obj in self.inventaire:
@@ -130,7 +130,7 @@ class Perso(Combattant):
         """
         Fonction qui déséquipe le personnage d'un objet
 
-        Author : Hugo
+        Auteur : Hugo
         """
         for key, val in self.equip:
             if val.index == id_obj or val.nom == nom_obj:
@@ -143,7 +143,7 @@ class Perso(Combattant):
         """
         Fonction qui ajoute à l'inventaire un objet
 
-        Author : Hugo
+        Auteur : Hugo
         """
         # TODO: obj = Objet(id_obj) qui créé l'objet depuis la DB
         obj=None
@@ -153,7 +153,7 @@ class Perso(Combattant):
         """
         Fonction qui équipe le personnage d'un objet
 
-        Author : Hugo
+        Auteur : Hugo
         """
         for i in range(len(self.inventaire)):
             t_obj = self.inventaire[i]

@@ -21,6 +21,10 @@ class Player:
         self.id = 0
 
     def load_perso(self, data_perso):
+        """Fonction qui crée un perso au joueur et qui lui charge les infos.
+        
+        Auteur: Nathan
+        """
         self.perso = Perso(self.game)
         self.player = self
 

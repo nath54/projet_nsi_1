@@ -9,7 +9,7 @@ class Etre:
 
     """
 
-    def __init__(self,game):
+    def __init__(self, game):
         """Instancie un Être."""
         self.nom = ""
         self.lieu = None

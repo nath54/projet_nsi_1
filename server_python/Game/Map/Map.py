@@ -19,7 +19,7 @@ class Map:
     def load_from_json(self, game):
         """Permet de charger la map depuis un fichier `.json`.
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         emplacement = "Data/map/"
@@ -36,7 +36,7 @@ class Map:
         Args:
             datalieu(dict<???>): ???
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         lieu = game.Lieu()

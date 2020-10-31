@@ -62,7 +62,7 @@ class Server:
         jusqu'à 5 connexions simultanées.
         On va aussi lancer le jeu ici, bdd, Game, ...
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
 
@@ -75,6 +75,14 @@ class Server:
         if self.client_db.test_first_time():
             print("premier lancement")
             self.client_db.init_database()
+            self.client_db.transfert_json_to_bdd()
+
+        # On va vérifier les différentes versions des données de la bdd
+        if self.client_db.test_version(self.version):
+            self.client_db.transfert_json_to_bdd()
+
+        # On va aussi essayer de mettre à jour la bdd
+        self.client_db.update()
 
         # TODO: Faudra aussi lancer les différents éléments du jeu
         # On lance le jeu ici
@@ -98,7 +106,7 @@ class Server:
                                     qui gérer l'interaction
             infos (couple): couple d'informations : ip, ???
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         self.on_accept(client, infos)
@@ -120,7 +128,7 @@ class Server:
             client (socket.socket): Référence au client ayant envoyé le message
             message (str): Message à envoyer aux autres clients
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         message = json.dumps(message)
@@ -138,7 +146,7 @@ class Server:
             client (socket.socket): Référence au client ayant envoyé le message
             message (str): Message à envoyer aux autres clients
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         if print_:
@@ -163,7 +171,7 @@ class Server:
             client (socket.socket) Référence au client qui s'est connecté
             i (couple): couple d'informations : ip, ???
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         self.clients[client] = {"player": None}
@@ -179,7 +187,7 @@ class Server:
             infos (couple): couple d'informations : ip, ???
             message (str): Message tapé par l'utilisateur.
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         message = message.decode(encoding="utf-8")
@@ -236,7 +244,7 @@ class Server:
         Args:
             client (socket.socket): Référence au client ayant fermé son application
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         print("Connexion fermée", client)
@@ -251,7 +259,7 @@ class Server:
             data(dict): un dictionnaire contenant les éléments d'une commande
                 exemple : {"command": "attaquer", "arg_1": ennemi}
 
-        Author: Nathan, Hugo
+        Auteur: Nathan, Hugo
 
         """
         data_len = len(data.keys())
@@ -347,7 +355,7 @@ class Server:
             perso(Perso): Personnage demandant l'action
             data(dict): Dict contenant les informations de la commande
 
-        Author: Hugo
+        Auteur: Hugo
 
         """
         compl = data.get("arg_1", "")
@@ -374,7 +382,7 @@ class Server:
     def main(self):
         """Met en route le serveur.
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         self.start()

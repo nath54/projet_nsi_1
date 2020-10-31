@@ -29,7 +29,7 @@ class Objet:
             game(Game): Référence à la partie
             id(int): Index de l'objet à utiliser
 
-        Author: Hugo, Nathan
+        Auteur: Hugo, Nathan
 
         """
         self.index = index
@@ -51,7 +51,7 @@ class Objet:
             important(bool):  True: L'absence de l'objet provoque une erreur
                              False: L'absence de l'objet provoque un print
 
-        Author: Hugo (d'une idée originale de Nathan)
+        Auteur: Hugo (d'une idée originale de Nathan)
 
         """
         datas = self.game.client_db.get_obj_from_DB(self.index)
@@ -70,7 +70,7 @@ class Objet:
     def __repr__(self):
         """Permet d'afficher une description de l'objet.
 
-        Author: Hugo
+        Auteur: Hugo
 
         """
         n = "\n"

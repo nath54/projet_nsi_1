@@ -1,4 +1,3 @@
-
 import os
 import sys
 import json
@@ -22,16 +21,16 @@ class Pnj(Etre):
 
     """
 
-    def __init__(self, index,game):
+    def __init__(self, index, game):
         """Instancie le PNJ.
 
         Args:
             index(int): Identiant unique du PNJ
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
-        Etre.__init__(self,game)
+        Etre.__init__(self, game)
         self.index = index
         self.dialogue = None
         if self.index > len(data_pnjs) - 1:
@@ -51,7 +50,7 @@ Pnj :
 
         Les infos du PNJ sont récupérées à partir d'un fichier .json
 
-        Author : Nathan
+        Auteur : Nathan
 
         """
         if os.path.exists(data_pnjs[self.index]):
@@ -70,8 +69,3 @@ Pnj :
                 self.race = data["race"]
             if "dialogue" in dk:
                 self.dialogue = data["dialogue"]
-
-
-if __name__ == "__main__":
-    p = Pnj(0)
-    print(p)

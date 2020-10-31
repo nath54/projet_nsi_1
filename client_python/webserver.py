@@ -8,35 +8,36 @@ import _thread
 import json
 import sys
 
+
 class WebServer():
-    def __init__(self,client):
+    def __init__(self, client):
         self.IP = "localhost"
         self.PORT = 6789
         self.USER = None
-        self.client=client
+        self.client = client
 
     async def register(self, websocket):
-        if self.USER == None:
+        if self.USER is None:
             self.USER = websocket
 
     async def unregister(self, websocket):
         self.USER = None
 
     async def main_server(self, websocket, path):
-        if self.USER != None:
+        if self.USER is not None:
             print("Un utilisateur a voulu se connecter alors que la place n'était pas libre")
             return
         await self.register(websocket)
         try:
             async for message in websocket:
-                cs=True
+                cs = True
                 try:
-                    data=json.loads(message)
-                    if data["type"]=="veut changer de page":
+                    data = json.loads(message)
+                    if data["type"] == "veut changer de page":
                         cs = False
-                        await websocket.send(json.dumps({"type":"autorisation changement page"}))
+                        await websocket.send(json.dumps({"type": "autorisation changement page"}))
                         await websocket.close()
-                except:
+                except Exception:
                     pass
                 #
                 if cs:

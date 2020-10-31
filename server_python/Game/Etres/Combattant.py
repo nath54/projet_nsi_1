@@ -13,7 +13,7 @@ class Combattant(Etre):
         energie(int): Énergie restante
         effets_attaque(dict): Effets que l'attaquant peu infliger
                               {effet: pourcentage à chaque attaque}
-        effets(dict): Effets appliqués sur l'instance du combattant 
+        effets(dict): Effets appliqués sur l'instance du combattant
                       {effet: temps restant}
         attaque(couple): attaque min et attaque max du combattant
         esquive(int): % de chance d'esquiver une attaque
@@ -24,7 +24,7 @@ class Combattant(Etre):
 
         Args:
 
-        Author: Nathan, Hugo
+        Auteur: Nathan, Hugo
 
         """
         Etre.__init__(self, game)
@@ -40,7 +40,7 @@ class Combattant(Etre):
     def full_vie(self):
         """Rend toute sa santé au personnage.
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         self.vie = self.vie_totale
@@ -48,7 +48,7 @@ class Combattant(Etre):
     def full_energie(self):
         """Rend toute son énergie au personnage.
 
-        Author: Nathan
+        Auteur: Nathan
 
         """
         self.energie = self.energie_totale
@@ -59,7 +59,7 @@ class Combattant(Etre):
         Args:
             nombre(int): Quantité de vie à récupérer
 
-        Author: Hugo
+        Auteur: Hugo
 
         """
         self.vie += nombre
@@ -72,7 +72,7 @@ class Combattant(Etre):
         Args:
             nombre(int): Quantité d'énergie à récupérer
 
-        Author: Hugo
+        Auteur: Hugo
 
         """
         self.energie += nombre
@@ -105,4 +105,3 @@ class Combattant(Etre):
             # TODO : informer le moteur du jeu que le combattant est mort et
             # qu'il faut le supprimer du coup
             pass
-
