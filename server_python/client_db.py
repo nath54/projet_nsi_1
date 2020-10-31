@@ -199,39 +199,39 @@ class Client_mariadb:
         """
         # comptes
         if force or self.get_schema("comptes") != {'id': 'int', 'pseudo': 'text',
-                                          'email': 'text', 'password': 'text',
-                                          'perso_id': 'int'}:
+                                                   'email': 'text', 'password': 'text',
+                                                   'perso_id': 'int'}:
             self.cursor.execute("DROP TABLE comptes")
             self.connection.commit()
             self.create_table_comptes()
             print("La table comptes a été mise à jour !")
         # persos
         if force or self.get_schema("persos") != {"id": "int", "nom": "text", "genre": "text",
-                                         "race": "text", "classe": "text", "experience": "text",
-                                         "inventaire": "text", "lieu": "int", "quetes": "text",
-                                         "equipement": "text", "vie": "int", "vie_totale": "int",
-                                         "energie": "int", "energie_totale": "int", "charme": "int",
-                                         "discretion": "int", "force_": "int", "agilite": "int",
-                                         "magie": "int", "effets_attaque": "text", "bonus_esquive": "int",
-                                         "sorts": "text", "resistances": "text", "faiblesses": "text"}:
+                                                  "race": "text", "classe": "text", "experience": "text",
+                                                  "inventaire": "text", "lieu": "int", "quetes": "text",
+                                                  "equipement": "text", "vie": "int", "vie_totale": "int",
+                                                  "energie": "int", "energie_totale": "int", "charme": "int",
+                                                  "discretion": "int", "force_": "int", "agilite": "int",
+                                                  "magie": "int", "effets_attaque": "text", "bonus_esquive": "int",
+                                                  "sorts": "text", "resistances": "text", "faiblesses": "text"}:
             self.cursor.execute("DROP TABLE IF EXISTS persos")
             self.connection.commit()
             self.create_table_persos()
             print("La table persos a été mise à jour !")
         # ennemis
         if force or self.get_schema("ennemis") != {"id": "int", "type_": "text", "nom": "text",
-                                          "race": "text", "description_": "text", "vie_min": "int",
-                                          "vie_max": "int", "attaque_min": "int", "attaque_max": "int",
-                                          "attaque_effets": "text"}:
+                                                   "race": "text", "description_": "text", "vie_min": "int",
+                                                   "vie_max": "int", "attaque_min": "int", "attaque_max": "int",
+                                                   "attaque_effets": "text"}:
             self.cursor.execute("DROP TABLE IF EXISTS ennemis")
             self.connection.commit()
             self.create_table_ennemis()
             print("La table ennemis a été mise à jour !")
         # objets
         if force or self.get_schema("objets") != {"id": "int", "nom": "text",
-                                         "description_": "text",
-                                         "type_": "text",
-                                         "effets": "text"}:
+                                                  "description_": "text",
+                                                  "type_": "text",
+                                                  "effets": "text"}:
             self.cursor.execute("DROP TABLE IF EXISTS objets")
             self.connection.commit()
             self.create_table_objets()
