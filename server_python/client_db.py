@@ -191,6 +191,13 @@ class Client_mariadb:
         # "/" comme séparateur entre chaque ID
         self.cursor.execute(query)
         self.connection.commit()
+    
+    def create_table_genre(self):
+        """Fonction qui crée la table genre dans la bdd."""
+        query = ("""CREATE TABLE IF NOT EXISTS genre
+                    (genre TEXT);""")
+        self.cursor.execute(query)
+        self.connection.commit()
 
     def update(self, force=True):
         """Fonction qui supprime et qui recrée les tables qui ne sont pas dans le bon format ou qui n'existent pas.
@@ -236,6 +243,10 @@ class Client_mariadb:
             self.connection.commit()
             self.create_table_objets()
             print("La table objets a été mise à jour !")
+        if force or self.get_schema("genres") != {"genre": "text"}:
+            self.cursor.execute("DROP TABLE IF EXISTS genres")
+            self.connection.commit()
+            self.create_table_genre()
 
     def init_database(self):
         """Permet de créer toutes les tables au premier lancement.
@@ -251,6 +262,7 @@ class Client_mariadb:
         self.create_table_pnjs()
         self.create_table_ennemis()
         self.create_table_lieux()
+        self.create_table_genre()
 
     def inscription(self, pseudo, email, password):
         """Permet de créer un compte.
@@ -446,3 +458,12 @@ class Client_mariadb:
             print(id_, nom, desc, type_, effets)
             return (nom, desc, type_, effets)
         return None
+
+    def get_genres(self):
+        self.cursor.execute("SELECT genre FROM genres;")
+        results = [elt[0] for elt in self.cursor]
+        return results
+
+    def new_genre(self, genre):
+        self.cursor.execute("INSERT INTO genres (genre) VALUES %s", (genre,))
+        self.connection.commit()

@@ -46,12 +46,14 @@ function perso_creator(){
         var o = document.createElement("option");
         o.innerHTML = e;
         document.getElementById("select_race").appendChild(o)
+        on_change_race()
     }
     //classes
     for(e of Object.keys(classes)){
         var o = document.createElement("option");
         o.innerHTML = e;
         document.getElementById("select_classe").appendChild(o)
+        on_change_classe()
     }
 }
 
@@ -77,6 +79,15 @@ function send_perso(){
     var genre = document.getElementById("select_genre").value;
     var race = document.getElementById("select_race").value;
     var classe = document.getElementById("select_classe").value;
+    //tests
+    if(nom < 2){
+        alert("Le nom est trop petit (au moins 2 characteres) !");
+        return;
+    }
+    else if(nom > 20){
+        alert("Le nom est trop grand (au maximum 20 characteres) !");
+        return;
+    }
     //
     if(genre == "autre"){
         genre = document.getElementById("i_genre").value;

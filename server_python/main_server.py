@@ -216,6 +216,7 @@ class Server:
                             self.clients[client]["player"] = Player(pseudo, self.game, id_)
                             self.send(client, json.dumps({"type": "inscription successed"}))
                             time.sleep(0.1)
+                            self.send(client, json.dumps({"type": "genres", "genres": json.dumps(self.client_db.get_genres())}))
                             self.send(client, json.dumps({"type": "creation perso"}))
                             # il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
                         else:
@@ -233,6 +234,8 @@ class Server:
                         self.clients[client]["player"].load_perso(data_perso)
                         # il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
                 elif data["type"] == "perso_cree":
+                    if data["genre"] not in ["autre"] and data["genre"] not in self.client_db.get_genres():
+                        self.client_db.new_genre(data["genre"])
                     self.clients[client]["player"].create_perso(data)
                     self.client_db.set_perso(self.clients[client]["player"].perso)
                 else:
