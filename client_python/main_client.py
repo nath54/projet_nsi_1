@@ -1,4 +1,4 @@
-# PROGRAMME PRINCIPAL DU CLIENT DU JEU
+"""PROGRAMME PRINCIPAL DU CLIENT DU JEU."""
 
 # Importations :
 import socket
@@ -22,6 +22,7 @@ chars = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
 
 # fonction qui teste les emails
 def test_email(txt):
+    """Fonction qui vérifie qu'un mail a le bon format."""
     t = txt.split("@")
     if len(t) != 2:
         print("ERREUR /!\\ : "
@@ -39,6 +40,7 @@ def test_email(txt):
 
 
 def test_pseudo(txt):
+    """Fonction qui vérifie qu'un pseudo a le bon format."""
     if len(txt) < 4:
         print("ERREUR /!\\ Pseudo : Minimum 4 caractères !")
         return True
@@ -53,6 +55,7 @@ def test_pseudo(txt):
 
 
 def test_password(txt):
+    """Fonction qui vérifie qu'un mmot de passe a le bon format."""
     if len(txt) < 8:
         print("ERREUR /!\\ Mot de passe : Minimum 8 caractères !")
         return True
@@ -68,9 +71,10 @@ def test_password(txt):
 
 # fonction qui teste si un texte est du format json
 def is_json(myjson):
+    """Fonction qui teste si un string est de format json."""
     try:
-        json_object = json.loads(myjson)
-    except ValueError as e:
+        json.loads(myjson)
+    except ValueError:
         return False
     return True
 
@@ -112,9 +116,7 @@ class Client:
             self.ws = False
 
     def debut(self):
-        """
-        Fonction qui se lance au début pour savoir si tu veux t'inscrire
-        ou te connecter
+        """Fonction qui demanse si tu veux t'inscrire ou te connecter.
 
         Author : Nathan
 
@@ -129,9 +131,9 @@ class Client:
             self.connexion()
 
     def attente_serv(self):
-        """
-        Fonction qui attends qu'un message a été recu (dans un autre thread)
-        pour continuer dans le thread actuel
+        """Fonction qui attends qu'un message a été recu.
+
+        Quand le message a été reçu, on peut continuer le thread actuel
 
         Auteur : Nathan
 
@@ -141,6 +143,10 @@ class Client:
             pass
 
     def connexion(self):
+        """Fonction qui demandes les informations pour se connecter.
+
+        Author : Nathan
+        """
         # pseudo
         pseudo = input("pseudo : ")
         while test_pseudo(pseudo):
@@ -161,6 +167,10 @@ class Client:
             self.debut()
 
     def inscription(self):
+        """Fonction qui demandes les informations pour s'inscrire.
+
+        Author : Nathan
+        """
         # email
         email = input("email : ")
         while test_email(email):
@@ -234,7 +244,7 @@ class Client:
             try:
                 msg = self.client.recv(self.max_size)
                 msg = msg.decode(encoding="utf-8")
-                print("recu : "+json.loads(msg))
+                print("recu : " + json.loads(msg))
                 if len(msg) == 0:
                     raise UserWarning("message vide")
                 if not self.ws:
@@ -278,12 +288,12 @@ class Client:
             elif data["type"] == "inscription successed":
                 print("Inscription acceptée")
                 self.etat = "connecté"
-                
+
             elif data["type"] == "connection failed":
-                print("Connection refusée\nerreur : "+data["value"])
-                
+                print("Connection refusée\nerreur : " + data["value"])
+
             elif data["type"] == "inscription failed":
-                print("Inscription refusée\nerreur : "+data["value"])
+                print("Inscription refusée\nerreur : " + data["value"])
 
             elif data["type"] == "creation perso":
                 data_perso = self.creation_perso()
@@ -299,6 +309,10 @@ class Client:
         exit()
 
     def creation_perso(self):
+        """Fonction qui demande les informations pour crééer un personnage.
+
+        Author :
+        """
         data_perso = {"nom": None, "race": None, "classe": None, "genre": None}
         # TODO : Faire que l'utilisateur peut créer son perso
         # Attenion ! Il faut faire un systeme sécurisé

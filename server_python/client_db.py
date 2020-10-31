@@ -1,14 +1,14 @@
-# CECI EST LE CLIENT QUI SE CONNECTE À MARIADB
+"""CECI EST LE CLIENT QUI SE CONNECTE À MARIADB."""
 
 # Imports :
 
 # Méthode 1 : mariadb
 try:
-    import mariadb
+    import mariadb  # ignore unresolved-import error
 except Exception as e:
     # Méthode 2 : mysql
     try:
-        import mysql.connector as mariadb
+        import mysql.connector as mariadb   # ignore unresolved-import error
     except Exception as e:
         # Rien n'est installé
         raise UserWarning("Il faut installer la librairie mariadb ou mysql !")
@@ -21,6 +21,11 @@ import io
 
 
 def jload(path_to_file):
+    """
+    Fonction qui charge ouvre un fichier et qui le charge en json.
+
+    Author : Nathan
+    """
     f = io.open(path_to_file, "r", encoding="utf-8")
     txt = f.read()
     f.close()
@@ -28,7 +33,8 @@ def jload(path_to_file):
 
 
 class Client_mariadb:
-    """Classe du client MariaDB.
+    """
+    Classe du client MariaDB.
 
     Attributes:
         user(str): Utilisateur de la base
@@ -177,7 +183,8 @@ class Client_mariadb:
         return True, id_
 
     def test_compte_inscrit(self, pseudo, email):
-        """Fonction qui teste si on peut inscrire un compte
+        """Fonction qui teste si on peut inscrire un compte.
+
         renvoie False s'il n'y a pas d'erreurs
         renvoie un string contenant un message d'erreur s'il y a une erreur
 
@@ -193,7 +200,8 @@ class Client_mariadb:
         return False
 
     def test_connection(self, pseudo, password):
-        """Fonction qui teste la connection d'un compte,
+        """Fonction qui teste la connection d'un compte.
+
         renvoie False s'il n'y a pas d'erreurs
         renvoie un string contenant un message d'erreur s'il y a une erreur
 
@@ -218,21 +226,19 @@ class Client_mariadb:
                 return "Le mot de passe est faux !", None
 
     def transfert_json_to_bdd(self):
-        """ 
-        A faire : transférer toutes les données des fichiers json vers la bdd
+        """Transférer toutes les données des fichiers json vers la bdd.
 
+        Etat : Commencé, à continuer
         Author : Nathan
         """
-
         # Les ennemis :
         pathd = "Data/ennemis/"
         for fich in os.listdir(pathd):
-            d = jload(pathd+fich)
+            d = jload(pathd + fich)
             self.cursor.execute("""INSERT INTO ennemis (id, type_, nom, race,
                                 description_, vie_min, vie_max, attaque_min,
                                 attaque_max, attaque_effets)
-                                VALUES
-                                (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
                                 (
                                     d["id"], d["type"], d["nom"], d["race"],
                                     d["goblin"], d["description"],
@@ -248,8 +254,7 @@ class Client_mariadb:
         pass
 
     def set_perso(self, perso):
-        """
-        Fonction qui enregistre un perso dans la bdd
+        """Fonction qui enregistre un perso dans la bdd.
 
         Author :
         """
@@ -257,8 +262,7 @@ class Client_mariadb:
         pass
 
     def get_perso(self, pseudo):
-        """
-        Fonction qui récupère les données du personnage
+        """Fonction qui récupère les données du personnage.
 
         Author :
         """
@@ -267,7 +271,7 @@ class Client_mariadb:
         return data_perso
 
     def get_obj_from_DB(self, id):
-        """Renvoie l'objet demandé
+        """Renvoie l'objet demandé.
 
         Args:
             id(int): ID de l'objet à chercher

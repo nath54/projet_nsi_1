@@ -75,28 +75,28 @@ class Player:
                     for k, v in self.game.races[self.perso.race][attribut].items():
                         if not (k in valeurs[attribut].keys()):
                             valeurs[attribut][k] = v
-                        elif type(v)==int:
+                        elif type(v) == int:
                             valeurs[attribut][k] += v
                 elif type(valeurs[attribut]) == list:
                     for v in self.game.races[self.perso.race][attribut]:
                         valeurs[attribut].append(v)
 
-        #on applique les valeurs des classes
+        # on applique les valeurs des classes
         for attribut in self.game.classes[self.perso.classe].keys():
             if attribut in valeurs.keys():
                 if type(valeurs[attribut]) == int:
-                    valeurs[attribut]+=self.game.classes[self.perso.classe][attribut]
+                    valeurs[attribut] += self.game.classes[self.perso.classe][attribut]
                 elif type(valeurs[attribut]) == dict:
-                    for k,v in self.game.classes[self.perso.classe][attribut].items():
-                        if not k in valeurs[attribut].keys():
-                            valeurs[attribut][k]=v
-                        elif type(v)==int:
-                            valeurs[attribut][k]+=v
+                    for k, v in self.game.classes[self.perso.classe][attribut].items():
+                        if not (k in valeurs[attribut].keys()):
+                            valeurs[attribut][k] = v
+                        elif type(v) == int:
+                            valeurs[attribut][k] += v
                 elif type(valeurs[attribut]) == list:
                     for v in self.game.classes[self.perso.classe][attribut]:
                         valeurs[attribut].append(v)
 
-        #on donne les valeurs
+        # on donne les valeurs
         self.perso.charme = valeurs["charme"]
         self.perso.discretion = valeurs["discretion"]
         self.perso.force = valeurs["force"]

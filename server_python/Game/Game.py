@@ -1,4 +1,4 @@
-# CECI EST LA PARTIE QUI GERE LE JEU
+"""CECI EST LA PARTIE QUI GERE LE JEU."""
 
 # Imports :
 from Game.Map.Map import Map
@@ -11,7 +11,8 @@ from Game.Etres.Ennemis.Ennemi import Ennemi
 
 
 class Game:
-    """Classe de la partie.
+    """
+    Classe de la partie.
 
     Attributes:
         map_(Map): Référence à la map du jeu
@@ -36,7 +37,7 @@ class Game:
         pass
 
     def start(self):
-        """???
+        """???.
 
         Author: Nathan
 

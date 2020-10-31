@@ -19,9 +19,10 @@ from Player import Player
 
 # fonction qui teste si un texte est du format json
 def is_json(myjson):
+    """Fonction qui teste si un string est de format json."""
     try:
-        json_object = json.loads(myjson)
-    except ValueError as e:
+        json.loads(myjson)
+    except ValueError:
         return False
     return True
 
@@ -194,10 +195,13 @@ class Server:
                         self.send(client, json.dumps({"type": "inscription failed", "value": erreur}))
                     else:
                         reussi, id_ = self.client_db.inscription(pseudo, email, password)
-                        self.clients[client]["player"] = Player(pseudo, self.game, id_)
-                        self.send(client, json.dumps({"type": "inscription successed"}))
-                        self.send(client, json.dumps({"type": "creation perso"}))
-                        # il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
+                        if reussi:
+                            self.clients[client]["player"] = Player(pseudo, self.game, id_)
+                            self.send(client, json.dumps({"type": "inscription successed"}))
+                            self.send(client, json.dumps({"type": "creation perso"}))
+                            # il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
+                        else:
+                            raise UserWarning("ERREUR : La bdd a échoué ")
                 elif data["type"] == "connection":
                     pseudo = data["pseudo"]
                     password = data["password"]
@@ -209,7 +213,7 @@ class Server:
                         data_perso = self.client_db.get_perso(pseudo)
                         self.clients[client]["player"] = Player(pseudo, self.game, id_)
                         self.clients[client]["player"].load_perso(data_perso)
-                        #il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
+                        # il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
                 elif data["type"] == "perso_cree":
                     self.clients[client]["player"].create_perso(data)
                     self.client_db.set_perso(self.clients[client]["player"].perso)
@@ -236,8 +240,7 @@ class Server:
         Args:
             client(socket.socket): Personne qui a entré la commande
             data(dict): un dictionnaire contenant les éléments d'une commande
-                exemple : {"command": "attaquer",
-                           "arg_1": ennemi}
+                exemple : {"command": "attaquer", "arg_1": ennemi}
 
         Author: Nathan, Hugo
 
@@ -246,7 +249,7 @@ class Server:
         action = data["commande"]
         perso = self.clients[client]["player"].perso
 
-        #Les premieres commandes sont des commandes à 0 ou plus arguments
+        # Les premieres commandes sont des commandes à 0 ou plus arguments
         if action == "voir":
             self.send(client, perso.lieu, True)
         elif action == "inventaire":
@@ -269,7 +272,7 @@ class Server:
         elif data_len <= 1:
             self.send(client, "Commande inconnue", True)
 
-        #Ce qui suit sont des commandes avec au moins 1 argument
+        # Ce qui suit sont des commandes avec au moins 1 argument
         elif action == "desequiper":
             b = perso.desequiper(data["arg_1"])
             if b:
@@ -316,7 +319,7 @@ class Server:
             self.send(client, "Commande inconnue", True)
             pass  # Action avec plus de 2 paramètres au-delà
 
-        #Ce qui suit sont des commandes avec au moin 1 argument
+        # Ce qui suit sont des commandes avec au moin 1 argument
         elif action == "mettre":
             pass
         elif action == "sortilege":
