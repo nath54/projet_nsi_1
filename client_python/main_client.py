@@ -308,17 +308,23 @@ class Client:
         print("connection fermée")
         exit()
 
+    def test_nom(self, nom):
+        """Fonction qui teste si un nom est dans le bon format
+
+        Author: Léa
+        """
+        if len(nom) < 2:
+            return "Le nom doit avoir au minimum 2 lettres !"
+        elif len(nom) > 20:
+            return "Le nom doit avoir au maximum 20 lettres !"
+
     def creation_perso(self):
         """Fonction qui demande les informations pour crééer un personnage.
 
-        Auteur :
+        Auteur : Léa
         """
         data_perso = {"type": "perso_cree", "nom": None, "race": None,
                       "classe": None, "genre": None}
-        # TODO : Faire que l'utilisateur peut créer son perso
-        # Attenion ! Il faut faire un systeme sécurisé
-        # (il faut bien vérifier les réponses de l'utilisateur,
-        # et lui redemander si ca ne va pas)
 
         lst_classes = {
             "guerrier": "Un guerrier sait se battre au corps à corps, il est fort et il porte facilement tout type d'armure",
@@ -349,9 +355,39 @@ class Client:
                       "non-binaire", "autre"]
         # c'est pour faire plaisir à tout le monde
 
-        # TODO
-        # TODO
-        # TODO
+        # nom
+        nom = input("nom : ")
+        erreur = self.test_nom(nom)
+        while erreur:
+            print("ERREUR /!\\ : " + erreur)
+            nom = input("nom : ")
+
+        # race
+        race = input("race : ")
+        while race not in lst_races.key():
+            print("ERREUR /!\\ : La race n'est pas dans la liste !")
+            race = input("race : ")
+
+        # classe
+        classe = input("classe : ")
+        while classe not in lst_classes.key():
+            print("ERREUR /!\\ : La classe n'est pas dans la liste !")
+            classe = input("classe : ")
+
+        # genre 
+        genre = input("genre : ")
+
+        # on peut envoyer les infos
+        self.send(json.dumps({"type": "perso_cree", "nom": nom,
+                              "race": race, "classe": classe, "genre": genre}))
+        print("En attente du serveur ... ")
+        self.attente_serv()
+        print("recu !")
+        if self.etat == "connecté":
+            print("personnage créé")
+            self.interface()
+        else:
+            self.debut()
 
         return data_perso
 

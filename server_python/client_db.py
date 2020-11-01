@@ -20,6 +20,7 @@ import json
 import io
 from libs import *
 
+
 class Client_mariadb:
     """
     Classe du client MariaDB.
