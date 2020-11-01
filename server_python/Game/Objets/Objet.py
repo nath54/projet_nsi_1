@@ -15,9 +15,8 @@ class Objet:
         description(str): Description de l'objet
         type(str): Le type de l'objet
         effet_utilise(list/None): Effet qu'aura l'action d'utiliser l'objet
-        contenant(bool): Est-ce que l'objet est un contenant ?
         contenu(list<Objet>): Liste des objets si c'est un contenant
-        est_ouvert(bool): Est-ce que l'objet est ouvert ? 
+        est_ouvert(bool): Est-ce que l'objet est ouvert ?
 
     Note:
         On pourra rajouter d'autres actions qui auront d'autres effets
