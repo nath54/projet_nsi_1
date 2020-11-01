@@ -191,7 +191,7 @@ class Client_mariadb:
         # "/" comme séparateur entre chaque ID
         self.cursor.execute(query)
         self.connection.commit()
-    
+
     def create_table_genre(self):
         """Fonction qui crée la table genre dans la bdd."""
         query = ("""CREATE TABLE IF NOT EXISTS genre

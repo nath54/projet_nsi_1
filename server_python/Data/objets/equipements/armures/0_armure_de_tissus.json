@@ -1,5 +1,6 @@
 {
     "id":0,
+    "type":"armure",
     "nom":"armure de tissus",
     "description":"",
     "défense corps à corps":[0,1],
