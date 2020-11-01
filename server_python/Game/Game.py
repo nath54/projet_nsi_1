@@ -57,7 +57,7 @@ class Game:
         for fich in os.listdir("Data/races/"):
             data = jload(fich)
             self.races[data["nom"]] = data
-        
+
         for fich in os.listdir("Data/classes/"):
             data = jload(fich)
             self.classes[data["nom"]] = data
