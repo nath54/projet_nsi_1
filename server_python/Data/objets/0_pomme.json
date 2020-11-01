@@ -5,5 +5,8 @@
     "description":"Une belle pomme bien rouge, elle a l'air vraiment délicieuse",
     "effets":{
         "manger":{"santé":[2,4],"usage_unique":true}
-    }
+    },
+    "contenu":[],
+    "verrouille":false,
+    "ouvert":false
 }

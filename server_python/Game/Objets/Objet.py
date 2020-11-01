@@ -45,6 +45,9 @@ class Objet:
         self.description = datas[1]
         self.type = datas[2]
         self.effet_utilise = datas[3]
+        self.contenu = json.loads(datas[4])
+        self.verrouille = datas[5]
+        self.ouvert = datas[6]
 
     # def load(self, important=True):
     #     """Charge l'objet.

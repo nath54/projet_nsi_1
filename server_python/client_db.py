@@ -148,7 +148,8 @@ class Client_mariadb:
         """Fonction qui crée la table perso dans la bdd."""
         query = ("""CREATE TABLE IF NOT EXISTS objets
                     (id INT PRIMARY KEY, nom TEXT,
-                    description_ TEXT, type_ TEXT, effets TEXT);""")
+                    description_ TEXT, type_ TEXT, effets TEXT,
+                    contenu TEXT, verrouille BOOLEAN, ouvert BOOLEAN);""")
         self.cursor.execute(query)
         self.connection.commit()
 
@@ -226,10 +227,14 @@ class Client_mariadb:
             self.create_table_ennemis()
             print("La table ennemis a été mise à jour !")
         # objets
-        if force or self.get_schema("objets") != {"id": "int", "nom": "text",
-                                                  "description_": "text",
-                                                  "type_": "text",
-                                                  "effets": "text"}:
+        if force or self.get_schema("objets") != {'id': 'int',
+                                                  'nom': 'text',
+                                                  'description_': 'text',
+                                                  'type_': 'text',
+                                                  'effets': 'text',
+                                                  'contenu': 'text',
+                                                  'verrouille': 'tinyint',
+                                                  'ouvert': 'tinyint'}:
             self.cursor.execute("DROP TABLE IF EXISTS objets")
             self.connection.commit()
             self.create_table_objets()
@@ -430,8 +435,8 @@ class Client_mariadb:
         id_ = player.id_
         # on va regarder si le player a déjà un perso
         self.cursor.execute("SELECT perso_id FROM comptes WHERE id=%s", (id_,))
-        compte_id = [elt for elt in self.cursor][0]
-        if compte_id == -1:
+        perso_id = [elt for elt in self.cursor][0]
+        if perso_id == -1:
             # si non on va lui en créer un
             self.cursor.execute("")
             self.connection.commit()
@@ -501,10 +506,10 @@ class Client_mariadb:
         Auteur: Hugo, Nathan
 
         """
-        self.cursor.execute("SELECT nom, description_, type_, effets FROM objets WHERE id=%s", (id_,))
-        for nom, desc, type_, effets in self.cursor:
-            print(id_, nom, desc, type_, effets)
-            return (nom, desc, type_, effets)
+        self.cursor.execute("SELECT nom, description_, type_, effets, contenu, verrouille, ouvert FROM objets WHERE id=%s", (id_,))
+        for nom, desc, type_, effets, contenu, verrouille, ouvert in self.cursor:
+            # print(id_, nom, desc, type_, effets, contenu, verrouille, ouvert)
+            return (nom, desc, type_, effets, contenu, verrouille, ouvert)
         return None
 
     def get_genres(self):

@@ -13,5 +13,8 @@
     "coup énergie corps à corps":0.5,
     "coup énergie à distance":0.5,
     "coup énergie magique":null,
-    "effets":{}
+    "effets":{},
+    "contenu":[],
+    "verrouille":false,
+    "ouvert":false
 }

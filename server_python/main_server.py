@@ -233,7 +233,7 @@ class Server:
                 if data["genre"] == "autre" and data["genre"] not in db.get_genres():
                     db.new_genre(data["genre"])
                 self.clients[client]["player"].creation(data)
-                db.set_perso(self.clients[client]["player"].perso)
+                db.set_perso(self.clients[client]["player"])
             else:
                 # TODO
                 pass

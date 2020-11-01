@@ -9,5 +9,8 @@
     "reduction précision attaque":0,
     "reduction esquive":0,
     "élément":"tissus",
-    "effets":{}
+    "effets":{},
+    "contenu":[],
+    "verrouille":false,
+    "ouvert":false
 }
