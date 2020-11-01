@@ -383,7 +383,7 @@ class Client_mariadb:
                                     json.dumps(d["effets"])
                                 ))
             self.connection.commit()
-        
+
         for fich in os.listdir(pathd_armures):
             if not fich.endswith(".json"):
                 continue
@@ -410,7 +410,7 @@ class Client_mariadb:
                                 ))
             self.connection.commit()
         # endregion
-        
+
         # region Lieu :
         # self.cursor.execute("TRUNCATE TAB     LE `lieux`")
         # self.connection.commit()
@@ -424,7 +424,7 @@ class Client_mariadb:
         #     self.cursor.execute(query)
         #     self.connection.commit()
         # endregion
-        
+
         # A faire les autres
         # (il y aura sans doutes la table à changer comme j'ai du changer pour ennemi)
         # TODO
@@ -435,14 +435,21 @@ class Client_mariadb:
 
         Auteur : Nathan
         """
-        query = ""
-        self.cursor.execute(query, ())
-        results = [elt for elt in self.cursor]
-        if len(results) == 0:
-            raise UserWarning("Probleme avec player !")
-        #
-        id_ = results[0][0]
-        # je continuerai cette aprem
+        id_ = player.id_
+        # on va regarder si le player a déjà un perso
+        self.cursor.execute("SELECT perso_id FROM comptes WHERE id=%s", (id_,))
+        compte_id = [elt for elt in self.cursor][0]
+        if compte_id == -1:
+            # si non on va lui en créer un
+            self.cursor.execute("")
+            self.connection.commit()
+            pass
+        else:
+            # sinon on va juste modifier les valeurs
+            self.cursor.execute("")
+            self.connection.commit()
+        
+        self.connection.commit()
         # TODO
         pass
 

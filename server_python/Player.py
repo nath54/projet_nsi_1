@@ -13,16 +13,16 @@ class Player:
 
     """
 
-    def __init__(self, pseudo, data_perso, game):
+    def __init__(self, pseudo, game, id_, ):
         """Initie le compte du joueur."""
         self.pseudo = pseudo
         self.perso = None
         self.game = game
-        self.id = 0
+        self.id = -1
 
     def load_perso(self, data_perso):
         """Fonction qui crée un perso au joueur et qui lui charge les infos.
-        
+
         Auteur: Nathan
         """
         self.perso = Perso(self.game)
