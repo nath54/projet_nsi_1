@@ -434,16 +434,138 @@ class Client_mariadb:
         """
         id_ = player.id_
         # on va regarder si le player a déjà un perso
-        self.cursor.execute("SELECT perso_id FROM comptes WHERE id=%s", (id_,))
-        perso_id = [elt for elt in self.cursor][0]
-        if perso_id == -1:
+        self.cursor.execute("SELECT perso_id FROM comptes WHERE id=%s;", (id_,))
+        results = [elt for elt in self.cursor]
+        if results == []:
+            raise UserWarning("erreur !")
+        perso_id = results[0]
+        perso = player.perso
+        if perso_id == "null":
             # si non on va lui en créer un
-            self.cursor.execute("")
+            self.cursor.execute("""INSERT INTO persos
+                                   (nom,
+                                    genre,
+                                    race,
+                                    classe,
+                                    experience,
+                                    inventaire,
+                                    lieu,
+                                    quetes,
+                                    equipement,
+                                    vie,
+                                    vie_totale,
+                                    energie,
+                                    energie_totale,
+                                    charme,
+                                    discretion,
+                                    force_,
+                                    agilite,
+                                    magie,
+                                    effets_attaque,
+                                    bonus_esquive,
+                                    sorts,
+                                    resistances,
+                                    faiblesses)
+                                   VALUES
+                                   (%s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s,
+                                    %s);""",
+                                (perso.nom,
+                                 perso.genre,
+                                 perso.race,
+                                 perso.classe,
+                                 perso.experience,
+                                 perso.inventaire,
+                                 perso.lieu,
+                                 perso.quetes,
+                                 perso.equipement,
+                                 perso.vie,
+                                 perso.vie_totale,
+                                 perso.energie,
+                                 perso.energie_totale,
+                                 perso.charme,
+                                 perso.discretion,
+                                 perso.force_,
+                                 perso.agilite,
+                                 perso.magie,
+                                 perso.effets_attaque,
+                                 perso.bonus_esquive,
+                                 perso.sorts,
+                                 perso.resistances,
+                                 perso.faiblesses))
             self.connection.commit()
             pass
         else:
             # sinon on va juste modifier les valeurs
-            self.cursor.execute("")
+            self.cursor.execute("""UPDATE persos
+                                   SET nom = %s,
+                                       genre = %s,
+                                       race = %s,
+                                       classe = %s,
+                                       experience = %s,
+                                       inventaire = %s,
+                                       lieu = %s,
+                                       quetes = %s,
+                                       equipement = %s,
+                                       vie = %s,
+                                       vie_totale = %s,
+                                       energie = %s,
+                                       energie_totale = %s,
+                                       charme = %s,
+                                       discretion = %s,
+                                       force_ = %s,
+                                       agilite = %s,
+                                       magie = %s,
+                                       effets_attaque = %s,
+                                       bonus_esquive = %s,
+                                       sorts = %s,
+                                       resistances = %s,
+                                       faiblesses = %s
+                                    WHERE id=%s;""",
+                                (perso.nom,
+                                    perso.genre,
+                                    perso.race,
+                                    perso.classe,
+                                    perso.experience,
+                                    perso.inventaire,
+                                    perso.lieu,
+                                    perso.quetes,
+                                    perso.equipement,
+                                    perso.vie,
+                                    perso.vie_totale,
+                                    perso.energie,
+                                    perso.energie_totale,
+                                    perso.charme,
+                                    perso.discretion,
+                                    perso.force_,
+                                    perso.agilite,
+                                    perso.magie,
+                                    perso.effets_attaque,
+                                    perso.bonus_esquive,
+                                    perso.sorts,
+                                    perso.resistances,
+                                    perso.faiblesses,
+                                    perso_id))
             self.connection.commit()
 
         self.connection.commit()
@@ -452,6 +574,7 @@ class Client_mariadb:
 
     def get_perso(self, id_):
         """Fonction qui récupère les données du personnage.
+        Cette fonction prend en argument l'id du compte
 
         Auteur : Nathan
         """
@@ -460,7 +583,7 @@ class Client_mariadb:
                     vie, vie_totale, energie, energie_totale,
                     charme, discretion, force_, agilite, magie,
                     effets_attaque, bonus_esquive, sorts,
-                    resistances, faiblesses) FROM comptes WHERE id=%s"""
+                    resistances, faiblesses) FROM perso INNER JOIN compte ON comptes.perso_id = perso.id WHERE comptes.id=%s"""
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
         if len(results) == 0:

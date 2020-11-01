@@ -225,8 +225,8 @@ class Server:
                     self.send(client, json.dumps({"type": "connection failed", "value": erreur}))
                 else:
                     self.send(client, json.dumps({"type": "connection successed"}))
-                    data_perso = self.client_db.get_perso(pseudo)
                     self.clients[client]["player"] = Player(pseudo, self.game, id_)
+                    data_perso = self.client_db.get_perso(id_)
                     self.clients[client]["player"].load_perso(data_perso)
                     # il faudra sans doute envoyer d'autres infos, comme une clé de connexion par exemple
             elif data["type"] == "perso_cree":
