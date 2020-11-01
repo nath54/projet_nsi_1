@@ -291,11 +291,11 @@ class Server:
 
         # Ce qui suit sont des commandes avec au moins 1 argument
         elif action == "desequiper":
-            b = perso.desequiper(data["arg_1"])
+            b = perso.desequiper(arg)
             if b:
-                mess = f"Vous avez retiré {data['arg_1']} !"
+                mess = f"Vous avez retiré {arg} !"
             else:
-                mess = f"Vous n'aviez pas de {data['arg_1']} sur vous..."
+                mess = f"Vous n'aviez pas de {arg} sur vous..."
             self.send(client, mess, True)
         elif action == "equiper":
             b = perso.equiper(data["arg_1"])
@@ -304,18 +304,19 @@ class Server:
             else:
                 mess = f"Vous ne possédez pas '{data['arg_1']}'"
             self.send(client, mess, True)
-        elif action == "examiner":
-            arg = data['arg_1']
-            for obj in perso.game.lieu.objet:
-                if obj.nom == arg:
-                    self.send(client, obj.__repr__(), True)
+        # On définit l'objet ciblé avec lequel l'utilisateur voudra (peut-être) agir
+        arg = data['arg_1']
+        obj_cible = None
+        for i in perso.game.lieu.objet:
+            if obj_cible.nom == arg:
+                obj_cible = i
+
+        if action == "examiner":
+            self.send(client, obj_cible.__repr__(), True)
         elif action == "prendre":
-            arg = data["arg_1"]
-            for i in range(len(perso.game.lieu.objet)):
-                obj = perso.game.lieu.objet[i]
-                if obj.nom == arg and obj.type != "décor":
-                    perso.add_to_invent(obj.index)
-                    del perso.game.lieu.objet[i]
+            if obj_cible.type not in ["décor", "contenant"]:
+                perso.add_to_invent(obj.index)
+                perso.game.lieu.objet.remove(obj_cible)
         elif action == "jeter":
             arg = data["arg_1"]
             qt = data["arg_2"] if data["arg_2"] is not None else 1
@@ -332,15 +333,24 @@ class Server:
                             del perso.invent[i]
                         else:
                             perso.invent[i][1] -= qt
-        elif action == "utiliser":
-            if data_len == 2:
-                pass  # Utiliser un objet
-            elif data_len == 3:
-                pass  # Utiliser un objet sur un autre
         elif action == "ouvrir":
-            pass
+            if obj_cible.type == "contenant":
+                if obj_cible.ouvert:
+                    mess = "Cet objet est déjà ouvert..."
+                else:
+                    mess = f"Vous ouvrez ce superbe {obj_cible.nom}\n{obj_cible.format_contenu}"
+            else:
+                mess = "Comment ouvrir un objet qui ne possède pas d'ouverture..."
+            self.send(client, mess, True)
         elif action == "fermer":
-            pass
+            if obj_cible.type == "contenant":
+                if obj_cible.ouvert:
+                    mess = f"Vous avez refermé le {obj_cible.nom}."
+                else:
+                    mess = f"Vous avez refermé le {obj_cible.nom}, qui était déjà fermé... Quel exploit !"
+            else:
+                mess = "Fermer un objet qui ne se ferme pas... Original."
+            self.send(client, mess, True)
         elif action == "aller":
             pass
         elif action == "parler":
@@ -355,6 +365,8 @@ class Server:
             pass  # Action avec plus de 2 paramètres au-delà
 
         # Ce qui suit sont des commandes avec au moin 1 argument
+        elif action == "utiliser":
+            pass  # Utiliser un objet sur un autre
         elif action == "mettre":
             pass
         elif action == "sortilege":

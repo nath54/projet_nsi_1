@@ -1,16 +1,13 @@
 {
     "id":1,
     "type":"armure",
-    "nom":"armure de tissus",
-    "description":"",
-    "défense corps à corps":[0,1],
-    "défense magique":[0,1],
-    "défense à distance":[0,1],
-    "reduction précision attaque":0,
-    "reduction esquive":0,
-    "élément":"tissus",
-    "effets":{},
-    "contenu":[],
-    "verrouille":false,
-    "ouvert":false
+    "nom":"Armure de Tissu",
+    "description":"... Ou simple vêtement, c'est à votre préférence.",
+    "effets":{
+        "défense":{
+            "corps à corps": [0,1],
+            "magique": [0,1],
+            "distance": [0,1]
+        }
+    }
 }

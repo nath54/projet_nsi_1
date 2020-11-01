@@ -84,3 +84,17 @@ class Objet:
         else:
             r = f"{2 * n}{self.nom} ({self.type}){n}{self.description}{2 * n}"
         return r
+
+    def format_contenu(self):
+        """Formate le contenu d'un objet
+
+        Auteur: Hugo
+
+        """
+        if len(self.contenu) > 0:
+            res = f"Dans ce {self.nom}, vous trouvez :\n"
+            for obj in self.contenu:
+                res += f"\t- {obj.nom}\n"
+        else:
+            res = f"Dans ce {self.nom}, vous trouvez... À vrai dire pas grand chose."
+        return res

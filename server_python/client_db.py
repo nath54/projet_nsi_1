@@ -387,6 +387,9 @@ class Client_mariadb:
             if not fich.endswith(".json"):
                 continue
             d = jload(pathd + fich)
+            d["contenu"] = "" if "contenu" not in d.keys() else d["contenu"]
+            d["verrouille"] = False if "verrouille" not in d.keys() else d["verrouille"]
+            d["ouvert"] = False if "ouvert" not in d.keys() else d["ouvert"]
             self.cursor.execute("""INSERT INTO objets (id, nom, description_, type_, effets, contenu, verrouille, ouvert)
                                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""",
                                 (

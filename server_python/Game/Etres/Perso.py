@@ -18,7 +18,9 @@ class Perso(Combattant):
         monnaie(int): L'argent du personnage
         equip(dict): Équipement du personnage
         invent(list<[Objet, int]>): Inventaire du personnage :
-                                    `int` est la quantité d'`Objet détenue`
+                                    `int` est la quantité d'`Objet` détenue
+        quetes(dict<{int: Quete}>): Journal de quête du personnage
+                                    `int` est l'ID de la quête
 
     """
 
@@ -94,17 +96,14 @@ class Perso(Combattant):
 
         Args:
             nom_obj(str): Nom de l'objet à trouver
+            id_obj(int): ID de l'objet à trouver
 
         Auteur: Hugo
 
         """
         if id_obj is None:
             for objet, _ in self.inventaire:
-                if objet.nom == nom_obj:
-                    return objet
-        else:
-            for objet, _ in self.inventaire:
-                if objet.id == id_obj:
+                if objet.nom == nom_obj or objet.id == id_obj:
                     return objet
 
     def consomme_item(self, objet):
@@ -120,17 +119,17 @@ class Perso(Combattant):
         """
         for obj in self.inventaire:
             if obj[0] == objet:
-                exec(obj[0].effet)
+                # TODO
                 if obj[1] == 1:
                     self.inventaire = [i for i in self.inventaire if i != obj]
                 else:
                     obj[1] -= 1
 
     def desequiper(self, nom_obj, id_obj=None):
-        """
-        Fonction qui déséquipe le personnage d'un objet
+        """Déséquipe un objet du personnage
 
         Auteur : Hugo
+
         """
         for key, val in self.equip:
             if val.index == id_obj or val.nom == nom_obj:
@@ -140,10 +139,10 @@ class Perso(Combattant):
         return False
 
     def add_to_invent(self, id_obj):
-        """
-        Fonction qui ajoute à l'inventaire un objet
+        """Ajoute un objet à l'inventaire
 
         Auteur : Hugo
+
         """
         # TODO: obj = Objet(id_obj) qui créé l'objet depuis la DB
         obj = None
