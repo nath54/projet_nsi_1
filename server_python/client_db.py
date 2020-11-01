@@ -340,12 +340,12 @@ class Client_mariadb:
                 return "Le mot de passe est faux !", None
 
     def transfert_json_to_bdd(self):
-        """Transférer toutes les données des fichiers json vers la bdd.
+        """Transfére toutes les données des fichiers json vers la BDD.
 
-        Etat : Commencé, à continuer
-        Auteur : Nathan
+        Etat : TODO Commencé, à continuer
+        Auteur : Nathan, Hugo
         """
-        # Les ennemis :
+        # region Ennemis :
         self.cursor.execute("TRUNCATE TABLE `ennemis`")
         self.connection.commit()
         pathd = "Data/ennemis/"
@@ -363,22 +363,37 @@ class Client_mariadb:
                                     json.dumps(d["attaque_effets"])
                                 ))
             self.connection.commit()
-
-        # Les objets :
+        # endregion
+        # region Objets :
         self.cursor.execute("TRUNCATE TABLE `objets`")
         self.connection.commit()
         pathd = "Data/objets/"
         for fich in os.listdir(pathd):
             d = jload(pathd + fich)
-            """(id, nom, description, effets)"""
-            self.cursor.execute("""INSERT INTO objets (id, nom, description_, effets)
-                                VALUES (%s, %s, %s, %s)""",
+            # (id, nom, description, type, effets)
+            self.cursor.execute("""INSERT INTO objets (id, nom, description_, type_, effets)
+                                VALUES (%s, %s, %s, %s, %s)""",
                                 (
-                                    d["id"], d["nom"], d["description"],
+                                    d["id"], d["nom"], d["description"], d["type"]
                                     json.dumps(d["effets"])
                                 ))
             self.connection.commit()
-
+        # endregion
+        # region Lieu :
+        self.cursor.execute("TRUNCATE TABLE `lieux`")
+        self.connection.commit()
+        pathd = "Data/map"
+        for fich in os.listdir(pathd):
+            if not fich.endswith(".json"):
+                continue
+            d = jload(pathd + fich)
+            query = ("""INSERT INTO lieux (id, nom, description, ennemis, pnjs,
+                        objets, lieux) VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+                     (d["id"], d["nom"], d["description"], d["ennemis"],
+                      d["pnjs"], d["objets"], d["lieux"]))
+            self.cursor.execute(query)
+            self.connection.commit()
+        # endregion
         # A faire les autres
         # (il y aura sans doutes la table à changer comme j'ai du changer pour ennemi)
         # TODO

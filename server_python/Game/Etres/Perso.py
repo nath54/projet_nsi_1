@@ -29,7 +29,7 @@ class Perso(Combattant):
 
         """
         Combattant.__init__(self, game)
-        self.equip = {"Amulette": None, "Armure": None, "Arme": None}
+        self.equip = {"Artéfact": None, "Armure": None, "Arme": None}
         self.inventaire = []
         self.monnaie = 0
         self.classe = ""  # TODO
@@ -146,14 +146,14 @@ class Perso(Combattant):
         Auteur : Hugo
         """
         # TODO: obj = Objet(id_obj) qui créé l'objet depuis la DB
-        obj=None
+        obj = None
         self.inventaire.append(obj)
 
     def equiper(self, nom_obj, id_obj=None):
-        """
-        Fonction qui équipe le personnage d'un objet
+        """Équipe un objet à un personnage
 
         Auteur : Hugo
+
         """
         for i in range(len(self.inventaire)):
             t_obj = self.inventaire[i]

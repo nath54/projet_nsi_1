@@ -2,7 +2,7 @@ import io
 import json
 import os
 
-from server_python.Game.Objets.Objet import Objet
+from Game.Objets.Objet import Objet
 
 
 class Map:
