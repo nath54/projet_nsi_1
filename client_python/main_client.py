@@ -320,12 +320,30 @@ class Client:
         # (il faut bien vérifier les réponses de l'utilisateur,
         # et lui redemander si ca ne va pas)
 
-        lst_classes = ["guerrier", "archer", "mage blanc", "mage noir",
-                       "mage guerrier", "assassin", "voleur", "paladin",
-                       "barbare", "tank"]
-        # il faut que ca s'adapte à la taille de la liste car elle va changer
-        lst_race = ["humain", "drakonien", "elfe", "elfe noir", "orc",
-                    "nain", "demi-elfe", "fée"]
+        lst_classes = {
+            "guerrier": "Un guerrier sait se battre au corps à corps, il est fort et il porte facilement tout type d'armure",
+            "archer": "Un archer sait se battre à distance, et est plutôt agile",
+            "prêtre": "Un prêtre excelle dans les sorts de soutiens, mais n'est pas très bon en attaque",
+            "mage noir": "Un mage noir excelle dans la sorcellerie maudite, il peut invoquer des créatures ou controler des cadavres",
+            "mage guerrier": "Un mage guerrier est équilibré dans les combats aux corps à corps et la maitrise des sorts de combats",
+            "assassin": "Un assassin est habile et précis, il rate peu et esquive beaucoup, mais n'est pas très fort physiquement",
+            "voleur": "Un voleur est habile et esquive beaucoup, il peut voler des pnjs et des ennemis",
+            "paladin": "Un paladin est un guerrier qui connait des sorts de soutiens, il peut à la fois se battre et soigner ses alliés",
+            "barbare": "Un barbare est un guerrier qui a vécu loin de la société civilisé, il se bat avec son instinct animal, et peut même devenir un berseker",
+            "tank": "Un tank est un guerrier spécialisé dans la défense, il défend ses alliés et encaisse les gros dégats à leurs place, mais en contrepartie il ne fait pas beaucoup de dégats en attaque"
+        }
+
+        lst_races = {
+            "humain": "Les humains sont la race la plus présente sur la planete, ils sont équilibrés",
+            "drakonien": "Les drakoniens sont des créatures mi-homme mi-dragon, ils ont une peau solide, et ont des facilités pour lancer des sorts de feu. Ils ont une apparence humaine en tant normal (même s'ils ont un bien meilleur physique que les humains ordinaires), mais ont une forme plus draconienne lors des combats",
+            "elfe": "Les elfes sont les habitants de la forêt, ils ressemblent aux humains, mais ont des oreilles pointues, une peau plus verte pâle, et ont une bien meilleure longévité que les humains, ils ont des faiblesses contre le feu, mais sont plutôt habiles",
+            "elfe noir": "Les elfes noirs sont des elfes qui sont tombés du côté obscur, ils ont une connaissance des sortileges maudits, n'ont pas de faiblesses contre le feu comme les autres elfes, mais contre des sortileges bénits",
+            "demi-elfe": "Les demi-elfes sont des enfants d'homme et d'elfe",
+            "orc": "Les orcs ne sont pas très intelligents et habiles, mais ils sont forts et résistants",
+            "nain": "Les nains sont forts et résistants, peu habiles, mais ont des grands avantages dans les grottes et les montagnes",
+            "fée": "Les fées sont des créatures magiques plutôt faibles physiquement, mais qui ont de gros bonus dans la magie"
+        }
+
         # pareil, ca va changer
         lst_genres = ["homme", "femme", "agenre", "androgyne", "bigender",
                       "non-binaire", "autre"]

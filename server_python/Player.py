@@ -56,6 +56,7 @@ class Player:
         self.perso.faiblesses = data_perso["faiblesses"]
 
     def creation(self, data_creation):
+        self.perso = Perso(self.game)
         #
         self.perso.nom = data_creation["nom"]
         self.perso.genre = data_creation["genre"]

@@ -15,17 +15,8 @@ from client_db import Client_mariadb
 from Game.Game import Game
 from Game.Etres.Perso import Perso
 from Player import Player
+from libs import *
 # endregion
-
-
-# fonction qui teste si un texte est du format json
-def is_json(myjson):
-    """Fonction qui teste si un string est de format json."""
-    try:
-        json.loads(myjson)
-    except ValueError:
-        return False
-    return True
 
 
 class Server:
@@ -113,13 +104,13 @@ class Server:
         while True:
             msg = client.recv(self.max_size)
             self.on_message(client, infos, msg)
-            try:
-                msg = client.recv(self.max_size)
-                self.on_message(client, infos, msg)
-            except Exception as e:
-                print(e)
-                self.on_close(client)
-                return
+            # try:
+            msg = client.recv(self.max_size)
+            self.on_message(client, infos, msg)
+            # except Exception as e:
+            #     print(e)
+            #     self.on_close(client)
+            #     return
 
     def send_all_except_c(self, client, message):
         """Fonction qui envoie un message a tous les autres clients.
@@ -240,7 +231,7 @@ class Server:
             elif data["type"] == "perso_cree":
                 if data["genre"] == "autre" and data["genre"] not in db.get_genres():
                     db.new_genre(data["genre"])
-                self.clients[client]["player"].create_perso(data)
+                self.clients[client]["player"].creation(data)
                 db.set_perso(self.clients[client]["player"].perso)
             else:
                 # TODO

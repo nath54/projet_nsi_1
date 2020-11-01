@@ -18,19 +18,7 @@ import sys
 import os
 import json
 import io
-
-
-def jload(path_to_file):
-    """
-    Fonction qui charge ouvre un fichier et qui le charge en json.
-
-    Auteur : Nathan
-    """
-    f = io.open(path_to_file, "r", encoding="utf-8")
-    txt = f.read()
-    f.close()
-    return json.loads(txt)
-
+from libs import *
 
 class Client_mariadb:
     """
@@ -201,7 +189,7 @@ class Client_mariadb:
             self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)", (genre, ))
             self.connection.commit()
 
-    def update(self, force=True):
+    def update(self, force=False):
         """Fonction qui supprime et qui recrée les tables qui ne sont pas dans le bon format ou qui n'existent pas.
 
         Auteur : Nathan

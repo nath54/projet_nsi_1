@@ -9,6 +9,8 @@ from Game.Etres.Perso import Perso
 from Game.Etres.Pnjs.Pnj import Pnj
 from Game.Etres.Ennemis.Ennemi import Ennemi
 
+import os
+
 
 class Game:
     """
@@ -26,6 +28,8 @@ class Game:
 
         """
         self.client_db = None
+        self.races = {}
+        self.classes = {}
 
         self.Map = Map
         self.Lieu = Lieu
@@ -39,7 +43,7 @@ class Game:
         pass
 
     def start(self):
-        """???.
+        """Lance le moteur de jeu.
 
         Auteur: Nathan
 
@@ -48,3 +52,12 @@ class Game:
         print("Débuggage (on vérifie que ça a bien tout créé)")
         print("\nListe des lieux : ")
         print(self.map_.lieux)
+
+    def load_races_classes(self):
+        for fich in os.listdir("Data/races/"):
+            data = jload(fich)
+            self.races[data["nom"]] = data
+        
+        for fich in os.listdir("Data/classes/"):
+            data = jload(fich)
+            self.classes[data["nom"]] = data
