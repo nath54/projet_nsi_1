@@ -350,6 +350,8 @@ class Client_mariadb:
         self.connection.commit()
         pathd = "Data/ennemis/"
         for fich in os.listdir(pathd):
+            if not fich.endswith(".json"):
+                continue
             d = jload(pathd + fich)
             self.cursor.execute("""INSERT INTO ennemis (id, type_, nom, race,
                                 description_, vie_min, vie_max, attaque_min,
@@ -383,32 +385,44 @@ class Client_mariadb:
                                     json.dumps(d["effets"])
                                 ))
             self.connection.commit()
-        
-        for fich in os.listdir(pathd_armures):
+
+        # endregion
+        # region Lieu :
+        self.cursor.execute("TRUNCATE TABLE `lieux`")
+        self.connection.commit()
+        pathd = "Data/map"
+        for fich in os.listdir(pathd):
             if not fich.endswith(".json"):
                 continue
-            d = jload(pathd_armures + fich)
-            # (id, nom, description, type, effets)
-            self.cursor.execute("""INSERT INTO objets (id, nom, description_, type_, effets)
-                                VALUES (%s, %s, %s, %s, %s)""",
-                                (
-                                    d["id"], d["nom"], d["description"], d["type"],
-                                    json.dumps(d["effets"])
-                                ))
+            d = jload(pathd + fich)
+            query = ("""INSERT INTO lieux (id, nom, description, ennemis, pnjs,
+                        objets, lieux) VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+                     (d["id"], d["nom"], d["description"], d["ennemis"],
+                      d["pnjs"], d["objets"], d["lieux"]))
+            self.cursor.execute(query)
             self.connection.commit()
+<<<<<<< Updated upstream
 
         for fich in os.listdir(pathd_armes):
+=======
+        # endregion
+        # region PNJs :
+        self.cursor.execute("TRUNCATE TABLE `pnjs`")
+        self.connection.commit()
+        pathd = "Data/pnjs"
+        for fich in os.listdir(pathd):
+>>>>>>> Stashed changes
             if not fich.endswith(".json"):
                 continue
-            d = jload(pathd_armes + fich)
-            # (id, nom, description, type, effets)
-            self.cursor.execute("""INSERT INTO objets (id, nom, description_, type_, effets)
-                                VALUES (%s, %s, %s, %s, %s)""",
-                                (
-                                    d["id"], d["nom"], d["description"], d["type"],
-                                    json.dumps(d["effets"])
-                                ))
+            d = jload(pathd + fich)
+            # (id INT PRIMARY KEY, nom TEXT, description_ TEXT, race TEXT, dialogue TEXT)
+            query = ("""INSERT INTO pnjs (id, nom, description_, race,
+                        dialogue) VALUES (%s, %s, %s, %s, %s)""",
+                     (d["id"], d["nom"], d["descritpion"], d["race"],
+                      d["dialogues"]))
+            self.cursor.execute(query)
             self.connection.commit()
+<<<<<<< Updated upstream
         # endregion
         
         # region Lieu :
@@ -425,6 +439,9 @@ class Client_mariadb:
         #     self.connection.commit()
         # endregion
         
+=======
+
+>>>>>>> Stashed changes
         # A faire les autres
         # (il y aura sans doutes la table à changer comme j'ai du changer pour ennemi)
         # TODO
