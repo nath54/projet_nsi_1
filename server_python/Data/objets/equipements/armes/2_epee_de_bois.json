@@ -1,5 +1,5 @@
 {
-    "id":0,
+    "id":2,
     "type": "arme",
     "nom":"épée de bois",
     "description":"",
@@ -12,5 +12,6 @@
     "élément":"bois",
     "coup énergie corps à corps":0.5,
     "coup énergie à distance":0.5,
-    "coup énergie magique":null
+    "coup énergie magique":null,
+    "effets":{}
 }

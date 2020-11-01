@@ -368,32 +368,63 @@ class Client_mariadb:
         self.cursor.execute("TRUNCATE TABLE `objets`")
         self.connection.commit()
         pathd = "Data/objets/"
+        pathd_armures = "Data/objets/equipements/armures/"
+        pathd_armes = "Data/objets/equipements/armes/"
+
         for fich in os.listdir(pathd):
+            if not fich.endswith(".json"):
+                continue
             d = jload(pathd + fich)
             # (id, nom, description, type, effets)
             self.cursor.execute("""INSERT INTO objets (id, nom, description_, type_, effets)
                                 VALUES (%s, %s, %s, %s, %s)""",
                                 (
-                                    d["id"], d["nom"], d["description"], d["type"]
+                                    d["id"], d["nom"], d["description"], d["type"],
+                                    json.dumps(d["effets"])
+                                ))
+            self.connection.commit()
+        
+        for fich in os.listdir(pathd_armures):
+            if not fich.endswith(".json"):
+                continue
+            d = jload(pathd_armures + fich)
+            # (id, nom, description, type, effets)
+            self.cursor.execute("""INSERT INTO objets (id, nom, description_, type_, effets)
+                                VALUES (%s, %s, %s, %s, %s)""",
+                                (
+                                    d["id"], d["nom"], d["description"], d["type"],
+                                    json.dumps(d["effets"])
+                                ))
+            self.connection.commit()
+        
+        for fich in os.listdir(pathd_armes):
+            if not fich.endswith(".json"):
+                continue
+            d = jload(pathd_armes + fich)
+            # (id, nom, description, type, effets)
+            self.cursor.execute("""INSERT INTO objets (id, nom, description_, type_, effets)
+                                VALUES (%s, %s, %s, %s, %s)""",
+                                (
+                                    d["id"], d["nom"], d["description"], d["type"],
                                     json.dumps(d["effets"])
                                 ))
             self.connection.commit()
         # endregion
+        
         # region Lieu :
-        self.cursor.execute("TRUNCATE TABLE `lieux`")
-        self.connection.commit()
-        pathd = "Data/map"
-        for fich in os.listdir(pathd):
-            if not fich.endswith(".json"):
-                continue
-            d = jload(pathd + fich)
-            query = ("""INSERT INTO lieux (id, nom, description, ennemis, pnjs,
-                        objets, lieux) VALUES (%s, %s, %s, %s, %s, %s, %s)""",
-                     (d["id"], d["nom"], d["description"], d["ennemis"],
-                      d["pnjs"], d["objets"], d["lieux"]))
-            self.cursor.execute(query)
-            self.connection.commit()
+        # self.cursor.execute("TRUNCATE TABLE `lieux`")
+        # self.connection.commit()
+        # pathd = "Data/map"
+        # for fich in os.listdir(pathd):
+        #     d = jload(pathd + fich)
+        #     query = ("""INSERT INTO lieux (id, nom, description, ennemis, pnjs,
+        #                 objets, lieux) VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+        #              (d["id"], d["nom"], d["description"], d["ennemis"],
+        #               d["pnjs"], d["objets"], d["lieux"]))
+        #     self.cursor.execute(query)
+        #     self.connection.commit()
         # endregion
+        
         # A faire les autres
         # (il y aura sans doutes la table à changer comme j'ai du changer pour ennemi)
         # TODO

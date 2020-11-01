@@ -1,5 +1,5 @@
 {
-    "id":0,
+    "id":1,
     "type":"armure",
     "nom":"armure de tissus",
     "description":"",
@@ -8,5 +8,6 @@
     "défense à distance":[0,1],
     "reduction précision attaque":0,
     "reduction esquive":0,
-    "élément":"tissus"
+    "élément":"tissus",
+    "effets":{}
 }
