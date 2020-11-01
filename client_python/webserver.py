@@ -27,7 +27,7 @@ class WebServer():
 
     async def main_server(self, websocket, path):
         if self.USER is not None:
-            print("Un utilisateur a voulu se connecter alors que la place n'était pas libre")
+            print("Tentative de connexion, mais plus de place libre")
             return
         await self.register(websocket)
         for mes in self.messages_en_attente:
@@ -41,7 +41,8 @@ class WebServer():
                     data = json.loads(message)
                     if data["type"] == "veut changer de page":
                         cs = False
-                        await websocket.send(json.dumps({"type": "autorisation changement page"}))
+                        dict_ = {"type": "autorisation changement page"}
+                        await websocket.send(json.dumps(dict_))
                         await websocket.close()
                 except Exception:
                     pass

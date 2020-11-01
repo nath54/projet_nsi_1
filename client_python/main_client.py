@@ -313,7 +313,8 @@ class Client:
 
         Auteur :
         """
-        data_perso = {"type": "perso_cree", "nom": None, "race": None, "classe": None, "genre": None}
+        data_perso = {"type": "perso_cree", "nom": None, "race": None,
+                      "classe": None, "genre": None}
         # TODO : Faire que l'utilisateur peut créer son perso
         # Attenion ! Il faut faire un systeme sécurisé
         # (il faut bien vérifier les réponses de l'utilisateur,

@@ -401,17 +401,12 @@ class Client_mariadb:
                       d["pnjs"], d["objets"], d["lieux"]))
             self.cursor.execute(query)
             self.connection.commit()
-<<<<<<< Updated upstream
-
-        for fich in os.listdir(pathd_armes):
-=======
         # endregion
         # region PNJs :
         self.cursor.execute("TRUNCATE TABLE `pnjs`")
         self.connection.commit()
         pathd = "Data/pnjs"
         for fich in os.listdir(pathd):
->>>>>>> Stashed changes
             if not fich.endswith(".json"):
                 continue
             d = jload(pathd + fich)
@@ -422,26 +417,7 @@ class Client_mariadb:
                       d["dialogues"]))
             self.cursor.execute(query)
             self.connection.commit()
-<<<<<<< Updated upstream
         # endregion
-        
-        # region Lieu :
-        # self.cursor.execute("TRUNCATE TAB     LE `lieux`")
-        # self.connection.commit()
-        # pathd = "Data/map"
-        # for fich in os.listdir(pathd):
-        #     d = jload(pathd + fich)
-        #     query = ("""INSERT INTO lieux (id, nom, description, ennemis, pnjs,
-        #                 objets, lieux) VALUES (%s, %s, %s, %s, %s, %s, %s)""",
-        #              (d["id"], d["nom"], d["description"], d["ennemis"],
-        #               d["pnjs"], d["objets"], d["lieux"]))
-        #     self.cursor.execute(query)
-        #     self.connection.commit()
-        # endregion
-        
-=======
-
->>>>>>> Stashed changes
         # A faire les autres
         # (il y aura sans doutes la table à changer comme j'ai du changer pour ennemi)
         # TODO
