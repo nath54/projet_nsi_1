@@ -382,11 +382,11 @@ class Client_mariadb:
             if not fich.endswith(".json"):
                 continue
             d = jload(pathd + fich)
-            self.cursor.execute("""INSERT INTO objets (id, nom, description_, type_, effets)
-                                VALUES (%s, %s, %s, %s, %s)""",
+            self.cursor.execute("""INSERT INTO objets (id, nom, description_, type_, effets, contenu, verrouille, ouvert)
+                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""",
                                 (
                                     d["id"], d["nom"], d["description"], d["type"],
-                                    json.dumps(d["effets"])
+                                    json.dumps(d["effets"]), json.dumps(d["contenu"]), d["verrouille"], d["ouvert"]
                                 ))
             self.connection.commit()
         # endregion
