@@ -396,7 +396,7 @@ class Client_mariadb:
                                     json.dumps(d["effets"])
                                 ))
             self.connection.commit()
-        
+
         for fich in os.listdir(pathd_armes):
             if not fich.endswith(".json"):
                 continue
@@ -412,7 +412,7 @@ class Client_mariadb:
         # endregion
         
         # region Lieu :
-        # self.cursor.execute("TRUNCATE TABLE `lieux`")
+        # self.cursor.execute("TRUNCATE TAB     LE `lieux`")
         # self.connection.commit()
         # pathd = "Data/map"
         # for fich in os.listdir(pathd):
