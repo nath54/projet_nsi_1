@@ -213,6 +213,7 @@ class Server:
                         time.sleep(0.1)
                         dict_ = {"type": "genres", "genres": json.dumps(db.get_genres())}
                         self.send(client, json.dumps(dict_))
+                        time.sleep(0.1)
                         self.send(client, json.dumps({"type": "creation perso"}))
                         # il faudra sans doute envoyer d'autres infos, comme une clé de connexion par exemple
                     else:

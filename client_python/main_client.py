@@ -115,6 +115,9 @@ class Client:
         else:
             self.ws = False
 
+        self.genres = ["homme", "femme", "agenre", "androgyne", "bigender",
+                       "non-binaire", "autre"]
+
     def debut(self):
         """Fonction qui demanse si tu veux t'inscrire ou te connecter.
 
@@ -139,6 +142,7 @@ class Client:
 
         """
         self.attente = True
+        print("\nEn attente du serveur ...\n")
         while self.attente:
             pass
 
@@ -147,6 +151,7 @@ class Client:
 
         Auteur : Nathan
         """
+        print("\nConnection :\n")
         # pseudo
         pseudo = input("pseudo : ")
         while test_pseudo(pseudo):
@@ -171,6 +176,7 @@ class Client:
 
         Auteur : Nathan
         """
+        print("\nInscription :\n")
         # email
         email = input("email : ")
         while test_email(email):
@@ -195,8 +201,15 @@ class Client:
             self.attente_serv()
             print("recu !")
             if self.etat == "connecté":
-                print("Connecté")
-                self.interface()
+                self.attente_serv()
+                if self.etat == "creation_perso":
+                    data_perso = self.creation_perso()
+                    self.send(json.dumps(data_perso))
+                    self.attente_serv()
+                    self.interface()
+                else:
+                    print("erreur inconnue ...")
+                    self.debut()
             else:
                 self.debut()
 
@@ -273,31 +286,38 @@ class Client:
 
         """
         if is_json(mess):
-            self.attente = False
             data = json.loads(mess)
             while type(data) == str:
                 if is_json(data):
                     data = json.loads(data)
                 else:
                     return
-
+            print("on_message : ", data)
             if data["type"] == "connection successed":
                 print("Connection acceptée")
                 self.etat = "connecté"
+                self.attente = False
 
             elif data["type"] == "inscription successed":
                 print("Inscription acceptée")
                 self.etat = "connecté"
+                self.attente = False
 
             elif data["type"] == "connection failed":
                 print("Connection refusée\nerreur : " + data["value"])
+                self.attente = False
 
             elif data["type"] == "inscription failed":
                 print("Inscription refusée\nerreur : " + data["value"])
+                self.attente = False
 
             elif data["type"] == "creation perso":
-                data_perso = self.creation_perso()
-                self.send(json.dumps(data_perso))
+                print("creation perso")
+                self.etat = "creation_perso"
+                self.attente = False
+
+            elif data["type"] == "genres":
+                self.genres = json.loads(data["genres"])
 
     def on_close(self):
         """Réaction en cas de fermeture/problème.
@@ -351,30 +371,46 @@ class Client:
         }
 
         # pareil, ca va changer
-        lst_genres = ["homme", "femme", "agenre", "androgyne", "bigender",
-                      "non-binaire", "autre"]
+        lst_genres = self.genres
         # c'est pour faire plaisir à tout le monde
 
+        print("Création du personnage : \n")
         # nom
+        print("Quel est le nom de votre personnage ?\n")
         nom = input("nom : ")
         erreur = self.test_nom(nom)
         while erreur:
             print("ERREUR /!\\ : " + erreur)
             nom = input("nom : ")
 
+        # On affiche les races
+        print("\n\nRaces Disponibles : \n")
+        for n, d in lst_races.items():
+            print(f"  - {n} : {d}\n")
         # race
+        print("\nQuel est la race de votre personnage ?\n")
         race = input("race : ")
-        while race not in lst_races.key():
+        while race not in lst_races.keys():
             print("ERREUR /!\\ : La race n'est pas dans la liste !")
             race = input("race : ")
 
+        # On affiche les races
+        print("\n\nClasses Disponibles : ")
+        for n, d in lst_classes.items():
+            print(f"  - {n} : {d}\n")
         # classe
+        print("\nQuel est la classe de votre personnage ?\n")
         classe = input("classe : ")
-        while classe not in lst_classes.key():
+        while classe not in lst_classes.keys():
             print("ERREUR /!\\ : La classe n'est pas dans la liste !")
             classe = input("classe : ")
 
+        # On affiche les genres :
+        print("\nGenres : ")
+        for g in lst_genres + ["autre"]:
+            print(f"  - {g}")
         # genre
+        print("Quel est le genre de votre personnage ?")
         genre = input("genre : ")
 
         # on peut envoyer les infos
