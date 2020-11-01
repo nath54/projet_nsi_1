@@ -33,6 +33,7 @@ class WebServer():
         for mes in self.messages_en_attente:
             await self.USER.send(mes)
             time.sleep(0.1)
+        self.messages_en_attente = []
         try:
             async for message in websocket:
                 cs = True

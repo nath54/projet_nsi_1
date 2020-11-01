@@ -194,7 +194,7 @@ class Client_mariadb:
 
     def create_table_genre(self):
         """Fonction qui crée la table genre dans la bdd."""
-        query = ("""CREATE TABLE IF NOT EXISTS genre
+        query = ("""CREATE TABLE IF NOT EXISTS genres
                     (genre TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
