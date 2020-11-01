@@ -374,20 +374,12 @@ class Client:
             print("ERREUR /!\\ : La classe n'est pas dans la liste !")
             classe = input("classe : ")
 
-        # genre 
+        # genre
         genre = input("genre : ")
 
         # on peut envoyer les infos
         self.send(json.dumps({"type": "perso_cree", "nom": nom,
                               "race": race, "classe": classe, "genre": genre}))
-        print("En attente du serveur ... ")
-        self.attente_serv()
-        print("recu !")
-        if self.etat == "connecté":
-            print("personnage créé")
-            self.interface()
-        else:
-            self.debut()
 
         return data_perso
 

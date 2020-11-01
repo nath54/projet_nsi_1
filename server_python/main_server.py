@@ -42,7 +42,7 @@ class Server:
         self.max_size = 1024
         self.clients = {}
         self.server = None
-        self.game = Game()
+        self.game = Game(jload)
         self.client_db = Client_mariadb(self.game)
         self.version = 1
         # TODO

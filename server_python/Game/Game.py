@@ -21,15 +21,19 @@ class Game:
 
     """
 
-    def __init__(self):
+    def __init__(self, jload):
         """Initie ce qui est essentiel pour le jeu (Map).
 
         Auteur: Nathan
 
         """
+        self.jload = jload
+
         self.client_db = None
         self.races = {}
         self.classes = {}
+
+        self.load_races_classes()
 
         self.Map = Map
         self.Lieu = Lieu
@@ -55,9 +59,9 @@ class Game:
 
     def load_races_classes(self):
         for fich in os.listdir("Data/races/"):
-            data = jload(fich)
+            data = self.jload("Data/races/" + fich)
             self.races[data["nom"]] = data
 
         for fich in os.listdir("Data/classes/"):
-            data = jload(fich)
+            data = self.jload("Data/classes/" + fich)
             self.classes[data["nom"]] = data
