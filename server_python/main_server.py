@@ -103,8 +103,6 @@ class Server:
         """
         self.on_accept(client, infos)
         while True:
-            msg = client.recv(self.max_size)
-            self.on_message(client, infos, msg)
             # try:
             msg = client.recv(self.max_size)
             self.on_message(client, infos, msg)
@@ -234,7 +232,7 @@ class Server:
                 if data["genre"] == "autre" and data["genre"] not in db.get_genres():
                     db.new_genre(data["genre"])
                 self.clients[client]["player"].creation(data)
-                db.set_perso(self.clients[client]["player"])
+                reussi = db.set_perso(self.clients[client]["player"])
             else:
                 # TODO
                 pass
@@ -266,6 +264,7 @@ class Server:
         """
         data_len = len(data.keys())
         action = data["commande"]
+        args = data["arguments"].split(" ")
         perso = self.clients[client]["player"].perso
 
         # Les premieres commandes sont des commandes à 0 ou plus arguments
@@ -292,24 +291,23 @@ class Server:
 
         # Ce qui suit sont des commandes avec au moins 1 argument
         elif action == "desequiper":
-            b = perso.desequiper(arg)
+            b = perso.desequiper(args[0])
             if b:
-                mess = f"Vous avez retiré {arg} !"
+                mess = f"Vous avez retiré {args[0]} !"
             else:
-                mess = f"Vous n'aviez pas de {arg} sur vous..."
+                mess = f"Vous n'aviez pas de {args[0]} sur vous..."
             self.send(client, mess, True)
         elif action == "equiper":
-            b = perso.equiper(data["arg_1"])
+            b = perso.equiper(args[0])
             if b:
-                mess = f"Vous avez équipé {data['arg_1']}"
+                mess = f"Vous avez équipé {args[0]}"
             else:
-                mess = f"Vous ne possédez pas '{data['arg_1']}'"
+                mess = f"Vous ne possédez pas '{args[0]}'"
             self.send(client, mess, True)
         # On définit l'objet ciblé avec lequel l'utilisateur voudra (peut-être) agir
-        arg = data['arg_1']
         obj_cible = None
         for i in perso.game.lieu.objet:
-            if obj_cible.nom == arg:
+            if obj_cible.nom == args[0]:
                 obj_cible = i
 
         if action == "examiner":
@@ -319,13 +317,20 @@ class Server:
                 perso.add_to_invent(obj.index)
                 perso.game.lieu.objet.remove(obj_cible)
         elif action == "jeter":
-            arg = data["arg_1"]
-            qt = data["arg_2"] if data["arg_2"] is not None else 1
+            arg = args[0]
+            qt = args[1] if len(args[0]) > 1 else 1
+            if type(qt) != int:
+                try:
+                    qt = int(qt)
+                except Exception:
+                    # TODO : renvoyer une erreur au client
+                    return
+    
             for i in range(len(perso.invent)):
                 obj = perso.invent[i]
                 if obj[0].nom == arg:
                     if obj[1] < qt:
-                        self.send(client, f"Vous ne pouvez jeter autant de {obj[0].nom} que ça !", True)
+                        self.send(client, json.dumps({"type": "message", "value": f"Vous ne pouvez jeter autant de {obj[0].nom} que ça !"}), True)
                     else:
                         for i in range(qt):
                             new_obj = Objet(obj[0].id, game)

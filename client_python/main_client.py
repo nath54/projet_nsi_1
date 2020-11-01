@@ -205,7 +205,6 @@ class Client:
                 if self.etat == "creation_perso":
                     data_perso = self.creation_perso()
                     self.send(json.dumps(data_perso))
-                    self.attente_serv()
                     self.interface()
                 else:
                     print("erreur inconnue ...")
@@ -382,6 +381,7 @@ class Client:
         while erreur:
             print("ERREUR /!\\ : " + erreur)
             nom = input("nom : ")
+        data_perso["nom"] = nom
 
         # On affiche les races
         print("\n\nRaces Disponibles : \n")
@@ -393,6 +393,7 @@ class Client:
         while race not in lst_races.keys():
             print("ERREUR /!\\ : La race n'est pas dans la liste !")
             race = input("race : ")
+        data_perso["race"] = race
 
         # On affiche les races
         print("\n\nClasses Disponibles : ")
@@ -404,6 +405,7 @@ class Client:
         while classe not in lst_classes.keys():
             print("ERREUR /!\\ : La classe n'est pas dans la liste !")
             classe = input("classe : ")
+        data_perso["classe"] = classe
 
         # On affiche les genres :
         print("\nGenres : ")
@@ -412,11 +414,7 @@ class Client:
         # genre
         print("Quel est le genre de votre personnage ?")
         genre = input("genre : ")
-
-        # on peut envoyer les infos
-        self.send(json.dumps({"type": "perso_cree", "nom": nom,
-                              "race": race, "classe": classe, "genre": genre}))
-
+        data_perso["genre"] = genre
         return data_perso
 
     def interface(self):

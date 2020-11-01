@@ -441,9 +441,9 @@ class Client_mariadb:
         results = [elt for elt in self.cursor]
         if results == []:
             raise UserWarning("erreur !")
-        perso_id = results[0]
+        perso_id = results[0][0]
         perso = player.perso
-        if perso_id == "null":
+        if perso_id is None:
             # si non on va lui en créer un
             self.cursor.execute("""INSERT INTO persos
                                    (nom,
@@ -497,25 +497,25 @@ class Client_mariadb:
                                  perso.genre,
                                  perso.race,
                                  perso.classe,
-                                 perso.experience,
-                                 perso.inventaire,
+                                 json.dumps(perso.experience),
+                                 json.dumps(perso.inventaire),
                                  perso.lieu,
-                                 perso.quetes,
-                                 perso.equipement,
+                                 json.dumps(perso.quetes),
+                                 json.dumps(perso.equipement),
                                  perso.vie,
                                  perso.vie_totale,
                                  perso.energie,
                                  perso.energie_totale,
                                  perso.charme,
                                  perso.discretion,
-                                 perso.force_,
+                                 perso.force,
                                  perso.agilite,
                                  perso.magie,
-                                 perso.effets_attaque,
+                                 json.dumps(perso.effets_attaque),
                                  perso.bonus_esquive,
-                                 perso.sorts,
-                                 perso.resistances,
-                                 perso.faiblesses))
+                                 json.dumps(perso.sorts),
+                                 json.dumps(perso.resistances),
+                                 json.dumps(perso.faiblesses)))
             self.connection.commit()
             pass
         else:
@@ -549,25 +549,25 @@ class Client_mariadb:
                                     perso.genre,
                                     perso.race,
                                     perso.classe,
-                                    perso.experience,
-                                    perso.inventaire,
+                                    json.dumps(perso.experience),
+                                    json.dumps(perso.inventaire),
                                     perso.lieu,
-                                    perso.quetes,
-                                    perso.equipement,
+                                    json.dumps(perso.quetes),
+                                    json.dumps(perso.equipement),
                                     perso.vie,
                                     perso.vie_totale,
                                     perso.energie,
                                     perso.energie_totale,
                                     perso.charme,
                                     perso.discretion,
-                                    perso.force_,
+                                    perso.force,
                                     perso.agilite,
                                     perso.magie,
-                                    perso.effets_attaque,
+                                    json.dumps(perso.effets_attaque),
                                     perso.bonus_esquive,
-                                    perso.sorts,
-                                    perso.resistances,
-                                    perso.faiblesses,
+                                    json.dumps(perso.sorts),
+                                    json.dumps(perso.resistances),
+                                    json.dumps(perso.faiblesses),
                                     perso_id))
             self.connection.commit()
 

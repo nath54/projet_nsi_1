@@ -18,7 +18,7 @@ class Player:
         self.pseudo = pseudo
         self.perso = None
         self.game = game
-        self.id_ = -1
+        self.id_ = id_
 
     def load_perso(self, data_perso):
         """Fonction qui crée un perso au joueur et qui lui charge les infos.
@@ -131,6 +131,7 @@ class Player:
         self.perso.vie_totale = valeurs["vie"]
         self.perso.vie = self.perso.vie_totale
         self.perso.inventaire = valeurs["inventaire"]
+        self.perso.equipement = valeurs["equipement"]
         self.perso.effets_attaque = valeurs["effets_attaque"]
         self.perso.bonus_esquive = valeurs["bonus_esquive"]
         self.perso.sorts = valeurs["sorts"]
