@@ -8,7 +8,7 @@ try:
 except Exception as e:
     # Méthode 2 : mysql
     try:
-        import mysql.connector as mariadb   # ignore unresolved-import error
+        import mysql.connector as mariadb  # ignore unresolved-import error
     except Exception as e:
         # Rien n'est installé
         raise UserWarning("Il faut installer la librairie mariadb ou mysql !")
@@ -457,7 +457,7 @@ class Client_mariadb:
             # sinon on va juste modifier les valeurs
             self.cursor.execute("")
             self.connection.commit()
-        
+
         self.connection.commit()
         # TODO
         pass

@@ -241,7 +241,7 @@ class Server:
             elif data["type"] == "perso_cree":
                 if data["genre"] == "autre" and data["genre"] not in db.get_genres():
                     self.client_db.new_genre(data["genre"])
-                self.clients[client]["player"].create_perso(data)
+                self.clients[client]["player"].creation(data)
                 self.client_db.set_perso(self.clients[client]["player"].perso)
             else:
                 # TODO
@@ -257,6 +257,7 @@ class Server:
 
         """
         print("Connexion fermée", client)
+        self.send(client, json.dumps({"type": "connection fermée"}))
         del(self.clients[client])
 
     # region Commandes
