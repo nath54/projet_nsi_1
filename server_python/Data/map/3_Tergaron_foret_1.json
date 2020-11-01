@@ -2,7 +2,10 @@
     "id":3,
     "nom":"forêt de Tergaron",
     "description":"Vous vous êtes enfoncé dans la forêt de Tergaron, mais ce n'est pas encore le coeur de la forêt",
+    "region":"Larion",
     "type":"foret",
-    "lieux":[ [2,"ouest"] ],
-    "ennemis": [ [1,2] ]
+    "objets":[],
+    "pnjs":[],
+    "ennemis": [ [1,2] ],
+    "lieux":[ [2,"ouest"] ]
 }

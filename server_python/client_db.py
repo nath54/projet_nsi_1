@@ -187,8 +187,7 @@ class Client_mariadb:
                     (id INT PRIMARY KEY, nom TEXT,
                     description_ TEXT, ennemis TEXT, pnjs TEXT, objets TEXT,
                     lieux TEXT);""")
-        # ennemis, pnjs, objets et lieux contiennent les ID des éléments, avec
-        # "/" comme séparateur entre chaque ID
+        # ennemis, pnjs, objets et lieux contiennent des listes parsées par JSON
         self.cursor.execute(query)
         self.connection.commit()
 
@@ -246,6 +245,26 @@ class Client_mariadb:
             self.connection.commit()
             self.create_table_objets()
             print("La table objets a été mise à jour !")
+        # lieux
+        if force or self.get_schema("lieux") != {"id": "int", "nom": "text",
+                                                 "description_": "text",
+                                                 "ennemis": "text",
+                                                 "pnjs": "text",
+                                                 "objets": "text",
+                                                 "lieux": "text"}:
+            self.cursor.execute("DROP TABLE IF EXISTS lieux")
+            self.connection.commit()
+            self.create_table_lieux()
+            print("La table lieux a été mise à jour !")
+        # pnjs
+        if force or self.get_schema("pnjs") != {"id": "int", "nom": "text",
+                                                "description_": "text",
+                                                "race": "text",
+                                                "dialogue": "text"}:
+            self.cursor.execute("DROP TABLE IF EXISTS pnjs")
+            self.connection.commit()
+            self.create_table_pnjs()
+            print("La table pnjs a été mise à jour !")
         if force or self.get_schema("genres") != {"genre": "text"}:
             self.cursor.execute("DROP TABLE IF EXISTS genres")
             self.connection.commit()
@@ -390,32 +409,29 @@ class Client_mariadb:
         # region Lieu :
         self.cursor.execute("TRUNCATE TABLE `lieux`")
         self.connection.commit()
-        pathd = "Data/map"
+        pathd = "Data/map/"
         for fich in os.listdir(pathd):
             if not fich.endswith(".json"):
                 continue
             d = jload(pathd + fich)
-            query = ("""INSERT INTO lieux (id, nom, description, ennemis, pnjs,
-                        objets, lieux) VALUES (%s, %s, %s, %s, %s, %s, %s)""",
-                     (d["id"], d["nom"], d["description"], d["ennemis"],
-                      d["pnjs"], d["objets"], d["lieux"]))
-            self.cursor.execute(query)
+            query = """INSERT INTO lieux (id, nom, description_, ennemis, pnjs,
+                        objets, lieux) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+            self.cursor.execute(query, (d["id"], d["nom"], d["description"], json.dumps(d["ennemis"]),
+                                        json.dumps(d["pnjs"]), json.dumps(d["objets"]), json.dumps(d["lieux"])))
             self.connection.commit()
         # endregion
         # region PNJs :
         self.cursor.execute("TRUNCATE TABLE `pnjs`")
         self.connection.commit()
-        pathd = "Data/pnjs"
+        pathd = "Data/pnjs/"
         for fich in os.listdir(pathd):
             if not fich.endswith(".json"):
                 continue
             d = jload(pathd + fich)
             # (id INT PRIMARY KEY, nom TEXT, description_ TEXT, race TEXT, dialogue TEXT)
-            query = ("""INSERT INTO pnjs (id, nom, description_, race,
-                        dialogue) VALUES (%s, %s, %s, %s, %s)""",
-                     (d["id"], d["nom"], d["descritpion"], d["race"],
-                      d["dialogues"]))
-            self.cursor.execute(query)
+            query = """INSERT INTO pnjs (id, nom, description_, race,
+                        dialogue) VALUES (%s, %s, %s, %s, %s)"""
+            self.cursor.execute(query, (d["id"], d["nom"], d["description"], d["race"], json.dumps(d["dialogues"])))
             self.connection.commit()
         # endregion
         # A faire les autres
