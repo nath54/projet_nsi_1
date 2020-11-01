@@ -389,14 +389,10 @@ class Client_mariadb:
         self.cursor.execute("TRUNCATE TABLE `objets`")
         self.connection.commit()
         pathd = "Data/objets/"
-        pathd_armures = "Data/objets/equipements/armures/"
-        pathd_armes = "Data/objets/equipements/armes/"
-
         for fich in os.listdir(pathd):
             if not fich.endswith(".json"):
                 continue
             d = jload(pathd + fich)
-            # (id, nom, description, type, effets)
             self.cursor.execute("""INSERT INTO objets (id, nom, description_, type_, effets)
                                 VALUES (%s, %s, %s, %s, %s)""",
                                 (
@@ -404,7 +400,6 @@ class Client_mariadb:
                                     json.dumps(d["effets"])
                                 ))
             self.connection.commit()
-
         # endregion
         # region Lieu :
         self.cursor.execute("TRUNCATE TABLE `lieux`")
@@ -428,7 +423,6 @@ class Client_mariadb:
             if not fich.endswith(".json"):
                 continue
             d = jload(pathd + fich)
-            # (id INT PRIMARY KEY, nom TEXT, description_ TEXT, race TEXT, dialogue TEXT)
             query = """INSERT INTO pnjs (id, nom, description_, race,
                         dialogue) VALUES (%s, %s, %s, %s, %s)"""
             self.cursor.execute(query, (d["id"], d["nom"], d["description"], d["race"], json.dumps(d["dialogues"])))
