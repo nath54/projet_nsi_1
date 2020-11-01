@@ -16,6 +16,7 @@ from Game.Game import Game
 from Game.Etres.Perso import Perso
 from Player import Player
 from libs import *
+from Game.Objets.Objet import Objet
 # endregion
 
 
@@ -285,7 +286,6 @@ class Server:
             self.on_close(client)
         elif action == "attendre":  # Bof
             pass
-        #
         elif data_len <= 1:
             self.send(client, "Commande inconnue", True)
 
@@ -305,20 +305,38 @@ class Server:
                 mess = f"Vous ne possédez pas '{data['arg_1']}'"
             self.send(client, mess, True)
         elif action == "examiner":
-            pass
-        elif action == "fouiller":
-            pass
+            arg = data['arg_1']
+            for obj in perso.game.lieu.objet:
+                if obj.nom == arg:
+                    self.send(client, obj.__repr__(), True)
         elif action == "prendre":
-            pass
+            arg = data["arg_1"]
+            for i in range(len(perso.game.lieu.objet)):
+                obj = perso.game.lieu.objet[i]
+                if obj.nom == arg and obj.type != "décor":
+                    perso.add_to_invent(obj.index)
+                    del perso.game.lieu.objet[i]
         elif action == "jeter":
-            pass
+            arg = data["arg_1"]
+            qt = data["arg_2"] if data["arg_2"] is not None else 1
+            for i in range(len(perso.invent)):
+                obj = perso.invent[i]
+                if obj[0].nom == arg:
+                    if obj[1] < qt:
+                        self.send(client, f"Vous ne pouvez jeter autant de {obj[0].nom} que ça !", True)
+                    else:
+                        for i in range(qt):
+                            new_obj = Objet(obj[0].id, game)
+                            perso.game.lieu.objets.append(new_obj)
+                        if obj[1] == qt:
+                            del perso.invent[i]
+                        else:
+                            perso.invent[i][1] -= qt
         elif action == "utiliser":
             if data_len == 2:
                 pass  # Utiliser un objet
             elif data_len == 3:
                 pass  # Utiliser un objet sur un autre
-        elif action == "consommer":
-            pass
         elif action == "ouvrir":
             pass
         elif action == "fermer":
