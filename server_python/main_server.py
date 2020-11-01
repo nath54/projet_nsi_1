@@ -191,62 +191,67 @@ class Server:
 
         """
         message = message.decode(encoding="utf-8")
-        if len(message) > 0:
-            print(f"{self.clients[client]} : {message}")
-            if is_json(message):
-                data = json.loads(message)
-                if data["type"] == "commande":
-                    cl = self.clients[client]
-                    if (not ("player" in cl.keys())) or (cl["player"] is None):
-                        dict_ = {"type": "not connected",
-                                 "value": "Veuillez vous connecter pour jouer"}
-                        self.send(client, json.dumps(dict_))
-                    else:
-                        self.commandes(client, data)
-                elif data["type"] == "inscription":
-                    pseudo = data["pseudo"]
-                    email = data["email"]
-                    password = data["password"]
-                    erreur = self.client_db.test_compte_inscrit(pseudo, email)
-                    if erreur:
-                        self.send(client, json.dumps({"type": "inscription failed", "value": erreur}))
-                    else:
-                        reussi, id_ = self.client_db.inscription(pseudo, email, password)
-                        if reussi:
-                            self.clients[client]["player"] = Player(pseudo, self.game, id_)
-                            self.send(client, json.dumps({"type": "inscription successed"}))
-                            time.sleep(0.1)
-                            self.send(client, json.dumps({"type": "genres", "genres": json.dumps(self.client_db.get_genres())}))
-                            self.send(client, json.dumps({"type": "creation perso"}))
-                            # il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
-                        else:
-                            raise UserWarning("ERREUR : La bdd a échoué ")
-                elif data["type"] == "connection":
-                    pseudo = data["pseudo"]
-                    password = data["password"]
-                    erreur, id_ = self.client_db.test_connection(pseudo, password)
-                    if erreur:
-                        self.send(client, json.dumps({"type": "connection failed", "value": erreur}))
-                    else:
-                        self.send(client, json.dumps({"type": "connection successed"}))
-                        data_perso = self.client_db.get_perso(pseudo)
-                        self.clients[client]["player"] = Player(pseudo, self.game, id_)
-                        self.clients[client]["player"].load_perso(data_perso)
-                        # il faudra sans doute envoyer d'autres infos, comme une clé de connection par exemple
-                elif data["type"] == "perso_cree":
-                    if data["genre"] not in ["autre"] and data["genre"] not in self.client_db.get_genres():
-                        self.client_db.new_genre(data["genre"])
-                    self.clients[client]["player"].create_perso(data)
-                    self.client_db.set_perso(self.clients[client]["player"].perso)
+        if len(message) <= 0:
+            return
+        db = self.client_db
+        print(f"{self.clients[client]} : {message}")
+        if is_json(message):
+            data = json.loads(message)
+            if data["type"] == "commande":
+                cl = self.clients[client]
+                if (not ("player" in cl.keys())) or (cl["player"] is None):
+                    dict_ = {"type": "not connected",
+                             "value": "Veuillez vous connecter pour jouer"}
+                    self.send(client, json.dumps(dict_))
                 else:
-                    # TODO
-                    pass
+                    self.commandes(client, data)
+            elif data["type"] == "inscription":
+                pseudo = data["pseudo"]
+                email = data["email"]
+                password = data["password"]
+                erreur = db.test_compte_inscrit(pseudo, email)
+                if erreur:
+                    dict_ = {"type": "inscription failed", "value": erreur}
+                    self.send(client, json.dumps(dict_))
+                else:
+                    reussi, id_ = db.inscription(pseudo, email, password)
+                    if reussi:
+                        self.clients[client]["player"] = Player(pseudo, self.game, id_)
+                        self.send(client, json.dumps({"type": "inscription successed"}))
+                        time.sleep(0.1)
+                        dict_ = {"type": "genres",
+                                 "genres": json.dumps(db.get_genres())}
+                        self.send(client, json.dumps(dict_))
+                        self.send(client, json.dumps({"type": "creation perso"}))
+                        # il faudra sans doute envoyer d'autres infos, comme une clé de connexion par exemple
+                    else:
+                        raise UserWarning("ERREUR : La BDD a échoué")
+            elif data["type"] == "connection":
+                pseudo = data["pseudo"]
+                password = data["password"]
+                erreur, id_ = self.client_db.test_connection(pseudo, password)
+                if erreur:
+                    self.send(client, json.dumps({"type": "connection failed", "value": erreur}))
+                else:
+                    self.send(client, json.dumps({"type": "connection successed"}))
+                    data_perso = self.client_db.get_perso(pseudo)
+                    self.clients[client]["player"] = Player(pseudo, self.game, id_)
+                    self.clients[client]["player"].load_perso(data_perso)
+                    # il faudra sans doute envoyer d'autres infos, comme une clé de connexion par exemple
+            elif data["type"] == "perso_cree":
+                if data["genre"] == "autre" and data["genre"] not in db.get_genres():
+                    self.client_db.new_genre(data["genre"])
+                self.clients[client]["player"].create_perso(data)
+                self.client_db.set_perso(self.clients[client]["player"].perso)
+            else:
+                # TODO
+                pass
 
     def on_close(self, client):
         """Réaction si une connexion se ferme.
 
         Args:
-            client (socket.socket): Référence au client ayant fermé son application
+            client(socket): Référence au client ayant fermé son application
 
         Auteur: Nathan
 
@@ -259,7 +264,7 @@ class Server:
         """Éxecute les commandes entrée par l'utilisateur.
 
         Args:
-            client(socket.socket): Personne qui a entré la commande
+            client(socket): Personne qui a entré la commande
             data(dict): un dictionnaire contenant les éléments d'une commande
                 exemple : {"command": "attaquer", "arg_1": ennemi}
 
