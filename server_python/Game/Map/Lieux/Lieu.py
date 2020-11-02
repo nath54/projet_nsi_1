@@ -55,7 +55,7 @@ class Lieu:
         pass
         # TODO
 
-    def __repr__(self):
+    def aff(self):
         """Permet d'afficher la description d'un lieu.
 
         Fonction appelée par le serveur qui affiche le lieu lors de l'arrivée
@@ -99,3 +99,6 @@ Vous êtes dans {self.nom}
 {txt_persos}
         """
         return txt
+
+    def __repr__(self):
+        return self.aff()

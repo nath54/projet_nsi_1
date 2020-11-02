@@ -162,11 +162,10 @@ class Client:
             password = input("mot de passe : ")
         self.send(json.dumps({"type": "connection", "pseudo": pseudo,
                               "password": password}))
-        print("En attente du serveur ... ")
         self.attente_serv()
-        print("recu !")
+        # print("recu !")
         if self.etat == "connecté":
-            print("Connecté")
+            # print("Connecté")
             self.interface()
         else:
             self.debut()
@@ -199,7 +198,7 @@ class Client:
                                   "password": password, "email": email}))
             print("En attente du serveur ... ")
             self.attente_serv()
-            print("recu !")
+            # print("recu !")
             if self.etat == "connecté":
                 self.attente_serv()
                 if self.etat == "creation_perso":
@@ -256,7 +255,7 @@ class Client:
             # try:
             msg = self.client.recv(self.max_size)
             msg = msg.decode(encoding="utf-8")
-            print("recu : ", json.loads(msg))
+            # print("recu : ", json.loads(msg))
             if len(msg) == 0:
                 raise UserWarning("message vide")
             if not self.ws:

@@ -273,7 +273,7 @@ class Server:
 
         # Les premieres commandes sont des commandes à 0 ou plus arguments
         if action == "voir":
-            self.send(client, {"type": "message", "value": self.game.map_.lieux[perso.lieu]}, True)
+            self.send(client, {"type": "message", "value": self.game.map_.lieux[perso.lieu].aff()}, True)
         elif action == "inventaire":
             if data_len == 1:
                 self.send(client, {"type": "message", "value": perso.format_invent()}, True)
