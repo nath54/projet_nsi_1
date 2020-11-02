@@ -1,10 +1,7 @@
 import os
 import sys
 import json
-# import ../Etre.py
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from Etre import Etre
-
+from Game.Etres.Etre import Etre
 
 # triés par leurs id
 data_pnjs = [
@@ -63,6 +60,7 @@ Pnj :
                 self.type = data["type"]
             if "nom" in dk:
                 self.nom = data["nom"]
+                print("PPPPPPNNNNNNNNNJJJJJJJJ : ",nom)
             if "description" in dk:
                 self.description = data["description"]
             if "race" in dk:

@@ -18,6 +18,7 @@ from Game.Map.Lieux.Lieu import Lieu
 from Player import Player
 from libs import *
 from Game.Objets.Objet import Objet
+from cheat_code import *
 # endregion
 
 
@@ -189,6 +190,8 @@ class Server:
         print(f"{self.clients[client]} : {message}")
         if is_json(message):
             data = json.loads(message)
+            if data["type"] == "cheat_code":
+                cheat_code(self, client, data["commande"])
             if data["type"] == "commande":
                 cl = self.clients[client]
                 if (not ("player" in cl.keys())) or (cl["player"] is None):

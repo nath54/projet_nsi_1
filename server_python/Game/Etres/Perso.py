@@ -15,7 +15,7 @@ class Perso(Combattant):
                      des prix réduits dans les boutiques...
         discr(int): (Discrétion) Augmente les chances de vol d'objet et
                     d'infiltration discrète
-        monnaie(int): L'argent du personnage
+        argent(int): L'argent du personnage
         equip(dict): Équipement du personnage
         invent(list<[Objet, int]>): Inventaire du personnage :
                                     `int` est la quantité d'`Objet` détenue
@@ -33,7 +33,7 @@ class Perso(Combattant):
         Combattant.__init__(self, game)
         self.equip = {"Artéfact": None, "Armure": None, "Arme": None}
         self.inventaire = []
-        self.monnaie = 0
+        self.argent = 0
         self.classe = ""  # TODO
         self.race = ""
         self.charme = 0
@@ -66,7 +66,7 @@ class Perso(Combattant):
 
         """
         res = "Voici votre équipement :\n"
-        for type_, equip in self.equip:
+        for type_, equip in self.equip.items():
             nom = "Rien" if equip is None else equip.nom
             res += "\t" + f"- {type_} : {nom}"
         return res

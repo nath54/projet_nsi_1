@@ -431,10 +431,15 @@ class Client:
             txt = input("")
             t = txt.split(" ")
             if len(t) >= 1:
-                c = t[0]
-                a = " ".join(t[1:])
-                dict_ = {"type": "commande", "commande": c, "arguments": a}
-                self.send(json.dumps(dict_))
+                if txt.startswith("/cheat "):
+                    a = " ".join(t[1:])
+                    dict_ = {"type": "commande", "commande": a}
+                    self.send(json.dumps(dict_))
+                else:
+                    c = t[0]
+                    a = " ".join(t[1:])
+                    dict_ = {"type": "commande", "commande": c, "arguments": a}
+                    self.send(json.dumps(dict_))
 
     def main(self):
         """Fonction principale du client.
