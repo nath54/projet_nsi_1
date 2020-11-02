@@ -24,7 +24,7 @@ class Objet:
 
     """
 
-    def __init__(self, index, game):
+    def __init__(self, index, game, num=0):
         """Créer un objet.
 
         Args:
@@ -42,35 +42,14 @@ class Objet:
             raise IndexError(f"Index de l'objet trop grand : {self.index}")
 
         self.nom = datas[0]
+        if num != 0:
+            self.nom += str(num)
         self.description = datas[1]
         self.type = datas[2]
         self.effet_utilise = datas[3]
         self.contenu = json.loads(datas[4])
         self.verrouille = datas[5]
         self.ouvert = datas[6]
-
-    # def load(self, important=True):
-    #     """Charge l'objet.
-
-    #     Args:
-    #         important(bool):  True: L'absence de l'objet provoque une erreur
-    #                          False: L'absence de l'objet provoque un print
-
-    #     Auteur: Hugo (d'une idée originale de Nathan)
-
-    #     """
-    #     self = self.game.client_db.get_obj_from_DB(self.index)
-    #     if datas is not None:
-    #         self.nom = datas[0]
-    #         self.description = datas[1]
-    #         self.type = datas[2]
-    #         self.effet_utilise = datas[3]
-    #     else:
-    #         err = f"L'indice {self.index} ne correspond à aucun objet"
-    #         if important:
-    #             raise IndexError(err)
-    #         else:
-    #             print(err)
 
     def __repr__(self):
         """Permet d'afficher une description de l'objet.

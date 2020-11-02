@@ -74,8 +74,8 @@ class Map:
                 # TODO : Trouver un système où il pourrait y avoir plusieurs
                 #        fois le même objet
                 elif type(pid) == list:
-                    for _ in range(pid[1]):
-                        obj = Objet(pid[0], game)
+                    for x in range(pid[1]):
+                        obj = Objet(pid[0], game, num=x + 1)
                         lieu.objets.add(obj)
 
         if "lieux" in dk:

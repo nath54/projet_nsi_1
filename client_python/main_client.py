@@ -253,22 +253,22 @@ class Client:
         """
         self.on_connect()
         while True:
-            try:
-                msg = self.client.recv(self.max_size)
-                msg = msg.decode(encoding="utf-8")
-                print("recu : " + json.loads(msg))
-                if len(msg) == 0:
-                    raise UserWarning("message vide")
-                if not self.ws:
-                    self.on_message(msg)
-                else:
-                    loop = asyncio.new_event_loop()
-                    asyncio.set_event_loop(loop)
-                    loop.run_until_complete(self.webserver.on_message(msg))
-            except Exception as e:
-                print(e)
-                self.on_close()
-                return
+            # try:
+            msg = self.client.recv(self.max_size)
+            msg = msg.decode(encoding="utf-8")
+            print("recu : ", json.loads(msg))
+            if len(msg) == 0:
+                raise UserWarning("message vide")
+            if not self.ws:
+                self.on_message(msg)
+            else:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                loop.run_until_complete(self.webserver.on_message(msg))
+            # except Exception as e:
+            #     print(e)
+            #     self.on_close()
+            #     return
 
     def on_connect(self):
         """Réaction si la connexion est acceptée."""
@@ -291,7 +291,9 @@ class Client:
                     data = json.loads(data)
                 else:
                     return
-            print("on_message : ", data)
+            if type(data) != dict:
+                return
+            # print("on_message : ", data)
             if data["type"] == "connection successed":
                 print("Connection acceptée")
                 self.etat = "connecté"
@@ -311,7 +313,7 @@ class Client:
                 self.attente = False
 
             elif data["type"] == "creation perso":
-                print("creation perso")
+                # print("creation perso")
                 self.etat = "creation_perso"
                 self.attente = False
 
@@ -319,7 +321,7 @@ class Client:
                 self.genres = json.loads(data["genres"])
 
             elif data["type"] == "message":
-                print("\n"+data["value"]+"\n")
+                print("\n" + str(data["value"]) + "\n")
 
     def on_close(self):
         """Réaction en cas de fermeture/problème.

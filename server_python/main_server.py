@@ -273,17 +273,17 @@ class Server:
 
         # Les premieres commandes sont des commandes à 0 ou plus arguments
         if action == "voir":
-            self.send(client, perso.lieu, True)
+            self.send(client, {"type": "message", "value": self.game.map_.lieux[perso.lieu]}, True)
         elif action == "inventaire":
             if data_len == 1:
-                self.send(client, perso.format_invent(), True)
+                self.send(client, {"type": "message", "value": perso.format_invent()}, True)
             else:
                 self.invent_multi_args(client, data)
         elif action == "equipement":
-            self.send(client, perso.format_equip(), True)
+            self.send(client, {"type": "message", "value": perso.format_equip()}, True)
         elif action == "stats":
             if data_len == 1:
-                self.send(client, perso.format_stats(), True)
+                self.send(client, {"type": "message", "value": perso.format_stats()}, True)
             else:
                 pass  # TODO: Afficher stats d'un autre Etre (bof)
         elif action == "quit":
@@ -291,7 +291,7 @@ class Server:
         elif action == "attendre":  # Bof
             pass
         elif data_len <= 1:
-            self.send(client, "Commande inconnue", True)
+            self.send(client, {"type": "message", "value": "Commande inconnue"}, True)
 
         # Ce qui suit sont des commandes avec au moins 1 argument
         elif action == "desequiper":
@@ -300,19 +300,19 @@ class Server:
                 mess = f"Vous avez retiré {args[0]} !"
             else:
                 mess = f"Vous n'aviez pas de {args[0]} sur vous..."
-            self.send(client, mess, True)
+            self.send(client, {"type": "message", "value": mess}, True)
         elif action == "equiper":
             b = perso.equiper(args[0])
             if b:
                 mess = f"Vous avez équipé {args[0]}"
             else:
                 mess = f"Vous ne possédez pas '{args[0]}'"
-            self.send(client, mess, True)
+            self.send(client, {"type": "message", "value": mess}, True)
         # On définit l'objet ciblé avec lequel l'utilisateur voudra (peut-être) agir
         obj_cible = None
-        for i in perso.game.lieux.objet:
-            if obj_cible.nom == args[0]:
-                obj_cible = i
+        for obj in perso.game.map_.lieux[perso.lieu].objets:
+            if obj.nom == args[0]:
+                obj_cible = obj
 
         if action == "examiner":
             self.send(client, obj_cible.__repr__(), True)
@@ -320,6 +320,7 @@ class Server:
             if obj_cible.type not in ["décor", "contenant"]:
                 perso.add_to_invent(obj.index)
                 perso.game.lieu.objet.remove(obj_cible)
+                self.send(client, {"type": "message", "value": "objet pris"})
         elif action == "jeter":
             arg = args[0]
             qt = args[1] if len(args[0]) > 1 else 1
@@ -351,7 +352,7 @@ class Server:
                     mess = f"Vous ouvrez ce superbe {obj_cible.nom}\n{obj_cible.format_contenu()}"
             else:
                 mess = "Comment ouvrir un objet qui ne possède pas d'ouverture..."
-            self.send(client, mess, True)
+            self.send(client, {"type": "message", "value": mess}, True)
         elif action == "fermer":
             if obj_cible.type == "contenant":
                 if obj_cible.ouvert:
@@ -360,7 +361,7 @@ class Server:
                     mess = f"Vous avez refermé le/la {obj_cible.nom}, qui était déjà fermé... Quel exploit !"
             else:
                 mess = "Fermer un objet qui ne se ferme pas... Original."
-            self.send(client, mess, True)
+            self.send(client, {"type": "message", "value": mess}, True)
         elif action == "aller":
             for id_lieu, _ in (perso.lieu.lieux_accessibles):
                 Lieu()
@@ -419,7 +420,7 @@ class Server:
 
     def bienvenue(self, client):
         p = self.clients[client]["player"].perso
-        mess = {"type": "message", "value": f"Bienvenue !\nVous aller jouer au jeu {self.nom_du_jeu} et nous esperons que vous vous amuserez !\n\nVous êtes {p.nom}\nVie : {p.vie}/{p.vie_totale}"}
+        mess = {"type": "message", "value": f"Bienvenue !\nVous aller jouer au jeu {self.nom_du_jeu} et nous esperons que vous vous amuserez !\n\nVous êtes {p.nom}\nVie : {p.vie}/{p.vie_totale}\n\n{self.game.map_.lieux[p.lieu]}"}
         mess = json.dumps(mess)
         self.send(client, mess)
 
