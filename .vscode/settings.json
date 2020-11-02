@@ -5,6 +5,7 @@
     "python.linting.mypyEnabled": true,
     "python.linting.pydocstyleEnabled": false,
     "python.linting.pycodestyleArgs": ["--ignore=E501"],
+    "editor.rulers": [79],
     "python.linting.pylintArgs": ["--ignore import-error"],
     "python.autoComplete.extraPaths": ["./server_python","./client_python"],
     "python.analysis.extraPaths": ["./server_python","./client_python"],
