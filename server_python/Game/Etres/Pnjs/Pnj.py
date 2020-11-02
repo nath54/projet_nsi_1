@@ -18,21 +18,24 @@ class Pnj(Etre):
 
     """
 
-    def __init__(self, index, game):
+    def __init__(self, game, id_):
         """Instancie le PNJ.
 
         Args:
-            index(int): Identiant unique du PNJ
+            id_(int): Identiant unique du PNJ
 
-        Auteur: Nathan
+        Auteur: Hugo
 
         """
         Etre.__init__(self, game)
-        self.index = index
-        self.dialogue = None
-        if self.index > len(data_pnjs) - 1:
+        self.index = id_
+        datas = game.client_db.get_data_Pnj_DB(id_)
+        if datas is None:
             raise IndexError("Problème avec pnj, mauvais index :", self.index)
-        self.load()
+        self.nom = datas.get("nom", "Personnage Non Joueur. PNJ pour les intimes.")
+        self.description = datas.get("desc", "")
+        self.race = datas.get("race", "humain")
+        self.dialogue = datas.get("dialogue", {})
 
     def __str__(self):
         """Renvoie une description du PNJ."""

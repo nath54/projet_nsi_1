@@ -31,26 +31,36 @@ class Lieu:
     Attributes:
         nom(str) : Le nom du lieu
         description(str) : La description du lieu
-        ennemis(set) : Liste des Ennemis qui sont sur le lieu
-        pnjs(set) : Liste des pnjs qui sont sur le lieu
-        persos(set) : Liste des persos qui sont sur le lieu
-        objets(set) : Liste des objets qui sont sur le lieu
+        ennemis(list<Ennemis>) : Liste des Ennemis qui sont sur le lieu
+        pnjs(list<Pnj>) : Liste des pnjs qui sont sur le lieu
+        persos(list<Perso>) : Liste des persos qui sont sur le lieu
+        objets(list<Objet>) : Liste des objets qui sont sur le lieu
         lieux_accessibles(list<int, str>) : Liste des lieux accessibles
         map_ (Map) : l'instance de la map pour y acceder plus facilement
+        appellation(list<str>): Liste des noms qu'on peut entrer pour aller à
+                                un endroit
 
     """
 
     def __init__(self, game, id_):
         """Permet d'initialiser les caractéristiques d'un lieu."""
         datas = game.client_db.get_data_Lieu_DB(id_)
-        self.nom = datas.get("nom")
-        self.description = "Un lieu"
-        self.ennemis = set()
-        self.pnjs = set()
-        self.persos = set()
-        self.objets = set()
+        if datas is None:
+            raise IndexError(f"L'index {id_} n'est pas reconnu")
+        self.nom = datas.get("nom", "Lieu")
+        self.description = datas.get("description", "")
+        self.ennemis = []
+        for id_ennemi in datas.get("ennemis", []):
+            self.ennemis.append(self.game.Ennemi(self.game, id_ennemi))
+        self.pnjs = []
+        for id_pnj in datas.get("pnjs", []):
+            self.pnjs.append(self.game.Pnj(game, id_pnj))
+        self.persos = []
+        self.objets = []
+        for id_obj in datas.get("obj", []):
+            self.objets.append(self.game.Objet(game, id_obj))
         self.lieux_accessibles = []
-        self.map_ = None
+        self.map_ = game.map_
 
         pass
         # TODO
@@ -73,19 +83,19 @@ class Lieu:
         txt_lieux = ""
 
         if len(self.objets) >= 1:
-            txt_objets = ("\n" + random.choice(p_objs) + " :\n    -" +
+            txt_objets = ("\n" + random.choice(p_objs) + " :\n    -"
                           '\n\t- '.join([objet.nom for objet in self.objets]))
         if len(self.pnjs) >= 1:
-            txt_pnjs = ("\n" + random.choice(p_pnjs) + " :\n    -" +
+            txt_pnjs = ("\n" + random.choice(p_pnjs) + " :\n    -"
                         '\n\t- '.join([pnj.nom for pnj in self.pnjs]))
         if len(self.ennemis) >= 1:
-            txt_ennemis = ("\n" + random.choice(p_ennemis) + " :\n    -" +
+            txt_ennemis = ("\n" + random.choice(p_ennemis) + " :\n    -"
                            '\n\t- '.join([enn.nom for enn in self.ennemis]))
         if len(self.persos) >= 1:
-            txt_persos = ("\n" + random.choice(p_persos) + " :\n    -" +
+            txt_persos = ("\n" + random.choice(p_persos) + " :\n    -"
                           '\n\t- '.join([perso.nom for perso in self.persos]))
         if len(self.lieux_accessibles) >= 1:
-            txt_lieux = ("\n" + random.choice(p_lieux) + " :\n    -" +
+            txt_lieux = ("\n" + random.choice(p_lieux) + " :\n    -"
                          '\n\t- '.join([self.map_.lieux[lieu[0]].nom
                                         for lieu in self.lieux_accessibles]))
 

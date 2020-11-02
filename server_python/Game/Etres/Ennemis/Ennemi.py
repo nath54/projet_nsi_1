@@ -19,7 +19,7 @@ class Ennemi(Combattant):
 
     """
 
-    def __init__(self, index, game):
+    def __init__(self, game, id_):
         """Instancie l'ennemi.
 
         Args:

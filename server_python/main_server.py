@@ -366,8 +366,9 @@ class Server:
                 mess = "Fermer un objet qui ne se ferme pas... Original."
             self.send(client, {"type": "message", "value": mess}, True)
         elif action == "aller":
-            for id_lieu, _ in (perso.lieu.lieux_accessibles):
-                Lieu()
+            lieu = self.game.map_.lieux[perso.lieu]
+            for id_lieu, _ in (lieu.lieux_accessibles):
+                pass  # Chercher id_lieux dans DB puis check si le nom est bon
             pass
         elif action == "parler":
             pass

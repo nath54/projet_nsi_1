@@ -6,6 +6,7 @@ class Perso(Combattant):
     """Classe de base pour les personnages.
 
     Attributes:
+        lieu(int): Identifiant du lieu dans lequel se trouve le personnage
         classe(??? Enum/Constante/str): Classe du personnage
         force(int): Niveau de force du personnage (pour utiliser certaines
                     armes, il faut de la force, sinon risque d'échec critique)
@@ -31,6 +32,7 @@ class Perso(Combattant):
 
         """
         Combattant.__init__(self, game)
+        self.lieu = None
         self.equip = {"Artéfact": None, "Armure": None, "Arme": None}
         self.inventaire = []
         self.argent = 0

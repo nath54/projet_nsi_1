@@ -14,8 +14,7 @@ except Exception as e:
         raise UserWarning("Il faut installer la librairie mariadb ou mysql !")
 
 
-import sys
-import os
+import syimport os
 import json
 import io
 from libs import *
@@ -408,9 +407,9 @@ class Client_mariadb:
                 continue
             d = jload(pathd + fich)
             query = """INSERT INTO lieux (id, nom, description_, ennemis, pnjs,
-                        objets, lieux) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+                        objets, lieux, appellation) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
             self.cursor.execute(query, (d["id"], d["nom"], d["description"], json.dumps(d["ennemis"]),
-                                        json.dumps(d["pnjs"]), json.dumps(d["objets"]), json.dumps(d["lieux"])))
+                                        json.dumps(d["pnjs"]), json.dumps(d["objets"]), json.dumps(d["lieux"], json.dumps(d["appellation"]))))
             self.connection.commit()
         # endregion
         # region PNJs :
@@ -642,17 +641,28 @@ class Client_mariadb:
         self.connection.commit()
 
     def get_data_Lieu_DB(self, id_):
-        query = "SELECT nom, description_, ennemis, pnjs, objets, lieux FROM lieux WHERE id = %s;"
+        query = "SELECT nom, description_, ennemis, pnjs, objets, lieux, appellation FROM lieux WHERE id = %s;"
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
-        for nom, desc, ennemis, pnjs, obj, lieux in results:
+        for nom, desc, ennemis, pnjs, obj, lieux, appellation in results:
             datas = {}
             datas["nom"] = nom
             datas["description"] = desc
-            datas["ennemis"] = ennemis
-            datas["pnjs"] = pnjs
-            list_obj = json.loads(obj)
-            datas["obj"] = list_obj
-            list_lieux = json.loads(lieux)
-            datas["lieux"] = list_lieux
+            datas["ennemis"] = json.loads(ennemis)
+            datas["pnjs"] = json.loads(pnjs)
+            datas["obj"] = json.loads(obj)
+            datas["lieux"] = json.loads(lieux)
+            datas["appellations"] = json.loads(appellation)
             return datas
+        return None
+
+    def get_data_Pnj_DB(self, id_):
+        query = "SELECT nom, description, race, dialogue FROM pnjs WHERE id=%s"
+        self.cursor.execute(query, (id_))
+        for nom, desc, race, dialogue in self.cursor:
+            datas["nom"] = nom
+            datas["desc"] = desc
+            datas["race"] = race
+            datas["dialogue"] = json.loads(dialogue)
+            return datas
+        return None
