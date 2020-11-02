@@ -135,12 +135,13 @@ class Client_mariadb:
 
         query = ("""CREATE TABLE IF NOT EXISTS persos
                     (id INT PRIMARY KEY AUTO_INCREMENT,
-                    nom TEXT, genre TEXT, race TEXT, classe TEXT, experience TEXT,
-                    inventaire TEXT, lieu INT, quetes TEXT, equipement TEXT,
+                    nom TEXT, genre TEXT, race TEXT, classe TEXT,
+                    argent int, experience TEXT, inventaire TEXT,
+                    lieu INT, quetes TEXT, equipement TEXT,
                     vie INT, vie_totale INT, energie INT, energie_totale INT,
-                    charme INT, discretion INT, force_ INT, agilite INT, magie INT,
-                    effets_attaque TEXT, bonus_esquive INT, sorts TEXT,
-                    resistances TEXT, faiblesses TEXT);""")
+                    charme INT, discretion INT, force_ INT, agilite INT,
+                    magie INT, effets_attaque TEXT, bonus_esquive INT,
+                    sorts TEXT, resistances TEXT, faiblesses TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
@@ -206,7 +207,7 @@ class Client_mariadb:
             print("La table comptes a été mise à jour !")
         # persos
         if force or self.get_schema("persos") != {"id": "int", "nom": "text", "genre": "text",
-                                                  "race": "text", "classe": "text", "experience": "text",
+                                                  "race": "text", "classe": "text", "argent": "int", "experience": "text",
                                                   "inventaire": "text", "lieu": "int", "quetes": "text",
                                                   "equipement": "text", "vie": "int", "vie_totale": "int",
                                                   "energie": "int", "energie_totale": "int", "charme": "int",
@@ -439,9 +440,7 @@ class Client_mariadb:
         # on va regarder si le player a déjà un perso
         self.cursor.execute("SELECT perso_id FROM comptes WHERE id=%s;", (id_,))
         results = [elt for elt in self.cursor]
-        if results == []:
-            raise UserWarning("erreur !")
-        perso_id = results[0][0]
+        perso_id = results[0] if len(results) > 1 else None
         perso = player.perso
         if perso_id is None:
             # si non on va lui en créer un
@@ -450,6 +449,7 @@ class Client_mariadb:
                                     genre,
                                     race,
                                     classe,
+                                    argent,
                                     experience,
                                     inventaire,
                                     lieu,
@@ -474,11 +474,12 @@ class Client_mariadb:
                                     %s, %s, %s, %s, %s,
                                     %s, %s, %s, %s, %s,
                                     %s, %s, %s, %s, %s,
-                                    %s, %s, %s);""",
+                                    %s, %s, %s, %s);""",
                                 (perso.nom,
                                  perso.genre,
                                  perso.race,
                                  perso.classe,
+                                 perso.argent,
                                  json.dumps(perso.experience),
                                  json.dumps(perso.inventaire),
                                  perso.lieu,
@@ -515,6 +516,7 @@ class Client_mariadb:
                                        genre = %s,
                                        race = %s,
                                        classe = %s,
+                                       argent = %s,
                                        experience = %s,
                                        inventaire = %s,
                                        lieu = %s,
@@ -539,6 +541,7 @@ class Client_mariadb:
                                     perso.genre,
                                     perso.race,
                                     perso.classe,
+                                    perso.argent,
                                     json.dumps(perso.experience),
                                     json.dumps(perso.inventaire),
                                     perso.lieu,
@@ -571,7 +574,7 @@ class Client_mariadb:
 
         Auteur : Nathan
         """
-        query = """SELECT nom, genre, race, classe, experience,
+        query = """SELECT nom, genre, race, classe, argent,  experience,
                     inventaire, lieu, quetes, equipement,
                     vie, vie_totale, energie, energie_totale,
                     charme, discretion, force_, agilite, magie,
@@ -588,25 +591,26 @@ class Client_mariadb:
             "genre": d[1],
             "race": d[2],
             "classe": d[3],
-            "experience": d[4],
-            "inventaire": d[5],
-            "lieu": d[6],
-            "quetes": d[7],
-            "equipement": d[8],
-            "vie": d[9],
-            "vie_totale": d[10],
-            "energie": d[11],
-            "energie_totale": d[12],
-            "charme": d[13],
-            "discretion": d[14],
-            "force_": d[15],
-            "agilite": d[16],
-            "magie": d[17],
-            "effets_attaque": d[18],
-            "bonus_esquive": d[19],
-            "sorts": d[20],
-            "resistances": d[21],
-            "faiblesses": d[22]
+            "argent": d[4],
+            "experience": d[5],
+            "inventaire": d[6],
+            "lieu": d[7],
+            "quetes": d[8],
+            "equipement": d[9],
+            "vie": d[10],
+            "vie_totale": d[11],
+            "energie": d[12],
+            "energie_totale": d[13],
+            "charme": d[14],
+            "discretion": d[15],
+            "force_": d[16],
+            "agilite": d[17],
+            "magie": d[18],
+            "effets_attaque": d[19],
+            "bonus_esquive": d[20],
+            "sorts": d[21],
+            "resistances": d[22],
+            "faiblesses": d[23]
         }
         return data_perso
 

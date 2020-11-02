@@ -38,6 +38,7 @@ class Player:
         self.perso.equipement = data_perso["equipement"]
         self.perso.lieu = data_perso["lieu"]
         self.perso.quetes = data_perso["quetes"]
+        self.perso.argent = data_perso["argent"]
 
         self.perso.vie = data_perso["vie"]
         self.perso.vie_totale = data_perso["vie_totale"]
@@ -74,6 +75,7 @@ class Player:
         self.perso.quetes = {}
         # on met en place la base des valeurs
         valeurs = {
+            "argent": 100,
             "charme": 5,
             "discretion": 5,
             "force": 5,
@@ -121,6 +123,7 @@ class Player:
                         valeurs[attribut].append(v)
 
         # on donne les valeurs
+        self.perso.argent = valeurs["argent"]
         self.perso.charme = valeurs["charme"]
         self.perso.discretion = valeurs["discretion"]
         self.perso.force = valeurs["force"]

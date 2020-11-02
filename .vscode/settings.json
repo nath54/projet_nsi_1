@@ -1,8 +1,8 @@
 {
-    "python.linting.pycodestyleEnabled": true,
-    "python.linting.enabled": true,
-    "python.linting.pylintEnabled": true,
-    "python.linting.mypyEnabled": true,
+    "python.linting.pycodestyleEnabled": false,
+    "python.linting.enabled": false,
+    "python.linting.pylintEnabled": false,
+    "python.linting.mypyEnabled": false,
     "python.linting.pydocstyleEnabled": false,
     "python.linting.pycodestyleArgs": ["--ignore=E501"],
     "editor.rulers": [79],

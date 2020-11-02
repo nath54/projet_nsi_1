@@ -85,7 +85,7 @@ class Lieu:
             txt_persos = ("\n" + random.choice(p_persos) + " :\n    -" +
                           '\n\t- '.join([perso.nom for perso in self.persos]))
         if len(self.lieux_accessibles) >= 1:
-            txt_lieux = ("\n" + random.choice(p_lieux)+" :\n    -" +
+            txt_lieux = ("\n" + random.choice(p_lieux) + " :\n    -" +
                          '\n\t- '.join([self.map_.lieux[lieu[0]].nom
                                         for lieu in self.lieux_accessibles]))
 
