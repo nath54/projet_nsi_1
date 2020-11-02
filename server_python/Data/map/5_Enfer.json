@@ -1,0 +1,12 @@
+{
+    "id":5,
+    "nom":"Les Enfers",
+    "description":"Vous vous êtes aventurer dans les enfers, faitent attention ce que vous aller endurer surpassent vos immagination",
+    "region":"Enfer",
+    "type":"Enfer",
+    "objets":[],
+    "pnjs":[],
+    "boss":[1 ,2],
+    "ennemis": [  ],
+    "lieux":[  ]
+}
