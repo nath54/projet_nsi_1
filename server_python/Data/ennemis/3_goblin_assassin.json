@@ -3,7 +3,7 @@
     "type":"ennemi",
     "nom":"goblin assassin",
     "race":"goblin",
-    "description":"Les goblins soldats sont des goblins entrainés dans le but de tuer, ils n'ont pas beaucoup de vie, mais font beaucoup de dégats !",
+    "description":"Les goblins assassin sont des goblins entrainés dans le but de tuer, ils n'ont pas beaucoup de vie, mais font beaucoup de dégats !",
     "vie":[5,8],
     "attaque":[30,40],
     "attaque_effets":{"poison":50,"critique":50}
