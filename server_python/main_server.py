@@ -14,6 +14,7 @@ import time
 from client_db import Client_mariadb
 from Game.Game import Game
 from Game.Etres.Perso import Perso
+from Game.Map.Lieux.Lieu import Lieu
 from Player import Player
 from libs import *
 from Game.Objets.Objet import Objet
@@ -325,7 +326,7 @@ class Server:
                 except Exception:
                     # TODO : renvoyer une erreur au client
                     return
-    
+
             for i in range(len(perso.invent)):
                 obj = perso.invent[i]
                 if obj[0].nom == arg:
@@ -344,7 +345,7 @@ class Server:
                 if obj_cible.ouvert:
                     mess = "Cet objet est déjà ouvert..."
                 else:
-                    mess = f"Vous ouvrez ce superbe {obj_cible.nom}\n{obj_cible.format_contenu}"
+                    mess = f"Vous ouvrez ce superbe {obj_cible.nom}\n{obj_cible.format_contenu()}"
             else:
                 mess = "Comment ouvrir un objet qui ne possède pas d'ouverture..."
             self.send(client, mess, True)
@@ -353,11 +354,13 @@ class Server:
                 if obj_cible.ouvert:
                     mess = f"Vous avez refermé le {obj_cible.nom}."
                 else:
-                    mess = f"Vous avez refermé le {obj_cible.nom}, qui était déjà fermé... Quel exploit !"
+                    mess = f"Vous avez refermé le/la {obj_cible.nom}, qui était déjà fermé... Quel exploit !"
             else:
                 mess = "Fermer un objet qui ne se ferme pas... Original."
             self.send(client, mess, True)
         elif action == "aller":
+            for id_lieu, _ in (perso.lieu.lieux_accessibles):
+                Lieu()
             pass
         elif action == "parler":
             pass
@@ -399,20 +402,16 @@ class Server:
         if compl in ["voir", "examiner"]:
             objet = perso.search_invent(nom_obj)
             if objet is not None:
-                print(objet)
-                # TODO: send_to_perso(perso)
+                self.send(client, objet, True)
             else:
-                print("Désolé, vous ne possédez pas cet objet.")
-                # TODO: send_to_perso(perso)
+                self.send(client, "Désolé, vous ne possédez pas cet objet.", True)
         elif compl == "utiliser":
             objet = perso.search_invent(nom_obj)
             if objet is not None:
                 perso.consomme_item(objet)
-                print(f"{nom_obj} a été consommé !")
-                # TODO: send_to_perso(perso)
+                self.send(client, f"{nom_obj} a été consommé !", True)
             else:
-                print("Désolé, vous ne possédez pas cet objet.")
-                # TODO: send_to_perso(perso)
+                self.send(client, "Désolé, vous ne possédez pas cet objet.", True)
     # endregion
 
     def main(self):

@@ -636,3 +636,18 @@ class Client_mariadb:
     def new_genre(self, genre):
         self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)", (genre,))
         self.connection.commit()
+
+    def get_data_Lieu_DB(self, id_):
+        query = "SELECT nom, description_, ennemis, pnjs, objets, lieux FROM lieux WHERE id=%s"
+        self.cursor.execute(query, (id_))
+        for nom, desc, ennemis, pnjs, obj, lieux:
+            datas = {}
+            datas["nom"] = nom
+            datas["description"] = desc
+            datas["ennemis"] = ennemis
+            datas["pnjs"] = pnjs
+            list_obj = json.load(obj)
+            datas["obj"] = list_obj
+            list_lieux = json.load(lieux)
+            datas["lieux"] = list_lieux
+            return datas

@@ -40,15 +40,16 @@ class Lieu:
 
     """
 
-    def __init__(self):
+    def __init__(self, game, id_):
         """Permet d'initialiser les caractéristiques d'un lieu."""
-        self.nom = "Lieu"
+        datas = game.client_db.get_data_Lieu_DB(id_)
+        self.nom = datas.get()
         self.description = "Un lieu"
         self.ennemis = set()
         self.pnjs = set()
         self.persos = set()
         self.objets = set()
-        self.lieux_accessibles = list()
+        self.lieux_accessibles = []
         self.map_ = None
 
         pass
