@@ -41,7 +41,7 @@ class Map:
         Auteur: Nathan
 
         """
-        lieu = game.Lieu()
+        lieu = game.Lieu(game, datalieu["id"])
         lieu.map_ = self
         dk = datalieu.keys()
         if "id" not in dk:

@@ -318,6 +318,9 @@ class Client:
             elif data["type"] == "genres":
                 self.genres = json.loads(data["genres"])
 
+            elif data["type"] == "message":
+                print("\n"+data["value"]+"\n")
+
     def on_close(self):
         """Réaction en cas de fermeture/problème.
 

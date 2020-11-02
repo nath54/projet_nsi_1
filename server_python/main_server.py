@@ -46,6 +46,7 @@ class Server:
         self.game = Game(jload)
         self.client_db = Client_mariadb(self.game)
         self.version = 1
+        self.nom_du_jeu = "Py RPG MasterClass Option text multijoueur"
         # TODO
         pass
 
@@ -229,11 +230,13 @@ class Server:
                     data_perso = self.client_db.get_perso(id_)
                     self.clients[client]["player"].load_perso(data_perso)
                     # il faudra sans doute envoyer d'autres infos, comme une clé de connexion par exemple
+                    self.bienvenue(client)
             elif data["type"] == "perso_cree":
                 if data["genre"] == "autre" and data["genre"] not in db.get_genres():
                     db.new_genre(data["genre"])
                 self.clients[client]["player"].creation(data)
-                reussi = db.set_perso(self.clients[client]["player"])
+                db.set_perso(self.clients[client]["player"])
+                self.bienvenue(client)
             else:
                 # TODO
                 pass
@@ -307,7 +310,7 @@ class Server:
             self.send(client, mess, True)
         # On définit l'objet ciblé avec lequel l'utilisateur voudra (peut-être) agir
         obj_cible = None
-        for i in perso.game.lieu.objet:
+        for i in perso.game.lieux.objet:
             if obj_cible.nom == args[0]:
                 obj_cible = i
 
@@ -413,6 +416,12 @@ class Server:
             else:
                 self.send(client, "Désolé, vous ne possédez pas cet objet.", True)
     # endregion
+
+    def bienvenue(self, client):
+        p = self.clients[client]["player"].perso
+        mess = {"type": "message", "value": f"Bienvenue !\nVous aller jouer au jeu {self.nom_du_jeu} et nous esperons que vous vous amuserez !\n\nVous êtes {p.nom}\nVie : {p.vie}/{p.vie_totale}"}
+        mess = json.dumps(mess)
+        self.send(client, mess)
 
     def main(self):
         """Met en route le serveur.

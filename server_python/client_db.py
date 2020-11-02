@@ -571,12 +571,12 @@ class Client_mariadb:
 
         Auteur : Nathan
         """
-        query = """SELECT (nom, genre, race, classe, experience,
+        query = """SELECT nom, genre, race, classe, experience,
                     inventaire, lieu, quetes, equipement,
                     vie, vie_totale, energie, energie_totale,
                     charme, discretion, force_, agilite, magie,
                     effets_attaque, bonus_esquive, sorts,
-                    resistances, faiblesses) FROM perso INNER JOIN compte ON comptes.perso_id = perso.id WHERE comptes.id=%s"""
+                    resistances, faiblesses FROM persos INNER JOIN comptes ON comptes.perso_id = persos.id WHERE comptes.id=%s"""
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
         if len(results) == 0:
@@ -638,16 +638,17 @@ class Client_mariadb:
         self.connection.commit()
 
     def get_data_Lieu_DB(self, id_):
-        query = "SELECT nom, description_, ennemis, pnjs, objets, lieux FROM lieux WHERE id=%s"
-        self.cursor.execute(query, (id_))
-        for nom, desc, ennemis, pnjs, obj, lieux:
+        query = "SELECT nom, description_, ennemis, pnjs, objets, lieux FROM lieux WHERE id = %s;"
+        self.cursor.execute(query, (id_,))
+        results = [elt for elt in self.cursor]
+        for nom, desc, ennemis, pnjs, obj, lieux in results:
             datas = {}
             datas["nom"] = nom
             datas["description"] = desc
             datas["ennemis"] = ennemis
             datas["pnjs"] = pnjs
-            list_obj = json.load(obj)
+            list_obj = json.loads(obj)
             datas["obj"] = list_obj
-            list_lieux = json.load(lieux)
+            list_lieux = json.loads(lieux)
             datas["lieux"] = list_lieux
             return datas

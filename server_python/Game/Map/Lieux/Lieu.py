@@ -43,7 +43,7 @@ class Lieu:
     def __init__(self, game, id_):
         """Permet d'initialiser les caractéristiques d'un lieu."""
         datas = game.client_db.get_data_Lieu_DB(id_)
-        self.nom = datas.get()
+        self.nom = datas.get("nom")
         self.description = "Un lieu"
         self.ennemis = set()
         self.pnjs = set()

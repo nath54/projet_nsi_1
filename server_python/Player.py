@@ -46,7 +46,7 @@ class Player:
 
         self.perso.charme = data_perso["charme"]
         self.perso.discretion = data_perso["discretion"]
-        self.perso.force = data_perso["force"]
+        self.perso.force = data_perso["force_"]
         self.perso.agilite = data_perso["agilite"]
         self.perso.magie = data_perso["magie"]
         self.perso.effets_attaque = data_perso["effets_attaque"]
