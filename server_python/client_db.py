@@ -504,8 +504,9 @@ class Client_mariadb:
             perso_id = [elt[0] for elt in self.cursor][0]
             #
             self.cursor.execute("""UPDATE comptes
-                                   SET perso_id = %s;
-                                """, (perso_id,))
+                                   SET perso_id = %s
+                                   WHERE comptes.id = %s;
+                                """, (perso_id, player.id_))
             self.connection.commit()
         else:
             # sinon on va juste modifier les valeurs
