@@ -1,0 +1,10 @@
+{
+    "id":4,
+    "type":"ennemi",
+    "nom":"petit fantome",
+    "race":"mort-vivant",
+    "description":"Fantome !",
+    "vie":[10,14],
+    "attaque":[5,7],
+    "attaque_effets":{}
+}
