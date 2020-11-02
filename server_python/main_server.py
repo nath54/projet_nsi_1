@@ -275,7 +275,7 @@ class Server:
         if action == "voir":
             self.send(client, {"type": "message", "value": self.game.map_.lieux[perso.lieu].aff()}, True)
         elif action == "inventaire":
-            if data_len == 1:
+            if len(args) == 0:
                 self.send(client, {"type": "message", "value": perso.format_invent()}, True)
             else:
                 self.invent_multi_args(client, data)
