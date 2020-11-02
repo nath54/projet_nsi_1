@@ -421,7 +421,7 @@ class Client_mariadb:
                 continue
             d = jload(pathd + fich)
             query = """INSERT INTO pnjs (id, nom, description_, race,
-                        dialogue) VALUES (%s, %s, %s, %s, %s)"""
+                        dialogue) VALUES (%s, %s, %s, %s, %s);"""
             self.cursor.execute(query, (d["id"], d["nom"], d["description"], d["race"], json.dumps(d["dialogues"])))
             self.connection.commit()
         # endregion
@@ -470,29 +470,11 @@ class Client_mariadb:
                                     resistances,
                                     faiblesses)
                                    VALUES
-                                   (%s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s,
-                                    %s);""",
+                                   (%s, %s, %s, %s, %s,
+                                    %s, %s, %s, %s, %s,
+                                    %s, %s, %s, %s, %s,
+                                    %s, %s, %s, %s, %s,
+                                    %s, %s, %s);""",
                                 (perso.nom,
                                  perso.genre,
                                  perso.race,
@@ -517,7 +499,14 @@ class Client_mariadb:
                                  json.dumps(perso.resistances),
                                  json.dumps(perso.faiblesses)))
             self.connection.commit()
-            pass
+            #
+            self.cursor.execute("SELECT id FROM persos WHERE nom = %s AND race = %s AND classe = %s AND genre = %s ORDER BY id DESC;", (perso.nom, perso.race, perso.classe, perso.genre))
+            perso_id = [elt[0] for elt in self.cursor][0]
+            #
+            self.cursor.execute("""UPDATE comptes
+                                   SET perso_id = %s;
+                                """, (perso_id,))
+            self.connection.commit()
         else:
             # sinon on va juste modifier les valeurs
             self.cursor.execute("""UPDATE persos
