@@ -1,0 +1,10 @@
+{
+    "id":3,
+    "type":"boss",
+    "race":"Divine",
+    "nom":"Méphistopheles",
+    "description":"C'est dieu des Enfer, se bat avec Hitler car ce dernier veut enfoyer Juses en ces lieux, il n'ésitera pas a faire de vous son serviteur !",
+    "vie":[13000,15000],
+    "attaque":[200,350],
+    "attaque_effets":{"critique":350}
+}
