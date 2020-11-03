@@ -68,8 +68,6 @@ def test_password(txt):
             return True
     return False
 
-
-# fonction qui teste si un texte est du format json
 def is_json(myjson):
     """Fonction qui teste si un string est de format json."""
     try:

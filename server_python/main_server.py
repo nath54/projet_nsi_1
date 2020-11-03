@@ -321,7 +321,7 @@ class Server:
         elif action == "prendre":
             if obj_cible.type not in ["décor", "contenant"]:
                 perso.add_to_invent(obj.index)
-                perso.game.lieu.objet.remove(obj_cible)
+                self.game.map_.lieux[perso.lieu].objet.remove(obj_cible)
                 self.send(client, {"type": "message", "value": "objet pris"})
         elif action == "jeter":
             arg = args[0]
