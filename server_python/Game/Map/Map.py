@@ -2,9 +2,6 @@ import io
 import json
 import os
 
-from Game.Objets.Objet import Objet
-
-
 class Map:
     """Classe qui gérera la map du jeu.
 
@@ -17,6 +14,19 @@ class Map:
         """Instancie la map du jeu."""
         self.lieux = {}
         pass
+
+    def load_from_bdd(self, game):
+        """Permet de charger la map depuis un fichier `.json`.
+
+        Auteur: Nathan
+
+        """
+        id_lieux = game.client_db.get_lieux()
+        print(id_lieux)
+        for idl in id_lieux:
+            lieu = game.Lieu(game, idl)
+            lieu.map_ = self
+            self.lieux[idl] = lieu
 
     def load_from_json(self, game):
         """Permet de charger la map depuis un fichier `.json`.
@@ -80,4 +90,4 @@ class Map:
 
         # if "lieux" in dk:
         #     lieu.lieux_accessibles = datalieu["lieux"]
-        # self.lieux[idl] = lieu
+        self.lieux[idl] = lieu

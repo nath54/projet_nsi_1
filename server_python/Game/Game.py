@@ -52,7 +52,7 @@ class Game:
         Auteur: Nathan
 
         """
-        self.map_.load_from_json(self)
+        self.map_.load_from_bdd(self)
         print("Débuggage (on vérifie que ça a bien tout créé)")
         print("\nListe des lieux : ")
         print(self.map_.lieux)

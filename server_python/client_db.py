@@ -691,3 +691,13 @@ class Client_mariadb:
                 datas["dialogue"] = json.loads(dialogue)
             return datas
         return None
+
+    def get_lieux(self):
+        """Fonction qui récupère les id des lieux
+
+        Author: Nathan
+        """
+        query = "SELECT id FROM lieux;"
+        self.cursor.execute(query)
+        lieux = [elt[0] for elt in self.cursor]
+        return lieux
