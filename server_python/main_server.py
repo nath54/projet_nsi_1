@@ -46,10 +46,9 @@ class Server:
         self.server = None
         self.game = Game(jload)
         self.client_db = Client_mariadb(self.game)
+        self.game.client_db = self.client_db
         self.version = 1
         self.nom_du_jeu = "Py RPG MasterClass Option text multijoueur"
-        # TODO
-        pass
 
     def start(self):
         """Lance le serveur.

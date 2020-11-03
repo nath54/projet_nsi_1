@@ -43,41 +43,41 @@ class Map:
         """
         lieu = game.Lieu(game, datalieu["id"])
         lieu.map_ = self
-        dk = datalieu.keys()
-        if "id" not in dk:
-            # On pourrait aussi renvoyer une indexError
-            return
-        idl = datalieu["id"]
-        if "nom" in dk:
-            lieu.nom = datalieu["nom"]
-        if "description" in dk:
-            lieu.description = datalieu["description"]
-        if "pnjs" in dk:
-            for pid in datalieu["pnjs"]:
-                lieu.pnjs.add(game.Pnj(pid, game))
-        if "ennemis" in dk:
-            for pid in datalieu["ennemis"]:
-                if type(pid) == int:
-                    lieu.ennemis.add(game.Ennemi(pid, game))
-                elif type(pid) == list:
-                    for _ in range(pid[1]):
-                        lieu.ennemis.add(game.Ennemi(pid[0], game))
+        # dk = datalieu.keys()
+        # if "id" not in dk:
+        #     # On pourrait aussi renvoyer une indexError
+        #     return
+        # idl = datalieu["id"]
+        # if "nom" in dk:
+        #     lieu.nom = datalieu["nom"]
+        # if "description" in dk:
+        #     lieu.description = datalieu["description"]
+        # if "pnjs" in dk:
+        #     for pid in datalieu["pnjs"]:
+        #         lieu.pnjs.append(game.Pnj(pid, game))
+        # if "ennemis" in dk:
+        #     for pid in datalieu["ennemis"]:
+        #         if type(pid) == int:
+        #             lieu.ennemis.append(game.Ennemi(pid, game))
+        #         elif type(pid) == list:
+        #             for _ in range(pid[1]):
+        #                 lieu.ennemis.append(game.Ennemi(pid[0], game))
 
-                # TODO : Trouver un système où il pourrait y avoir plusieurs
-                #        fois le même objet
+        #         # TODO : Trouver un système où il pourrait y avoir plusieurs
+        #         #        fois le même objet
 
-        if "objets" in dk:
-            for pid in datalieu["objets"]:
-                if type(pid) == int:
-                    obj = Objet(pid, game)
-                    lieu.objets.add(obj)
-                # TODO : Trouver un système où il pourrait y avoir plusieurs
-                #        fois le même objet
-                elif type(pid) == list:
-                    for x in range(pid[1]):
-                        obj = Objet(pid[0], game, num=x + 1)
-                        lieu.objets.add(obj)
+        # if "objets" in dk:
+        #     for pid in datalieu["objets"]:
+        #         if type(pid) == int:
+        #             obj = Objet(pid, game)
+        #             lieu.objets.append(obj)
+        #         # TODO : Trouver un système où il pourrait y avoir plusieurs
+        #         #        fois le même objet
+        #         elif type(pid) == list:
+        #             for x in range(pid[1]):
+        #                 obj = Objet(pid[0], game, num=x + 1)
+        #                 lieu.objets.append(obj)
 
-        if "lieux" in dk:
-            lieu.lieux_accessibles = datalieu["lieux"]
-        self.lieux[idl] = lieu
+        # if "lieux" in dk:
+        #     lieu.lieux_accessibles = datalieu["lieux"]
+        # self.lieux[idl] = lieu

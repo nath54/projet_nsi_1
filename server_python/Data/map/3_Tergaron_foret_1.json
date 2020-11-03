@@ -1,5 +1,6 @@
 {
     "id":3,
+    "appellations":["forêt","forêt de Tergaron","forêt Tergaron"],
     "nom":"forêt de Tergaron",
     "description":"Vous vous êtes enfoncé dans la forêt de Tergaron, mais ce n'est pas encore le coeur de la forêt",
     "region":"Larion",

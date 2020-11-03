@@ -18,7 +18,7 @@ class Pnj(Etre):
 
     """
 
-    def __init__(self, game, id_):
+    def __init__(self, id_, game):
         """Instancie le PNJ.
 
         Args:
@@ -63,7 +63,6 @@ Pnj :
                 self.type = data["type"]
             if "nom" in dk:
                 self.nom = data["nom"]
-                print("PPPPPPNNNNNNNNNJJJJJJJJ : ",nom)
             if "description" in dk:
                 self.description = data["description"]
             if "race" in dk:

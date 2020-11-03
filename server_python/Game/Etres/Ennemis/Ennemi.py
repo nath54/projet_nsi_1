@@ -19,7 +19,7 @@ class Ennemi(Combattant):
 
     """
 
-    def __init__(self, game, id_):
+    def __init__(self, id_, game, nb=-1):
         """Instancie l'ennemi.
 
         Args:
@@ -29,10 +29,12 @@ class Ennemi(Combattant):
 
         """
         Combattant.__init__(self, game)
-        self.index = index
+        self.index = id_
         if self.index > len(data_ens) - 1:
             raise IndexError("Mauvais index d'ennemi :", self.index)
         self.load()
+        if nb != -1:
+            self.nom += "-"+str(nb)
 
     def __str__(self):
         """Renvoie une description de l'ennemi."""

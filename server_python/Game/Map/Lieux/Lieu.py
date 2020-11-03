@@ -44,6 +44,7 @@ class Lieu:
 
     def __init__(self, game, id_):
         """Permet d'initialiser les caractéristiques d'un lieu."""
+        self.game = game
         datas = game.client_db.get_data_Lieu_DB(id_)
         if datas is None:
             raise IndexError(f"L'index {id_} n'est pas reconnu")
@@ -51,19 +52,21 @@ class Lieu:
         self.description = datas.get("description", "")
         self.ennemis = []
         for id_ennemi in datas.get("ennemis", []):
-            self.ennemis.append(self.game.Ennemi(self.game, id_ennemi))
+            if type(id_ennemi) == int:
+                self.ennemis.append(self.game.Ennemi(id_ennemi, self.game))
+            elif type(id_ennemi) == list:
+                for x in range(id_ennemi[1]):
+                    self.ennemis.append(self.game.Ennemi(id_ennemi[0],
+                                                         self.game, nb=x))
         self.pnjs = []
         for id_pnj in datas.get("pnjs", []):
-            self.pnjs.append(self.game.Pnj(game, id_pnj))
+            self.pnjs.append(self.game.Pnj(id_pnj, self.game))
         self.persos = []
         self.objets = []
         for id_obj in datas.get("obj", []):
-            self.objets.append(self.game.Objet(game, id_obj))
+            self.objets.append(self.game.Objet(id_obj, self.game))
         self.lieux_accessibles = []
         self.map_ = game.map_
-
-        pass
-        # TODO
 
     def aff(self):
         """Permet d'afficher la description d'un lieu.

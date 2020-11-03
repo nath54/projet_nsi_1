@@ -13,8 +13,8 @@ except Exception as e:
         # Rien n'est installé
         raise UserWarning("Il faut installer la librairie mariadb ou mysql !")
 
-
-import syimport os
+import sys
+import os
 import json
 import io
 from libs import *
@@ -174,7 +174,7 @@ class Client_mariadb:
     def create_table_lieux(self):
         """Fonction qui crée la table perso dans la bdd."""
         query = ("""CREATE TABLE IF NOT EXISTS lieux
-                    (id INT PRIMARY KEY, nom TEXT,
+                    (id INT PRIMARY KEY, nom TEXT, appellations TEXT,
                     description_ TEXT, ennemis TEXT, pnjs TEXT, objets TEXT,
                     lieux TEXT);""")
         # ennemis, pnjs, objets et lieux contiennent des listes parsées par JSON
@@ -241,6 +241,7 @@ class Client_mariadb:
             print("La table objets a été mise à jour !")
         # lieux
         if force or self.get_schema("lieux") != {"id": "int", "nom": "text",
+                                                 "appellations": "text",
                                                  "description_": "text",
                                                  "ennemis": "text",
                                                  "pnjs": "text",
@@ -259,6 +260,7 @@ class Client_mariadb:
             self.connection.commit()
             self.create_table_pnjs()
             print("La table pnjs a été mise à jour !")
+        # genres
         if force or self.get_schema("genres") != {"genre": "text"}:
             self.cursor.execute("DROP TABLE IF EXISTS genres")
             self.connection.commit()
@@ -362,67 +364,145 @@ class Client_mariadb:
         self.cursor.execute("TRUNCATE TABLE `ennemis`")
         self.connection.commit()
         pathd = "Data/ennemis/"
+        # ks : key = key of json lieu , value[0] = name of column of db ennemis
+        # value[1] = si json.dumps ou pas, value[2] = si list index ou pas
+        
+        ks = {"id": ["id", False], "type_": ["type", False],
+              "nom": ["nom", False], "race": ["race", False],
+              "description_": ["description", False],
+              "vie_min": ["vie", False, 0], "vie_max": ["vie", False, 1],
+              "attaque_min": ["attaque", False, 0],
+              "attaque_max": ["attaque", False, 1],
+              "attaque_effets": ["attaque_effets", True]}
         for fich in os.listdir(pathd):
             if not fich.endswith(".json"):
                 continue
             d = jload(pathd + fich)
-            self.cursor.execute("""INSERT INTO ennemis (id, type_, nom, race,
-                                description_, vie_min, vie_max, attaque_min,
-                                attaque_max, attaque_effets)
-                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-                                (
-                                    d["id"], d["type"], d["nom"],
-                                    d["race"], d["description"],
-                                    d["vie"][0], d["vie"][1],
-                                    d["attaque"][0], d["attaque"][1],
-                                    json.dumps(d["attaque_effets"])
-                                ))
+            #
+            values_query = []
+            values_query_args = []
+            for key in ks.keys():
+                if ks[key][0] in d.keys():
+                    values_query.append(key)
+                    val = d[ks[key][0]]
+                    if len(ks[key]) == 3:
+                        val = val[ks[key][2]]
+                    if ks[key][1]:
+                        val = json.dumps(val)
+                    values_query_args.append(val)
+            txt_values_query = ", ".join(values_query)
+            txt_query = ", ".join(["%s" for _ in values_query])
+            # on crée la query :
+            query = f"""INSERT INTO ennemis ({txt_values_query})
+                       VALUES ({txt_query})"""
+            self.cursor.execute(query, tuple(values_query_args))
             self.connection.commit()
         # endregion
         # region Objets :
         self.cursor.execute("TRUNCATE TABLE `objets`")
         self.connection.commit()
         pathd = "Data/objets/"
+        # ks : key = key of json lieu , value[0] = name of column of db lieux
+        # value[1] = si json.dumps ou pas, value[2] = si list index ou pas
+        ks = {"id": ["id", False], "nom": ["nom", False],
+              "description_": ["description", False],
+              "type_": ["type", False], "effets": ["effets", True],
+              "contenu": ["contenu", True],
+              "verrouille": ["verrouille", False], "ouvert": ["ouvert", False]}
+        #
         for fich in os.listdir(pathd):
             if not fich.endswith(".json"):
                 continue
             d = jload(pathd + fich)
             d["contenu"] = "" if "contenu" not in d.keys() else d["contenu"]
-            d["verrouille"] = False if "verrouille" not in d.keys() else d["verrouille"]
+            ver = "verrouille"
+            d[ver] = d[ver] if ver in d.keys() else False
             d["ouvert"] = False if "ouvert" not in d.keys() else d["ouvert"]
-            self.cursor.execute("""INSERT INTO objets (id, nom, description_, type_, effets, contenu, verrouille, ouvert)
-                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""",
-                                (
-                                    d["id"], d["nom"], d["description"], d["type"],
-                                    json.dumps(d["effets"]), json.dumps(d["contenu"]), d["verrouille"], d["ouvert"]
-                                ))
+            #
+            values_query = []
+            values_query_args = []
+            for key in ks.keys():
+                if ks[key][0] in d.keys():
+                    values_query.append(key)
+                    val = d[ks[key][0]]
+                    if len(ks[key]) == 3:
+                        val = val[ks[key][2]]
+                    if ks[key][1]:
+                        val = json.dumps(val)
+                    values_query_args.append(val)
+            txt_values_query = ", ".join(values_query)
+            txt_query = ", ".join(["%s" for _ in values_query])
+            # on crée la query :
+            query = f"""INSERT INTO objets ({txt_values_query})
+                       VALUES ({txt_query})"""
+            self.cursor.execute(query, tuple(values_query_args))
             self.connection.commit()
         # endregion
         # region Lieu :
         self.cursor.execute("TRUNCATE TABLE `lieux`")
         self.connection.commit()
         pathd = "Data/map/"
+        # ks : key = key of json lieu , value = name of column of db lieux
+        ks = {"id": ["id", False], "nom": ["nom", False],
+              "appellations": ["appellations", True],
+              "description_": ["description", False],
+              "ennemis": ["ennemis", True], "pnjs": ["pnjs", True],
+              "objets": ["objets", True], "lieux": ["lieux", True]}
+        #
         for fich in os.listdir(pathd):
             if not fich.endswith(".json"):
                 continue
             d = jload(pathd + fich)
-            query = """INSERT INTO lieux (id, nom, description_, ennemis, pnjs,
-                        objets, lieux, appellation) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
-            self.cursor.execute(query, (d["id"], d["nom"], d["description"], json.dumps(d["ennemis"]),
-                                        json.dumps(d["pnjs"]), json.dumps(d["objets"]), json.dumps(d["lieux"], json.dumps(d["appellation"]))))
+            #
+            values_query = []
+            values_query_args = []
+            for key in ks.keys():
+                if ks[key][0] in d.keys():
+                    values_query.append(key)
+                    val = d[ks[key][0]]
+                    if len(ks[key]) == 3:
+                        val = val[ks[key][2]]
+                    if ks[key][1]:
+                        val = json.dumps(val)
+                    values_query_args.append(val)
+            txt_values_query = ", ".join(values_query)
+            txt_query = ", ".join(["%s" for _ in values_query])
+            # on crée la query :
+            query = f"""INSERT INTO lieux ({txt_values_query})
+                       VALUES ({txt_query})"""
+            self.cursor.execute(query, tuple(values_query_args))
             self.connection.commit()
         # endregion
         # region PNJs :
         self.cursor.execute("TRUNCATE TABLE `pnjs`")
         self.connection.commit()
         pathd = "Data/pnjs/"
+        # ks : key = key of json lieu , value[0] = name of column of db lieux
+        # value[1] = si json.dumps ou pas, value[2] = si list index ou pas
+        ks = {"id": ["id", False], "nom": ["nom", False],
+              "description_": ["description", False], 
+              "race": ["race", False], "dialogue": ["dialogue", True]}
         for fich in os.listdir(pathd):
             if not fich.endswith(".json"):
                 continue
-            d = jload(pathd + fich)
-            query = """INSERT INTO pnjs (id, nom, description_, race,
-                        dialogue) VALUES (%s, %s, %s, %s, %s);"""
-            self.cursor.execute(query, (d["id"], d["nom"], d["description"], d["race"], json.dumps(d["dialogues"])))
+            d = jload(pathd + fich)#
+            values_query = []
+            values_query_args = []
+            for key in ks.keys():
+                if ks[key][0] in d.keys():
+                    values_query.append(key)
+                    val = d[ks[key][0]]
+                    if len(ks[key]) == 3:
+                        val = val[ks[key][2]]
+                    if ks[key][1]:
+                        val = json.dumps(val)
+                    values_query_args.append(val)
+            txt_values_query = ", ".join(values_query)
+            txt_query = ", ".join(["%s" for _ in values_query])
+            # on crée la query :
+            query = f"""INSERT INTO pnjs ({txt_values_query})
+                       VALUES ({txt_query})"""
+            self.cursor.execute(query, tuple(values_query_args))
             self.connection.commit()
         # endregion
         # A faire les autres
@@ -444,58 +524,28 @@ class Client_mariadb:
         if perso_id is None:
             # si non on va lui en créer un
             self.cursor.execute("""INSERT INTO persos
-                                   (nom,
-                                    genre,
-                                    race,
-                                    classe,
-                                    argent,
-                                    experience,
-                                    inventaire,
-                                    lieu,
-                                    quetes,
-                                    equipement,
-                                    vie,
-                                    vie_totale,
-                                    energie,
-                                    energie_totale,
-                                    charme,
-                                    discretion,
-                                    force_,
-                                    agilite,
-                                    magie,
-                                    effets_attaque,
-                                    bonus_esquive,
-                                    sorts,
-                                    resistances,
+                                   (nom, genre, race, classe, argent,
+                                    experience, inventaire, lieu, quetes,
+                                    equipement, vie, vie_totale, energie,
+                                    energie_totale, charme, discretion,
+                                    force_, agilite, magie, effets_attaque,
+                                    bonus_esquive, sorts, resistances,
                                     faiblesses)
                                    VALUES
-                                   (%s, %s, %s, %s, %s,
-                                    %s, %s, %s, %s, %s,
-                                    %s, %s, %s, %s, %s,
-                                    %s, %s, %s, %s, %s,
+                                   (%s, %s, %s, %s, %s,  %s, %s, %s, %s, %s,
+                                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                                     %s, %s, %s, %s);""",
-                                (perso.nom,
-                                 perso.genre,
-                                 perso.race,
-                                 perso.classe,
-                                 perso.argent,
+                                (perso.nom, perso.genre, perso.race,
+                                 perso.classe, perso.argent,
                                  json.dumps(perso.experience),
                                  json.dumps(perso.inventaire),
-                                 perso.lieu,
-                                 json.dumps(perso.quetes),
-                                 json.dumps(perso.equipement),
-                                 perso.vie,
-                                 perso.vie_totale,
-                                 perso.energie,
-                                 perso.energie_totale,
-                                 perso.charme,
-                                 perso.discretion,
-                                 perso.force,
-                                 perso.agilite,
-                                 perso.magie,
-                                 json.dumps(perso.effets_attaque),
-                                 perso.bonus_esquive,
-                                 json.dumps(perso.sorts),
+                                 perso.lieu, json.dumps(perso.quetes),
+                                 json.dumps(perso.equipement), perso.vie,
+                                 perso.vie_totale, perso.energie,
+                                 perso.energie_totale, perso.charme,
+                                 perso.discretion, perso.force, perso.agilite,
+                                 perso.magie, json.dumps(perso.effets_attaque),
+                                 perso.bonus_esquive, json.dumps(perso.sorts),
                                  json.dumps(perso.resistances),
                                  json.dumps(perso.faiblesses)))
             self.connection.commit()
@@ -503,69 +553,40 @@ class Client_mariadb:
             self.cursor.execute("SELECT id FROM persos WHERE nom = %s AND race = %s AND classe = %s AND genre = %s ORDER BY id DESC;", (perso.nom, perso.race, perso.classe, perso.genre))
             perso_id = [elt[0] for elt in self.cursor][0]
             #
-            self.cursor.execute("""UPDATE comptes
-                                   SET perso_id = %s
+            self.cursor.execute("""UPDATE comptes SET perso_id = %s
                                    WHERE comptes.id = %s;
                                 """, (perso_id, player.id_))
             self.connection.commit()
         else:
             # sinon on va juste modifier les valeurs
             self.cursor.execute("""UPDATE persos
-                                   SET nom = %s,
-                                       genre = %s,
-                                       race = %s,
-                                       classe = %s,
-                                       argent = %s,
-                                       experience = %s,
-                                       inventaire = %s,
-                                       lieu = %s,
-                                       quetes = %s,
-                                       equipement = %s,
-                                       vie = %s,
-                                       vie_totale = %s,
-                                       energie = %s,
-                                       energie_totale = %s,
-                                       charme = %s,
-                                       discretion = %s,
-                                       force_ = %s,
-                                       agilite = %s,
-                                       magie = %s,
-                                       effets_attaque = %s,
-                                       bonus_esquive = %s,
-                                       sorts = %s,
-                                       resistances = %s,
-                                       faiblesses = %s
-                                    WHERE id=%s;""",
-                                (perso.nom,
-                                    perso.genre,
-                                    perso.race,
-                                    perso.classe,
-                                    perso.argent,
+                                   SET nom = %s, genre = %s, race = %s,
+                                       classe = %s, argent = %s,
+                                       experience = %s, inventaire = %s,
+                                       lieu = %s, quetes = %s, equipement = %s,
+                                       vie = %s, vie_totale = %s, energie = %s,
+                                       energie_totale = %s, charme = %s,
+                                       discretion = %s, force_ = %s,
+                                       agilite = %s, magie = %s,
+                                       effets_attaque = %s, bonus_esquive = %s,
+                                       sorts = %s, resistances = %s,
+                                       faiblesses = %s 
+                                   WHERE id=%s;""", (perso.nom, perso.genre,
+                                    perso.race, perso.classe, perso.argent,
                                     json.dumps(perso.experience),
                                     json.dumps(perso.inventaire),
-                                    perso.lieu,
-                                    json.dumps(perso.quetes),
-                                    json.dumps(perso.equipement),
-                                    perso.vie,
-                                    perso.vie_totale,
-                                    perso.energie,
-                                    perso.energie_totale,
-                                    perso.charme,
-                                    perso.discretion,
-                                    perso.force,
-                                    perso.agilite,
-                                    perso.magie,
+                                    perso.lieu, json.dumps(perso.quetes),
+                                    json.dumps(perso.equipement), perso.vie,
+                                    perso.vie_totale, perso.energie,
+                                    perso.energie_totale, perso.charme,
+                                    perso.discretion, perso.force,
+                                    perso.agilite, perso.magie,
                                     json.dumps(perso.effets_attaque),
                                     perso.bonus_esquive,
                                     json.dumps(perso.sorts),
                                     json.dumps(perso.resistances),
-                                    json.dumps(perso.faiblesses),
-                                    perso_id))
+                                    json.dumps(perso.faiblesses), perso_id))
             self.connection.commit()
-
-        self.connection.commit()
-        # TODO
-        pass
 
     def get_perso(self, id_):
         """Fonction qui récupère les données du personnage.
@@ -641,28 +662,32 @@ class Client_mariadb:
         self.connection.commit()
 
     def get_data_Lieu_DB(self, id_):
-        query = "SELECT nom, description_, ennemis, pnjs, objets, lieux, appellation FROM lieux WHERE id = %s;"
+        query = "SELECT nom, appellations, description_, ennemis, pnjs, objets, lieux, appellations FROM lieux WHERE id = %s;"
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
-        for nom, desc, ennemis, pnjs, obj, lieux, appellation in results:
+        for nom, appellations, desc, ennemis, pnjs, obj, lieux, appellations in results:
             datas = {}
             datas["nom"] = nom
+            datas["appellations"] = appellations
             datas["description"] = desc
             datas["ennemis"] = json.loads(ennemis)
             datas["pnjs"] = json.loads(pnjs)
             datas["obj"] = json.loads(obj)
             datas["lieux"] = json.loads(lieux)
-            datas["appellations"] = json.loads(appellation)
+            datas["appellations"] = json.loads(appellations)
             return datas
         return None
 
     def get_data_Pnj_DB(self, id_):
-        query = "SELECT nom, description, race, dialogue FROM pnjs WHERE id=%s"
-        self.cursor.execute(query, (id_))
+        query = """SELECT nom, description_, race, dialogue FROM pnjs
+                   WHERE id=%s;"""
+        self.cursor.execute(query, (id_,))
+        datas = {}
         for nom, desc, race, dialogue in self.cursor:
             datas["nom"] = nom
             datas["desc"] = desc
             datas["race"] = race
-            datas["dialogue"] = json.loads(dialogue)
+            if dialogue != None:
+                datas["dialogue"] = json.loads(dialogue)
             return datas
         return None
