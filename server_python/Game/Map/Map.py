@@ -22,7 +22,6 @@ class Map:
 
         """
         id_lieux = game.client_db.get_lieux()
-        print(id_lieux)
         for idl in id_lieux:
             lieu = game.Lieu(game, idl)
             lieu.map_ = self
