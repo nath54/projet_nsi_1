@@ -148,7 +148,7 @@ class Perso(Combattant):
 
         """
         # TODO: obj = Objet(id_obj) qui créé l'objet depuis la DB
-        obj = None
+        obj = Objet(id_obj, self.game)
         self.inventaire.append(obj)
 
     def equiper(self, nom_obj, id_obj=None):
