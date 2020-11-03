@@ -366,8 +366,15 @@ class Server:
             self.send(client, {"type": "message", "value": mess}, True)
         elif action == "aller":
             lieu = self.game.map_.lieux[perso.lieu]
+            is_valid = False
             for id_lieu, _ in (lieu.lieux_accessibles):
-                pass  # Chercher id_lieux dans DB puis check si le nom est bon
+                d = self.game.client_db.get_data_Lieu_DB(id_lieu)
+                if is_texts_equals(d["nom"], args[0]) or is_texts_equals(d["appellation"], args[0]):
+                    perso.lieu = self.game.map_.lieux[id_lieu]
+                    is_valid = True
+                    break
+            if not is_valid:
+                self.send(client, "Le lieu que vous voulez visiter n'est pas disponible. En effet, il semble qu'il n'existe que dans votre tête. Quel dommage, il avait l'air magnifique !", True)
             pass
         elif action == "parler":
             pass
@@ -375,12 +382,11 @@ class Server:
             pass
         elif action == "attaquer":
             pass
-        #
         elif data_len <= 2:
             self.send(client, "Commande inconnue", True)
             pass  # Action avec plus de 2 paramètres au-delà
 
-        # Ce qui suit sont des commandes avec au moin 1 argument
+        # Ce qui suit sont des commandes avec au moins 1 argument
         elif action == "utiliser":
             pass  # Utiliser un objet sur un autre
         elif action == "mettre":

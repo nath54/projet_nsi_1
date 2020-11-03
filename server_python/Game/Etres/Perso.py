@@ -42,6 +42,7 @@ class Perso(Combattant):
         self.force = 0
         self.intel = 0
         self.discr = 0
+        self.histo_lieu = set()  # TODO: Marquer le lieu dans lequel le perso apparaît
 
     # region Format
     def format_invent(self):
