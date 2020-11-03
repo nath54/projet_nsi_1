@@ -41,15 +41,15 @@ class Objet:
         if datas is None:
             raise IndexError(f"Index de l'objet trop grand : {self.index}")
 
-        self.nom = datas[0]
+        self.nom = datas["nom"]
         if num != 0:
             self.nom += str(num)
-        self.description = datas[1]
-        self.type = datas[2]
-        self.effet_utilise = datas[3]
-        self.contenu = json.loads(datas[4])
-        self.verrouille = datas[5]
-        self.ouvert = datas[6]
+        self.description = datas["description"]
+        self.type = datas["type"]
+        self.effets = datas["effets"]
+        self.contenu = datas["contenu"]
+        self.verrouille = datas["verrouille"]
+        self.ouvert = datas["ouvert"]
 
     def __repr__(self):
         """Permet d'afficher une description de l'objet.

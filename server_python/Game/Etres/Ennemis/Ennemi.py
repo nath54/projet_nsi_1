@@ -34,10 +34,15 @@ class Ennemi(Combattant):
             raise IndexError("Mauvais index d'ennemi :", self.index)
         # region LOAD
         datas = game.client_db.get_data_Ennemi_DB(self.index)
+        self.nom = datas["nom"]
+        self.type_ = datas["type"]
+        self.description = datas["description"]
+        self.attaque = datas["attaque"]
+        self.vie = random.randint(datas["vie"][0], datas["vie"][1])
+        self.effets_attaque = datas["attaque_effets"]
         # endregion
         if nb != -1:
-            self.nom += "-"+str(nb)
-        
+            self.nom += "-"+str(nb)        
 
     def __str__(self):
         """Renvoie une description de l'ennemi."""

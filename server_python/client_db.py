@@ -501,7 +501,7 @@ class Client_mariadb:
                 return False, id_
             else:
                 return "Le mot de passe est faux !", None
-    
+
     # FONCTIONS DE TYPES SET / NEW
     def set_perso(self, player):
         """Fonction qui enregistre un perso dans la bdd.
@@ -672,10 +672,24 @@ class Client_mariadb:
         Auteur: Hugo, Nathan
 
         """
-        self.cursor.execute("SELECT nom, description_, type_, effets, contenu, verrouille, ouvert FROM objets WHERE id=%s", (id_,))
-        for nom, desc, type_, effets, contenu, verrouille, ouvert in self.cursor:
-            # print(id_, nom, desc, type_, effets, contenu, verrouille, ouvert)
-            return (nom, desc, type_, effets, contenu, verrouille, ouvert)
+        self.cursor.execute("""SELECT nom, description_, type_, effets,
+                                      contenu, verrouille, ouvert
+                                FROM objets WHERE id=%s""", (id_,))
+        for nom, desc, type_, effets, cont, verrouille, ouvert in self.cursor:
+            datas = {"id": id_, "nom": "objet quelconque",
+                     "description": "Une objet, je crois",
+                     "type": "objet", "effets": {}, "contenu": [],
+                     "verrouille": False, "ouvert": False}
+            datas["nom"] = nom
+            datas["description"] = desc
+            datas["type"] = type_
+            if effets != None:
+                datas["effets"] = json.loads(effets)
+            datas["contenu"] = cont
+            datas["verrouille"] = verrouille
+            datas["ouvert"] = ouvert
+            return datas
+            # return (nom, desc, type_, effets, cont, verrouille, ouvert)
         return None
 
     def get_data_Lieu_DB(self, id_):
@@ -683,15 +697,16 @@ class Client_mariadb:
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
         for nom, appellations, desc, ennemis, pnjs, obj, lieux, appellations in results:
-            datas = {}
+            datas = {"id": id_, "nom": "Lieu", "appellations": [],
+                     "description": "Un lieu dans lequel vous êtes.",
+                     "ennemis": [], "pnjs": [], "obj": [], "lieux": []}
             datas["nom"] = nom
-            datas["appellations"] = appellations
+            datas["appellations"] = json.loads(appellations)
             datas["description"] = desc
             datas["ennemis"] = json.loads(ennemis)
             datas["pnjs"] = json.loads(pnjs)
             datas["obj"] = json.loads(obj)
             datas["lieux"] = json.loads(lieux)
-            datas["appellations"] = json.loads(appellations)
             return datas
         return None
 
@@ -699,8 +714,11 @@ class Client_mariadb:
         query = """SELECT nom, description_, race, dialogue FROM pnjs
                    WHERE id=%s;"""
         self.cursor.execute(query, (id_,))
-        datas = {}
+        datas = {"id":-1, "nom": "Un pnj", 
+                 "description": "Un pnj. Waaa, quelle information pertinente !",
+                 "race": "humain", "dialogue": {}}
         for nom, desc, race, dialogue in self.cursor:
+            datas["id"] = id_
             datas["nom"] = nom
             datas["desc"] = desc
             datas["race"] = race
@@ -710,13 +728,15 @@ class Client_mariadb:
         return None
 
     def get_data_Ennemi_DB(self, id_):
-        query = """SELECT (id , type_, nom, race, description_, vie_min,
-                           vie_max, attaque_min, attaque_max, attaque_effets)
+        query = """SELECT id, type_, nom, race, description_, vie_min,
+                           vie_max, attaque_min, attaque_max, attaque_effets
                     FROM ennemis WHERE id=%s"""
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
         if len(results) > 0:
-            datas = {}
+            datas = {"id": -1, "type": "ennemi", "nom": "Un ennemi",
+                     "description": "Un ennemi. Non, sans blague !",
+                     "vie": [0, 1], "attaque": [0, 1], "attaque_effets": {}}
             for id_ , type_, nom, race, description_, vie_min, vie_max, attaque_min, attaque_max, attaque_effets in results:
                 datas["id"] = id_
                 datas["type"] = type_
