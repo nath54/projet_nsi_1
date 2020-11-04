@@ -85,7 +85,7 @@ class Perso(Combattant):
         Auteur: Hugo
 
         """
-        txt_exp_1 = "\t- " + "\t- ".join([ (str(key) + " : " + " / ".join(self.experience[key])) for key in self.experience])
+        txt_exp_1 = "    - " + "\n    - ".join([ (str(key) + " : " + " / ".join([str(e) for e in self.experience[key]])) for key in self.experience])
         txt_exp = "points d'expériences du perso : \n" + txt_exp_1
 
         res = f"""STATS :
