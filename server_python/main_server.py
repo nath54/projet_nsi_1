@@ -270,10 +270,11 @@ class Server:
         """
         data_len = len(data.keys())
         action = data["commande"]
-        print(action)
+        print("action : ", action)
         args = data["arguments"].split(" ")
-        print(args)
+        print("arguments : ", args)
         perso = self.clients[client]["player"].perso
+        print("data_len : ", data_len)
 
         # Les premieres commandes sont des commandes à 0 ou plus arguments
         if action == "voir":
@@ -287,6 +288,7 @@ class Server:
             self.send(client, {"type": "message", "value": perso.format_equip()}, True)
         elif action == "stats":
             if data_len == 1:
+                print("stats :", perso.format_stats())
                 self.send(client, {"type": "message", "value": perso.format_stats()}, True)
             else:
                 pass  # TODO: Afficher stats d'un autre Etre (bof)

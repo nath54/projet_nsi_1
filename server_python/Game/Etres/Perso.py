@@ -93,6 +93,7 @@ class Perso(Combattant):
             - Vie : {self.vie}/{self.vie_totale}
             - Énergie : {self.energie}/{self.energie_totale}
             - Argent : {self.monnaie}"""
+        print(res)
         return res
     # endregion
 
