@@ -1,0 +1,9 @@
+{
+    "id":9,
+    "nom":"poisson",
+    "type":"consommable",
+    "description":"Une beau poisson bien cuit, il a l'air vraiment ... mort",
+    "effets":{
+        "manger":{"santé":[5,8],"usage_unique":true}
+    }
+}
