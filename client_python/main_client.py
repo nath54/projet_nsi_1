@@ -105,7 +105,7 @@ class Client:
         self.attente = False
         self.etat = "None"
 
-        i = input("Voulez vous que ce soit un client websocket ?")
+        i = input("Voulez vous que ce soit un client websocket ?\n : ")
         if i.lower() in ["o", "oui", "y", "yes"]:
             self.ws = True
             from webserver import WebServer
