@@ -1,15 +1,15 @@
 {
     "id":2,
     "type": "arme",
-    "nom":"épée de bois",
+    "nom":"épée en acier",
     "description":"",
-    "attaque corps à corps":[0,3],
+    "attaque corps à corps":[0,4],
     "attaque à distance":[0,1],
     "attaque magique":null,
     "perte de l'arme en attaquant à distance":true,
     "attaque_type":"attaque légère",
     "réponse adversaire":true,
-    "élément":"bois",
+    "élément":"acier",
     "effets":{
         "cout energie":{
             "corps à corps":0.5,

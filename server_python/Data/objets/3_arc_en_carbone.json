@@ -10,11 +10,11 @@
     "attaque_type":"attaque légère",
     "réponse adversaire":true,
     "élément":"carbone",
-    "coup énergie corps à corps":0.5,
-    "coup énergie à distance":0.5,
-    "coup énergie magique":null,
-    "effets":{},
-    "contenu":[],
-    "verrouille":false,
-    "ouvert":false
+    "effets":{
+        "cout energie":{
+            "corps à corps":0.5,
+            "distance":0.5,
+            "magique":null
+        }
+    }
 }
