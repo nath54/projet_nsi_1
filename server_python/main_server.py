@@ -75,7 +75,7 @@ class Server:
         self.client_db.update()
 
         # On va vérifier les différentes versions des données de la bdd
-        if self.client_db.test_version(self.version):
+        if True or self.client_db.test_version(self.version):
             self.client_db.transfert_json_to_bdd()
 
         # TODO: Faudra aussi lancer les différents éléments du jeu
