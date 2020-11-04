@@ -624,7 +624,7 @@ class Client_mariadb:
             "classe": d[3],
             "argent": d[4],
             "experience": d[5],
-            "inventaire": d[6],
+            "inventaire": json.loads(d[6]),
             "lieu": d[7],
             "quetes": d[8],
             "equipement": d[9],

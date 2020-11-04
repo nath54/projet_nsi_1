@@ -270,14 +270,16 @@ class Server:
         """
         data_len = len(data.keys())
         action = data["commande"]
+        print(action)
         args = data["arguments"].split(" ")
+        print(args)
         perso = self.clients[client]["player"].perso
 
         # Les premieres commandes sont des commandes à 0 ou plus arguments
         if action == "voir":
             self.send(client, {"type": "message", "value": self.game.map_.lieux[perso.lieu].aff()}, True)
         elif action == "inventaire":
-            if len(args) == 0:
+            if len(args) == 0 or args[0] == "":
                 self.send(client, {"type": "message", "value": perso.format_invent()}, True)
             else:
                 self.invent_multi_args(client, data)
@@ -321,7 +323,7 @@ class Server:
         elif action == "prendre":
             if obj_cible.type not in ["décor", "contenant"]:
                 perso.add_to_invent(obj.index)
-                self.game.map_.lieux[perso.lieu].objet.remove(obj_cible)
+                self.game.map_.lieux[perso.lieu].objets.remove(obj_cible)
                 self.send(client, {"type": "message", "value": "objet pris"})
         elif action == "jeter":
             arg = args[0]
