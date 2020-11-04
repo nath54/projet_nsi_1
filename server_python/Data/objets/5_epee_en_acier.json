@@ -3,17 +3,17 @@
     "type": "arme",
     "nom":"épée en acier",
     "description":"",
-    "attaque corps à corps":[0,4],
-    "attaque à distance":[0,1],
-    "attaque magique":null,
     "perte de l'arme en attaquant à distance":true,
     "attaque_type":"attaque légère",
-    "réponse adversaire":true,
-    "élément":"acier",
     "effets":{
         "cout energie":{
             "corps à corps":0.5,
             "distance":0.5,
+            "magique":null
+        },
+        "attaque":{
+            "corps à corps":0.4,
+            "distance":0.1,
             "magique":null
         }
     }

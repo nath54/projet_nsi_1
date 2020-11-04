@@ -1,0 +1,10 @@
+{
+    "id":6,
+    "nom":"coffre",
+    "type":"contenant",
+    "description":"ce coffre permet de stocké des objets",
+    "effets":{},
+    "contenu":[],
+    "verrouille":false,
+    "ouvert":true
+}
