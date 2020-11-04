@@ -53,11 +53,11 @@ def traiter_txt(txt):
     """
     txt = txt.lower()
     for k in replacements.keys():
-        txt = txt.replace(k, replacement[k])
+        txt = txt.replace(k, replacements[k])
     return txt
 
 
-def is_texts_equal(text_1, text_2):
+def are_texts_equals(text_1, text_2):
     """Compare d
 
     Auteur : Hugo

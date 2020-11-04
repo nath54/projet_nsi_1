@@ -11,14 +11,14 @@ import sys
 import time
 
 # nos librairies
-from client_db import Client_mariadb
 from Game.Game import Game
 from Game.Etres.Perso import Perso
 from Game.Map.Lieux.Lieu import Lieu
-from Player import Player
-from libs import *
 from Game.Objets.Objet import Objet
+from client_db import Client_mariadb
+from Player import Player
 from cheat_code import *
+from libs import *
 # endregion
 
 
@@ -377,17 +377,23 @@ class Server:
         elif action == "aller":
             lieu = self.game.map_.lieux[perso.lieu]
             is_valid = False
-            for id_lieu, _ in (lieu.lieux_accessibles):
-                d = self.game.client_db.get_data_Lieu_DB(id_lieu)
-                eq_ap = False
-                for lap in d["appellations"]:
-                    if is_texts_equal(lap, args[0]):
-                        eq_ap = True
+            if args[0] in ["ouest","est","nord","sud","nord-ouest","nord-est","sud-ouest","sud-est"]:
+                for id_lieu, action in lieu.lieux_accessibles:
+                    if action == args[0]:
+                        perso.lieu = id_lieu
+                        is_valid = True
+            else:
+                for id_lieu, _ in lieu.lieux_accessibles:
+                    d = self.game.client_db.get_data_Lieu_DB(id_lieu)
+                    eq_ap = False
+                    for lap in d["appellations"]:
+                        if are_texts_equals(lap, args[0]):
+                            eq_ap = True
+                            break
+                    if are_texts_equals(d["nom"], args[0]) or eq_ap:
+                        perso.lieu = id_lieu
+                        is_valid = True
                         break
-                if is_texts_equals(d["nom"], args[0]) or eq_ap:
-                    perso.lieu = self.game.map_.lieux[id_lieu]
-                    is_valid = True
-                    break
             if not is_valid:
                 self.send(client, {"type": "message", "value": "Le lieu que vous voulez visiter n'est pas disponible. En effet, il semble qu'il n'existe que dans votre tête. Quel dommage, il avait l'air magnifique !"}, True)
             pass

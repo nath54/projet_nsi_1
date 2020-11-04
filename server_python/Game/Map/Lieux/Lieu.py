@@ -65,7 +65,7 @@ class Lieu:
         self.objets = []
         for id_obj in datas.get("obj", []):
             self.objets.append(self.game.Objet(id_obj, self.game))
-        self.lieux_accessibles = []
+        self.lieux_accessibles = datas["lieux"]
         self.map_ = game.map_
 
     def aff(self):
@@ -94,8 +94,8 @@ class Lieu:
         if len(self.persos) >= 1:
             txt_persos = "\n" + random.choice(p_persos) + " :\n\t- " + '\n\t- '.join([perso.nom for perso in self.persos])
         if len(self.lieux_accessibles) >= 1:
-            txt_lieux = "\n" + random.choice(p_lieux) + " :\n\t- " + "\n\t- ".join([self.map_.lieux[lieu[0]].nom
-                                                                                   for lieu in self.lieux_accessibles])
+            txt_lieux = "\n" + random.choice(p_lieux) + " :\n\t- " + "\n\t- ".join([self.map_.lieux[lieu[0]].nom + " [" + lieu[1] + "]"
+                                                                                    for lieu in self.lieux_accessibles])
 
         txt = f"""
 Vous êtes dans {self.nom}
