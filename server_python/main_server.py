@@ -270,13 +270,9 @@ class Server:
         """
         data_len = len(data.keys())
         action = data["commande"]
-<<<<<<< Updated upstream
         print("action : ", action)
         args = [a for a in data["arguments"].split(" ") if a != ""]
         print("arguments : ", args)
-=======
-        args = data["arguments"].split(" ")
->>>>>>> Stashed changes
         perso = self.clients[client]["player"].perso
         print("data_len : ", data_len)
         print("len args : ", len(args))

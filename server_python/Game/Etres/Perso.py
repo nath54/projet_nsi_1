@@ -85,15 +85,34 @@ class Perso(Combattant):
         Auteur: Hugo
 
         """
-        res = f"""Voici vos statistiques :
-            - Force : {self.force}
-            - Intelligence : {self.intel}
-            - Charme : {self.charme}
-            - Discrétion : {self.discr}
-            - Vie : {self.vie}/{self.vie_totale}
-            - Énergie : {self.energie}/{self.energie_totale}
-            - Argent : {self.monnaie}"""
-        print(res)
+        txt_exp_1 = "\t- " + "\t- ".join([ (str(key) + " : " + " / ".join(self.experience[key])) for key in self.experience])
+        txt_exp = "points d'expériences du perso : \n" + txt_exp_1
+
+        res = f"""STATS :
+nom : {self.nom}
+genre : {self.genre}
+race : {self.race}
+classe : {self.classe}
+
+{txt_exp}
+lieu : {self.game.map_.lieux[self.lieu].nom}
+argent : {self.argent} pieces d'or
+
+vie : {self.vie} / {self.vie_totale}
+energie : {self.energie} / {self.energie_totale}
+
+stats :
+    - charme : {self.charme}
+    - discretion : {self.discretion}
+    - force : {self.force}
+    - agilite : {self.agilite}
+    - magie : {self.magie}
+    - bonus d'esquive : {self.bonus_esquive}
+
+résistances :  {self.resistances}
+faiblesses : {self.faiblesses}
+"""
+
         return res
     # endregion
 
