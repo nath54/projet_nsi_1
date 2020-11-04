@@ -31,6 +31,8 @@ def jload(path_to_file):
     f = io.open(path_to_file, "r", encoding="utf-8")
     txt = f.read()
     f.close()
+    if len(txt) == 0:
+        return {}
     return json.loads(txt)
 
 

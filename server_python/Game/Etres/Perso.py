@@ -71,7 +71,7 @@ class Perso(Combattant):
         res = "Voici votre équipement :\n"
         for type_, equip in self.equip.items():
             nom = "Rien" if equip is None else equip.nom
-            res += "\t" + f"- {type_} : {nom}"
+            res += "\n\t" + f"- {type_} : {nom}"
         return res
 
     def format_stats(self):
