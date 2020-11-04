@@ -1,0 +1,10 @@
+{
+    "id":6,
+    "type":"ennemi",
+    "nom":"skelet",
+    "race":"mort-vivant",
+    "description":"Les skelets sont des tas d'os animés par la magie noir, ils sont faibles, pas très agréssif, leur coups sont froid comme la mort !",
+    "vie":[12,14],
+    "attaque":[2,5],
+    "attaque_effets":{"glace":5}
+}
