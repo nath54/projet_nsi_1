@@ -30,7 +30,7 @@ def cheat_code(server, client, commande):
         possibilites = ["chance", "neutre", "malchance"]
         choix = random.choice(possibilites)
         if choix == "chance":
-            server.send(client, json.dumps({"type": "message", "value": "Trump est arrivé avec son jetpack privé et vous a donné un petit million de pièces d'or et repart avec son jet privé en vous faisant coucou de la main :)"}))
+            server.send(client, json.dumps({"type": "message", "value": "Trump est arrivé avec son jetpack privé et vous a donné un petit million de pièces d'or et repart avec son jetpack privé en vous faisant coucou de la main :)"}))
             perso.argent += 10000000
         elif choix == "neutre":
             server.send(client, json.dumps({"type": "message", "value": "Trump vous envoie un tweet en vous disant que vous êtes une fake news, vous perdez un point de vie a cause de votre égo surdimensioné qui a été sérieusement touché :|"}))
