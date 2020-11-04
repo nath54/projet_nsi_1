@@ -428,7 +428,7 @@ class Client_mariadb:
         # (il y aura sans doutes la table à changer comme j'ai du changer pour ennemi)
         # TODO
         pass
-    
+
     # FONCTIONS D'INSCRIPTION / CONNECTION
     def inscription(self, pseudo, email, password):
         """Permet de créer un compte.
