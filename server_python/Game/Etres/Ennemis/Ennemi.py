@@ -3,12 +3,8 @@ import json
 import random
 from Game.Etres.Combattant import Combattant
 
-data_ens = [
-    "Data/ennemis/rat.json",
-    "Data/ennemis/goblin.json",
-    "Data/ennemis/goblin_soldat.json",
-    "Data/ennemis/goblin_assassin.json",
-]
+pathd = "Data/ennemis/"
+data_ens = [pathd + f for f in os.listdir(pathd)]
 
 
 class Ennemi(Combattant):
