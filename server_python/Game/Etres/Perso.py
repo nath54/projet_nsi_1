@@ -54,9 +54,11 @@ class Perso(Combattant):
         Auteur: Hugo
 
         """
+        if len(self.inventaire) == 0:
+            return "Aïe, on dirait que la crise est passée par là."
         res = "Voici le contenu de votre inventaire :\n"
-        for item[0] in self.inventaire:
-            res += "\t" + f"- {item.name} ({item.type})" + "\n"
+        for item in self.inventaire:
+            res += "\t" + f"- {item[0].nom} ({item[0].type})" + "\n"
         return res
 
     def format_equip(self):
@@ -157,7 +159,7 @@ class Perso(Combattant):
                 i[1] += 1
                 break
         if not exist:
-            self.inventaire.append(obj)
+            self.inventaire.append([obj, 1])
 
     def equiper(self, nom_obj, id_obj=None):
         """Équipe un objet à un personnage
