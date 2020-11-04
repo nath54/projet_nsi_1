@@ -317,10 +317,11 @@ class Server:
             self.send(client, {"type": "message", "value": mess}, True)
         # On définit l'objet ciblé avec lequel l'utilisateur voudra (peut-être) agir
         obj_cible = None
-        for obj in perso.game.map_.lieux[perso.lieu].objets:
-            if obj.nom == args[0]:
-                obj_cible = obj
-                break
+        if len(args) >= 1:
+            for obj in perso.game.map_.lieux[perso.lieu].objets:
+                if obj.nom == args[0]:
+                    obj_cible = obj
+                    break
 
         if action == "examiner":
             self.send(client, obj_cible.__repr__(), True)
