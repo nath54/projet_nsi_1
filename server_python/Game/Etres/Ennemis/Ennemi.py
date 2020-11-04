@@ -30,6 +30,7 @@ class Ennemi(Combattant):
         """
         Combattant.__init__(self, game)
         self.index = id_
+        # TODO: REMPLACER data_ens
         if self.index > len(data_ens) - 1:
             raise IndexError("Mauvais index d'ennemi :", self.index)
         # region LOAD

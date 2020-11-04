@@ -270,9 +270,7 @@ class Server:
         """
         data_len = len(data.keys())
         action = data["commande"]
-        print("action : ", action)
-        args = [a for a in data["arguments"].split(" ") if a != ""]
-        print("arguments : ", args)
+        args = data["arguments"].split(" ")
         perso = self.clients[client]["player"].perso
         print("data_len : ", data_len)
         print("len args : ", len(args))
