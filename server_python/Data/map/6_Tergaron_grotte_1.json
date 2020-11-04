@@ -1,0 +1,12 @@
+{
+    "id":6,
+    "appellations":["grotte","grotte de Tergaron","grotte Tergaron"],
+    "nom":"grotte de Tergaron",
+    "description":"Vous vous êtes enfoncé dans une grotte de Tergaron, les ennemies y sont en nombre important",
+    "region":"",
+    "type":"grotte",
+    "objets":[],
+    "pnjs":[],
+    "ennemis": [ [7,3] ],
+    "lieux":[ [] ]
+}
