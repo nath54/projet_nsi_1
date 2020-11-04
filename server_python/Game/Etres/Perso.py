@@ -149,7 +149,15 @@ class Perso(Combattant):
         """
         # TODO: obj = Objet(id_obj) qui créé l'objet depuis la DB
         obj = Objet(id_obj, self.game)
-        self.inventaire.append(obj)
+        print("///////////////////////////////////:Type",type(self.inventaire))
+        exist = False
+        for i in self.inventaire:
+            if i[0].nom == obj.nom:
+                exist = True
+                i[1] += 1
+                break
+        if not exist:
+            self.inventaire.append(obj)
 
     def equiper(self, nom_obj, id_obj=None):
         """Équipe un objet à un personnage
