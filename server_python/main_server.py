@@ -270,9 +270,13 @@ class Server:
         """
         data_len = len(data.keys())
         action = data["commande"]
+<<<<<<< Updated upstream
         print("action : ", action)
         args = data["arguments"].split(" ")
         print("arguments : ", args)
+=======
+        args = data["arguments"].split(" ")
+>>>>>>> Stashed changes
         perso = self.clients[client]["player"].perso
         print("data_len : ", data_len)
 
@@ -318,7 +322,6 @@ class Server:
         obj_cible = None
         for obj in perso.game.map_.lieux[perso.lieu].objets:
             if obj.nom == args[0]:
-                print("////////////////////////:")
                 obj_cible = obj
                 break
 
@@ -334,7 +337,7 @@ class Server:
                 self.send(client, {"type": "message", "value": f"Vous avez pris le/la {obj.nom}."})
         elif action == "jeter":
             arg = args[0]
-            qt = args[1] if len(args[0]) > 1 else 1
+            qt = args[1] if len(args) > 1 else 1
             if type(qt) != int:
                 try:
                     qt = int(qt)
@@ -342,19 +345,19 @@ class Server:
                     # TODO : renvoyer une erreur au client
                     return
 
-            for i in range(len(perso.invent)):
-                obj = perso.invent[i]
+            for i in range(len(perso.inventaire)):
+                obj = perso.inventaire[i]
                 if obj[0].nom == arg:
                     if obj[1] < qt:
                         self.send(client, json.dumps({"type": "message", "value": f"Vous ne pouvez jeter autant de {obj[0].nom} que ça !"}), True)
                     else:
                         for i in range(qt):
-                            new_obj = Objet(obj[0].id, game)
-                            perso.game.lieu.objets.append(new_obj)
+                            new_obj = Objet(obj[0].index, self.game)
+                            perso.game.map_.lieux[perso.lieu].objets.append(new_obj)
                         if obj[1] == qt:
-                            del perso.invent[i]
+                            del perso.inventaire[i]
                         else:
-                            perso.invent[i][1] -= qt
+                            perso.inventaire[i][1] -= qt
         elif action == "ouvrir":
             if obj_cible.type == "contenant":
                 if obj_cible.ouvert:
