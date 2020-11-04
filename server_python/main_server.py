@@ -272,13 +272,14 @@ class Server:
         action = data["commande"]
 <<<<<<< Updated upstream
         print("action : ", action)
-        args = data["arguments"].split(" ")
+        args = [a for a in data["arguments"].split(" ") if a != ""]
         print("arguments : ", args)
 =======
         args = data["arguments"].split(" ")
 >>>>>>> Stashed changes
         perso = self.clients[client]["player"].perso
         print("data_len : ", data_len)
+        print("len args : ", len(args))
 
         # Les premieres commandes sont des commandes à 0 ou plus arguments
         if action == "voir":
@@ -291,7 +292,7 @@ class Server:
         elif action == "equipement":
             self.send(client, {"type": "message", "value": perso.format_equip()}, True)
         elif action == "stats":
-            if data_len == 1:
+            if len(args) == 0:
                 print("stats :", perso.format_stats())
                 self.send(client, {"type": "message", "value": perso.format_stats()}, True)
             else:
