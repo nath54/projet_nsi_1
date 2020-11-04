@@ -1,12 +1,15 @@
-
 import random
 
-def cheat_code(server, client, commande):
-    """Fonction pour rajouter quelques petits checkcodes dans le jeu :)
 
-    retourne True si une action a été faite, sinon retourne False
+def cheat_code(server, client, commande):
+    """Rajoute quelques petits cheat-codes dans le jeu :)
+
+    Returns:
+        bool: True --> Une action a été faite
+              False --> Aucune action effectuée
 
     Author : Alexis
+
     """
     action_faite = False
     perso = server.clients[client]["player"].perso
@@ -17,7 +20,9 @@ def cheat_code(server, client, commande):
         # game.objets (du soin)
         pass
     if commande == "666":
-        print ("vous avez passer un pacte avec le diable")
+        print("Vous avez passé un pacte avec le Diable. Cependant, la flemme "
+              "des développeurs fait que cela ne change rien à votre vie. "
+              "Soyez heureux !")
         pass
         # game.objets
     if commande == "Excalibur":
@@ -45,5 +50,4 @@ def cheat_code(server, client, commande):
     # ...
     else:
         print("non mais ca va pas, ce n'est pas bien de tricher")
-    
     return action_faite

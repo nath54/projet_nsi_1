@@ -22,6 +22,8 @@ class Perso(Combattant):
                                     `int` est la quantité d'`Objet` détenue
         quetes(dict<{int: Quete}>): Journal de quête du personnage
                                     `int` est l'ID de la quête
+        histo_lieu(set<int>): Registre des ID des lieux déjà visités durant
+                              cette session.
 
     """
 
@@ -85,7 +87,7 @@ class Perso(Combattant):
         Auteur: Hugo
 
         """
-        txt_exp_1 = "    - " + "\n    - ".join([ (str(key) + " : " + " / ".join([str(e) for e in self.experience[key]])) for key in self.experience])
+        txt_exp_1 = "    - " + "\n    - ".join([(str(key) + " : " + " / ".join([str(e) for e in self.experience[key]])) for key in self.experience])
         txt_exp = "points d'expériences du perso : \n" + txt_exp_1
 
         # region txt stats
@@ -172,7 +174,6 @@ faiblesses : {self.faiblesses}
         """
         # TODO: obj = Objet(id_obj) qui créé l'objet depuis la DB
         obj = Objet(id_obj, self.game)
-        print("///////////////////////////////////:Type",type(self.inventaire))
         exist = False
         for i in self.inventaire:
             if i[0].nom == obj.nom:

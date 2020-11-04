@@ -114,7 +114,7 @@ class Server:
             #     return
 
     def send_all_except_c(self, client, message):
-        """Fonction qui envoie un message a tous les autres clients.
+        """Envoie un message a tous les autres clients.
 
         Args:
             client (socket.socket): Référence au client ayant envoyé le message
@@ -223,7 +223,7 @@ class Server:
             elif data["type"] == "connection":
                 pseudo = data["pseudo"]
                 password = data["password"]
-                erreur, id_ = self.client_db.test_connection(pseudo, password)
+                erreur, id_ = self.client_db.test_connexion(pseudo, password)
                 if erreur:
                     self.send(client, json.dumps({"type": "connection failed", "value": erreur}))
                 else:
@@ -376,7 +376,8 @@ class Server:
         elif action == "aller":
             lieu = self.game.map_.lieux[perso.lieu]
             is_valid = False
-            if args[0] in ["ouest","est","nord","sud","nord-ouest","nord-est","sud-ouest","sud-est"]:
+            if args[0] in ["ouest", "est", "nord", "sud", "nord-ouest",
+                           "nord-est", "sud-ouest", "sud-est"]:
                 for id_lieu, action in lieu.lieux_accessibles:
                     if action == args[0]:
                         perso.lieu = id_lieu

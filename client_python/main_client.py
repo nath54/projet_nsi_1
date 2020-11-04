@@ -20,9 +20,8 @@ chars = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
          "-", "_", "@", "."]
 
 
-# fonction qui teste les emails
 def test_email(txt):
-    """Fonction qui vérifie qu'un mail a le bon format."""
+    """Vérifie qu'un mail a le bon format."""
     t = txt.split("@")
     if len(t) != 2:
         print("ERREUR /!\\ : "
@@ -40,7 +39,7 @@ def test_email(txt):
 
 
 def test_pseudo(txt):
-    """Fonction qui vérifie qu'un pseudo a le bon format."""
+    """Vérifie qu'un pseudo a le bon format."""
     if len(txt) < 4:
         print("ERREUR /!\\ Pseudo : Minimum 4 caractères !")
         return True
@@ -55,7 +54,7 @@ def test_pseudo(txt):
 
 
 def test_password(txt):
-    """Fonction qui vérifie qu'un mmot de passe a le bon format."""
+    """Vérifie qu'un mot de passe a le bon format."""
     if len(txt) < 8:
         print("ERREUR /!\\ Mot de passe : Minimum 8 caractères !")
         return True
@@ -68,8 +67,9 @@ def test_password(txt):
             return True
     return False
 
+
 def is_json(myjson):
-    """Fonction qui teste si un string est de format json."""
+    """Teste si un str est en format json."""
     try:
         json.loads(myjson)
     except ValueError:
@@ -117,7 +117,7 @@ class Client:
                        "non-binaire", "autre"]
 
     def debut(self):
-        """Fonction qui demanse si tu veux t'inscrire ou te connecter.
+        """Demande si l'on veut s'inscrire ou se connecter.
 
         Auteur : Nathan
 
@@ -132,7 +132,7 @@ class Client:
             self.connexion()
 
     def attente_serv(self):
-        """Fonction qui attends qu'un message a été recu.
+        """Attends la réception d'un message.
 
         Quand le message a été reçu, on peut continuer le thread actuel
 
@@ -145,7 +145,7 @@ class Client:
             pass
 
     def connexion(self):
-        """Fonction qui demandes les informations pour se connecter.
+        """Demande les informations pour se connecter.
 
         Auteur : Nathan
         """
@@ -169,7 +169,7 @@ class Client:
             self.debut()
 
     def inscription(self):
-        """Fonction qui demandes les informations pour s'inscrire.
+        """Demande les informations pour s'inscrire.
 
         Auteur : Nathan
         """
@@ -330,9 +330,10 @@ class Client:
         exit()
 
     def test_nom(self, nom):
-        """Fonction qui teste si un nom est dans le bon format
+        """Teste si un nom est dans le bon format
 
         Author: Léa
+
         """
         if len(nom) < 2:
             return "Le nom doit avoir au minimum 2 lettres !"
@@ -340,7 +341,7 @@ class Client:
             return "Le nom doit avoir au maximum 20 lettres !"
 
     def creation_perso(self):
-        """Fonction qui demande les informations pour crééer un personnage.
+        """Demande les informations pour créer un personnage.
 
         Auteur : Léa
         """

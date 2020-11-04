@@ -16,27 +16,35 @@ except Exception as e:
 import pip
 import sys
 
-def install(package):
-    """Fonction qui va installer une librairie python avec pip
 
-    Author: Internet
+def install(package):
+    """Installe une librairie python avec pip
+
+    Auteur: Internet
+
     """
     if hasattr(pip, 'main'):
         pip.main(['install', package])
     else:
         pip._internal.main(['install', package])
 
+
 def demande_install(package):
-    """Fonction qui va demander pour installer une librairie python avec pip
+    """Demande pour installer une librairie python avec pip
 
     Author: Nathan
+
     """
-    return input(f"Le package {package} n'est pas installé, voulez vous l'installer ?\n : ").lower() in ["y","yes","ui","oui","o"]
+    return input(f"Le package {package} n'est pas installé, voulez vous "
+                 "l'installer ?\n : ").lower() in ["y", "yes", "ui",
+                                                   "oui", "o"]
+
 
 def main():
-    """Fonction qui va initialiser la bdd pour le projet.
-    
+    """Initialise la BDD pour le projet.
+
     Author : Nathan
+
     """
     user = input("pseudo mariadb root : ")
     password = input("password root : ")
@@ -67,9 +75,10 @@ def main():
     connection.commit()
     # install python modules
     libs = ["sockets", "websockets"]
-    for l in libs: 
-        if not l in sys.modules and demande_install(l):
+    for lib in libs:
+        if lib not in sys.modules and demande_install(lib):
             install(l)
+
 
 if __name__ == "__main__":
     main()

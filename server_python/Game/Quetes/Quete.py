@@ -49,9 +49,6 @@ class Quete:
     def affichage(self):
         """Affiche le contenu d'une quête.
 
-        Fonction qui permettra d'afficher une présentation de la quête.
-
-        Auteur :
+        Auteur : TODO
         """
-        # TODO
         pass
