@@ -318,15 +318,20 @@ class Server:
         obj_cible = None
         for obj in perso.game.map_.lieux[perso.lieu].objets:
             if obj.nom == args[0]:
+                print("////////////////////////:")
                 obj_cible = obj
+                break
 
         if action == "examiner":
             self.send(client, obj_cible.__repr__(), True)
         elif action == "prendre":
+            if obj_cible is None:
+                mess = "Honnêtement, j'adore le concept. Mais l'objet existe pas. Ou il est pas là. Au choix !"
+                self.send(client, {"type": "message", "value": mess}, True)
             if obj_cible.type not in ["décor", "contenant"]:
                 perso.add_to_invent(obj.index)
                 self.game.map_.lieux[perso.lieu].objets.remove(obj_cible)
-                self.send(client, {"type": "message", "value": "objet pris"})
+                self.send(client, {"type": "message", "value": f"Vous avez pris le/la {obj.nom}."})
         elif action == "jeter":
             arg = args[0]
             qt = args[1] if len(args[0]) > 1 else 1

@@ -1,0 +1,10 @@
+{
+    "id":7,
+    "type":"ennemi",
+    "nom":"araignée",
+    "race":"araignée",
+    "description":"Les araignée son faible mais attaque en groupe, leur venins n'est pas très dangereux, mais est mortel en grande quantité, se sont de grande tisseuses !",
+    "vie":[1,4],
+    "attaque":[0,2],
+    "attaque_effets":{"poison":10}
+}

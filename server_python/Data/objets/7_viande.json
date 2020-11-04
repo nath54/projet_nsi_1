@@ -1,0 +1,9 @@
+{
+    "id":7,
+    "nom":"viande",
+    "type":"consommable",
+    "description":"Une belle viande bien cuite, elle a l'air vraiment délicieuse",
+    "effets":{
+        "manger":{"santé":[6,8],"usage_unique":true}
+    }
+}
