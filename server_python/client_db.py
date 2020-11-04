@@ -285,7 +285,7 @@ class Client_mariadb:
         pathd = "Data/ennemis/"
         # ks : key = key of json lieu , value[0] = name of column of db ennemis
         # value[1] = si json.dumps ou pas, value[2] = si list index ou pas
-        
+
         ks = {"id": ["id", False], "type_": ["type", False],
               "nom": ["nom", False], "race": ["race", False],
               "description_": ["description", False],
