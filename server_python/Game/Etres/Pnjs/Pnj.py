@@ -4,9 +4,8 @@ import json
 from Game.Etres.Etre import Etre
 
 # triés par leurs id
-data_pnjs = [
-    "Data/pnjs/paysan_tergaron_vieu1.json"
-]
+pathd = "Data/pnjs/"
+data_pnjs = [pathd + f for f in os.listdir(pathd)]
 
 
 class Pnj(Etre):

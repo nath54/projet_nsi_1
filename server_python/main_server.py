@@ -11,14 +11,14 @@ import sys
 import time
 
 # nos librairies
-from client_db import Client_mariadb
 from Game.Game import Game
 from Game.Etres.Perso import Perso
 from Game.Map.Lieux.Lieu import Lieu
-from Player import Player
-from libs import *
 from Game.Objets.Objet import Objet
+from client_db import Client_mariadb
+from Player import Player
 from cheat_code import *
+from libs import *
 # endregion
 
 
@@ -315,10 +315,11 @@ class Server:
             self.send(client, {"type": "message", "value": mess}, True)
         # On définit l'objet ciblé avec lequel l'utilisateur voudra (peut-être) agir
         obj_cible = None
-        for obj in perso.game.map_.lieux[perso.lieu].objets:
-            if obj.nom == args[0]:
-                obj_cible = obj
-                break
+        if len(args) >= 1:
+            for obj in perso.game.map_.lieux[perso.lieu].objets:
+                if are_texts_equals(obj.nom, args[0]) or traiter_txt(" ".join(args)).startswith(traiter_txt(obj.nom)):
+                    obj_cible = obj
+                    break
 
         if action == "examiner":
             self.send(client, obj_cible.__repr__(), True)
@@ -326,6 +327,7 @@ class Server:
             if obj_cible is None:
                 mess = "Honnêtement, j'adore le concept. Mais l'objet existe pas. Ou il est pas là. Au choix !"
                 self.send(client, {"type": "message", "value": mess}, True)
+                return
             if obj_cible.type not in ["décor", "contenant"]:
                 perso.add_to_invent(obj.index)
                 self.game.map_.lieux[perso.lieu].objets.remove(obj_cible)
@@ -374,14 +376,27 @@ class Server:
         elif action == "aller":
             lieu = self.game.map_.lieux[perso.lieu]
             is_valid = False
-            for id_lieu, _ in (lieu.lieux_accessibles):
-                d = self.game.client_db.get_data_Lieu_DB(id_lieu)
-                if is_texts_equals(d["nom"], args[0]) or is_texts_equals(d["appellation"], args[0]):
-                    perso.lieu = self.game.map_.lieux[id_lieu]
-                    is_valid = True
-                    break
+            if args[0] in ["ouest","est","nord","sud","nord-ouest","nord-est","sud-ouest","sud-est"]:
+                for id_lieu, action in lieu.lieux_accessibles:
+                    if action == args[0]:
+                        perso.lieu = id_lieu
+                        is_valid = True
+            else:
+                for id_lieu, _ in lieu.lieux_accessibles:
+                    lieu = self.game.map_.lieux[id_lieu]
+                    eq_ap = False
+                    for lap in lieu.appellations:
+                        print(lap)
+                        if are_texts_equals(lap, args[0]) or are_texts_equals(lap, " ".join(args)):
+                            eq_ap = True
+                            break
+                    if are_texts_equals(lieu.nom, args[0]) or eq_ap:
+                        perso.lieu = id_lieu
+                        self.send(client, {"type": "message", "value": f"Vous vous déplacez vers {lieu.nom}.\n{lieu.aff()}"}, True)
+                        is_valid = True
+                        break
             if not is_valid:
-                self.send(client, "Le lieu que vous voulez visiter n'est pas disponible. En effet, il semble qu'il n'existe que dans votre tête. Quel dommage, il avait l'air magnifique !", True)
+                self.send(client, {"type": "message", "value": "Le lieu que vous voulez visiter n'est pas disponible. En effet, il semble qu'il n'existe que dans votre tête. Quel dommage, il avait l'air magnifique !"}, True)
             pass
         elif action == "parler":
             pass

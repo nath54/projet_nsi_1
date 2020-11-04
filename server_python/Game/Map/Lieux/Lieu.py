@@ -49,6 +49,7 @@ class Lieu:
         if datas is None:
             raise IndexError(f"L'index {id_} n'est pas reconnu")
         self.nom = datas.get("nom", "Lieu")
+        self.appellations = datas.get("appellations", [])
         self.description = datas.get("description", "")
         self.ennemis = []
         for id_ennemi in datas.get("ennemis", []):
@@ -65,7 +66,7 @@ class Lieu:
         self.objets = []
         for id_obj in datas.get("obj", []):
             self.objets.append(self.game.Objet(id_obj, self.game))
-        self.lieux_accessibles = []
+        self.lieux_accessibles = datas.get("lieux", [])
         self.map_ = game.map_
 
     def aff(self):
@@ -94,8 +95,8 @@ class Lieu:
         if len(self.persos) >= 1:
             txt_persos = "\n" + random.choice(p_persos) + " :\n\t- " + '\n\t- '.join([perso.nom for perso in self.persos])
         if len(self.lieux_accessibles) >= 1:
-            txt_lieux = "\n" + random.choice(p_lieux) + " :\n\t- " + "\n\t- ".join([self.map_.lieux[lieu[0]].nom
-                                                                                   for lieu in self.lieux_accessibles])
+            txt_lieux = "\n" + random.choice(p_lieux) + " :\n\t- " + "\n\t- ".join([self.map_.lieux[lieu[0]].nom + " [" + lieu[1] + "]"
+                                                                                    for lieu in self.lieux_accessibles])
 
         txt = f"""
 Vous êtes dans {self.nom}

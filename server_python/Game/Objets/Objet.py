@@ -1,9 +1,8 @@
 import os
 import json
 
-data_objs = [
-    "Data/objets/pomme.json"
-]
+pathd = "Data/objets/"
+data_objs = [pathd + f for f in os.listdir(pathd)]
 
 
 class Objet:

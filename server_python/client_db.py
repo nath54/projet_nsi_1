@@ -623,11 +623,11 @@ class Client_mariadb:
             "race": d[2],
             "classe": d[3],
             "argent": d[4],
-            "experience": d[5],
+            "experience": json.loads(d[5]),
             "inventaire": json.loads(d[6]),
             "lieu": d[7],
-            "quetes": d[8],
-            "equipement": d[9],
+            "quetes": json.loads(d[8]),
+            "equipement": json.loads(d[9]),
             "vie": d[10],
             "vie_totale": d[11],
             "energie": d[12],
@@ -637,11 +637,11 @@ class Client_mariadb:
             "force_": d[16],
             "agilite": d[17],
             "magie": d[18],
-            "effets_attaque": d[19],
+            "effets_attaque": json.loads(d[19]),
             "bonus_esquive": d[20],
-            "sorts": d[21],
-            "resistances": d[22],
-            "faiblesses": d[23]
+            "sorts": json.loads(d[21]),
+            "resistances": json.loads(d[22]),
+            "faiblesses": json.loads(d[23])
         }
         return data_perso
 
