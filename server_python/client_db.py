@@ -71,6 +71,7 @@ class Client_mariadb:
         """Ferme la connexion."""
         self.connection.close()
 
+    # FONCTIONS DE TYPES TESTS
     def test_version(self, version):
         """Fonction qui vérifie si la version de la base de donnée est inférieure à celle du serveur.
 
@@ -108,19 +109,7 @@ class Client_mariadb:
         # S'il n'y en a pas, c'est la premiere fois que l'on lance le serveur
         return len(output) == 0
 
-    def get_schema(self, table_name):
-        """Fonction qui récupère la structure de la table demandée sous forme de dictionnaire : .
-          {nom de la colonne : type de la colonne (int, text, ...)}
-
-        renvoie un dictionnaire vide si la table n'existe pas
-        """
-        self.cursor.execute("select * from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME=%s;", (table_name,))
-        results = [elt for elt in self.cursor]
-        schema = {}
-        for elt in results:
-            schema[elt[3]] = elt[7]
-        return schema
-
+    # FONCTIONS DE CREATION DE TABLES :
     def create_table_comptes(self):
         """Fonction qui crée la table comptes dans la bdd."""
         query = ("""CREATE TABLE IF NOT EXISTS comptes
@@ -191,6 +180,7 @@ class Client_mariadb:
             self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)", (genre, ))
             self.connection.commit()
 
+    # FONCTIONS DE CREATION / MISE A JOUR DE LA BDD
     def update(self, force=False):
         """Fonction qui supprime et qui recrée les tables qui ne sont pas dans le bon format ou qui n'existent pas.
 
@@ -282,78 +272,7 @@ class Client_mariadb:
         self.create_table_lieux()
         self.create_table_genre()
 
-    def inscription(self, pseudo, email, password):
-        """Permet de créer un compte.
-
-        Args:
-            pseudo(str): Pseudo du compte à créer
-            email(str): E-mail associé au nouveau compte
-            password(str): Mot de passe du compte
-
-        Returns:
-            bool: False = L'inscription n'a pas pu être complétée
-                  True = Inscription réussie
-
-        Auteur: Hugo
-
-        """
-        self.cursor.execute("""INSERT INTO comptes (pseudo, email, password)
-                 VALUES
-                 (%s,%s,%s)""", (pseudo, email, password))
-        self.connection.commit()
-        # on récupère ensuite l'id
-        self.cursor.execute("SELECT id FROM comptes WHERE pseudo=%s",
-                            (pseudo,))
-        lc = [e for e in self.cursor]
-        if len(lc) == 1:
-            id_ = lc[0][0]
-        else:
-            raise UserWarning("Probleme with comptes, il n'y a pas q'un elt")
-        return True, id_
-
-    def test_compte_inscrit(self, pseudo, email):
-        """Fonction qui teste si on peut inscrire un compte.
-
-        renvoie False s'il n'y a pas d'erreurs
-        renvoie un string contenant un message d'erreur s'il y a une erreur
-
-        Auteur : Hugo, Nathan
-        """
-        self.cursor.execute("SELECT pseudo, email FROM comptes")
-        c = self.cursor
-        for pseudo_, email_ in c:
-            if pseudo == pseudo_:
-                return "Le pseudo est déjà utilisé"
-            elif email == email_:
-                return "L'email est déjà utilisé"
-        return False
-
-    def test_connection(self, pseudo, password):
-        """Fonction qui teste la connection d'un compte.
-
-        renvoie False s'il n'y a pas d'erreurs
-        renvoie un string contenant un message d'erreur s'il y a une erreur
-
-        Auteur : Nathan
-        """
-        self.cursor.execute("SELECT password, id FROM comptes WHERE pseudo=%s",
-                            (pseudo,))
-        c = self.cursor
-        lc = [e for e in c]
-        if len(lc) == 0:
-            return f"Il n'y a pas de compte avec le pseudo '{pseudo}'", None
-        elif len(lc) > 1:
-            return ("probleme de comptes, veuillez contacter un administateur"
-                    " au plus vite "
-                    "(il y a plusieurs comptes avec le même pseudo)", None)
-        else:
-            password_ = lc[0][0]
-            id_ = lc[0][1]
-            if password == password_:
-                return False, id_
-            else:
-                return "Le mot de passe est faux !", None
-
+    # FONCTION DE TRANSFERT VERS LA BDD
     def transfert_json_to_bdd(self):
         """Transfére toutes les données des fichiers json vers la BDD.
 
@@ -366,7 +285,7 @@ class Client_mariadb:
         pathd = "Data/ennemis/"
         # ks : key = key of json lieu , value[0] = name of column of db ennemis
         # value[1] = si json.dumps ou pas, value[2] = si list index ou pas
-        
+
         ks = {"id": ["id", False], "type_": ["type", False],
               "nom": ["nom", False], "race": ["race", False],
               "description_": ["description", False],
@@ -510,6 +429,80 @@ class Client_mariadb:
         # TODO
         pass
 
+    # FONCTIONS D'INSCRIPTION / CONNECTION
+    def inscription(self, pseudo, email, password):
+        """Permet de créer un compte.
+
+        Args:
+            pseudo(str): Pseudo du compte à créer
+            email(str): E-mail associé au nouveau compte
+            password(str): Mot de passe du compte
+
+        Returns:
+            bool: False = L'inscription n'a pas pu être complétée
+                  True = Inscription réussie
+
+        Auteur: Hugo
+
+        """
+        self.cursor.execute("""INSERT INTO comptes (pseudo, email, password)
+                 VALUES
+                 (%s,%s,%s)""", (pseudo, email, password))
+        self.connection.commit()
+        # on récupère ensuite l'id
+        self.cursor.execute("SELECT id FROM comptes WHERE pseudo=%s",
+                            (pseudo,))
+        lc = [e for e in self.cursor]
+        if len(lc) == 1:
+            id_ = lc[0][0]
+        else:
+            raise UserWarning("Probleme with comptes, il n'y a pas q'un elt")
+        return True, id_
+
+    def test_compte_inscrit(self, pseudo, email):
+        """Fonction qui teste si on peut inscrire un compte.
+
+        renvoie False s'il n'y a pas d'erreurs
+        renvoie un string contenant un message d'erreur s'il y a une erreur
+
+        Auteur : Hugo, Nathan
+        """
+        self.cursor.execute("SELECT pseudo, email FROM comptes")
+        c = self.cursor
+        for pseudo_, email_ in c:
+            if pseudo == pseudo_:
+                return "Le pseudo est déjà utilisé"
+            elif email == email_:
+                return "L'email est déjà utilisé"
+        return False
+
+    def test_connection(self, pseudo, password):
+        """Fonction qui teste la connection d'un compte.
+
+        renvoie False s'il n'y a pas d'erreurs
+        renvoie un string contenant un message d'erreur s'il y a une erreur
+
+        Auteur : Nathan
+        """
+        self.cursor.execute("SELECT password, id FROM comptes WHERE pseudo=%s",
+                            (pseudo,))
+        c = self.cursor
+        lc = [e for e in c]
+        if len(lc) == 0:
+            return f"Il n'y a pas de compte avec le pseudo '{pseudo}'", None
+        elif len(lc) > 1:
+            return ("probleme de comptes, veuillez contacter un administateur"
+                    " au plus vite "
+                    "(il y a plusieurs comptes avec le même pseudo)", None)
+        else:
+            password_ = lc[0][0]
+            id_ = lc[0][1]
+            if password == password_:
+                return False, id_
+            else:
+                return "Le mot de passe est faux !", None
+
+    # FONCTIONS DE TYPES SET / NEW
     def set_perso(self, player):
         """Fonction qui enregistre un perso dans la bdd.
 
@@ -588,6 +581,24 @@ class Client_mariadb:
                                     json.dumps(perso.faiblesses), perso_id))
             self.connection.commit()
 
+    def new_genre(self, genre):
+        self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)", (genre,))
+        self.connection.commit()
+
+    # FONCTIONS DE TYPE GET
+    def get_schema(self, table_name):
+        """Fonction qui récupère la structure de la table demandée sous forme de dictionnaire : .
+          {nom de la colonne : type de la colonne (int, text, ...)}
+
+        renvoie un dictionnaire vide si la table n'existe pas
+        """
+        self.cursor.execute("select * from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME=%s;", (table_name,))
+        results = [elt for elt in self.cursor]
+        schema = {}
+        for elt in results:
+            schema[elt[3]] = elt[7]
+        return schema
+
     def get_perso(self, id_):
         """Fonction qui récupère les données du personnage.
         Cette fonction prend en argument l'id du compte
@@ -613,7 +624,7 @@ class Client_mariadb:
             "classe": d[3],
             "argent": d[4],
             "experience": d[5],
-            "inventaire": d[6],
+            "inventaire": json.loads(d[6]),
             "lieu": d[7],
             "quetes": d[8],
             "equipement": d[9],
@@ -634,6 +645,21 @@ class Client_mariadb:
         }
         return data_perso
 
+    def get_genres(self):
+        self.cursor.execute("SELECT genre FROM genres;")
+        results = [elt[0] for elt in self.cursor]
+        return results
+
+    def get_lieux(self):
+        """Fonction qui récupère les id des lieux
+
+        Author: Nathan
+        """
+        query = "SELECT id FROM lieux;"
+        self.cursor.execute(query)
+        lieux = [elt[0] for elt in self.cursor]
+        return lieux
+
     def get_data_obj_DB(self, id_):
         """Renvoie l'objet demandé.
 
@@ -646,35 +672,41 @@ class Client_mariadb:
         Auteur: Hugo, Nathan
 
         """
-        self.cursor.execute("SELECT nom, description_, type_, effets, contenu, verrouille, ouvert FROM objets WHERE id=%s", (id_,))
-        for nom, desc, type_, effets, contenu, verrouille, ouvert in self.cursor:
-            # print(id_, nom, desc, type_, effets, contenu, verrouille, ouvert)
-            return (nom, desc, type_, effets, contenu, verrouille, ouvert)
+        self.cursor.execute("""SELECT nom, description_, type_, effets,
+                                      contenu, verrouille, ouvert
+                                FROM objets WHERE id=%s""", (id_,))
+        for nom, desc, type_, effets, cont, verrouille, ouvert in self.cursor:
+            datas = {"id": id_, "nom": "objet quelconque",
+                     "description": "Une objet, je crois",
+                     "type": "objet", "effets": {}, "contenu": [],
+                     "verrouille": False, "ouvert": False}
+            datas["nom"] = nom
+            datas["description"] = desc
+            datas["type"] = type_
+            if effets != None:
+                datas["effets"] = json.loads(effets)
+            datas["contenu"] = cont
+            datas["verrouille"] = verrouille
+            datas["ouvert"] = ouvert
+            return datas
+            # return (nom, desc, type_, effets, cont, verrouille, ouvert)
         return None
-
-    def get_genres(self):
-        self.cursor.execute("SELECT genre FROM genres;")
-        results = [elt[0] for elt in self.cursor]
-        return results
-
-    def new_genre(self, genre):
-        self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)", (genre,))
-        self.connection.commit()
 
     def get_data_Lieu_DB(self, id_):
         query = "SELECT nom, appellations, description_, ennemis, pnjs, objets, lieux, appellations FROM lieux WHERE id = %s;"
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
         for nom, appellations, desc, ennemis, pnjs, obj, lieux, appellations in results:
-            datas = {}
+            datas = {"id": id_, "nom": "Lieu", "appellations": [],
+                     "description": "Un lieu dans lequel vous êtes.",
+                     "ennemis": [], "pnjs": [], "obj": [], "lieux": []}
             datas["nom"] = nom
-            datas["appellations"] = appellations
+            datas["appellations"] = json.loads(appellations)
             datas["description"] = desc
             datas["ennemis"] = json.loads(ennemis)
             datas["pnjs"] = json.loads(pnjs)
             datas["obj"] = json.loads(obj)
             datas["lieux"] = json.loads(lieux)
-            datas["appellations"] = json.loads(appellations)
             return datas
         return None
 
@@ -682,8 +714,11 @@ class Client_mariadb:
         query = """SELECT nom, description_, race, dialogue FROM pnjs
                    WHERE id=%s;"""
         self.cursor.execute(query, (id_,))
-        datas = {}
+        datas = {"id":-1, "nom": "Un pnj", 
+                 "description": "Un pnj. Waaa, quelle information pertinente !",
+                 "race": "humain", "dialogue": {}}
         for nom, desc, race, dialogue in self.cursor:
+            datas["id"] = id_
             datas["nom"] = nom
             datas["desc"] = desc
             datas["race"] = race
@@ -692,12 +727,24 @@ class Client_mariadb:
             return datas
         return None
 
-    def get_lieux(self):
-        """Fonction qui récupère les id des lieux
-
-        Author: Nathan
-        """
-        query = "SELECT id FROM lieux;"
-        self.cursor.execute(query)
-        lieux = [elt[0] for elt in self.cursor]
-        return lieux
+    def get_data_Ennemi_DB(self, id_):
+        query = """SELECT id, type_, nom, race, description_, vie_min,
+                           vie_max, attaque_min, attaque_max, attaque_effets
+                    FROM ennemis WHERE id=%s"""
+        self.cursor.execute(query, (id_,))
+        results = [elt for elt in self.cursor]
+        if len(results) > 0:
+            datas = {"id": -1, "type": "ennemi", "nom": "Un ennemi",
+                     "description": "Un ennemi. Non, sans blague !",
+                     "vie": [0, 1], "attaque": [0, 1], "attaque_effets": {}}
+            for id_ , type_, nom, race, description_, vie_min, vie_max, attaque_min, attaque_max, attaque_effets in results:
+                datas["id"] = id_
+                datas["type"] = type_
+                datas["nom"] = nom
+                datas["description"] = description_
+                datas["vie"] = [vie_min, vie_max]
+                datas["attaque"] = [attaque_min, attaque_max]
+                if attaque_effets != None:
+                    datas["attaque_effets"] = json.dumps(attaque_effets)
+                return datas
+            return None

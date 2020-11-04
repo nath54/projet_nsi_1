@@ -32,16 +32,23 @@ class Ennemi(Combattant):
         self.index = id_
         if self.index > len(data_ens) - 1:
             raise IndexError("Mauvais index d'ennemi :", self.index)
-        self.load()
+        # region LOAD
+        datas = game.client_db.get_data_Ennemi_DB(self.index)
+        self.nom = datas["nom"]
+        self.type_ = datas["type"]
+        self.description = datas["description"]
+        self.attaque = datas["attaque"]
+        self.vie = random.randint(datas["vie"][0], datas["vie"][1])
+        self.effets_attaque = datas["attaque_effets"]
+        # endregion
         if nb != -1:
-            self.nom += "-"+str(nb)
+            self.nom += "-"+str(nb)        
 
     def __str__(self):
         """Renvoie une description de l'ennemi."""
-        return f"""
-Ennemi :
-  - nom : {self.nom}
-  - description : {self.description}"""
+        return f"""Ennemi :
+        - nom : {self.nom}
+        - description : {self.description}"""
 
     def load(self):
         """Crée un Ennemi à partir de son ID.

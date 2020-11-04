@@ -42,6 +42,7 @@ class Perso(Combattant):
         self.force = 0
         self.intel = 0
         self.discr = 0
+        self.histo_lieu = set()  # TODO: Marquer le lieu dans lequel le perso apparaît
 
     # region Format
     def format_invent(self):
@@ -53,9 +54,11 @@ class Perso(Combattant):
         Auteur: Hugo
 
         """
+        if len(self.inventaire) == 0:
+            return "Aïe, on dirait que la crise est passée par là."
         res = "Voici le contenu de votre inventaire :\n"
-        for item[0] in self.inventaire:
-            res += "\t" + f"- {item.name} ({item.type})" + "\n"
+        for item in self.inventaire:
+            res += "\t" + f"- {item[0].nom} ({item[0].type})" + "\n"
         return res
 
     def format_equip(self):
@@ -70,7 +73,7 @@ class Perso(Combattant):
         res = "Voici votre équipement :\n"
         for type_, equip in self.equip.items():
             nom = "Rien" if equip is None else equip.nom
-            res += "\t" + f"- {type_} : {nom}"
+            res += "\n\t" + f"- {type_} : {nom}"
         return res
 
     def format_stats(self):
@@ -147,8 +150,16 @@ class Perso(Combattant):
 
         """
         # TODO: obj = Objet(id_obj) qui créé l'objet depuis la DB
-        obj = None
-        self.inventaire.append(obj)
+        obj = Objet(id_obj, self.game)
+        print("///////////////////////////////////:Type",type(self.inventaire))
+        exist = False
+        for i in self.inventaire:
+            if i[0].nom == obj.nom:
+                exist = True
+                i[1] += 1
+                break
+        if not exist:
+            self.inventaire.append([obj, 1])
 
     def equiper(self, nom_obj, id_obj=None):
         """Équipe un objet à un personnage

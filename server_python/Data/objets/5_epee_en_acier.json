@@ -1,7 +1,7 @@
 {
-    "id":2,
+    "id":5,
     "type": "arme",
-    "nom":"épée de bois",
+    "nom":"épée en acier",
     "description":"",
     "perte de l'arme en attaquant à distance":true,
     "attaque_type":"attaque unique",
@@ -12,7 +12,7 @@
             "magique":null
         },
         "attaque":{
-            "corps à corps":0.3,
+            "corps à corps":0.4,
             "distance":0.1,
             "magique":null
         }

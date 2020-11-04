@@ -1,19 +1,19 @@
 {
-    "id":2,
+    "id":4,
     "type": "arme",
-    "nom":"épée de bois",
-    "description":"",
+    "nom":"arc en bois",
+    "description":"arc en bois,il est moins performant que l'arc en carbone et fait depensé plus d'énergie.",
     "perte de l'arme en attaquant à distance":true,
     "attaque_type":"attaque unique",
     "effets":{
         "cout energie":{
             "corps à corps":0.5,
-            "distance":0.5,
+            "distance":0.7,
             "magique":null
         },
         "attaque":{
-            "corps à corps":0.3,
-            "distance":0.1,
+            "corps à corps":0.1,
+            "distance":0.4,
             "magique":null
         }
     }

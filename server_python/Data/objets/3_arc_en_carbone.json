@@ -1,8 +1,8 @@
 {
-    "id":2,
+    "id":3,
     "type": "arme",
-    "nom":"épée de bois",
-    "description":"",
+    "nom":"arc en carbone",
+    "description":"arc en carbone, il est plus solide que l'arc en bois",
     "perte de l'arme en attaquant à distance":true,
     "attaque_type":"attaque unique",
     "effets":{
@@ -12,8 +12,8 @@
             "magique":null
         },
         "attaque":{
-            "corps à corps":0.3,
-            "distance":0.1,
+            "corps à corps":0.1,
+            "distance":0.5,
             "magique":null
         }
     }

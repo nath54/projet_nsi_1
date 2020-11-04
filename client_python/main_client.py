@@ -68,8 +68,6 @@ def test_password(txt):
             return True
     return False
 
-
-# fonction qui teste si un texte est du format json
 def is_json(myjson):
     """Fonction qui teste si un string est de format json."""
     try:
@@ -107,7 +105,7 @@ class Client:
         self.attente = False
         self.etat = "None"
 
-        i = input("Voulez vous que ce soit un client websocket ?")
+        i = input("Voulez vous que ce soit un client websocket ?\n(par défaut = non)\n : ")
         if i.lower() in ["o", "oui", "y", "yes"]:
             self.ws = True
             from webserver import WebServer

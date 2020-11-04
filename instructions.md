@@ -6,10 +6,10 @@ Il faut avoir mariadb d'installé, et il faut qu'il soit lancé lors de l'éxecu
 
 ## Créer un compte `pyuser`
 
-(note sur windows avec wamp64) : Sur windows vous pouvez trouver le programme mysql.exe à l'emplacement suivant : `C:\wamp64\mariadb\mariadb10.5.4\bin` ou a une autre version de mariadb suivant celle que vous avez installé.
+(note sur windows avec wamp64) : Sur windows vous pouvez trouver le programme mysql.exe à l'emplacement suivant : `C:\wamp64\bin\mariadb\mariadb[version]\bin` ou a une autre version de mariadb suivant celle que vous avez installé.
 
 Pour commencer, il faut avoir un terminal à portée de main, c'est plus facile.
-Sur windows, du coup, il faut faire `cd C:\wamp64\mariadb\mariadb10.5.4\bin` avant de pouvoir faire la suite.
+Sur windows, du coup, il faut faire `cd C:\wamp64\bin\mariadb\mariadb[version]\bin` avant de pouvoir faire la suite.
 
 Il faut que vous vous connectiez ensuite à mysql en tant que root : `mysql -u root -p`
 Puis il faut que vous créiez le compte qui sera utilisé par le programme : `CREATE USER pyuser@localhost IDENTIFIED BY "pypassword";`
