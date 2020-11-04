@@ -4,7 +4,7 @@
     "nom":"arc en bois",
     "description":"arc en bois,il est moins performant que l'arc en carbone et fait depensé plus d'énergie.",
     "perte de l'arme en attaquant à distance":true,
-    "attaque_type":"attaque légère",
+    "attaque_type":"attaque unique",
     "effets":{
         "cout energie":{
             "corps à corps":0.5,

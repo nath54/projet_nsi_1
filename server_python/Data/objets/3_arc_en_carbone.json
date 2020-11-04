@@ -4,7 +4,7 @@
     "nom":"arc en carbone",
     "description":"arc en carbone, il est plus solide que l'arc en bois",
     "perte de l'arme en attaquant à distance":true,
-    "attaque_type":"attaque légère",
+    "attaque_type":"attaque unique",
     "effets":{
         "cout energie":{
             "corps à corps":0.5,
