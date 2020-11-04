@@ -33,7 +33,7 @@ class Player:
         self.perso.race = data_perso["race"]
         self.perso.classe = data_perso["classe"]
 
-        self.perso.experient = data_perso["experience"]
+        self.perso.experience = data_perso["experience"]
         self.perso.inventaire = data_perso["inventaire"]
         self.perso.equipement = data_perso["equipement"]
         self.perso.lieu = data_perso["lieu"]
