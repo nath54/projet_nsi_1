@@ -379,12 +379,17 @@ class Server:
             is_valid = False
             for id_lieu, _ in (lieu.lieux_accessibles):
                 d = self.game.client_db.get_data_Lieu_DB(id_lieu)
-                if is_texts_equals(d["nom"], args[0]) or is_texts_equals(d["appellation"], args[0]):
+                eq_ap = False
+                for lap in d["appellations"]:
+                    if is_texts_equal(lap, args[0]):
+                        eq_ap = True
+                        break
+                if is_texts_equals(d["nom"], args[0]) or eq_ap:
                     perso.lieu = self.game.map_.lieux[id_lieu]
                     is_valid = True
                     break
             if not is_valid:
-                self.send(client, "Le lieu que vous voulez visiter n'est pas disponible. En effet, il semble qu'il n'existe que dans votre tête. Quel dommage, il avait l'air magnifique !", True)
+                self.send(client, {"type": "message", "value": "Le lieu que vous voulez visiter n'est pas disponible. En effet, il semble qu'il n'existe que dans votre tête. Quel dommage, il avait l'air magnifique !"}, True)
             pass
         elif action == "parler":
             pass
