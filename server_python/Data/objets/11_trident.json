@@ -1,0 +1,20 @@
+{
+    "id":11,
+    "type": "arme",
+    "nom":"trident",
+    "description":"ce trident est une arme très puissante; il peut être utilisé a distance comme au corps à corps.",
+    "perte de l'arme en attaquant à distance":true,
+    "attaque_type":"attaque unique",
+    "effets":{
+        "cout energie":{
+            "corps à corps":4,
+            "distance":4,
+            "magique":null
+        },
+        "attaque":{
+            "corps à corps":2,
+            "distance":1,
+            "magique":null
+        }
+    }
+}
