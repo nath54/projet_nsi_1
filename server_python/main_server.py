@@ -322,7 +322,10 @@ class Server:
                     break
 
         if is_one_of(action, ["examiner"]):
-            self.send(client, obj_cible.__repr__(), True)
+            if obj_cible is None:
+                self.send(client, {"type": "message", "value": "Si je ne vois pas l'objet, dois-je essayer d'en imaginer une description foireuse ?"}, True)
+            else:
+                self.send(client, {"type": "message", "value": obj_cible.__repr__()}, True)
         elif is_one_of(action, ["prendre"]):
             if obj_cible is None:
                 mess = "Honnêtement, j'adore le concept. Mais l'objet existe pas. Ou il est pas là. Au choix !"
