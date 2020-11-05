@@ -808,8 +808,16 @@ class Client_mariadb:
                     FROM ennemis WHERE id=%s"""
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
-        for id_, type_, nom, race, description_, vie_min, vie_max, attaque_min,
-        attaque_max, attaque_effets in results:
+        datas = {
+            "id": 0,
+            "type": "ennemis",
+            "nom": "Ennemi Méchant",
+            "description": "Ennemi Qui va t'attaquer parce qu'il est Mechant et que les méchants ils attaquent les gentils...",
+            "vie": [0, 1],
+            "attaque": [0, 1],
+            "attaque_effets": {}
+        }
+        for id_, type_, nom, race, description_, vie_min, vie_max, attaque_min, attaque_max, attaque_effets in results:
             datas["id"] = id_
             datas["type"] = type_
             datas["nom"] = nom
