@@ -44,3 +44,17 @@ class Ennemi(Combattant):
         return f"""Ennemi :
         - nom : {self.nom}
         - description : {self.description}"""
+
+    def __repr__(self):
+        """Renvoie une description plus détaillée de l'ennemi
+
+        Author: Nathan
+        """
+        return f"""
+Ennemi :
+    - nom : {self.nom}
+    - race : {self.race}
+    - description : {self.description}
+    - vie : {self.vie} / {self.vie_totale}
+    - attaque : {self.attaque}
+    - esquive : {self.esquive}"""

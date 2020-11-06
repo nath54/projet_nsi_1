@@ -342,11 +342,16 @@ class Server:
         data_len = len(data.keys())
         action = data["commande"]
         args = data["arguments"].split(" ")
+        # on enleve les arguments vides :
+        while "" in args:
+            args.remove("")
         perso = self.clients[client]["player"].perso
+        # on affiche ces infos pour le debuggage
         print("data_len : ", data_len)
         print("len args : ", len(args))
 
         # Les premieres commandes sont des commandes à 0 ou plus arguments
+        # commande aide : affiche le message d'aide
         if is_one_of(action, self.commandes_dat["aide"]["com"]):
             txt_help = "COMMANDES :"
             for key in self.commandes_dat.keys():
@@ -355,29 +360,37 @@ class Server:
                 ttt = "Fonctionne" if self.commandes_dat[key]["fini"] else "Ne fonctionne pas"
                 txt_help += f"\n\t- {t} : {tt} [{ttt}]"
             self.send(client, {"type": "message", "value": txt_help}, True)
+        # commande voir ; affiche les infos du lieu
         if is_one_of(action, ["voir"]):
             self.send(client, {"type": "message", "value": self.game.map_.lieux[perso.lieu].aff()}, True)
+        # commande inventaire : affiche l'inventaire
         elif is_one_of(action, self.commandes_dat["inventaire"]["com"]):
             if len(args) == 0 or args[0] == "":
                 self.send(client, {"type": "message", "value": perso.format_invent()}, True)
             else:
                 self.invent_multi_args(client, data)
+        # commande equipement : affiche l'equipement
         elif is_one_of(action, self.commandes_dat["equipement"]["com"]):
             self.send(client, {"type": "message", "value": perso.format_equip()}, True)
+        # commande stats : affiche des stats
         elif is_one_of(action, self.commandes_dat["stats"]["com"]):
-            if len(args) <= 1:
+            if len(args) == 0:
                 print("stats :", perso.format_stats())
                 self.send(client, {"type": "message", "value": perso.format_stats()}, True)
             else:
                 pass  # TODO: Afficher stats d'un autre Etre (bof)
+        # commande quit : le client quitte le jeu
         elif is_one_of(action, self.commandes_dat["quit"]["com"]):
             self.on_close(client)
+        # commande attendre : le perso du joueur attend un tour
         elif is_one_of(action, self.commandes_dat["attendre"]["com"]):  # Bof
             pass
+        # les prochaines commandes ont au moins un argument
         elif data_len <= 1:
             self.send(client, {"type": "message", "value": "Commande inconnue"}, True)
 
         # Ce qui suit sont des commandes avec au moins 1 argument
+        # commande desequiper
         elif is_one_of(action, self.commandes_dat["desequiper"]["com"]):
             b = perso.desequiper(args[0])
             if b:
@@ -385,6 +398,7 @@ class Server:
             else:
                 mess = f"Vous n'aviez pas de {args[0]} sur vous..."
             self.send(client, {"type": "message", "value": mess}, True)
+        # commande equiper
         elif is_one_of(action, self.commandes_dat["equiper"]["com"]):
             b = perso.equiper(args[0])
             if b:
@@ -392,19 +406,52 @@ class Server:
             else:
                 mess = f"Vous ne possédez pas '{args[0]}'"
             self.send(client, {"type": "message", "value": mess}, True)
+
         # On définit l'objet ciblé avec lequel l'utilisateur voudra (peut-être) agir
+        # region definition obj_cible
         obj_cible = None
         if len(args) >= 1:
             for obj in perso.game.map_.lieux[perso.lieu].objets:
                 if are_texts_equals(obj.nom, args[0]) or traiter_txt(" ".join(args)).startswith(traiter_txt(obj.nom)):
                     obj_cible = obj
                     break
+        # endregion
+        # region definition obj_cible_inv
+        obj_cible_inv = None
+        if len(args) >= 1:
+            for obj, _ in perso.inventaire:
+                if are_texts_equals(obj.nom, args[0]) or traiter_txt(" ".join(args)).startswith(traiter_txt(obj.nom)):
+                    obj_cible_inv = obj
+                    break
+        # endregion
+        # region definition ennemi_cible
+        ennemi_cible = None
+        if len(args) >= 1:
+            for en in self.game.map_.lieux[perso.lieu].ennemis:
+                if are_texts_equals(args[0], en.nom) or traiter_txt(" ".join(args)).startswith(traiter_txt(en.nom)):
+                    ennemi_cible = en
+        # endregion
+        # region definition pnj_cible
+        pnj_cible = None
+        if len(args) >= 1:
+            for pn in self.game.map_.lieux[perso.lieu].pnjs:
+                if are_texts_equals(args[0], pn.nom) or traiter_txt(" ".join(args)).startswith(traiter_txt(pn.nom)):
+                    pnj_cible = pn
+        # endregion
 
+        # commande examiner
         if is_one_of(action, self.commandes_dat["examiner"]["com"]):
-            if obj_cible is None:
-                self.send(client, {"type": "message", "value": "Si je ne vois pas l'objet, dois-je essayer d'en imaginer une description foireuse ?"}, True)
-            else:
+            if obj_cible is None and ennemi_cible is None and obj_cible_inv is None and pnj_cible is None:
+                self.send(client, {"type": "message", "value": "Si je ne vois pas ce que je doit examiner, dois-je essayer d'en imaginer une description foireuse ?"}, True)
+            elif obj_cible:
                 self.send(client, {"type": "message", "value": f"{obj_cible.__repr__()}"}, True)
+            elif obj_cible_inv:
+                self.send(client, {"type": "message", "value": f"{obj_cible_inv.__repr__()}"}, True)
+            elif ennemi_cible:
+                self.send(client, {"type": "message", "value": f"{ennemi_cible.__repr__()}"}, True)
+            elif pnj_cible:
+                self.send(client, {"type": "message", "value": f"{pnj_cible.__str__()}"}, True)
+        # commande prendre
         elif is_one_of(action, self.commandes_dat["prendre"]["com"]):
             if obj_cible is None:
                 mess = "Honnêtement, j'adore le concept. Mais l'objet existe pas. Ou il est pas là. Au choix !"
@@ -414,47 +461,60 @@ class Server:
                 perso.add_to_invent(obj.index)
                 self.game.map_.lieux[perso.lieu].objets.remove(obj_cible)
                 self.send(client, {"type": "message", "value": f"Vous avez pris le/la {obj.nom}."})
+        # commande jeter
         elif is_one_of(action, self.commandes_dat["jeter"]["com"]):
+            mess = "Impossible de jeter cet objet, vous avez vérifié au moins que vous le possedez ?"
             arg = args[0]
             qt = args[1] if len(args) > 1 else 1
             if type(qt) != int:
                 try:
                     qt = int(qt)
                 except Exception:
-                    # TODO : renvoyer une erreur au client
+                    self.send(client, json.dumps({"type": "message", "value": "Probleme de syntaxe, "}))
                     return
 
             for i in range(len(perso.inventaire)):
                 obj = perso.inventaire[i]
-                if obj[0].nom == arg:
+                if traiter_txt(obj[0].nom) == traiter_txt(arg):
                     if obj[1] < qt:
-                        self.send(client, json.dumps({"type": "message", "value": f"Vous ne pouvez jeter autant de {obj[0].nom} que ça !"}), True)
+                        mess = f"Vous ne pouvez jeter autant de {obj[0].nom} que ça !"
                     else:
                         for i in range(qt):
                             new_obj = Objet(obj[0].index, self.game)
                             perso.game.map_.lieux[perso.lieu].objets.append(new_obj)
                         if obj[1] == qt:
                             del perso.inventaire[i]
+                            if qt == 1:
+                                mess = f"Vous avez jeté votre {obj[0].nom} !"
+                            else:
+                                mess = f"Vous avez jeté tous vos {obj[0].nom} !"
                         else:
                             perso.inventaire[i][1] -= qt
+                            mess = f"Vous avez jeté {qt} de vos {obj[0].nom} !"
+            self.send(client, json.dumps({"type": "message", "value": mess}))
+        # commande ouvrir
         elif is_one_of(action, self.commandes_dat["ouvrir"]["com"]):
             if obj_cible.type == "contenant":
                 if obj_cible.ouvert:
                     mess = "Cet objet est déjà ouvert..."
                 else:
+                    obj_cible.ouvert = True
                     mess = f"Vous ouvrez ce superbe {obj_cible.nom}\n{obj_cible.format_contenu()}"
             else:
                 mess = "Comment ouvrir un objet qui ne possède pas d'ouverture..."
             self.send(client, {"type": "message", "value": mess}, True)
+        # commande fermer
         elif is_one_of(action, self.commandes_dat["fermer"]["com"]):
             if obj_cible.type == "contenant":
                 if obj_cible.ouvert:
+                    obj_cible.ouvert = False
                     mess = f"Vous avez refermé le {obj_cible.nom}."
                 else:
                     mess = f"Vous avez refermé le/la {obj_cible.nom}, qui était déjà fermé... Quel exploit !"
             else:
                 mess = "Fermer un objet qui ne se ferme pas... Original."
             self.send(client, {"type": "message", "value": mess}, True)
+        # commande aller
         elif is_one_of(action, self.commandes_dat["aller"]["com"]):
             lieu = self.game.map_.lieux[perso.lieu]
             is_valid = False
@@ -481,28 +541,33 @@ class Server:
             if not is_valid:
                 self.send(client, {"type": "message", "value": "Le lieu que vous voulez visiter n'est pas disponible. En effet, il semble qu'il n'existe que dans votre tête. Quel dommage, il avait l'air magnifique !"}, True)
             pass
+        # commande parler
         elif is_one_of(action, self.commandes_dat["parler"]["com"]):
             pass
+        # commande message
         elif is_one_of(action, self.commandes_dat["message"]["com"]):
             pass
+        # commande attaquer
         elif is_one_of(action, self.commandes_dat["attaquer"]["com"]):
-            ennemi_cible = None
-            if len(args) >= 1:
-                for en in self.game.map_.lieux[perso.lieu].ennemis:
-                    if are_texts_equals(args[0], en.nom) or traiter_txt(" ".join(args)).startswith(traiter_txt(en.nom)):
-                        ennemi_cible = en
             if ennemi_cible is not None:
                 msg_result = perso.attaque_cible(ennemi_cible)
                 self.send(client, {"type": "message", "value": msg_result})
+            else:
+                mes = "Je ne trouve pas cet ennemi, pour compenser, voulez vous que je me frappe moi-même ?"
+                self.send(client, {"type": "message", "value": mes})
+        # commande sort
         elif is_one_of(action, self.commandes_dat["sort"]["com"]):
             pass
+        # commande utiliser
+        elif is_one_of(action, self.commandes_dat["utiliser"]["com"]):
+            pass  # Utiliser un objet sur un autre
+
         elif data_len <= 2:
             self.send(client, "Commande inconnue", True)
             pass  # Action avec plus de 2 paramètres au-delà
 
         # Ce qui suit sont des commandes avec au moins 2 argument ou plus
-        elif is_one_of(action, self.commandes_dat["utiliser"]["com"]):
-            pass  # Utiliser un objet sur un autre
+        # commande mettre
         elif is_one_of(action, self.commandes_dat["mettre"]["com"]):
             pass
 
