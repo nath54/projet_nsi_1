@@ -115,6 +115,7 @@ class Client:
 
         self.genres = ["homme", "femme", "agenre", "androgyne", "bigender",
                        "non-binaire", "autre"]
+        self.debug = False
 
     def debut(self):
         """Demande si l'on veut s'inscrire ou se connecter.
@@ -253,7 +254,8 @@ class Client:
             # try:
             msg = self.client.recv(self.max_size)
             msg = msg.decode(encoding="utf-8")
-            print("recu : ", msg)
+            if self.debug:
+                print("recu : ", msg)
             # print("recu : ", json.loads(msg))
             if len(msg) == 0:
                 raise UserWarning("message vide")
