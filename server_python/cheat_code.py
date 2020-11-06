@@ -17,20 +17,20 @@ def cheat_code(server, client, commande):
     if commande == "sonto":
         # game.pnj (le pére noel donne un cadeau)
         pass
-    if commande == "docteur":
+    elif commande == "docteur":
         # game.objets (du soin)
         pass
-    if commande == "666":
+    elif commande == "666":
         server.send(client, json.dumps({"type": "message", "value": "Vous avez passé un pacte avec le Diable. Cependant, la flemme des développeurs fait que cela ne change rien à votre vie. Soyez heureux !"}))
         pass
         # game.objets
-    if commande == "Excalibur":
+    elif commande == "Excalibur":
         pass
         # game.objets (une épée)
-    if commande == "Merlin":
+    elif commande == "Merlin":
         pass
         # game.objets (une baguette)
-    if commande == "Trump":
+    elif commande == "Trump":
         possibilites = ["chance", "neutre", "malchance"]
         choix = random.choice(possibilites)
         if choix == "chance":
@@ -43,10 +43,10 @@ def cheat_code(server, client, commande):
             server.send(client, json.dumps({"type": "message", "value": "Trump a gagné les élections et met en place une loi pour vous foutre une amende de 1000000 de pieces d'or, vous perdez donc 1000000 de pieces d'or"}))
             perso.argent -= 10000000
         action_faite = True
-    if commande == "brevis":
+    elif commande == "brevis":
         server.send(client, json.dumps({"type": "message", "value": "Une brevis volante apparaît du ciel et vous annonce une très mauvaise nouvelle : `Je suis désolée, mais je vous enlève un point à la note de votre projet, vous n'aurez pas 21/20, mais 20/20, c'est vraiment dommage !`"}))
         action_faite = True
     # ...
     else:
-        server.send(client, json.dumps({"type": "message", "value": "non mais ca va pas, ce n'est pas bien de tricher"})
+        server.send(client, json.dumps({"type": "message", "value": "non mais ca va pas, ce n'est pas bien de tricher"}))
     return action_faite
