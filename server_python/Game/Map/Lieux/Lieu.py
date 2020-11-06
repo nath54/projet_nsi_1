@@ -111,3 +111,6 @@ Vous êtes dans {self.nom}
 
     def __repr__(self):
         return self.aff()
+
+    def suppr_ennemi(self, enn):
+        self.ennemis.remove(enn)
