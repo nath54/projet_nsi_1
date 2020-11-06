@@ -1,5 +1,6 @@
 
 from Game.Etres.Perso import Perso
+from Game.Objets.Objet import Objet
 
 
 class Player:
@@ -38,7 +39,6 @@ class Player:
         self.perso.classe = data_perso["classe"]
 
         self.perso.experience = data_perso["experience"]
-        self.perso.inventaire = data_perso["inventaire"]
         self.perso.equipement = data_perso["equipement"]
         self.perso.lieu = data_perso["lieu"]
         self.perso.histo_lieu.add(data_perso["lieu"])
@@ -60,6 +60,9 @@ class Player:
         self.perso.sorts = data_perso["sorts"]
         self.perso.resistances = data_perso["resistances"]
         self.perso.faiblesses = data_perso["faiblesses"]
+
+        inv = [[Objet(obj[0], self.game), obj[1]] for obj in data_perso["inventaire"]]
+        self.perso.inventaire = inv
 
     def creation(self, data_creation):
         self.perso = Perso(self.game)

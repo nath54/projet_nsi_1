@@ -318,12 +318,15 @@ class Server:
         Auteur: Nathan
 
         """
+        self.save(client)
         print("Connexion fermée", client)
         self.send(client, json.dumps({"type": "connection fermée"}))
         del(self.clients[client])
 
     def save(self, client):
-        pass
+        player = self.clients[client]["player"]
+        print(player)
+        self.client_db.set_perso(player)
 
     # region Commandes
     def commandes(self, client, data):
