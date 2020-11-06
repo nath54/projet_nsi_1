@@ -49,6 +49,7 @@ class Lieu:
         if datas is None:
             raise IndexError(f"L'index {id_} n'est pas reconnu")
         self.nom = datas.get("nom", "Lieu")
+        self.appellations = datas.get("appellations", [])
         self.description = datas.get("description", "")
         self.ennemis = []
         for id_ennemi in datas.get("ennemis", []):
@@ -65,7 +66,7 @@ class Lieu:
         self.objets = []
         for id_obj in datas.get("obj", []):
             self.objets.append(self.game.Objet(id_obj, self.game))
-        self.lieux_accessibles = datas["lieux"]
+        self.lieux_accessibles = datas.get("lieux", [])
         self.map_ = game.map_
 
     def aff(self):

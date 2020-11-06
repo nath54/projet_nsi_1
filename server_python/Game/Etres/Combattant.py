@@ -80,8 +80,10 @@ class Combattant(Etre):
             self.energie = self.energie_totale
 
     def debut_tour(self):
-        """
-        Fonction qui applique au personnage les effets qu'il a
+        """Applique au personnage les effets qu'il a
+
+        Auteur: TODO
+
         """
         pass
 

@@ -1,8 +1,8 @@
 {
     "id":12,
-    "nom":"coffre",
+    "nom":"coffre en or",
     "type":"contenant",
-    "description":"ce coffre permet de stocké des objets",
+    "description":"ce coffre permet de stocké des objets precieux",
     "effets":{},
     "contenu":[],
     "verrouille":true,

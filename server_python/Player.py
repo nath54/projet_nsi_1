@@ -13,7 +13,7 @@ class Player:
 
     """
 
-    def __init__(self, pseudo, game, id_, ):
+    def __init__(self, pseudo, game, id_):
         """Initie le compte du joueur."""
         self.pseudo = pseudo
         self.perso = None
@@ -21,7 +21,11 @@ class Player:
         self.id_ = id_
 
     def load_perso(self, data_perso):
-        """Fonction qui crée un perso au joueur et qui lui charge les infos.
+        """Crée un perso au joueur et qui lui charge les infos.
+
+        Args:
+            data_perso(dict<str: ???>): Dictionnaire contenant toutes les
+                                        caractéristiques du personnage.
 
         Auteur: Nathan
         """
@@ -37,6 +41,7 @@ class Player:
         self.perso.inventaire = data_perso["inventaire"]
         self.perso.equipement = data_perso["equipement"]
         self.perso.lieu = data_perso["lieu"]
+        self.perso.histo_lieu.add(data_perso["lieu"])
         self.perso.quetes = data_perso["quetes"]
         self.perso.argent = data_perso["argent"]
 

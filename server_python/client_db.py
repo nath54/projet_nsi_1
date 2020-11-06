@@ -71,11 +71,12 @@ class Client_mariadb:
         """Ferme la connexion."""
         self.connection.close()
 
-    # FONCTIONS DE TYPES TESTS
+# region FONCTIONS DE TESTS
     def test_version(self, version):
-        """Fonction qui vérifie si la version de la base de donnée est inférieure à celle du serveur.
+        """Vérifie si la version de la BDD est inférieure à celle du serveur.
 
         Auteur: Nathan
+
         """
         self.cursor.execute("SHOW TABLES LIKE 'version';")
         results = [elt for elt in self.cursor]
@@ -108,10 +109,15 @@ class Client_mariadb:
         output = [elt for elt in self.cursor]
         # S'il n'y en a pas, c'est la premiere fois que l'on lance le serveur
         return len(output) == 0
+# endregion
 
-    # FONCTIONS DE CREATION DE TABLES :
+# region CREATE TABLES :
     def create_table_comptes(self):
-        """Fonction qui crée la table comptes dans la bdd."""
+        """Crée la table comptes dans la BDD.
+
+        Auteur: Nathan
+
+        """
         query = ("""CREATE TABLE IF NOT EXISTS comptes
                     (id INT PRIMARY KEY AUTO_INCREMENT, pseudo TEXT,
                     email TEXT, password TEXT, perso_id INT);""")
@@ -119,8 +125,11 @@ class Client_mariadb:
         self.connection.commit()
 
     def create_table_persos(self):
-        """Fonction qui crée la table perso dans la bdd."""
+        """Crée la table perso dans la bdd.
 
+        Auteur: Nathan
+
+        """
         query = ("""CREATE TABLE IF NOT EXISTS persos
                     (id INT PRIMARY KEY AUTO_INCREMENT,
                     nom TEXT, genre TEXT, race TEXT, classe TEXT,
@@ -134,7 +143,11 @@ class Client_mariadb:
         self.connection.commit()
 
     def create_table_objets(self):
-        """Fonction qui crée la table perso dans la bdd."""
+        """Crée la table perso dans la BDD.
+
+        Auteur: Nathan
+
+        """
         query = ("""CREATE TABLE IF NOT EXISTS objets
                     (id INT PRIMARY KEY, nom TEXT,
                     description_ TEXT, type_ TEXT, effets TEXT,
@@ -143,7 +156,11 @@ class Client_mariadb:
         self.connection.commit()
 
     def create_table_pnjs(self):
-        """Fonction qui crée la table perso dans la bdd."""
+        """Crée la table perso dans la BDD.
+
+        Auteur: Nathan
+
+        """
         query = ("""CREATE TABLE IF NOT EXISTS pnjs
                     (id INT PRIMARY KEY, nom TEXT,
                     description_ TEXT, race TEXT, dialogue TEXT);""")
@@ -151,7 +168,11 @@ class Client_mariadb:
         self.connection.commit()
 
     def create_table_ennemis(self):
-        """Fonction qui crée la table perso dans la bdd."""
+        """Crée la table perso dans la BDD.
+
+        Auteur: Nathan
+
+        """
         query = ("""CREATE TABLE IF NOT EXISTS ennemis
                     (id INT PRIMARY KEY, type_ TEXT, nom TEXT,
                     race TEXT, description_ TEXT,
@@ -161,7 +182,11 @@ class Client_mariadb:
         self.connection.commit()
 
     def create_table_lieux(self):
-        """Fonction qui crée la table perso dans la bdd."""
+        """Crée la table perso dans la BDD.
+
+        Auteur: Nathan
+
+        """
         query = ("""CREATE TABLE IF NOT EXISTS lieux
                     (id INT PRIMARY KEY, nom TEXT, appellations TEXT,
                     description_ TEXT, ennemis TEXT, pnjs TEXT, objets TEXT,
@@ -171,7 +196,11 @@ class Client_mariadb:
         self.connection.commit()
 
     def create_table_genre(self):
-        """Fonction qui crée la table genre dans la bdd."""
+        """Crée la table genre dans la BDD.
+
+        Auteur : Nathan
+
+        """
         query = ("""CREATE TABLE IF NOT EXISTS genres
                     (genre TEXT);""")
         self.cursor.execute(query)
@@ -179,14 +208,16 @@ class Client_mariadb:
         for genre in ["homme", "femme", "agenre", "androgyne", "bigender", "non-binaire"]:
             self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)", (genre, ))
             self.connection.commit()
+# endregion
 
-    # FONCTIONS DE CREATION / MISE A JOUR DE LA BDD
+# region UPDATE
     def update(self, force=False):
-        """Fonction qui supprime et qui recrée les tables qui ne sont pas dans le bon format ou qui n'existent pas.
+        """Réinitialise les tables de mauvais format ou qui n'existent pas.
 
         Auteur : Nathan
+
         """
-        # comptes
+        # Comptes
         if force or self.get_schema("comptes") != {'id': 'int', 'pseudo': 'text',
                                                    'email': 'text', 'password': 'text',
                                                    'perso_id': 'int'}:
@@ -194,7 +225,7 @@ class Client_mariadb:
             self.connection.commit()
             self.create_table_comptes()
             print("La table comptes a été mise à jour !")
-        # persos
+        # Persos
         if force or self.get_schema("persos") != {"id": "int", "nom": "text", "genre": "text",
                                                   "race": "text", "classe": "text", "argent": "int", "experience": "text",
                                                   "inventaire": "text", "lieu": "int", "quetes": "text",
@@ -207,7 +238,7 @@ class Client_mariadb:
             self.connection.commit()
             self.create_table_persos()
             print("La table persos a été mise à jour !")
-        # ennemis
+        # Ennemis
         if force or self.get_schema("ennemis") != {"id": "int", "type_": "text", "nom": "text",
                                                    "race": "text", "description_": "text", "vie_min": "int",
                                                    "vie_max": "int", "attaque_min": "int", "attaque_max": "int",
@@ -216,7 +247,7 @@ class Client_mariadb:
             self.connection.commit()
             self.create_table_ennemis()
             print("La table ennemis a été mise à jour !")
-        # objets
+        # Objets
         if force or self.get_schema("objets") != {'id': 'int',
                                                   'nom': 'text',
                                                   'description_': 'text',
@@ -229,7 +260,7 @@ class Client_mariadb:
             self.connection.commit()
             self.create_table_objets()
             print("La table objets a été mise à jour !")
-        # lieux
+        # Lieux
         if force or self.get_schema("lieux") != {"id": "int", "nom": "text",
                                                  "appellations": "text",
                                                  "description_": "text",
@@ -241,7 +272,7 @@ class Client_mariadb:
             self.connection.commit()
             self.create_table_lieux()
             print("La table lieux a été mise à jour !")
-        # pnjs
+        # PNJ
         if force or self.get_schema("pnjs") != {"id": "int", "nom": "text",
                                                 "description_": "text",
                                                 "race": "text",
@@ -250,7 +281,7 @@ class Client_mariadb:
             self.connection.commit()
             self.create_table_pnjs()
             print("La table pnjs a été mise à jour !")
-        # genres
+        # Genres
         if force or self.get_schema("genres") != {"genre": "text"}:
             self.cursor.execute("DROP TABLE IF EXISTS genres")
             self.connection.commit()
@@ -258,8 +289,6 @@ class Client_mariadb:
 
     def init_database(self):
         """Permet de créer toutes les tables au premier lancement.
-
-        TODO: Ajouter les autres tables
 
         Auteur : Nathan, Hugo
 
@@ -272,12 +301,15 @@ class Client_mariadb:
         self.create_table_lieux()
         self.create_table_genre()
 
-    # FONCTION DE TRANSFERT VERS LA BDD
+# endregion
+
+# INSERT au premier lancement du serveur
     def transfert_json_to_bdd(self):
         """Transfére toutes les données des fichiers json vers la BDD.
 
         Etat : TODO Commencé, à continuer
         Auteur : Nathan, Hugo
+
         """
         # region Ennemis :
         self.cursor.execute("TRUNCATE TABLE `ennemis`")
@@ -399,12 +431,12 @@ class Client_mariadb:
         # ks : key = key of json lieu , value[0] = name of column of db lieux
         # value[1] = si json.dumps ou pas, value[2] = si list index ou pas
         ks = {"id": ["id", False], "nom": ["nom", False],
-              "description_": ["description", False], 
+              "description_": ["description", False],
               "race": ["race", False], "dialogue": ["dialogue", True]}
         for fich in os.listdir(pathd):
             if not fich.endswith(".json"):
                 continue
-            d = jload(pathd + fich)#
+            d = jload(pathd + fich)
             values_query = []
             values_query_args = []
             for key in ks.keys():
@@ -424,12 +456,10 @@ class Client_mariadb:
             self.cursor.execute(query, tuple(values_query_args))
             self.connection.commit()
         # endregion
-        # A faire les autres
-        # (il y aura sans doutes la table à changer comme j'ai du changer pour ennemi)
         # TODO
         pass
 
-    # FONCTIONS D'INSCRIPTION / CONNECTION
+# region INSCRIPTION / CONNEXION
     def inscription(self, pseudo, email, password):
         """Permet de créer un compte.
 
@@ -456,11 +486,11 @@ class Client_mariadb:
         if len(lc) == 1:
             id_ = lc[0][0]
         else:
-            raise UserWarning("Probleme with comptes, il n'y a pas q'un elt")
+            raise UserWarning("Probleme with comptes, il n'y a pas qu'un elt")
         return True, id_
 
     def test_compte_inscrit(self, pseudo, email):
-        """Fonction qui teste si on peut inscrire un compte.
+        """Teste si on peut inscrire un compte.
 
         renvoie False s'il n'y a pas d'erreurs
         renvoie un string contenant un message d'erreur s'il y a une erreur
@@ -476,13 +506,19 @@ class Client_mariadb:
                 return "L'email est déjà utilisé"
         return False
 
-    def test_connection(self, pseudo, password):
-        """Fonction qui teste la connection d'un compte.
+    def test_connexion(self, pseudo, password):
+        """Teste la connexion d'un compte.
 
-        renvoie False s'il n'y a pas d'erreurs
-        renvoie un string contenant un message d'erreur s'il y a une erreur
+        Args:
+            pseudo(str): Pseudo à tester
+            password(str): Mot de passe à tester.
+
+        Returns:
+            bool/str: False --> Pas d'erreur
+                      str --> Message d'erreur
 
         Auteur : Nathan
+
         """
         self.cursor.execute("SELECT password, id FROM comptes WHERE pseudo=%s",
                             (pseudo,))
@@ -502,11 +538,17 @@ class Client_mariadb:
             else:
                 return "Le mot de passe est faux !", None
 
-    # FONCTIONS DE TYPES SET / NEW
+# endregion
+
+# FONCTIONS DE TYPES SET / NEW
     def set_perso(self, player):
-        """Fonction qui enregistre un perso dans la bdd.
+        """Enregistre un perso dans la BDD.
+
+        Args:
+            player(Player): Joueur à enregistrer.
 
         Auteur : Nathan
+
         """
         id_ = player.id_
         # on va regarder si le player a déjà un perso
@@ -563,34 +605,39 @@ class Client_mariadb:
                                        agilite = %s, magie = %s,
                                        effets_attaque = %s, bonus_esquive = %s,
                                        sorts = %s, resistances = %s,
-                                       faiblesses = %s 
-                                   WHERE id=%s;""", (perso.nom, perso.genre,
-                                    perso.race, perso.classe, perso.argent,
-                                    json.dumps(perso.experience),
-                                    json.dumps(perso.inventaire),
-                                    perso.lieu, json.dumps(perso.quetes),
-                                    json.dumps(perso.equipement), perso.vie,
-                                    perso.vie_totale, perso.energie,
-                                    perso.energie_totale, perso.charme,
-                                    perso.discretion, perso.force,
-                                    perso.agilite, perso.magie,
-                                    json.dumps(perso.effets_attaque),
-                                    perso.bonus_esquive,
-                                    json.dumps(perso.sorts),
-                                    json.dumps(perso.resistances),
-                                    json.dumps(perso.faiblesses), perso_id))
+                                       faiblesses = %s
+                                   WHERE id=%s;""",
+                                (perso.nom, perso.genre,
+                                 perso.race, perso.classe, perso.argent,
+                                 json.dumps(perso.experience),
+                                 json.dumps(perso.inventaire),
+                                 perso.lieu, json.dumps(perso.quetes),
+                                 json.dumps(perso.equipement), perso.vie,
+                                 perso.vie_totale, perso.energie,
+                                 perso.energie_totale, perso.charme,
+                                 perso.discretion, perso.force,
+                                 perso.agilite, perso.magie,
+                                 json.dumps(perso.effets_attaque),
+                                 perso.bonus_esquive,
+                                 json.dumps(perso.sorts),
+                                 json.dumps(perso.resistances),
+                                 json.dumps(perso.faiblesses), perso_id))
             self.connection.commit()
 
     def new_genre(self, genre):
         self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)", (genre,))
         self.connection.commit()
 
-    # FONCTIONS DE TYPE GET
+# region GETTERS
     def get_schema(self, table_name):
-        """Fonction qui récupère la structure de la table demandée sous forme de dictionnaire : .
-          {nom de la colonne : type de la colonne (int, text, ...)}
+        """Récupère la structure d'une table.
 
-        renvoie un dictionnaire vide si la table n'existe pas
+        Récupère la structure d'une table demandée sous forme de dictionnaire :
+        dict<str: T>, T étant le type de la colonne (int, text, ...)
+
+        Returns:
+            dict: Table existe --> Renvoie son schéma
+                  Table n'existe pas --> Renvoie un dict vide
         """
         self.cursor.execute("select * from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME=%s;", (table_name,))
         results = [elt for elt in self.cursor]
@@ -600,17 +647,21 @@ class Client_mariadb:
         return schema
 
     def get_perso(self, id_):
-        """Fonction qui récupère les données du personnage.
-        Cette fonction prend en argument l'id du compte
+        """Récupère les données du personnage.
+
+        Args:
+            id_(int): ID du compte
 
         Auteur : Nathan
+
         """
         query = """SELECT nom, genre, race, classe, argent,  experience,
                     inventaire, lieu, quetes, equipement,
                     vie, vie_totale, energie, energie_totale,
                     charme, discretion, force_, agilite, magie,
                     effets_attaque, bonus_esquive, sorts,
-                    resistances, faiblesses FROM persos INNER JOIN comptes ON comptes.perso_id = persos.id WHERE comptes.id=%s"""
+                    resistances, faiblesses FROM persos INNER JOIN comptes ON
+                    comptes.perso_id = persos.id WHERE comptes.id=%s"""
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
         if len(results) == 0:
@@ -651,9 +702,10 @@ class Client_mariadb:
         return results
 
     def get_lieux(self):
-        """Fonction qui récupère les id des lieux
+        """Récupère les ID des lieux
 
-        Author: Nathan
+        Auteur : Nathan
+
         """
         query = "SELECT id FROM lieux;"
         self.cursor.execute(query)
@@ -683,16 +735,23 @@ class Client_mariadb:
             datas["nom"] = nom
             datas["description"] = desc
             datas["type"] = type_
-            if effets != None:
+            if effets is not None:
                 datas["effets"] = json.loads(effets)
             datas["contenu"] = cont
             datas["verrouille"] = verrouille
             datas["ouvert"] = ouvert
             return datas
-            # return (nom, desc, type_, effets, cont, verrouille, ouvert)
         return None
 
     def get_data_Lieu_DB(self, id_):
+        """Renvoie les caractéristiques d'un lieu :
+
+        Args:
+            id_(int): Identifiant du Lieu
+
+        Auteur: Nathan
+
+        """
         query = "SELECT nom, appellations, description_, ennemis, pnjs, objets, lieux, appellations FROM lieux WHERE id = %s;"
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
@@ -711,40 +770,62 @@ class Client_mariadb:
         return None
 
     def get_data_Pnj_DB(self, id_):
+        """Renvoie les caractéristiques d'un ennemi
+
+        Args:
+            id_(int): Identifiant du PNJ
+
+        Auteur : Nathan
+
+        """
         query = """SELECT nom, description_, race, dialogue FROM pnjs
                    WHERE id=%s;"""
         self.cursor.execute(query, (id_,))
-        datas = {"id":-1, "nom": "Un pnj", 
-                 "description": "Un pnj. Waaa, quelle information pertinente !",
-                 "race": "humain", "dialogue": {}}
         for nom, desc, race, dialogue in self.cursor:
+            datas = {"nom": "Un pnj",
+                     "description": "Un pnj. Waaa, quelle information pertinente !",
+                     "race": "humain", "dialogue": {}}
             datas["id"] = id_
             datas["nom"] = nom
             datas["desc"] = desc
             datas["race"] = race
-            if dialogue != None:
+            if dialogue is not None:
                 datas["dialogue"] = json.loads(dialogue)
             return datas
         return None
 
     def get_data_Ennemi_DB(self, id_):
+        """Renvoie les caractéristiques d'un ennemi
+
+        Args:
+            id_(int): L'identifiant de l'ennemi
+
+        Auteur: Nathan, Hugo
+
+        """
         query = """SELECT id, type_, nom, race, description_, vie_min,
                            vie_max, attaque_min, attaque_max, attaque_effets
                     FROM ennemis WHERE id=%s"""
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
-        if len(results) > 0:
-            datas = {"id": -1, "type": "ennemi", "nom": "Un ennemi",
-                     "description": "Un ennemi. Non, sans blague !",
-                     "vie": [0, 1], "attaque": [0, 1], "attaque_effets": {}}
-            for id_ , type_, nom, race, description_, vie_min, vie_max, attaque_min, attaque_max, attaque_effets in results:
-                datas["id"] = id_
-                datas["type"] = type_
-                datas["nom"] = nom
-                datas["description"] = description_
-                datas["vie"] = [vie_min, vie_max]
-                datas["attaque"] = [attaque_min, attaque_max]
-                if attaque_effets != None:
-                    datas["attaque_effets"] = json.dumps(attaque_effets)
-                return datas
-            return None
+        datas = {
+            "id": 0,
+            "type": "ennemis",
+            "nom": "Ennemi Méchant",
+            "description": "Ennemi Qui va t'attaquer parce qu'il est Mechant et que les méchants ils attaquent les gentils...",
+            "vie": [0, 1],
+            "attaque": [0, 1],
+            "attaque_effets": {}
+        }
+        for id_, type_, nom, race, description_, vie_min, vie_max, attaque_min, attaque_max, attaque_effets in results:
+            datas["id"] = id_
+            datas["type"] = type_
+            datas["nom"] = nom
+            datas["description"] = description_
+            datas["vie"] = [vie_min, vie_max]
+            datas["attaque"] = [attaque_min, attaque_max]
+            if attaque_effets is not None:
+                datas["attaque_effets"] = json.dumps(attaque_effets)
+            return datas
+        return None
+# endregion

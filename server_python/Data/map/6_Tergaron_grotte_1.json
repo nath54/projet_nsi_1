@@ -2,7 +2,7 @@
     "id":6,
     "appellations":["grotte","grotte de Tergaron","grotte Tergaron"],
     "nom":"grotte de Tergaron",
-    "description":"Vous vous êtes enfoncé dans une grotte de Tergaron, les ennemies y sont en nombre important",
+    "description":"Vous vous êtes enfoncés dans une grotte de Tergaron, les ennemis y sont en nombre important.",
     "region":"",
     "type":"grotte",
     "objets":[],

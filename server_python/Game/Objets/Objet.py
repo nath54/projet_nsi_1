@@ -74,5 +74,6 @@ class Objet:
             for obj in self.contenu:
                 res += f"\t- {obj.nom}\n"
         else:
-            res = f"Dans ce {self.nom}, vous trouvez... À vrai dire pas grand chose."
+            res = (f"Dans ce {self.nom}, vous trouvez... "
+                   "À vrai dire pas grand chose.")
         return res

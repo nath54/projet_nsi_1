@@ -2,6 +2,7 @@ import io
 import json
 import os
 
+
 class Map:
     """Classe qui gérera la map du jeu.
 
