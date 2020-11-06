@@ -1,0 +1,25 @@
+{
+    "id":18,
+    "type": "arme",
+    "nom":"bouclier magique",
+    "description":"",
+    "perte de l'arme en attaquant à distance":true,
+    "attaque_type":"attaque unique",
+    "effets":{
+        "cout energie":{
+            "corps à corps":0.8,
+            "distance":0.8,
+            "magique":1
+        },
+        "attaque":{
+            "corps à corps":3,
+            "distance":1,
+            "magique":2
+        },
+        "defense":{
+            "corps à corps":3,
+            "distance":1,
+            "magique":2
+        }
+    }
+}

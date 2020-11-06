@@ -1,19 +1,24 @@
 {
-    "id":8,
+    "id":17,
     "type": "arme",
-    "nom":"hache",
-    "description":"ne coupe pas seulement du bois",
+    "nom":"bouclier",
+    "description":"",
     "perte de l'arme en attaquant à distance":true,
     "attaque_type":"attaque unique",
     "effets":{
         "cout energie":{
-            "corps à corps":0.5,
+            "corps à corps":0.8,
             "distance":0.8,
             "magique":null
         },
         "attaque":{
-            "corps à corps":0.8,
-            "distance":0.1,
+            "corps à corps":3,
+            "distance":1,
+            "magique":null
+        },
+        "defense":{
+            "corps à corps":3,
+            "distance":1,
             "magique":null
         }
     }

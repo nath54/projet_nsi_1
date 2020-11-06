@@ -1,0 +1,20 @@
+{
+    "id":16,
+    "type": "arme",
+    "nom":"poison",
+    "description":"OOF, ça fait mal...",
+    "perte de l'arme en attaquant à distance":true,
+    "attaque_type":"attaque unique",
+    "effets":{
+        "cout energie":{
+            "corps à corps":null,
+            "distance":0.6,
+            "magique":0.4
+        },
+        "attaque":{
+            "corps à corps":null,
+            "distance":2,
+            "magique":0.8
+        }
+    }
+}
