@@ -1,0 +1,12 @@
+{
+    "id":13,
+    "nom":"potion santée",
+    "type":"consommable",
+    "description":"elle augmente la vie entre 10 et 12.",
+    "effets":{
+        "manger":{
+            "santé":[10,12],
+            "usage_unique":true
+        }
+    }
+}
