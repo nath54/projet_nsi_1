@@ -60,7 +60,10 @@ class Lieu:
                     self.ennemis.append(self.game.Ennemi(id_ennemi[0],
                                                          self.game, nb=x))
         self.pnjs = []
-        for id_pnj in datas.get("pnjs", []):
+        pnnjs = datas.get("pnjs", [])
+        for id_pnj in pnnjs:
+            if type(id_pnj) != int:
+                continue
             self.pnjs.append(self.game.Pnj(id_pnj, self.game))
         self.persos = []
         self.objets = []

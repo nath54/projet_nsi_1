@@ -425,7 +425,7 @@ class Client_mariadb:
             self.connection.commit()
         # endregion
         # region PNJs :
-        self.cursor.execute("TRUNCATE TABLE `pnjs`")
+        self.cursor.execute("TRUNCATE TABLE pnjs")
         self.connection.commit()
         pathd = "Data/pnjs/"
         # ks : key = key of json lieu , value[0] = name of column of db lieux
