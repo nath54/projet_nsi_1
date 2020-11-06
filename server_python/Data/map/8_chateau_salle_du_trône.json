@@ -1,0 +1,12 @@
+{
+    "id":8,
+    "appellations":["chateau","chateau de Tergaron","chateau Tergaron","chateau de la ville Tergaron","Tergaron chateau"],
+    "nom":"La salle du trône du chataeu de Tergaron",
+    "region":"Larion",
+    "description":"La salle du trône du chataeu de Tergaron, le roi est assis sur son trône ,il a l'air sérieux.",
+    "type":"chateau",
+    "pnjs":[[3,2],4],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[]
+}

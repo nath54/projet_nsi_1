@@ -1,0 +1,23 @@
+{
+    "id":2,
+    "type":"pnj",
+    "nom":"garde",
+    "race":"humain",
+    "description":"Un garde que personne n'aiment.",
+    "lieu":[7],
+    "dialogues":{
+        "...":{
+            "Bonjour":{
+                "...":null
+            },
+            "Je vois que prennez votre travail très au serieux":{
+                "...":{
+                    "Pouvez vous me répondre ? J'aimerai parler au roi !":{
+                        "...":null
+                    },
+                    "Bon je part":null
+                }
+            }
+        }
+    }
+}

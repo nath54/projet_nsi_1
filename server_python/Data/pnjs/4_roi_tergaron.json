@@ -1,0 +1,13 @@
+{
+    "id":4,
+    "type":"pnj",
+    "nom":"Artur dogabert",
+    "race":"humain",
+    "description":"Le roi de tergaron est juste et bon avec tout les habitant de Tergaron.",
+    "lieu":[8],
+    "dialogues":{
+        "Quéte principale":{
+
+        }
+    }
+}

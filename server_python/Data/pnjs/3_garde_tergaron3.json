@@ -1,0 +1,23 @@
+{
+    "id":3,
+    "type":"pnj",
+    "nom":"garde",
+    "race":"humain",
+    "description":"Un garde.",
+    "lieu":[8],
+    "dialogues":{
+        "Avez vous parlé au roi ?":{
+            "oui":{
+            },
+            "non":{
+                "Je vois que vous prennez votre travail très au serieux":{
+                    "...":{
+                        "Vous savez donc quoi faire.":{
+                            "Bien sur":null
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
