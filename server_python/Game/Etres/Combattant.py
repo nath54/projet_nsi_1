@@ -105,7 +105,7 @@ class Combattant(Etre):
                     temps_restant = 0
                     # ! A changer ! il faudra récupérer le temps d'un effet
                     cible.effets[effet] = temps_restant
-            if cible.type_ == "ennemis":
+            if cible.type_ in ["ennemis", "ennemi"]:
                 enleve = self.test_mort_cible(cible)
             else:
                 enleve = self.test_mort()

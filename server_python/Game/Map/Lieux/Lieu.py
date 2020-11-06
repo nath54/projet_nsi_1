@@ -116,4 +116,6 @@ Vous êtes dans {self.nom}
         return self.aff()
 
     def suppr_ennemi(self, enn):
+        print("enleve\n", len(self.ennemis))
         self.ennemis.remove(enn)
+        print(len(self.ennemis))
