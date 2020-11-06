@@ -102,7 +102,7 @@ class Server:
             "message": {"com": ["message"],
                         "help": """""",
                         "fini": False},
-            "attaque": {"com": ["attaquer", "taper", "tabasser"],
+            "attaquer": {"com": ["attaquer", "taper", "tabasser"],
                         "help": """""",
                         "fini": False},
             "sort": {"com": ["sortilege", "sort", "magie"],
