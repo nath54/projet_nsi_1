@@ -1,0 +1,13 @@
+{
+    "id":14,
+    "type":"armure",
+    "nom":"Armure magique",
+    "description":"Comme son nom l'indique,cette armure est magique : impressionant n'est-ce pas?.",
+    "effets":{
+        "défense":{
+            "corps à corps": [4,7],
+            "magique": [10,15],
+            "distance": [4,7]
+        }
+    }
+}
