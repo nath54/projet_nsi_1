@@ -89,18 +89,26 @@ class Combattant(Etre):
 
     def attaque_cible(self, cible):
         r = random.randint(0, 100)
+        msg = "Il ne s'est rien passé"
         if r > cible.esquive:
             # l'attaque est réussie
             degats = random.randint(self.attaque[0], self.attaque[1])
             cible.vie -= degats
+            if cible.vie < 0:
+                cible.vie = 0
+            msg = f"{cible.nom} a subit {degats} dégats, il a maintenant {cible.vie} pv."
             for effet in self.effets_attaque.keys():
                 r = random.randint(0, 100)
                 if r <= self.effets_attaque[effet]:
                     # l'effet est infligé à l'adversaire
+                    msg += f"\n{cible.nom} a subit l'effet {effet} !"
                     temps_restant = 0
                     # ! A changer ! il faudra récupérer le temps d'un effet
                     cible.effets[effet] = temps_restant
             cible.test_mort()
+        else:
+            msg = f"{cible.nom} a esquivé l'attaque"
+        return msg
 
     def test_mort(self):
         if self.vie <= 0:

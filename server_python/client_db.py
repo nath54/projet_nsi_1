@@ -425,7 +425,7 @@ class Client_mariadb:
             self.connection.commit()
         # endregion
         # region PNJs :
-        self.cursor.execute("TRUNCATE TABLE `pnjs`")
+        self.cursor.execute("TRUNCATE TABLE pnjs")
         self.connection.commit()
         pathd = "Data/pnjs/"
         # ks : key = key of json lieu , value[0] = name of column of db lieux
@@ -554,8 +554,10 @@ class Client_mariadb:
         # on va regarder si le player a déjà un perso
         self.cursor.execute("SELECT perso_id FROM comptes WHERE id=%s;", (id_,))
         results = [elt for elt in self.cursor]
-        perso_id = results[0] if len(results) > 1 else None
+        print("Results", str(results))
+        perso_id = results[0][0] if len(results) >= 1 else None
         perso = player.perso
+        inventaire = [[obj[0].index, obj[1]] for obj in perso.inventaire]
         if perso_id is None:
             # si non on va lui en créer un
             self.cursor.execute("""INSERT INTO persos
@@ -584,10 +586,8 @@ class Client_mariadb:
                                  json.dumps(perso.resistances),
                                  json.dumps(perso.faiblesses)))
             self.connection.commit()
-            #
             self.cursor.execute("SELECT id FROM persos WHERE nom = %s AND race = %s AND classe = %s AND genre = %s ORDER BY id DESC;", (perso.nom, perso.race, perso.classe, perso.genre))
             perso_id = [elt[0] for elt in self.cursor][0]
-            #
             self.cursor.execute("""UPDATE comptes SET perso_id = %s
                                    WHERE comptes.id = %s;
                                 """, (perso_id, player.id_))
@@ -610,7 +610,7 @@ class Client_mariadb:
                                 (perso.nom, perso.genre,
                                  perso.race, perso.classe, perso.argent,
                                  json.dumps(perso.experience),
-                                 json.dumps(perso.inventaire),
+                                 json.dumps(inventaire),
                                  perso.lieu, json.dumps(perso.quetes),
                                  json.dumps(perso.equipement), perso.vie,
                                  perso.vie_totale, perso.energie,

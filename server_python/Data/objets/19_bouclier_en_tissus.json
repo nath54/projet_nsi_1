@@ -1,0 +1,25 @@
+{
+    "id":19,
+    "type": "arme",
+    "nom":"bouclier en tissus",
+    "description":"il ne sert pas a grand chose...c'est un accessoire de mode",
+    "perte de l'arme en attaquant à distance":true,
+    "attaque_type":"attaque unique",
+    "effets":{
+        "cout energie":{
+            "corps à corps":0.1,
+            "distance":0.1,
+            "magique":null
+        },
+        "attaque":{
+            "corps à corps":0.1,
+            "distance":null,
+            "magique":null
+        },
+        "defense":{
+            "corps à corps":0.1,
+            "distance":null,
+            "magique":null
+        }
+    }
+}

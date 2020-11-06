@@ -318,12 +318,15 @@ class Server:
         Auteur: Nathan
 
         """
+        self.save(client)
         print("Connexion fermée", client)
         self.send(client, json.dumps({"type": "connection fermée"}))
         del(self.clients[client])
 
     def save(self, client):
-        pass
+        player = self.clients[client]["player"]
+        print(player)
+        self.client_db.set_perso(player)
 
     # region Commandes
     def commandes(self, client, data):
@@ -484,7 +487,14 @@ class Server:
         elif is_one_of(action, self.commandes_dat["message"]["com"]):
             pass
         elif is_one_of(action, self.commandes_dat["attaquer"]["com"]):
-            pass
+            ennemi_cible = None
+            if len(args) >= 1:
+                for en in self.game.map_.lieux[perso.lieu]:
+                    if are_texts_equals(args[0], en.nom) or traiter_txt(" ".join(args)).startswith(traiter_txt(en.nom)):
+                        ennemi_cible = en
+            if ennemi_cible is not None:
+                msg_result = perso.attaque_cible(ennemi_cible)
+                self.send(client, {"type": "message", "value": msg_result})
         elif is_one_of(action, self.commandes_dat["sort"]["com"]):
             pass
         elif data_len <= 2:
