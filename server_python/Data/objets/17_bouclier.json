@@ -2,7 +2,7 @@
     "id":17,
     "type": "arme",
     "nom":"bouclier",
-    "description":"",
+    "description":"Le bouclier est l'arme défensive la plus ancienne et destinée à parer une attaque",
     "perte de l'arme en attaquant à distance":true,
     "attaque_type":"attaque unique",
     "effets":{
