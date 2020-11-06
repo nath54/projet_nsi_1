@@ -350,6 +350,11 @@ class Server:
         print("data_len : ", data_len)
         print("len args : ", len(args))
 
+        tour = False  # si le perso a fait un tour
+
+        # TODO : Il faudra appeler une fonction qui va executer les effets que
+        # le personnage a pour commencer son tour
+
         # Les premieres commandes sont des commandes à 0 ou plus arguments
         # commande aide : affiche le message d'aide
         if is_one_of(action, self.commandes_dat["aide"]["com"]):
@@ -518,8 +523,9 @@ class Server:
         elif is_one_of(action, self.commandes_dat["aller"]["com"]):
             lieu = self.game.map_.lieux[perso.lieu]
             is_valid = False
-            if args[0] in ["ouest", "est", "nord", "sud", "nord-ouest",
-                           "nord-est", "sud-ouest", "sud-est"]:
+            directions = ["ouest", "est", "nord", "sud", "nord-ouest",
+                          "nord-est", "sud-ouest", "sud-est"]
+            if args[0] in directions:
                 for id_lieu, action in lieu.lieux_accessibles:
                     if action == args[0]:
                         self.send(client, {"type": "message", "value": f"Vous vous déplacez vers {lieu.nom}.\n{lieu.aff()}"}, True)
@@ -572,8 +578,10 @@ class Server:
         elif is_one_of(action, self.commandes_dat["mettre"]["com"]):
             pass
 
-        # TODO
-        pass
+        if tour:
+            # TODO: Faire que les ennemis font leurs tour
+            # Il faudra aussi afficher aux autres joueurs ce que ce joueur a fait
+            pass
 
     def invent_multi_args(self, perso, data):
         """Si la commande entrée est 'inventaire ...'.
