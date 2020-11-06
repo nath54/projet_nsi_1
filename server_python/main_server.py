@@ -325,7 +325,6 @@ class Server:
 
     def save(self, client):
         player = self.clients[client]["player"]
-        print(player)
         self.client_db.set_perso(player)
 
     # region Commandes
@@ -489,7 +488,7 @@ class Server:
         elif is_one_of(action, self.commandes_dat["attaquer"]["com"]):
             ennemi_cible = None
             if len(args) >= 1:
-                for en in self.game.map_.lieux[perso.lieu]:
+                for en in self.game.map_.lieux[perso.lieu].ennemis:
                     if are_texts_equals(args[0], en.nom) or traiter_txt(" ".join(args)).startswith(traiter_txt(en.nom)):
                         ennemi_cible = en
             if ennemi_cible is not None:

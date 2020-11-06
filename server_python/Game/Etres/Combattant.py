@@ -105,13 +105,24 @@ class Combattant(Etre):
                     temps_restant = 0
                     # ! A changer ! il faudra récupérer le temps d'un effet
                     cible.effets[effet] = temps_restant
-            cible.test_mort()
+            if cible.type_ == "ennemis":
+                enleve = self.test_mort_cible(cible)
+            else:
+                enleve = self.test_mort()
+            if enleve:
+                msg += "\nL'ennemi est mort."
         else:
             msg = f"{cible.nom} a esquivé l'attaque"
         return msg
 
     def test_mort(self):
         if self.vie <= 0:
-            # TODO : informer le moteur du jeu que le combattant est mort et
-            # qu'il faut le supprimer du coup
-            pass
+            self.game.map_.lieux[self.lieu].suppr_ennemi(self)
+            return True
+        return False
+
+    def test_mort_cible(self, cible):
+        if cible.vie <= 0:
+            self.game.map_.lieux[self.lieu].suppr_ennemi(cible)
+            return True
+        return False
