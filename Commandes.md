@@ -12,4 +12,4 @@ Voici les commandes que vous pouvez utiliser en jeu :
     * Erreur : Si le client envoie un message après avoir quitté, le serveur crash
 * `attendre` : AUCUNE IDéE
 * `equiper` : Equipe un objet
-* `désequiper` : Deséquipe un objet
+* `desequiper` : Deséquipe un objet

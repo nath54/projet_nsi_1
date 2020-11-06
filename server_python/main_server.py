@@ -322,6 +322,9 @@ class Server:
         self.send(client, json.dumps({"type": "connection fermée"}))
         del(self.clients[client])
 
+    def save(self, client):
+        pass
+
     # region Commandes
     def commandes(self, client, data):
         """Éxecute les commandes entrée par l'utilisateur.
@@ -342,7 +345,8 @@ class Server:
         print("len args : ", len(args))
 
         # Les premieres commandes sont des commandes à 0 ou plus arguments
-        if is_one_of(action, self.commandes["aide"]["com"])
+        if is_one_of(action, self.commandes["aide"]["com"]):
+            pass
         if is_one_of(action, ["voir"]):
             self.send(client, {"type": "message", "value": self.game.map_.lieux[perso.lieu].aff()}, True)
         elif is_one_of(action, self.commandes["inventaire"]["com"]):
@@ -393,7 +397,7 @@ class Server:
                 self.send(client, {"type": "message", "value": "Si je ne vois pas l'objet, dois-je essayer d'en imaginer une description foireuse ?"}, True)
             else:
                 self.send(client, {"type": "message", "value": f"{obj_cible.__repr__()}"}, True)
-        elif is_one_of(action, self.commandes["prendre"]):
+        elif is_one_of(action, self.commandes["prendre"]["com"]):
             if obj_cible is None:
                 mess = "Honnêtement, j'adore le concept. Mais l'objet existe pas. Ou il est pas là. Au choix !"
                 self.send(client, {"type": "message", "value": mess}, True)

@@ -67,9 +67,10 @@ def are_texts_equals(text_1, text_2):
 
 
 def is_one_of(text, liste):
-    """Fonction qui teste si l'élément text traité est dans la liste des elements traités
+    """Teste si l'élément text traité est dans la liste des éléments traités
 
     Author: Nathan
+
     """
     t = traiter_txt(text)
     for elt in liste:
