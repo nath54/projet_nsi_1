@@ -48,10 +48,15 @@ function colorie_commande(txt){
     if(t.length>0){
         switch (t[0]){
             //commandes à 0 arguments
-            case "inventaire":
-            case "equipement":
-            case "attendre":
+            case "aide":
+            case "help":
+            case "commandes":
             case "voir":
+            case "inventaire":
+            case "equipements":
+            case "quit":
+            case "exit":
+            case "attendre":
                 var nl = [];
                 for(x=1; x<t.length; x++){
                     nl.push(t[x]);
@@ -59,20 +64,9 @@ function colorie_commande(txt){
                 var p = create_text([[t[0],"red"],[" "+nl.join(" "),"blue"]]);
                 elts_s.push(p);
                 break;
-            
+
             //commandes à 1 arguments sur
-            case "desequiper":
-            case "equiper":
-            case "examiner":
-            case "fouiller":
-            case "prendre":
-            case "jeter":
-            case "consommer":
-            case "ouvrir":
-            case "fermer":
-            case "aller":
-            case "parler":
-            case "attaquer":
+            case "":
                 if(t.length>=2){
                     var nl = [];
                     for(x=2; x<t.length; x++){
@@ -82,9 +76,10 @@ function colorie_commande(txt){
                     elts_s.push(p);
                     break;
                 }
-            
+
             //commandes à 2 arguments sur
             case "mettre":
+            case "ranger":
             case "sortilege":
                 if(t.length>=3){
                     var nl = [];
@@ -109,7 +104,28 @@ function colorie_commande(txt){
                 }
 
             //commandes à n arguments sur
-            case "commande avec tout comme arguments":
+            case "aller":
+            case "bouger":
+            case "desequiper":
+            case "equiper":
+            case "entrer":
+            case "rentrer":
+            case "sortir":
+            case "quitter":
+            case "examiner":
+            case "prendre":
+            case "ramasser":
+            case "jeter":
+            case "lacher":
+            case "ouvrir":
+            case "fermer":
+            case "parler":
+            case "discuter":
+            case "attaquer":
+            case "taper":
+            case "tabasser":
+            case "message":
+            case "utiliser":
                 var nl = [];
                 for(x=1; x<t.length; x++){
                     nl.push(t[x]);
@@ -117,9 +133,9 @@ function colorie_commande(txt){
                 var p = create_text([[t[0],"red"],[" "+nl.join(" "),"yellow"]]);
                 elts_s.push(p);
                 break;
-            
+
             //Des commandes à nombre d'arguments multiples ici :
-            
+
             //quand il y a rien
             default:
                 var p = document.createElement("pre");
@@ -128,7 +144,6 @@ function colorie_commande(txt){
                 elts_s.push(p);
         }
     }
-    
     return elts_s;
 }
 

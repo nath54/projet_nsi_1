@@ -66,7 +66,7 @@ class Server:
             "stats": {"com": ["stats", "statistiques"],
                       "help": """Affiche les stats du perso""",
                       "fini": True},
-            "quit": {"com": ["quit", "quitter", "exit"],
+            "quit": {"com": ["quit", "exit"],
                      "help": """Quitte le jeu""",
                      "fini": False},
             "attendre": {"com": ["attendre"],
@@ -121,6 +121,9 @@ class Server:
                        "help": """Met un objet dans un objet de type conteneur""",
                        "fini": False},
         }
+        directions = ["ouest", "est", "nord", "sud", "nord-ouest",
+                      "nord-est", "sud-ouest", "sud-est"]
+        self.directions = [traiter_txt(d) for d in directions]
 
     def start(self):
         """Lance le serveur.
@@ -163,10 +166,6 @@ class Server:
         while 1:
             (client, info) = self.server.accept()
             _thread.start_new_thread(self.handle, (client, info))
-
-        directions = ["ouest", "est", "nord", "sud", "nord-ouest",
-                      "nord-est", "sud-ouest", "sud-est"]
-        self.directions = [traiter_txt(d) for d in directions]
 
     def handle(self, client, infos):
         """Gère l'interaction serveur-client.
@@ -663,8 +662,8 @@ class Server:
             for en in self.game.map_.lieux[perso.lieu].ennemis:
                 en.tour(self.game.map_.lieux[perso.lieu])
             # affichage de l'action du joueur au autres
-            if texte_fait != "":
-                self.send_all_except_c(client, json.dumps({"type": "message", "value": texte_fait}))
+        if texte_fait != "":
+            self.send_all_except_c(client, json.dumps({"type": "message", "value": texte_fait}))
 
     def invent_multi_args(self, perso, data):
         """Si la commande entrée est 'inventaire ...'.
