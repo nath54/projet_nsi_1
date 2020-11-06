@@ -350,8 +350,8 @@ class Server:
             for key in self.commandes_dat.keys():
                 t = "'" + "', '".join(self.commandes_dat[key]["com"]) + "'"
                 tt = self.commandes_dat[key]["help"]
-                ttt = "Commande qui fonctionne" if self.commandes_dat[key]["fini"] else "Commande qui n'a pas eu la chance d'être travaillée par les developpeurs tres serieux de ce jeu."
-                txt_help += f"\n\t- {t} : {tt}"
+                ttt = "Fonctionne" if self.commandes_dat[key]["fini"] else "Ne fonctionne pas"
+                txt_help += f"\n\t- {t} : {tt} [{ttt}]"
             self.send(client, {"type": "message", "value": txt_help}, True)
         if is_one_of(action, ["voir"]):
             self.send(client, {"type": "message", "value": self.game.map_.lieux[perso.lieu].aff()}, True)
