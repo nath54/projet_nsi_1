@@ -1,0 +1,12 @@
+{
+    "id":9,
+    "appellations":["auberge","taverne"],
+    "nom":"une auberge",
+    "region":"Larion",
+    "description":"Cette auberge sert beaucoup de truant, les chambre ne doivent pas être très acceuillante",
+    "type":"ville",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[]
+}
