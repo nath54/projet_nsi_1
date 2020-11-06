@@ -325,7 +325,6 @@ class Server:
 
     def save(self, client):
         player = self.clients[client]["player"]
-        print(player)
         self.client_db.set_perso(player)
 
     # region Commandes

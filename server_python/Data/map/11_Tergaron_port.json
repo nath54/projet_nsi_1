@@ -1,0 +1,12 @@
+{
+    "id":11,
+    "appellations":["port Tergaron","Le port"],
+    "nom":"Le port de Tergaron",
+    "region":"Larion",
+    "description":"Ce port est un grand port marchand",
+    "type":"ville",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[]
+}

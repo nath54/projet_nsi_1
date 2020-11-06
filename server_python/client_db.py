@@ -624,6 +624,32 @@ class Client_mariadb:
                                  json.dumps(perso.faiblesses), perso_id))
             self.connection.commit()
 
+    def save_map(self, map):
+        """Permet de sauvegarder la carte.
+
+        Args:
+            map(Map): Instance de la carte
+
+        Auteur: Hugo
+
+        """
+        for lieu in map.lieux.values():
+            save_lieu(lieu)
+
+
+    def save_lieu(self, lieu):
+        """Permet de sauvegarder un lieu.
+
+        Args:
+            lieu(Lieu): Lieu à sauvegarder
+
+        Auteur: Hugo
+
+        """
+        query = """UPDATE persos
+                   SET nom = %s, description = %s, ennemis = %s,
+                       """
+
     def new_genre(self, genre):
         self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)", (genre,))
         self.connection.commit()
