@@ -1,0 +1,20 @@
+{
+    "id":20,
+    "type": "arme",
+    "nom":"salve de fleche",
+    "description":"ça veut rien dire, mais manque d'inspi, tout ça...",
+    "perte de l'arme en attaquant à distance":true,
+    "attaque_type":"attaque multiple",
+    "effets":{
+        "cout energie":{
+            "corps à corps":null,
+            "distance":2,
+            "magique":null
+        },
+        "attaque":{
+            "corps à corps":null,
+            "distance":6,
+            "magique":null
+        }
+    }
+}
