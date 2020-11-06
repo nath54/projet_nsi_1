@@ -522,6 +522,7 @@ class Server:
                            "nord-est", "sud-ouest", "sud-est"]:
                 for id_lieu, action in lieu.lieux_accessibles:
                     if action == args[0]:
+                        self.send(client, {"type": "message", "value": f"Vous vous déplacez vers {lieu.nom}.\n{lieu.aff()}"}, True)
                         perso.lieu = id_lieu
                         is_valid = True
             else:
