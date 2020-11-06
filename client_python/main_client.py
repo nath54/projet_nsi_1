@@ -98,7 +98,7 @@ class Client:
         if self.host == "":
             self.host = "localhost"
         self.port = 9876
-        self.max_size = 1024
+        self.max_size = 2048
         self.client = None
 
         self.encours = True

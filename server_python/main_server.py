@@ -41,7 +41,7 @@ class Server:
         """Initialise le serveur de jeu."""
         self.host = ""
         self.port = 9876
-        self.max_size = 1024
+        self.max_size = 2048
         self.clients = {}
         self.server = None
         self.game = Game(jload)
