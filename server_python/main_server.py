@@ -50,7 +50,7 @@ class Server:
         self.version = 1
         self.nom_du_jeu = "Py RPG MasterClass Option text multijoueur"
         #
-        self.commandes = {
+        self.commandes_dat = {
             "aide": {"com": ["aide", "help", "commandes"],
                      "help": """""",
                      "fini": False},
@@ -345,39 +345,39 @@ class Server:
         print("len args : ", len(args))
 
         # Les premieres commandes sont des commandes à 0 ou plus arguments
-        if is_one_of(action, self.commandes["aide"]["com"]):
+        if is_one_of(action, self.commandes_dat["aide"]["com"]):
             pass
         if is_one_of(action, ["voir"]):
             self.send(client, {"type": "message", "value": self.game.map_.lieux[perso.lieu].aff()}, True)
-        elif is_one_of(action, self.commandes["inventaire"]["com"]):
+        elif is_one_of(action, self.commandes_dat["inventaire"]["com"]):
             if len(args) == 0 or args[0] == "":
                 self.send(client, {"type": "message", "value": perso.format_invent()}, True)
             else:
                 self.invent_multi_args(client, data)
-        elif is_one_of(action, self.commandes["equipement"]["com"]):
+        elif is_one_of(action, self.commandes_dat["equipement"]["com"]):
             self.send(client, {"type": "message", "value": perso.format_equip()}, True)
-        elif is_one_of(action, self.commandes["stats"]["com"]):
+        elif is_one_of(action, self.commandes_dat["stats"]["com"]):
             if len(args) == 0:
                 print("stats :", perso.format_stats())
                 self.send(client, {"type": "message", "value": perso.format_stats()}, True)
             else:
                 pass  # TODO: Afficher stats d'un autre Etre (bof)
-        elif is_one_of(action, self.commandes["quit"]["com"]):
+        elif is_one_of(action, self.commandes_dat["quit"]["com"]):
             self.on_close(client)
-        elif is_one_of(action, self.commandes["attendre"]["com"]):  # Bof
+        elif is_one_of(action, self.commandes_dat["attendre"]["com"]):  # Bof
             pass
         elif data_len <= 1:
             self.send(client, {"type": "message", "value": "Commande inconnue"}, True)
 
         # Ce qui suit sont des commandes avec au moins 1 argument
-        elif is_one_of(action, self.commandes["desequiper"]["com"]):
+        elif is_one_of(action, self.commandes_dat["desequiper"]["com"]):
             b = perso.desequiper(args[0])
             if b:
                 mess = f"Vous avez retiré {args[0]} !"
             else:
                 mess = f"Vous n'aviez pas de {args[0]} sur vous..."
             self.send(client, {"type": "message", "value": mess}, True)
-        elif is_one_of(action, self.commandes["equiper"]["com"]):
+        elif is_one_of(action, self.commandes_dat["equiper"]["com"]):
             b = perso.equiper(args[0])
             if b:
                 mess = f"Vous avez équipé {args[0]}"
@@ -392,12 +392,12 @@ class Server:
                     obj_cible = obj
                     break
 
-        if is_one_of(action, self.commandes["examiner"]["com"]):
+        if is_one_of(action, self.commandes_dat["examiner"]["com"]):
             if obj_cible is None:
                 self.send(client, {"type": "message", "value": "Si je ne vois pas l'objet, dois-je essayer d'en imaginer une description foireuse ?"}, True)
             else:
                 self.send(client, {"type": "message", "value": f"{obj_cible.__repr__()}"}, True)
-        elif is_one_of(action, self.commandes["prendre"]["com"]):
+        elif is_one_of(action, self.commandes_dat["prendre"]["com"]):
             if obj_cible is None:
                 mess = "Honnêtement, j'adore le concept. Mais l'objet existe pas. Ou il est pas là. Au choix !"
                 self.send(client, {"type": "message", "value": mess}, True)
@@ -406,7 +406,7 @@ class Server:
                 perso.add_to_invent(obj.index)
                 self.game.map_.lieux[perso.lieu].objets.remove(obj_cible)
                 self.send(client, {"type": "message", "value": f"Vous avez pris le/la {obj.nom}."})
-        elif is_one_of(action, self.commandes["jeter"]["com"]):
+        elif is_one_of(action, self.commandes_dat["jeter"]["com"]):
             arg = args[0]
             qt = args[1] if len(args) > 1 else 1
             if type(qt) != int:
@@ -429,7 +429,7 @@ class Server:
                             del perso.inventaire[i]
                         else:
                             perso.inventaire[i][1] -= qt
-        elif is_one_of(action, self.commandes["ouvrir"]["com"]):
+        elif is_one_of(action, self.commandes_dat["ouvrir"]["com"]):
             if obj_cible.type == "contenant":
                 if obj_cible.ouvert:
                     mess = "Cet objet est déjà ouvert..."
@@ -438,7 +438,7 @@ class Server:
             else:
                 mess = "Comment ouvrir un objet qui ne possède pas d'ouverture..."
             self.send(client, {"type": "message", "value": mess}, True)
-        elif is_one_of(action, self.commandes["fermer"]["com"]):
+        elif is_one_of(action, self.commandes_dat["fermer"]["com"]):
             if obj_cible.type == "contenant":
                 if obj_cible.ouvert:
                     mess = f"Vous avez refermé le {obj_cible.nom}."
@@ -447,7 +447,7 @@ class Server:
             else:
                 mess = "Fermer un objet qui ne se ferme pas... Original."
             self.send(client, {"type": "message", "value": mess}, True)
-        elif is_one_of(action, self.commandes["aller"]["com"]):
+        elif is_one_of(action, self.commandes_dat["aller"]["com"]):
             lieu = self.game.map_.lieux[perso.lieu]
             is_valid = False
             if args[0] in ["ouest", "est", "nord", "sud", "nord-ouest",
@@ -473,22 +473,22 @@ class Server:
             if not is_valid:
                 self.send(client, {"type": "message", "value": "Le lieu que vous voulez visiter n'est pas disponible. En effet, il semble qu'il n'existe que dans votre tête. Quel dommage, il avait l'air magnifique !"}, True)
             pass
-        elif is_one_of(action, self.commandes["parler"]["com"]):
+        elif is_one_of(action, self.commandes_dat["parler"]["com"]):
             pass
-        elif is_one_of(action, self.commandes["message"]["com"]):
+        elif is_one_of(action, self.commandes_dat["message"]["com"]):
             pass
-        elif is_one_of(action, self.commandes["attaquer"]["com"]):
+        elif is_one_of(action, self.commandes_dat["attaquer"]["com"]):
             pass
-        elif is_one_of(action, self.commandes["sort"]["com"]):
+        elif is_one_of(action, self.commandes_dat["sort"]["com"]):
             pass
         elif data_len <= 2:
             self.send(client, "Commande inconnue", True)
             pass  # Action avec plus de 2 paramètres au-delà
 
         # Ce qui suit sont des commandes avec au moins 2 argument ou plus
-        elif is_one_of(action, self.commandes["utiliser"]["com"]):
+        elif is_one_of(action, self.commandes_dat["utiliser"]["com"]):
             pass  # Utiliser un objet sur un autre
-        elif is_one_of(action, self.commandes["mettre"]["com"]):
+        elif is_one_of(action, self.commandes_dat["mettre"]["com"]):
             pass
 
         # TODO
