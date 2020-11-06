@@ -253,6 +253,7 @@ class Client:
             # try:
             msg = self.client.recv(self.max_size)
             msg = msg.decode(encoding="utf-8")
+            print("recu : ", msg)
             # print("recu : ", json.loads(msg))
             if len(msg) == 0:
                 raise UserWarning("message vide")
@@ -432,7 +433,7 @@ class Client:
             if len(t) >= 1:
                 if txt.startswith("/cheat "):
                     a = " ".join(t[1:])
-                    dict_ = {"type": "commande", "commande": a}
+                    dict_ = {"type": "cheat_code", "commande": a}
                     self.send(json.dumps(dict_))
                 else:
                     c = t[0]

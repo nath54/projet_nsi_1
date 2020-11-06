@@ -1,4 +1,5 @@
 import random
+import json
 
 
 def cheat_code(server, client, commande):
@@ -20,9 +21,7 @@ def cheat_code(server, client, commande):
         # game.objets (du soin)
         pass
     if commande == "666":
-        print("Vous avez passé un pacte avec le Diable. Cependant, la flemme "
-              "des développeurs fait que cela ne change rien à votre vie. "
-              "Soyez heureux !")
+        server.send(client, json.dumps({"type": "message", "value": "Vous avez passé un pacte avec le Diable. Cependant, la flemme des développeurs fait que cela ne change rien à votre vie. Soyez heureux !"}))
         pass
         # game.objets
     if commande == "Excalibur":
@@ -49,5 +48,5 @@ def cheat_code(server, client, commande):
         action_faite = True
     # ...
     else:
-        print("non mais ca va pas, ce n'est pas bien de tricher")
+        server.send(client, json.dumps({"type": "message", "value": "non mais ca va pas, ce n'est pas bien de tricher"})
     return action_faite

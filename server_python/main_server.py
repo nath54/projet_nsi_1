@@ -366,7 +366,7 @@ class Server:
         elif is_one_of(action, self.commandes_dat["equipement"]["com"]):
             self.send(client, {"type": "message", "value": perso.format_equip()}, True)
         elif is_one_of(action, self.commandes_dat["stats"]["com"]):
-            if len(args) == 0:
+            if len(args) <= 1:
                 print("stats :", perso.format_stats())
                 self.send(client, {"type": "message", "value": perso.format_stats()}, True)
             else:
