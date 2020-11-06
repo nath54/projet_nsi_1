@@ -74,10 +74,10 @@ class Server:
                          "fini": False},
             "desequiper": {"com": ["desequiper"],
                            "help": """Desequipe un objet""",
-                           "fini": False},
+                           "fini": True},
             "equiper": {"com": ["equiper"],
                         "help": """Equipe un objet""",
-                        "fini": False},
+                        "fini": True},
             "examiner": {"com": ["examiner"],
                          "help": """Affiche la description d'un objet""",
                          "fini": True},
@@ -89,22 +89,28 @@ class Server:
                       "fini": True},
             "ouvrir": {"com": ["ouvrir"],
                        "help": """Ouvre un objet qui s'ouvre""",
-                       "fini": False},
+                       "fini": True},
             "fermer": {"com": ["fermer"],
                        "help": """Ferme un objet qui se ferme""",
-                       "fini": False},
+                       "fini": True},
             "aller": {"com": ["aller", "bouger"],
                       "help": """Déplace le personnage dans un autre lieu""",
                       "fini": True},
+            "entrer": {"com": ["entrer", "rentrer"],
+                       "help": """Le personnage rentre dans un lieu (exemple : une maison)""",
+                       "fini": True},
+            "sortir": {"com": ["sortir", "quitter"],
+                       "help": """Le personnage sort d'un lieu (exemple : une maison)""",
+                       "fini": True},
             "parler": {"com": ["parler", "discuter"],
                        "help": """Parle avec un pnj""",
                        "fini": False},
             "message": {"com": ["message"],
                         "help": """Envoie un message dans le chat du jeu""",
-                        "fini": False},
-            "attaquer": {"com": ["attaquer", "taper", "tabasser"],
+                        "fini": True},
+            "attaquer": {"com": ["attaquer", "taper", "tabasser", "frapper"],
                          "help": """Attaque un ennemi""",
-                         "fini": False},
+                         "fini": True},
             "sort": {"com": ["sortilege", "sort", "magie"],
                      "help": """Lance un sortilege""",
                      "fini": False},
@@ -157,6 +163,10 @@ class Server:
         while 1:
             (client, info) = self.server.accept()
             _thread.start_new_thread(self.handle, (client, info))
+
+        directions = ["ouest", "est", "nord", "sud", "nord-ouest",
+                      "nord-est", "sud-ouest", "sud-est"]
+        self.directions = [traiter_txt(d) for d in directions]
 
     def handle(self, client, infos):
         """Gère l'interaction serveur-client.
@@ -350,6 +360,8 @@ class Server:
         print("data_len : ", data_len)
         print("len args : ", len(args))
 
+        texte_fait = ""
+        nom_perso = self.clients[client]["player"].perso.nom
         tour = False  # si le perso a fait un tour
 
         # TODO : Il faudra appeler une fonction qui va executer les effets que
@@ -400,6 +412,7 @@ class Server:
             b = perso.desequiper(args[0])
             if b:
                 mess = f"Vous avez retiré {args[0]} !"
+                texte_fait = f"{nom_perso} a déséquipé {args[0]}"
             else:
                 mess = f"Vous n'aviez pas de {args[0]} sur vous..."
             self.send(client, {"type": "message", "value": mess}, True)
@@ -408,6 +421,7 @@ class Server:
             b = perso.equiper(args[0])
             if b:
                 mess = f"Vous avez équipé {args[0]}"
+                texte_fait = f"{nom_perso} a équipé {args[0]}"
             else:
                 mess = f"Vous ne possédez pas '{args[0]}'"
             self.send(client, {"type": "message", "value": mess}, True)
@@ -466,6 +480,7 @@ class Server:
                 perso.add_to_invent(obj.index)
                 self.game.map_.lieux[perso.lieu].objets.remove(obj_cible)
                 self.send(client, {"type": "message", "value": f"Vous avez pris le/la {obj.nom}."})
+                texte_fait = f"{nom_perso} a pris {obj.nom}"
         # commande jeter
         elif is_one_of(action, self.commandes_dat["jeter"]["com"]):
             mess = "Impossible de jeter cet objet, vous avez vérifié au moins que vous le possedez ?"
@@ -491,11 +506,14 @@ class Server:
                             del perso.inventaire[i]
                             if qt == 1:
                                 mess = f"Vous avez jeté votre {obj[0].nom} !"
+                                texte_fait = f"{nom_perso} a jeté un/une {obj[0].nom}"
                             else:
                                 mess = f"Vous avez jeté tous vos {obj[0].nom} !"
+                                texte_fait = f"{nom_perso} a jeté tous ses {obj[0].nom}"
                         else:
                             perso.inventaire[i][1] -= qt
                             mess = f"Vous avez jeté {qt} de vos {obj[0].nom} !"
+                            texte_fait = f"{nom_perso} a jeté {qt} {obj[0].nom}"
             self.send(client, json.dumps({"type": "message", "value": mess}))
         # commande ouvrir
         elif is_one_of(action, self.commandes_dat["ouvrir"]["com"]):
@@ -505,6 +523,7 @@ class Server:
                 else:
                     obj_cible.ouvert = True
                     mess = f"Vous ouvrez ce superbe {obj_cible.nom}\n{obj_cible.format_contenu()}"
+                    texte_fait = f"{nom_perso} a ouvert {obj_cible.nom}"
             else:
                 mess = "Comment ouvrir un objet qui ne possède pas d'ouverture..."
             self.send(client, {"type": "message", "value": mess}, True)
@@ -514,25 +533,84 @@ class Server:
                 if obj_cible.ouvert:
                     obj_cible.ouvert = False
                     mess = f"Vous avez refermé le {obj_cible.nom}."
+                    texte_fait = f"{nom_perso} a fermé {obj_cible.nom}"
                 else:
                     mess = f"Vous avez refermé le/la {obj_cible.nom}, qui était déjà fermé... Quel exploit !"
             else:
                 mess = "Fermer un objet qui ne se ferme pas... Original."
             self.send(client, {"type": "message", "value": mess}, True)
+        # commande entrer
+        elif is_one_of(action, self.commandes_dat["entrer"]["com"]):
+            lieu_actuel = self.game.map_.lieux[perso.lieu]
+            idls = []
+            if len(args) == 0:
+                for id_lieu, action in lieu_actuel.lieux_accessibles:
+                    if action == "entrer":
+                        idls.append(id_lieu)
+            else:
+                for id_lieu, action in lieu_actuel.lieux_accessibles:
+                    if action == "entrer":
+                        idls.append(id_lieu)
+                        eq_ap = False
+                        for lap in lieu.appellations:
+                            print(lap)
+                            if are_texts_equals(lap, args[0]) or are_texts_equals(lap, " ".join(args)):
+                                eq_ap = True
+                                break
+                        if are_texts_equals(lieu.nom, args[0]) or eq_ap:
+                            idls.append(id_lieu)
+            if len(idls) == 0:
+                self.send(client, json.dumps({"type": "message", "value": "Vous ne pouvez entrer nulle part !"}))
+            elif len(idls) > 1:
+                self.send(client, json.dumps({"type": "message", "value": "Vous pouvez entrer dans plusieurs lieux !"}))
+            else:
+                lieu = self.game.map_.lieux[idls[0]]
+                perso.lieu = idls[0]
+                self.send(client, json.dumps({"type": "message", "value": f"Vous allez dans {lieu.nom}\n{lieu.aff()}"}))
+                texte_fait = f"{nom_perso} est entré dans le lieu {lieu.nom}"
+        # commande sortir
+        elif is_one_of(action, self.commandes_dat["sortir"]["com"]):
+            lieu_actuel = self.game.map_.lieux[perso.lieu]
+            idls = []
+            if len(args) == 0:
+                for id_lieu, action in lieu_actuel.lieux_accessibles:
+                    if action == "sortir":
+                        idls.append(id_lieu)
+            else:
+                for id_lieu, action in lieu_actuel.lieux_accessibles:
+                    if action == "sortir":
+                        idls.append(id_lieu)
+                        eq_ap = False
+                        for lap in lieu.appellations:
+                            print(lap)
+                            if are_texts_equals(lap, args[0]) or are_texts_equals(lap, " ".join(args)):
+                                eq_ap = True
+                                break
+                        if are_texts_equals(lieu.nom, args[0]) or eq_ap:
+                            idls.append(id_lieu)
+            if len(idls) == 0:
+                self.send(client, json.dumps({"type": "message", "value": "Vous ne pouvez sortir de nulle part !"}))
+            elif len(idls) > 1:
+                self.send(client, json.dumps({"type": "message", "value": "Vous pouvez sortir de plusieurs lieux !"}))
+            else:
+                lieu = self.game.map_.lieux[idls[0]]
+                perso.lieu = idls[0]
+                self.send(client, json.dumps({"type": "message", "value": f"Vous sortez de {lieu.nom}\n{lieu.aff()}"}))
+                texte_fait = f"{nom_perso} est sortit du lieu {lieu.nom}"
         # commande aller
         elif is_one_of(action, self.commandes_dat["aller"]["com"]):
-            lieu = self.game.map_.lieux[perso.lieu]
+            lieu_actuel = self.game.map_.lieux[perso.lieu]
             is_valid = False
-            directions = ["ouest", "est", "nord", "sud", "nord-ouest",
-                          "nord-est", "sud-ouest", "sud-est"]
-            if args[0] in directions:
-                for id_lieu, action in lieu.lieux_accessibles:
+            if traiter_txt(args[0]) in self.directions:
+                for id_lieu, action in lieu_actuel.lieux_accessibles:
                     if action == args[0]:
+                        lieu = self.game.map_.lieux[id_lieu]
+                        texte_fait = f"{nom_perso} est allé à {lieu.nom}"
                         self.send(client, {"type": "message", "value": f"Vous vous déplacez vers {lieu.nom}.\n{lieu.aff()}"}, True)
                         perso.lieu = id_lieu
                         is_valid = True
             else:
-                for id_lieu, _ in lieu.lieux_accessibles:
+                for id_lieu, _ in lieu_actuel.lieux_accessibles:
                     lieu = self.game.map_.lieux[id_lieu]
                     eq_ap = False
                     for lap in lieu.appellations:
@@ -542,6 +620,7 @@ class Server:
                             break
                     if are_texts_equals(lieu.nom, args[0]) or eq_ap:
                         perso.lieu = id_lieu
+                        texte_fait = f"{nom_perso} est allé à {lieu.nom}"
                         self.send(client, {"type": "message", "value": f"Vous vous déplacez vers {lieu.nom}.\n{lieu.aff()}"}, True)
                         is_valid = True
                         break
@@ -553,12 +632,13 @@ class Server:
             pass
         # commande message
         elif is_one_of(action, self.commandes_dat["message"]["com"]):
-            pass
+            self.send_all_except_c(client, json.dumps({"type": "message", "value": self.clients[client]["player"].pseudo + " : " + " ".join(args)}))
         # commande attaquer
         elif is_one_of(action, self.commandes_dat["attaquer"]["com"]):
             if ennemi_cible is not None:
                 msg_result = perso.attaque_cible(ennemi_cible)
                 self.send(client, {"type": "message", "value": msg_result})
+                texte_fait = f"{nom_perso} a attaqué {ennemi_cible.nom} :\n{msg_result}"
             else:
                 mes = "Je ne trouve pas cet ennemi, pour compenser, voulez vous que je me frappe moi-même ?"
                 self.send(client, {"type": "message", "value": mes})
@@ -579,9 +659,12 @@ class Server:
             pass
 
         if tour:
-            # TODO: Faire que les ennemis font leurs tour
-            # Il faudra aussi afficher aux autres joueurs ce que ce joueur a fait
-            pass
+            # les ennemis font leur tour
+            for en in self.game.map_.lieux[perso.lieu].ennemis:
+                en.tour(self.game.map_.lieux[perso.lieu])
+            # affichage de l'action du joueur au autres
+            if texte_fait != "":
+                self.send_all_except_c(client, json.dumps({"type": "message", "value": texte_fait}))
 
     def invent_multi_args(self, perso, data):
         """Si la commande entrée est 'inventaire ...'.
@@ -618,6 +701,9 @@ class Server:
         mess = {"type": "message", "value": f"Bienvenue !\nVous aller jouer au jeu {self.nom_du_jeu} et nous esperons que vous vous amuserez !\n\nVous êtes {p.nom}\nVie : {p.vie}/{p.vie_totale}\n\n{self.game.map_.lieux[p.lieu]}"}
         mess = json.dumps(mess)
         self.send(client, mess)
+        mess = {"type": "message", "value": f"{p.nom} a rejoint la partie, il est dans le lieu : {self.game.map_.lieux[p.lieu].nom}"}
+        mess = json.dumps(mess)
+        self.send_all_except_c(client, mess)
 
     def main(self):
         """Met en route le serveur.
