@@ -1,0 +1,12 @@
+{
+    "id":10,
+    "appellations":["le marché de la ville","le marché","marché de Tergaron"],
+    "nom":"Le marché de Tergaron",
+    "region":"Larion",
+    "description":"Il y a beaucoup de marchand ici, il y a surment de bonne chose a achetée.",
+    "type":"ville",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[]
+}
