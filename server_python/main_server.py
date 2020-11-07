@@ -339,6 +339,29 @@ class Server:
         player = self.clients[client]["player"]
         self.client_db.set_perso(player)
 
+    def format_dialog(self, perso):
+        #
+        dial = perso.dialogue_en_cours
+        if dial == None:
+            return "Dialogue inexistant"
+        print(dial)
+        print(dial.keys())
+        txt = list(dial.keys())[0] + "\n"
+        #
+        rd = dial[list(dial.keys())[0]]
+        if rd != None:
+            x = 1
+            for rep in rd.keys():
+                txt += f"\n\t({x}) {rep}"
+                x += 1
+        else:
+            txt += "\nFin du dialogue"
+            perso.dialogue_en_cours = None
+        return txt
+        
+
+
+
     # region Commandes
     def commandes(self, client, data):
         """Éxecute les commandes entrée par l'utilisateur.
@@ -379,8 +402,35 @@ class Server:
                 ttt = "Fonctionne" if self.commandes_dat[key]["fini"] else "Ne fonctionne pas"
                 txt_help += f"\n\t- {t} : {tt} [{ttt}]"
             self.send(client, {"type": "message", "value": txt_help}, True)
+        # commande 1-2-3-4-5-6-7-8-9 (réponse dialogue)
+        if perso.dialogue_en_cours != None and action in [str(n) for n in range(1,10)]:
+            idd = int(action) - 1
+            dial = perso.dialogue_en_cours
+            if idd >= len(dial.keys()):
+                self.send(client, {"type": "message", "value": "Vous voulez répondre une réponse inexistante"}, True)
+                return
+            dsuiv = dial[list(dial.keys())[idd]]
+            if type(dsuiv) == dict:
+                perso.dialogue_en_cours = dsuiv
+                self.send(client, {"type": "message", "value": self.format_dialog(perso)}, True)
+                perso.dialogue_en_cours = perso.dialogue_en_cours[list(perso.dialogue_en_cours.keys())[0]]
+            elif type(dsuiv) == list:
+                perso.dialogue_en_cours = None
+                t = "Fin du dialogue"
+                # TODO : faire que les effets en fin de dialogue s'appliquent
+                pass
+                self.send(client, {"type": "message", "value": "Fin du dialogue"}, True)
+                texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+            elif dsuiv == None:
+                perso.dialogue_en_cours = None
+                self.send(client, {"type": "message", "value": "Fin du dialogue"}, True)
+                texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+            
+        elif perso.dialogue_en_cours != None:
+            self.send(client, {"type": "message", "value": "Quand vous êtes dans un dialogue, vous devez choisir la réponse que vous voulez répondre avec le nombre correspondant a votre réponse !"}, True)
+            return
         # commande voir ; affiche les infos du lieu
-        if is_one_of(action, ["voir"]):
+        elif is_one_of(action, ["voir"]):
             self.send(client, {"type": "message", "value": self.game.map_.lieux[perso.lieu].aff()}, True)
         # commande inventaire : affiche l'inventaire
         elif is_one_of(action, self.commandes_dat["inventaire"]["com"]):
@@ -631,7 +681,14 @@ class Server:
             pass
         # commande parler
         elif is_one_of(action, self.commandes_dat["parler"]["com"]):
-            pass
+            if type(pnj_cible.dialogue) == dict:
+                perso.dialogue_en_cours = pnj_cible.dialogue
+                self.send(client, {"type": "message", "value": f"Vous parlez avec {pnj_cible.nom}\n{self.format_dialog(perso)}"}, True)
+                perso.dialogue_en_cours = perso.dialogue_en_cours[list(perso.dialogue_en_cours.keys())[0]]
+                texte_fait = f"{nom_perso} a commencé à parler avec {pnj_cible.nom}"
+            else:
+                self.send(client, {"type": "message", "value": "Votre interlocuteur n'a visiblement pas l'air d'avoir envie de parler, peut-être que vous êtes en train de l'embêter, ou bien il est muet, c'est aussi une possibilité ! "}, True)
+                texte_fait = f"{nom_perso} a voulu parler avec {pnj_cible.nom}, mais ce dernier n'a pas très envie de discuter avec {nom_perso}"
         # commande message
         elif is_one_of(action, self.commandes_dat["message"]["com"]):
             self.send_all_except_c(client, json.dumps({"type": "message", "value": self.clients[client]["player"].pseudo + " : " + " ".join(args)}))

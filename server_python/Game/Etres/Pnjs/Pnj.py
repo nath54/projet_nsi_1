@@ -34,7 +34,7 @@ class Pnj(Etre):
         self.nom = datas.get("nom", "Personnage Non Joueur. PNJ pour les intimes.")
         self.description = datas.get("desc", "")
         self.race = datas.get("race", "humain")
-        self.dialogue = datas.get("dialogue", {})
+        self.dialogue = datas.get("dialogues", None)
 
     def __str__(self):
         """Renvoie une description du PNJ."""
