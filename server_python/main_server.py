@@ -145,7 +145,7 @@ class Server:
         f.close()
 
         # Teste si c'est la bdd est initialisée, si non, on l'initialise
-        if self.client_db.test_first_time():
+        if self.client_db.is_first_time():
             print("premier lancement")
             self.client_db.init_database()
 

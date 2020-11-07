@@ -94,7 +94,7 @@ class Client_mariadb:
                 else:
                     return False
 
-    def test_first_time(self):
+    def is_first_time(self):
         """Teste si la table comptes existe.
 
         Returns:
@@ -125,7 +125,7 @@ class Client_mariadb:
         self.connection.commit()
 
     def create_table_persos(self):
-        """Crée la table perso dans la bdd.
+        """Crée la table perso dans la BDD.
 
         Auteur: Nathan
 
@@ -143,7 +143,7 @@ class Client_mariadb:
         self.connection.commit()
 
     def create_table_objets(self):
-        """Crée la table perso dans la BDD.
+        """Crée la table objets dans la BDD.
 
         Auteur: Nathan
 
@@ -156,7 +156,7 @@ class Client_mariadb:
         self.connection.commit()
 
     def create_table_pnjs(self):
-        """Crée la table perso dans la BDD.
+        """Crée la table pnjs dans la BDD.
 
         Auteur: Nathan
 
@@ -168,7 +168,7 @@ class Client_mariadb:
         self.connection.commit()
 
     def create_table_ennemis(self):
-        """Crée la table perso dans la BDD.
+        """Crée la table ennemis dans la BDD.
 
         Auteur: Nathan
 
@@ -182,7 +182,7 @@ class Client_mariadb:
         self.connection.commit()
 
     def create_table_lieux(self):
-        """Crée la table perso dans la BDD.
+        """Crée la table lieux dans la BDD.
 
         Auteur: Nathan
 
@@ -192,6 +192,18 @@ class Client_mariadb:
                     description_ TEXT, ennemis TEXT, pnjs TEXT, objets TEXT,
                     lieux TEXT);""")
         # ennemis, pnjs, objets et lieux contiennent des listes parsées par JSON
+        self.cursor.execute(query)
+        self.connection.commit()
+
+    def create_table_quete(self):
+        """Crée la table `quete` dans la DB.
+
+        Auteur : Hugo
+
+        """
+        query = ("""CREATE TABLE IF NOT EXISTS quete
+                    (id INT PRIMARY KEY, nom TEXT, description TEXT,
+                     recompenses TEXT, conditions TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
@@ -299,6 +311,7 @@ class Client_mariadb:
         self.create_table_pnjs()
         self.create_table_ennemis()
         self.create_table_lieux()
+        self.create_table_quete()
         self.create_table_genre()
 
 # endregion
@@ -329,7 +342,6 @@ class Client_mariadb:
             if not fich.endswith(".json"):
                 continue
             d = jload(pathd + fich)
-            #
             values_query = []
             values_query_args = []
             for key in ks.keys():
@@ -455,6 +467,18 @@ class Client_mariadb:
                        VALUES ({txt_query})"""
             self.cursor.execute(query, tuple(values_query_args))
             self.connection.commit()
+        # endregion
+        # region Quêtes :
+        self.cursor.execute("TRUNCATE TABLE quetes")
+        self.connection.commit()
+        pathd = "Data/quetes/"
+        ks = {"id"}
+        for fich in os.listdir(pathd):
+            if not fich.endswith(".json"):
+                continue
+            d = jload(pathd + fich)
+            for key in d.keys:
+
         # endregion
         # TODO
         pass
@@ -635,7 +659,6 @@ class Client_mariadb:
         """
         for lieu in map.lieux.values():
             save_lieu(lieu)
-
 
     def save_lieu(self, lieu):
         """Permet de sauvegarder un lieu.
@@ -829,21 +852,22 @@ class Client_mariadb:
         Auteur: Nathan, Hugo
 
         """
-        query = """SELECT id, type_, nom, race, description_, vie_min,
-                           vie_max, attaque_min, attaque_max, attaque_effets
-                    FROM ennemis WHERE id=%s"""
+        query = """SELECT type_, nom, race, description_, vie_min,
+                          vie_max, attaque_min, attaque_max, attaque_effets
+                    FROM ennemis
+                    WHERE id=%s"""
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
         datas = {
             "id": 0,
             "type": "ennemis",
             "nom": "Ennemi Méchant",
-            "description": "Ennemi Qui va t'attaquer parce qu'il est Mechant et que les méchants ils attaquent les gentils...",
+            "description": "Ennemi qui va t'attaquer parce qu'il est méchant et que les méchants ils attaquent les gentils...",
             "vie": [0, 1],
             "attaque": [0, 1],
             "attaque_effets": {}
         }
-        for id_, type_, nom, race, description_, vie_min, vie_max, attaque_min, attaque_max, attaque_effets in results:
+        for type_, nom, race, description_, vie_min, vie_max, attaque_min, attaque_max, attaque_effets in results:
             datas["id"] = id_
             datas["type"] = type_
             datas["nom"] = nom
@@ -852,6 +876,28 @@ class Client_mariadb:
             datas["attaque"] = [attaque_min, attaque_max]
             if attaque_effets is not None:
                 datas["attaque_effets"] = json.dumps(attaque_effets)
+            return datas
+        return None
+
+    def get_data_quetes_DB(self, id_):
+        """Renvoie les caractéristiques d'un ennemi
+
+        Args:
+            id_(int): L'identifiant de la quête
+
+        Auteur : Hugo
+
+        """
+        # CREATE TABLE IF NOT EXISTS quete (id INT PRIMARY KEY, nom TEXT, description TEXT, recompenses TEXT, conditions TEXT)
+        query = """SELECT nom, description, recompense, conditions
+                   FROM quete
+                   WHERE id=%s"""
+        self.cursor.execute(query, (id_,))
+        for nom, desc, recompense, cond in self.cursor:
+            datas["nom"] = nom
+            datas["description"] = desc
+            datas["recompense"] = json.loads(recompense)
+            datas["condition"] = json.loads(cond)
             return datas
         return None
 # endregion

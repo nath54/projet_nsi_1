@@ -22,15 +22,16 @@ class Quete:
 
     """
 
-    def __init__(self):
+    def __init__(self, game, id_):
         """Initialise la quête."""
-        self.id = 0
-        self.nom = "Nom"
-        self.description = "Description"
+        self.game = game
+        self.id = id_
+        data = game.client_db.get_data_quetes_DB()
+        self.nom = data["nom"]
+        self.description = data["description"]
         self.compteur = 0
         self.nb_a_faire = 0
         self.etat = "en cours"
-        self.perso = None
         self.quete_suivante = None
         # TODO
         pass

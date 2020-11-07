@@ -3,5 +3,9 @@
     "nom":"nom de la quete",
     "description":"description de la quete",
     "recompenses":[],
-    "":""
+    "conditions":{
+        "type": "FedEx/Extermination/Trouver item",
+        "objectif": 11037,
+        "id_objectif": 53
+    }
 }
