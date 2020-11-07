@@ -1,0 +1,12 @@
+{
+    "id":12,
+    "appellations":["chambre","chambre auberge","la chambre de l'auberge"],
+    "nom":"La chambre de l'auberge",
+    "region":"Larion",
+    "description":"Cette chambre est très salle, on pourrait croire qu'un troll est passer par là",
+    "type":"ville",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [9,"sortir"] ]
+}

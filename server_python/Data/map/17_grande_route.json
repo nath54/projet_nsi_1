@@ -1,0 +1,12 @@
+{
+    "id":17,
+    "appellations":["une route","une grande route"],
+    "nom":"Le grande route",
+    "region":"Larion",
+    "description":"Cette route permetde sortir de la ville, ves l'ouest",
+    "type":"ville",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [11,"est"] ]
+}
