@@ -468,6 +468,7 @@ class Client_mariadb:
             self.cursor.execute(query, tuple(values_query_args))
             self.connection.commit()
         # endregion
+        """
         # region Quêtes :
         self.cursor.execute("TRUNCATE TABLE quetes")
         self.connection.commit()
@@ -478,8 +479,9 @@ class Client_mariadb:
                 continue
             d = jload(pathd + fich)
             for key in d.keys:
-
+                pass
         # endregion
+        """
         # TODO
         pass
 
@@ -830,16 +832,16 @@ class Client_mariadb:
         query = """SELECT nom, description_, race, dialogue FROM pnjs
                    WHERE id=%s;"""
         self.cursor.execute(query, (id_,))
-        for nom, desc, race, dialogue in self.cursor:
+        for nom, desc, race, dialogues in self.cursor:
             datas = {"nom": "Un pnj",
                      "description": "Un pnj. Waaa, quelle information pertinente !",
-                     "race": "humain", "dialogue": {}}
+                     "race": "humain", "dialogues": None}
             datas["id"] = id_
             datas["nom"] = nom
             datas["desc"] = desc
             datas["race"] = race
-            if dialogue is not None:
-                datas["dialogue"] = json.loads(dialogue)
+            if dialogues is not None:
+                datas["dialogues"] = json.loads(dialogues)
             return datas
         return None
 

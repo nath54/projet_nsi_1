@@ -681,14 +681,18 @@ class Server:
             pass
         # commande parler
         elif is_one_of(action, self.commandes_dat["parler"]["com"]):
-            if type(pnj_cible.dialogue) == dict:
-                perso.dialogue_en_cours = pnj_cible.dialogue
-                self.send(client, {"type": "message", "value": f"Vous parlez avec {pnj_cible.nom}\n{self.format_dialog(perso)}"}, True)
-                perso.dialogue_en_cours = perso.dialogue_en_cours[list(perso.dialogue_en_cours.keys())[0]]
-                texte_fait = f"{nom_perso} a commencé à parler avec {pnj_cible.nom}"
+            if pnj_cible is not None:
+                if type(pnj_cible.dialogue) == dict:
+                    perso.dialogue_en_cours = pnj_cible.dialogue
+                    self.send(client, {"type": "message", "value": f"Vous parlez avec {pnj_cible.nom}\n{self.format_dialog(perso)}"}, True)
+                    perso.dialogue_en_cours = perso.dialogue_en_cours[list(perso.dialogue_en_cours.keys())[0]]
+                    texte_fait = f"{nom_perso} a commencé à parler avec {pnj_cible.nom}"
+                else:
+                    self.send(client, {"type": "message", "value": "Votre interlocuteur n'a visiblement pas l'air d'avoir envie de parler, peut-être que vous êtes en train de l'embêter, ou bien il est muet, c'est aussi une possibilité ! "}, True)
+                    texte_fait = f"{nom_perso} a voulu parler avec {pnj_cible.nom}, mais ce dernier n'a pas très envie de discuter avec {nom_perso}"
             else:
-                self.send(client, {"type": "message", "value": "Votre interlocuteur n'a visiblement pas l'air d'avoir envie de parler, peut-être que vous êtes en train de l'embêter, ou bien il est muet, c'est aussi une possibilité ! "}, True)
-                texte_fait = f"{nom_perso} a voulu parler avec {pnj_cible.nom}, mais ce dernier n'a pas très envie de discuter avec {nom_perso}"
+                self.send(client, {"type": "message", "value": "vous voulez parler à un fantôme ? Oups, j'oubliais que les fantômes existent dans ce monde, pas comme votre interlocuteur ..."}, True)
+                return 
         # commande message
         elif is_one_of(action, self.commandes_dat["message"]["com"]):
             self.send_all_except_c(client, json.dumps({"type": "message", "value": self.clients[client]["player"].pseudo + " : " + " ".join(args)}))
