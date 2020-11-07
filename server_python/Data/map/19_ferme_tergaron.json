@@ -1,0 +1,12 @@
+{
+    "id":19,
+    "appellations":["une ferme","ferme tergaron"],
+    "nom":"La ferme de tergaron",
+    "region":"Larion",
+    "description":"Cette ferme produit tout les produits frait qu'on peut acheter au marché",
+    "type":"prairie",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [18,"sud"] , [20,"nord"] ]
+}
