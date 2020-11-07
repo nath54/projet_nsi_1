@@ -38,7 +38,10 @@ class Server:
     """
 
     def __init__(self):
-        """Initialise le serveur de jeu."""
+        """Initialise le serveur de jeu.
+
+        Auteur: Nathan
+        """
         self.host = ""
         self.port = 9876
         self.max_size = 2048
