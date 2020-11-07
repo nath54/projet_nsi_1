@@ -198,7 +198,7 @@ class Client_mariadb:
     def create_table_genre(self):
         """Crée la table genre dans la BDD.
 
-        Auteur : Nathan
+        Auteur: Nathan
 
         """
         query = ("""CREATE TABLE IF NOT EXISTS genres
@@ -214,7 +214,7 @@ class Client_mariadb:
     def update(self, force=False):
         """Réinitialise les tables de mauvais format ou qui n'existent pas.
 
-        Auteur : Nathan
+        Auteur: Nathan
 
         """
         # Comptes
@@ -290,7 +290,7 @@ class Client_mariadb:
     def init_database(self):
         """Permet de créer toutes les tables au premier lancement.
 
-        Auteur : Nathan, Hugo
+        Auteur: Nathan, Hugo
 
         """
         self.create_table_comptes()
@@ -308,7 +308,7 @@ class Client_mariadb:
         """Transfére toutes les données des fichiers json vers la BDD.
 
         Etat : TODO Commencé, à continuer
-        Auteur : Nathan, Hugo
+        Auteur: Nathan, Hugo
 
         """
         # region Ennemis :
@@ -495,7 +495,7 @@ class Client_mariadb:
         renvoie False s'il n'y a pas d'erreurs
         renvoie un string contenant un message d'erreur s'il y a une erreur
 
-        Auteur : Hugo, Nathan
+        Auteur: Hugo, Nathan
         """
         self.cursor.execute("SELECT pseudo, email FROM comptes")
         c = self.cursor
@@ -517,7 +517,7 @@ class Client_mariadb:
             bool/str: False --> Pas d'erreur
                       str --> Message d'erreur
 
-        Auteur : Nathan
+        Auteur: Nathan
 
         """
         self.cursor.execute("SELECT password, id FROM comptes WHERE pseudo=%s",
@@ -547,7 +547,7 @@ class Client_mariadb:
         Args:
             player(Player): Joueur à enregistrer.
 
-        Auteur : Nathan
+        Auteur: Nathan
 
         """
         id_ = player.id_
@@ -678,7 +678,7 @@ class Client_mariadb:
         Args:
             id_(int): ID du compte
 
-        Auteur : Nathan
+        Auteur: Nathan
 
         """
         query = """SELECT nom, genre, race, classe, argent,  experience,
@@ -730,7 +730,7 @@ class Client_mariadb:
     def get_lieux(self):
         """Récupère les ID des lieux
 
-        Auteur : Nathan
+        Auteur: Nathan
 
         """
         query = "SELECT id FROM lieux;"
@@ -801,7 +801,7 @@ class Client_mariadb:
         Args:
             id_(int): Identifiant du PNJ
 
-        Auteur : Nathan
+        Auteur: Nathan
 
         """
         query = """SELECT nom, description_, race, dialogue FROM pnjs

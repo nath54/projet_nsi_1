@@ -32,7 +32,7 @@ def install(package):
 def demande_install(package):
     """Demande pour installer une librairie python avec pip
 
-    Author: Nathan
+    Auteur: Nathan
 
     """
     return input(f"Le package {package} n'est pas installé, voulez vous "
@@ -43,7 +43,7 @@ def demande_install(package):
 def main():
     """Initialise la BDD pour le projet.
 
-    Author : Nathan
+    Auteur: Nathan
 
     """
     user = input("pseudo mariadb root : ")
@@ -73,11 +73,13 @@ def main():
     connection.commit()
     cursor.execute('GRANT ALL PRIVILEGES ON * TO pyuser@localhost;')
     connection.commit()
+    """
     # install python modules
     libs = ["sockets", "websockets"]
     for lib in libs:
         if lib not in sys.modules and demande_install(lib):
             install(l)
+    """
 
 
 if __name__ == "__main__":

@@ -39,8 +39,30 @@ class Ennemi(Combattant):
         if nb != -1:
             self.nom += "-" + str(nb)
 
+    def tour(self, lieu):
+        """Fonction appelée au tour de l'ennemi
+
+        Auteur: ?
+
+        """
+        pass
+
     def __str__(self):
         """Renvoie une description de l'ennemi."""
         return f"""Ennemi :
         - nom : {self.nom}
         - description : {self.description}"""
+
+    def __repr__(self):
+        """Renvoie une description plus détaillée de l'ennemi
+
+        Auteur: Nathan
+        """
+        return f"""
+Ennemi :
+    - nom : {self.nom}
+    - race : {self.race}
+    - description : {self.description}
+    - vie : {self.vie} / {self.vie_totale}
+    - attaque : {self.attaque}
+    - esquive : {self.esquive}"""

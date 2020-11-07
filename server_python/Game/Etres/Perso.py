@@ -156,7 +156,7 @@ faiblesses : {self.faiblesses}
     def desequiper(self, nom_obj, id_obj=None):
         """Déséquipe un objet du personnage
 
-        Auteur : Hugo
+        Auteur: Hugo
 
         """
         for key, val in self.equip:
@@ -169,7 +169,7 @@ faiblesses : {self.faiblesses}
     def add_to_invent(self, id_obj):
         """Ajoute un objet à l'inventaire
 
-        Auteur : Hugo
+        Auteur: Hugo
 
         """
         # TODO: obj = Objet(id_obj) qui créé l'objet depuis la DB
@@ -186,7 +186,7 @@ faiblesses : {self.faiblesses}
     def equiper(self, nom_obj, id_obj=None):
         """Équipe un objet à un personnage
 
-        Auteur : Hugo
+        Auteur: Hugo
 
         """
         for i in range(len(self.inventaire)):

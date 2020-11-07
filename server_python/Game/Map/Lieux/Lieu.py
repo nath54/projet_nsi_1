@@ -78,7 +78,7 @@ class Lieu:
         Fonction appelée par le serveur qui affiche le lieu lors de l'arrivée
         dans celui-ci lors d'un evenement important, ou à la demande du joueur.
 
-        Author: Nathan
+        Auteur: Nathan
 
         TODO: À améliorer/revoir
 
@@ -90,30 +90,26 @@ class Lieu:
         txt_lieux = ""
 
         if len(self.objets) >= 1:
-            txt_objets = "\n" + random.choice(p_objs) + " :\n\t- " + "\n\t- ".join([objet.nom for objet in self.objets])
+            txt_objets = "\n\n" + random.choice(p_objs) + " :\n\t- " + "\n\t- ".join([objet.nom for objet in self.objets])
         if len(self.pnjs) >= 1:
-            txt_pnjs = "\n" + random.choice(p_pnjs) + " :\n\t- " + '\n\t- '.join([pnj.nom for pnj in self.pnjs])
+            txt_pnjs = "\n\n" + random.choice(p_pnjs) + " :\n\t- " + '\n\t- '.join([pnj.nom for pnj in self.pnjs])
         if len(self.ennemis) >= 1:
-            txt_ennemis = "\n" + random.choice(p_ennemis) + " :\n\t- " + '\n\t- '.join([enn.nom for enn in self.ennemis])
+            txt_ennemis = "\n\n" + random.choice(p_ennemis) + " :\n\t- " + '\n\t- '.join([enn.nom for enn in self.ennemis])
         if len(self.persos) >= 1:
-            txt_persos = "\n" + random.choice(p_persos) + " :\n\t- " + '\n\t- '.join([perso.nom for perso in self.persos])
+            txt_persos = "\n\n" + random.choice(p_persos) + " :\n\t- " + '\n\t- '.join([perso.nom for perso in self.persos])
         if len(self.lieux_accessibles) >= 1:
-            txt_lieux = "\n" + random.choice(p_lieux) + " :\n\t- " + "\n\t- ".join([self.map_.lieux[lieu[0]].nom + " [" + lieu[1] + "]"
-                                                                                    for lieu in self.lieux_accessibles])
+            txt_lieux = "\n\n" + random.choice(p_lieux) + " :\n\t- " + "\n\t- ".join([self.map_.lieux[lieu[0]].nom + " [" + lieu[1] + "]"
+                                                                                      for lieu in self.lieux_accessibles])
 
-        txt = f"""
+        return f"""
 Vous êtes dans {self.nom}
-{self.description}
-{txt_objets}
-{txt_pnjs}
-{txt_ennemis}
-{txt_lieux}
-{txt_persos}
-        """
-        return txt
+{self.description}{txt_objets}{txt_pnjs}{txt_ennemis}{txt_lieux}{txt_persos}
+"""
 
     def __repr__(self):
         return self.aff()
 
     def suppr_ennemi(self, enn):
+        print("enleve\n", len(self.ennemis))
         self.ennemis.remove(enn)
+        print(len(self.ennemis))
