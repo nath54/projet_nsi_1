@@ -49,7 +49,7 @@ Pnj :
 
         Les infos du PNJ sont récupérées à partir d'un fichier .json
 
-        Auteur : Nathan
+        Auteur: Nathan
 
         """
         if os.path.exists(data_pnjs[self.index]):

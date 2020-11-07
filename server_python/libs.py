@@ -25,7 +25,7 @@ replacements = {"é": "e", "è": "e", "ê": "e",
 def jload(path_to_file):
     """Charge ouvre un fichier et qui le charge en json.
 
-    Auteur : Nathan
+    Auteur: Nathan
 
     """
     f = io.open(path_to_file, "r", encoding="utf-8")
@@ -48,7 +48,7 @@ def is_json(myjson):
 def traiter_txt(txt):
     """Traite un texte afin de pouvoir le comparer avec un input utilisateur.
 
-    Auteur : Nathan
+    Auteur: Nathan
 
     """
     txt = txt.lower()
@@ -60,7 +60,7 @@ def traiter_txt(txt):
 def are_texts_equals(text_1, text_2):
     """Compare d
 
-    Auteur : Hugo
+    Auteur: Hugo
 
     """
     return traiter_txt(text_1) == traiter_txt(text_2)

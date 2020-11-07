@@ -78,7 +78,7 @@ class Lieu:
         Fonction appelée par le serveur qui affiche le lieu lors de l'arrivée
         dans celui-ci lors d'un evenement important, ou à la demande du joueur.
 
-        Author: Nathan
+        Auteur: Nathan
 
         TODO: À améliorer/revoir
 

@@ -39,7 +39,7 @@ class Lieu:
 
         Pourra être utile quand un joueur utilisera la commande "voir"
 
-        Author: Hugo
+        Auteur: Hugo
 
         """
         res = f"Vous vous trouvez dans {self.nom_lieu}." + "\n"

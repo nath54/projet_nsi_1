@@ -42,7 +42,7 @@ class Ennemi(Combattant):
     def tour(self, lieu):
         """Fonction appelée au tour de l'ennemi
 
-        Author: ?
+        Auteur: ?
 
         """
         pass
@@ -56,7 +56,7 @@ class Ennemi(Combattant):
     def __repr__(self):
         """Renvoie une description plus détaillée de l'ennemi
 
-        Author: Nathan
+        Auteur: Nathan
         """
         return f"""
 Ennemi :

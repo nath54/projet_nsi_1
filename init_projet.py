@@ -32,7 +32,7 @@ def install(package):
 def demande_install(package):
     """Demande pour installer une librairie python avec pip
 
-    Author: Nathan
+    Auteur: Nathan
 
     """
     return input(f"Le package {package} n'est pas installé, voulez vous "
@@ -43,7 +43,7 @@ def demande_install(package):
 def main():
     """Initialise la BDD pour le projet.
 
-    Author : Nathan
+    Auteur: Nathan
 
     """
     user = input("pseudo mariadb root : ")
