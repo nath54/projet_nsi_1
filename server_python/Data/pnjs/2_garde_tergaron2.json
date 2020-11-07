@@ -1,10 +1,9 @@
 {
     "id":2,
     "type":"pnj",
-    "nom":"garde",
+    "nom":"Garde",
     "race":"humain",
-    "description":"Un garde que personne n'aiment.",
-    "lieu":[7],
+    "description":"Un garde que personne n'aime.",
     "dialogues":{
         "...":{
             "Bonjour":{
@@ -12,10 +11,10 @@
             },
             "Je vois que prennez votre travail très au serieux":{
                 "...":{
-                    "Pouvez vous me répondre ? J'aimerai parler au roi !":{
+                    "Pouvez-vous me répondre ? J'aimerai parler au roi !":{
                         "...":null
                     },
-                    "Bon je part":null
+                    "Bon je pars":null
                 }
             }
         }

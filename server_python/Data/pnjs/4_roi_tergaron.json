@@ -1,12 +1,11 @@
 {
     "id":4,
     "type":"pnj",
-    "nom":"Artur dogabert",
+    "nom":"Hartur Dogabert",
     "race":"humain",
-    "description":"Le roi de tergaron est juste et bon avec tout les habitant de Tergaron, mais il ne savait pas mettre son pantalon à l'endroit.",
-    "lieu":[8],
+    "description":"Le roi de Tergaron est juste et bon avec tout les habitant de Tergaron, mais il ne savait pas mettre son pantalon à l'endroit.",
     "dialogues":{
-        "Quéte principale":{
+        "Quète principale":{
 
         }
     }

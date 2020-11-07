@@ -7,12 +7,12 @@ class Quete:
     Attributs :
 
      - id(int) : Identifiant unique de la quête
-     - nom(string) : Nom de la quête
-     - description(string) : Description de la quête
+     - nom(str) : Nom de la quête
+     - description(str) : Description de la quête
      - compteur(int) : Valeur de l'action de la quête
                        (exemple: nombre de gobelins tués)
      - nb_a_faire(int) : Nombre d'actions à faire (exemple: 15 gobelins à tuer)
-     - etat(string) : État de la quête ("en cours","réussi","échec")
+     - etat(str) : État de la quête ("en cours","réussi","échec")
      - perso(Perso) : Joueur ayant accepté la quête
      - quete_suivante(Quete) : Si la quête a une suite
 
@@ -42,6 +42,7 @@ class Quete:
         quête.
 
         Auteur:
+
         """
         # TODO
         pass

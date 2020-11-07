@@ -4,16 +4,15 @@
     "nom":"Vieux paysan",
     "race":"humain",
     "description":"Un vieux paysan qui se balade sur la place.",
-    "lieu":[0],
     "dialogues":{
         "Il fait beau hein !":{
             "Oui, il fait très beau aujourd'hui":{
-                "Ehe, bonne chance a vous voyageur !":null
+                "Eheh, bonne chance à vous voyageur !":null
             },
-            "Arrete de parler le vieux ! Tu me fais perdre mon temps !":{
-                "Mais ce n'est pas vous qui avez entamés la discussion ?":{
+            "Arrête de parler le vieux ! Tu me fais perdre mon temps !":{
+                "Mais ce n'est pas vous qui avez entamé la discussion ?":{
                     "Tu en es sûr ? Je te rappelle quand même que les vieux perdent leur mémoire !":{
-                        "Vous ne l'emporterez pas au paradis ! ca vous pouvez en être sûr !":[null, {"méchanceté":2}]
+                        "Vous ne l'emporterez pas au paradis ! Ça vous pouvez en être sûr !":[null, {"méchanceté":2}]
                     },
                     "Ah, je suis trop jeune pour ces conneries !":null
                 }
