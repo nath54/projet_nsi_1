@@ -1,4 +1,10 @@
 {
     "nom":"drakonien",
-    "description":"Les drakoniens sont des créatures mi-homme mi-dragon, ils ont une peau solide, et ont des facilités pour lancer des sorts de feu. Ils ont une apparence humaine en tant normal (même s'ils ont un bien meilleur physique que les humains ordinaires), mais ont une forme plus draconienne lors des combats"
+    "description":"Les drakoniens sont des créatures mi-homme mi-dragon, ils ont une peau solide, et ont des facilités pour lancer des sorts de feu. Ils ont une apparence humaine en tant normal (même s'ils ont un bien meilleur physique que les humains ordinaires), mais ont une forme plus draconienne lors des combats",
+    "vie": 20,
+    "magie": 5,
+    "force": 10,
+    "agilite": -3,
+    "charme": -1,
+    "discretion": -3
 }

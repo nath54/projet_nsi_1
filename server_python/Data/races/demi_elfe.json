@@ -1,4 +1,11 @@
 {
     "nom":"demi-elfe",
-    "description":"Les demi-elfes sont des enfants d'homme et d'elfe"
+    "description":"Les demi-elfes sont des enfants d'homme et d'elfe",
+    "vie": 5,
+    "force": 1,
+    "charme": 1,
+    "agilite": 1,
+    "magie": 2,
+    "bonus_esquive": 2,
+    "argent": 50
 }
