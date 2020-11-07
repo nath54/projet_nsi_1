@@ -444,7 +444,7 @@ class Client_mariadb:
         # value[1] = si json.dumps ou pas, value[2] = si list index ou pas
         ks = {"id": ["id", False], "nom": ["nom", False],
               "description_": ["description", False],
-              "race": ["race", False], "dialogue": ["dialogue", True]}
+              "race": ["race", False], "dialogue": ["dialogues", True]}
         for fich in os.listdir(pathd):
             if not fich.endswith(".json"):
                 continue

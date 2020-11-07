@@ -358,8 +358,6 @@ class Server:
             txt += "\nFin du dialogue"
             perso.dialogue_en_cours = None
         return txt
-        
-
 
 
     # region Commandes
@@ -413,7 +411,7 @@ class Server:
             if type(dsuiv) == dict:
                 perso.dialogue_en_cours = dsuiv
                 self.send(client, {"type": "message", "value": self.format_dialog(perso)}, True)
-                perso.dialogue_en_cours = perso.dialogue_en_cours[list(perso.dialogue_en_cours.keys())[0]]
+                perso.dialogue_en_cours = dsuiv[list(dsuiv.keys())[0]]
             elif type(dsuiv) == list:
                 perso.dialogue_en_cours = None
                 t = "Fin du dialogue"
