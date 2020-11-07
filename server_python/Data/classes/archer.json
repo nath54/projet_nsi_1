@@ -1,5 +1,6 @@
 {
     "nom":"archer",
     "description":"Un archer sait se battre à distance, et est plutôt agile",
-    "agilite": 5
+    "agilite": 5,
+    "inventaire": [ [4, 1], [1, 1] ]
 }

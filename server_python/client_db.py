@@ -601,7 +601,7 @@ class Client_mariadb:
                                 (perso.nom, perso.genre, perso.race,
                                  perso.classe, perso.argent,
                                  json.dumps(perso.experience),
-                                 json.dumps(perso.inventaire),
+                                 json.dumps([[obj.index, qt] for obj, qt in perso.inventaire]),
                                  perso.lieu, json.dumps(perso.quetes),
                                  json.dumps(perso.equipement), perso.vie,
                                  perso.vie_totale, perso.energie,
