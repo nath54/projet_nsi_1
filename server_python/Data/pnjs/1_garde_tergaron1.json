@@ -1,21 +1,20 @@
 {
     "id":1,
     "type":"pnj",
-    "nom":"garde du chateau",
+    "nom":"Garde du château",
     "race":"humain",
-    "description":"Un garde qui surveille l'entrée du chateau.",
-    "lieu":[7],
+    "description":"Un garde qui surveille l'entrée du château.",
     "dialogues":{
         "Allez vous-en !":{
-            "je vient parler au roi":{
-                "Mon boulot est d'enpécher toutes personnes d'entrée !":null
+            "Je viens parler au roi":{
+                "Mon boulot est d'empêcher toute personne d'entrer !":null
             },
-            "Je doit m'entretenir avec le roi c'est important !":{
-                "Je ne laisserai personne entrée sans autorisation !":{
-                    "Où puis-je trouvé une autorisation ?":{
-                        "Demandez là à l'auberge de la ville, mais je ne l'accepterai pas sans un caché de cire": null
+            "Je dois m'entretenir avec le roi, c'est important !":{
+                "Je ne laisserai personne entrer sans attestation !":{
+                    "Où puis-je trouver une attestation ?":{
+                        "Demandez la à l'auberge de la ville, mais je ne l'accepterai pas sans un cachet de cire": null
                     },
-                    "Ah,merci !": null
+                    "Ah, merci !": null
                 }
             }
         }
