@@ -418,11 +418,19 @@ class Server:
                 # TODO : faire que les effets en fin de dialogue s'appliquent
                 pass
                 self.send(client, {"type": "message", "value": "Fin du dialogue"}, True)
-                texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+                if perso.interlocuteur is not None:
+                    texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+                else:
+                    texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+                perso.interlocuteur = None
             elif dsuiv == None:
                 perso.dialogue_en_cours = None
                 self.send(client, {"type": "message", "value": "Fin du dialogue"}, True)
-                texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+                if perso.interlocuteur is not None:
+                    texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+                else:
+                    texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+                perso.interlocuteur = None
             
         elif perso.dialogue_en_cours != None:
             self.send(client, {"type": "message", "value": "Quand vous êtes dans un dialogue, vous devez choisir la réponse que vous voulez répondre avec le nombre correspondant a votre réponse !"}, True)
@@ -682,6 +690,7 @@ class Server:
             if pnj_cible is not None:
                 if type(pnj_cible.dialogue) == dict:
                     perso.dialogue_en_cours = pnj_cible.dialogue
+                    perso.interlocuteur = pnj_cible
                     self.send(client, {"type": "message", "value": f"Vous parlez avec {pnj_cible.nom}\n{self.format_dialog(perso)}"}, True)
                     perso.dialogue_en_cours = perso.dialogue_en_cours[list(perso.dialogue_en_cours.keys())[0]]
                     texte_fait = f"{nom_perso} a commencé à parler avec {pnj_cible.nom}"

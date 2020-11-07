@@ -46,6 +46,7 @@ class Perso(Combattant):
         self.discretion = 0
         self.histo_lieu = set()  # TODO: Marquer le lieu dans lequel le perso apparaît
         self.dialogue_en_cours = None
+        self.interlocuteur = None
 
     # region Format
     def format_invent(self):

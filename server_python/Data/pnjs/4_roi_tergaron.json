@@ -5,8 +5,16 @@
     "race":"humain",
     "description":"Le roi de Tergaron est juste et bon avec tout les habitant de Tergaron, mais il ne savait pas mettre son pantalon à l'endroit.",
     "dialogues":{
-        "Quête principale":{
-
+        "Bonjour, que me voulez vous ?":{
+            "je voulez juste voir si ajourd'hui, vous aviez mis votre pantalon à l'envers aujourd'hui, et je ne suis pas décu !":{
+                "Ah oui, mince ! Merci de me l'avoir fait remarqué !": {
+                    "De rien, toujours a votre service mon bon roi Dagobert": null,
+                    "Vous êtes toujours autant tête en l'air monsieur le roi !": null
+                }
+            },
+            "En fait, je suis en train de chercher votre honneur, mais je ne le trouve pas, je suis vraiment désolé": {
+                "Oh ! Quelle méchancetée, vous avez de la chance que je sois gentil !": null
+            }
         }
     }
 }
