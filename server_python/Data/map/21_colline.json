@@ -1,0 +1,12 @@
+{
+    "id":21,
+    "appellations":["une colline","une petite colline","colline Tergaron"],
+    "nom":"La colline de Tergaron",
+    "region":"Larion",
+    "description":"Cette colline est très fleurie, au sommet se trouve une petite maison",
+    "type":"prairie",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [18,"est"] , [22,"entrer"] ]
+}

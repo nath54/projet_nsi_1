@@ -1,0 +1,12 @@
+{
+    "id":22,
+    "appellations":["une maison","une petite maison","maison colline"],
+    "nom":"La maison sur la colline",
+    "region":"Larion",
+    "description":"Cette maison est ... petite.",
+    "type":"ville",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [21,"sortir"] ]
+}

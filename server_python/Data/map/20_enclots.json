@@ -1,0 +1,12 @@
+{
+    "id":20,
+    "appellations":["des enclots","des enclots pour animaux"],
+    "nom":"Les enclots de la ferme",
+    "region":"Larion",
+    "description":"Ce vieu bateau est à l'arret depuis suremment longtemps",
+    "type":"prairie",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [19,"sud"] ]
+}
