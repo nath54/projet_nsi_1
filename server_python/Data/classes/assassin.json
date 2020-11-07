@@ -1,4 +1,9 @@
 {
     "nom":"assassin",
-    "description":"Un assassin est habile et précis, il rate peu et esquive beaucoup, mais n'est pas très fort physiquement"
+    "description":"Un assassin est habile et précis, il rate peu et esquive beaucoup, mais n'est pas très fort physiquement",
+    "vie": -8,
+    "force": -1,
+    "agilite": 5,
+    "discretion": 5,
+    "bonus_esquive": 10
 }

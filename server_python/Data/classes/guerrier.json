@@ -1,4 +1,8 @@
 {
     "nom":"guerrier",
-    "description":"Un guerrier sait se battre au corps à corps, il est fort et il porte facilement tout type d'armure"
+    "description":"Un guerrier sait se battre au corps à corps, il est fort et il porte facilement tout type d'armure",
+    "force": 2,
+    "vie": 5,
+    "magie": -4,
+    "discretion": -2
 }

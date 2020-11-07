@@ -1,4 +1,8 @@
 {
     "nom":"barbare",
-    "description":"Un barbare est un guerrier qui a vécu loin de la société civilisé, il se bat avec son instinct animal, et peut même devenir un berseker"
+    "description":"Un barbare est un guerrier qui a vécu loin de la société civilisé, il se bat avec son instinct animal, et peut même devenir un berseker",
+    "vie": 10,
+    "force": 10,
+    "discretion": -5,
+    "agilite": -2
 }

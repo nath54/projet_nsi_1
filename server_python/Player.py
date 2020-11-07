@@ -129,7 +129,23 @@ class Player:
                 elif type(valeurs[attribut]) == list:
                     for v in self.game.classes[self.perso.classe][attribut]:
                         valeurs[attribut].append(v)
-
+        # minimum
+        if self.perso.argent < 0:
+            self.perso.argent = 0
+        if self.perso.charme < 1:
+            self.perso.charme = 1
+        if self.perso.discretion < 1:
+            self.perso.discretion = 1
+        if self.perso.force < 1:
+            self.perso.force = 1
+        if self.perso.agilite < 1:
+            self.perso.agilite = 1
+        if self.perso.magie < 1:
+            self.perso.magie = 1
+        if self.perso.energie_totale < 1:
+            self.perso.energie_totale = 1
+        if self.perso.vie_totale < 1:
+            self.perso.vie_totale = 1
         # on donne les valeurs
         self.perso.argent = valeurs["argent"]
         self.perso.charme = valeurs["charme"]

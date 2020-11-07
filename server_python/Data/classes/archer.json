@@ -1,4 +1,5 @@
 {
     "nom":"archer",
-    "description":"Un archer sait se battre à distance, et est plutôt agile"
+    "description":"Un archer sait se battre à distance, et est plutôt agile",
+    "agilite": 5
 }
