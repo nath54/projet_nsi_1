@@ -73,11 +73,13 @@ def main():
     connection.commit()
     cursor.execute('GRANT ALL PRIVILEGES ON * TO pyuser@localhost;')
     connection.commit()
+    """
     # install python modules
     libs = ["sockets", "websockets"]
     for lib in libs:
         if lib not in sys.modules and demande_install(lib):
             install(l)
+    """
 
 
 if __name__ == "__main__":
