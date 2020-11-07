@@ -1,0 +1,12 @@
+{
+    "id":14,
+    "appellations":["plage Tergaron","La plage"],
+    "nom":"La plage de Tergaron",
+    "region":"Larion",
+    "description":"Cette plage est très fréquentée, des enfants y on fait des jolies sculptures",
+    "type":"ville",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [11,"ouest"] ]
+}

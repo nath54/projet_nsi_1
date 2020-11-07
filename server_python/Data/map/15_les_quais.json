@@ -1,0 +1,12 @@
+{
+    "id":15,
+    "appellations":["quais Tergaron","Les quais"],
+    "nom":"Les quais de Tergaron",
+    "region":"Larion",
+    "description":"Ces quais sont presque vide, tout les pécheurs doivent travailler",
+    "type":"ville",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [11,"nord"] , [16,"entrer"] ]
+}

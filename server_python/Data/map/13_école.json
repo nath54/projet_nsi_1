@@ -1,0 +1,12 @@
+{
+    "id":13,
+    "appellations":["école Tergaron","L'école"],
+    "nom":"L'école de Tergaron",
+    "region":"Larion",
+    "description":"Cette école est très strict et applique les régles de discipline",
+    "type":"ville",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [10,"est"] ]
+}

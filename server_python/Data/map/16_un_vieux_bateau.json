@@ -1,0 +1,12 @@
+{
+    "id":16,
+    "appellations":["un bateau","un vieux bateau"],
+    "nom":"Le vieu bateau",
+    "region":"Larion",
+    "description":"Ce vieu bateau est à l'arret depuis suremment longtemps",
+    "type":"ville",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [15,"sortir"] ]
+}
