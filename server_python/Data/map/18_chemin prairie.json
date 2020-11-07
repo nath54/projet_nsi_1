@@ -1,0 +1,12 @@
+{
+    "id":17,
+    "appellations":["un chemin","un chemin entre les prairies"],
+    "nom":"Un chemin de prairie",
+    "region":"Larion",
+    "description":"Un chemin entre les prairies de Tergaron",
+    "type":"prairie",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [17,"est"] ]
+}

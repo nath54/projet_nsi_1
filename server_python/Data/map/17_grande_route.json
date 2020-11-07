@@ -8,5 +8,5 @@
     "pnjs":[],
     "objets":[],
     "ennemis":[],
-    "lieux":[ [11,"est"] ]
+    "lieux":[ [11,"est"] , [18,"ouest"]]
 }
