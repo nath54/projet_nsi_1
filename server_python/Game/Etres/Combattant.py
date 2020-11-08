@@ -34,7 +34,11 @@ class Combattant(Etre):
         self.full_energie()
         self.effets_attaque = {}
         self.effets = {}
-        self.attaque = (0, 1)
+        self.attaque = {
+            "corps à corps":None,
+            "distance":None,
+            "magique":None
+        }
         self.esquive = 0
 
     def full_vie(self):
@@ -87,12 +91,53 @@ class Combattant(Etre):
         """
         pass
 
-    def attaque_cible(self, cible):
+    def sum_lsts(self, la, lb):
+        """Fonction qui permet la somme de deux listes de nombres de mêmes tailles
+
+        Auteur: Nathan
+        """
+        assert len(la) == len(lb), "Les deux listes n'ont pas la même taille !"
+        assert all([type(elt) in [int, float] for elt in la + lb]), "Ce ne sont pas des listes de nombres"
+        return [la[x] + lb[x] for x in range(len(la))]
+
+    def sum_lst_nb(self, la, n):
+        """Fonction qui permet la somme de tous les éléments d'une liste de nombres par un nombre
+
+        Auteur: Nathan
+        """
+        assert type(n) in [int, float], "Le nombre donné n'est pas un nombre"
+        assert all([type(a) in [int, float] for a in la]), "Ce ne sont pas des listes de nombres"
+        return [a + n for a in la]
+
+    def get_attaque(self, type_att="corps à corps"):
+        att = self.attaque[type_att]
+        if att == None:
+            att = [0,0]
+        if self.attaque["magique"] != None and type_att != "magique":
+            att = self.sum_lsts(att, self.attaque["magique"])
+        # on applique les effets
+        for k_effet, v_effet in self.effets.items():
+            if k_effet == "attaque":
+                for tpatt in list(set(["magique", type_att])):
+                    if v_effet[tpatt] != None:
+                        if type(v_effet[tpatt]) in [int, float]:
+                            att = self.sum_lst_nb(att, v_effet[tpatt])
+                        elif type(v_effet[tpatt]) == list:
+                            att = self.sum_lsts(att, v_effet[tpatt])
+        #
+        if att == [0, 0]:
+            att = None
+        return att
+
+    def attaque_cible(self, cible, type_att="corps à corps"):
         r = random.randint(0, 100)
+        attaque = self.get_attaque(type_att)
         msg = "Il ne s'est rien passé"
-        if r > cible.esquive:
+        if attaque == None:
+            msg = f"{self.nom} ne peut pas attaquer"
+        elif r > cible.esquive:
             # l'attaque est réussie
-            degats = random.randint(self.attaque[0], self.attaque[1])
+            degats = random.randint(attaque[0], attaque[1])
             cible.vie -= degats
             if cible.vie < 0:
                 cible.vie = 0

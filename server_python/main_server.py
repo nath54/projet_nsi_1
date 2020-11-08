@@ -359,6 +359,13 @@ class Server:
             perso.dialogue_en_cours = None
         return txt
 
+    def input_client(self, client, message):
+        nc = self.clients[client]["player"].pseudo
+        print(f"En attente d'une réponse du player {nc}")
+        self.send(client, json.dumps({"type": "message", "value": message}))
+        mess = client.recv(self.max_size)
+        print(f"Réponse recue : {mess}")
+        return mess
 
     # region Commandes
     def commandes(self, client, data):
@@ -707,9 +714,32 @@ class Server:
         # commande attaquer
         elif is_one_of(action, self.commandes_dat["attaquer"]["com"]):
             if ennemi_cible is not None:
-                msg_result = perso.attaque_cible(ennemi_cible)
-                self.send(client, {"type": "message", "value": msg_result})
-                texte_fait = f"{nom_perso} a attaqué {ennemi_cible.nom} :\n{msg_result}"
+                patt_cac = perso.get_attaque("corps à corps")
+                patt_dist = perso.get_attaque("distance")
+                if patt_cac is None and patt_dist is None:
+                    mes = "Vous ne pouvez pas attaquer, vous êtes aussi nul au corps à corps qu'à distance ..."
+                    self.send(client, {"type": "message", "value": mes})
+                else:
+                    if patt_cac is not None and patt_dist is not None:
+                        br = False
+                        erreur = ""
+                        while not br:
+                            rep = self.input_client(client, f"{erreur}\n\nComment voulez vous attaquer ?\n  - (1) : au corps à corps (dégats : {patt_cac})\n  - (2) : à distance (dégats : {patt_cac})")
+                            if is_json(rep):
+                                jr = json.loads(rep)
+                                ar = jr.get("arguments", "")
+                                if jr.get("type", "") == "commande" and traiter_txt(ar) in ["1", "2"]:
+                                    tp_att = ["corps à corps", "distance"][int(ar)]
+                                    br = True
+                                else:
+                                    erreur = "Il y a eu une erreur lors de la reception du message !"
+                            else:
+                                erreur = "Erreur lors de la reception du message !"
+                    else:
+                        tp_att = "corps à corps" if patt_dist is None else "distance"
+                    msg_result = perso.attaque_cible(ennemi_cible, tp_att)
+                    self.send(client, {"type": "message", "value": msg_result})
+                    texte_fait = f"{nom_perso} a attaqué {ennemi_cible.nom} :\n{msg_result}"
             else:
                 mes = "Je ne trouve pas cet ennemi, pour compenser, voulez vous que je me frappe moi-même ?"
                 self.send(client, {"type": "message", "value": mes})

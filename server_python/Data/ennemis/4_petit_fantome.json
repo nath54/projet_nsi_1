@@ -5,6 +5,10 @@
     "race":"mort-vivant",
     "description":"Fantome !",
     "vie":[10,14],
-    "attaque":[5,7],
+    "attaque":{
+        "corps à corps": [5,7],
+        "magique": null,
+        "distance": null
+    },
     "attaque_effets":{}
 }

@@ -5,6 +5,10 @@
     "race":"goblin",
     "description":"Les goblins soldats sont des goblins entrainés pour combattre, ils sont plus forts que les goblins normaux.",
     "vie":[20,25],
-    "attaque":[5,8],
+    "attaque":{
+        "corps à corps": [5,8],
+        "magique": null,
+        "distance": null
+    },
     "attaque_effets":{"critique":20}
 }

@@ -92,6 +92,10 @@ class Perso(Combattant):
         txt_exp_1 = "    - " + "\n    - ".join([(str(key) + " : " + " / ".join([str(e) for e in self.experience[key]])) for key in self.experience])
         txt_exp = "points d'expériences du perso : \n" + txt_exp_1
 
+        txt_cac = "Rien"
+        txt_dist = "Rien"
+        txt_mag = "Rien"
+
         # region txt stats
         res = f"""STATS :
 nom : {self.nom}
@@ -116,6 +120,11 @@ stats :
 
 résistances :  {self.resistances}
 faiblesses : {self.faiblesses}
+
+Actuellement, votre attaque est :
+    - corps à corps : {txt_att_cac}
+    - distance : {txt_att_dist}
+    - juste magique : {txt_att_mag}
 """
         # endregion
         return res

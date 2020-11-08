@@ -5,6 +5,10 @@
     "race":"rat",
     "description":"Les rats sont des petites rongeurs nocifs, ils peuvent transmettre des maladies, mais sont faibles seuls, même une grand mère peut les tuer !",
     "vie":[1,4],
-    "attaque":[0,2],
+    "attaque":{
+        "corps à corps": [0,2],
+        "magique": null,
+        "distance": null
+    },
     "attaque_effets":{"peste":10}
 }

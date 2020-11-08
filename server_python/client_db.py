@@ -176,8 +176,8 @@ class Client_mariadb:
         query = ("""CREATE TABLE IF NOT EXISTS ennemis
                     (id INT PRIMARY KEY, type_ TEXT, nom TEXT,
                     race TEXT, description_ TEXT,
-                    vie_min INT, vie_max INT, attaque_min INT,
-                    attaque_max INT, attaque_effets TEXT);""")
+                    vie_min INT, vie_max INT, attaque TEXT,
+                    attaque_effets TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
@@ -253,7 +253,7 @@ class Client_mariadb:
         # Ennemis
         if force or self.get_schema("ennemis") != {"id": "int", "type_": "text", "nom": "text",
                                                    "race": "text", "description_": "text", "vie_min": "int",
-                                                   "vie_max": "int", "attaque_min": "int", "attaque_max": "int",
+                                                   "vie_max": "int", "attaque": "text",
                                                    "attaque_effets": "text"}:
             self.cursor.execute("DROP TABLE IF EXISTS ennemis")
             self.connection.commit()
@@ -324,6 +324,7 @@ class Client_mariadb:
         Auteur: Nathan, Hugo
 
         """
+        print("Transfert des donnnées json vers la BDD...")
         # region Ennemis :
         self.cursor.execute("TRUNCATE TABLE `ennemis`")
         self.connection.commit()
@@ -335,8 +336,7 @@ class Client_mariadb:
               "nom": ["nom", False], "race": ["race", False],
               "description_": ["description", False],
               "vie_min": ["vie", False, 0], "vie_max": ["vie", False, 1],
-              "attaque_min": ["attaque", False, 0],
-              "attaque_max": ["attaque", False, 1],
+              "attaque": ["attaque", True],
               "attaque_effets": ["attaque_effets", True]}
         for fich in os.listdir(pathd):
             if not fich.endswith(".json"):
@@ -855,7 +855,7 @@ class Client_mariadb:
 
         """
         query = """SELECT type_, nom, race, description_, vie_min,
-                          vie_max, attaque_min, attaque_max, attaque_effets
+                          vie_max, attaque, attaque_effets
                     FROM ennemis
                     WHERE id=%s"""
         self.cursor.execute(query, (id_,))
@@ -866,16 +866,21 @@ class Client_mariadb:
             "nom": "Ennemi Méchant",
             "description": "Ennemi qui va t'attaquer parce qu'il est méchant et que les méchants ils attaquent les gentils...",
             "vie": [0, 1],
-            "attaque": [0, 1],
+            "attaque": {
+                "corps à corps": None,
+                "magique": None,
+                "distance": None
+            },
             "attaque_effets": {}
         }
-        for type_, nom, race, description_, vie_min, vie_max, attaque_min, attaque_max, attaque_effets in results:
+        for type_, nom, race, description_, vie_min, vie_max, attaque, attaque_effets in results:
             datas["id"] = id_
             datas["type"] = type_
             datas["nom"] = nom
             datas["description"] = description_
             datas["vie"] = [vie_min, vie_max]
-            datas["attaque"] = [attaque_min, attaque_max]
+            if attaque is not None:
+                datas["attaque"] = json.dumps(attaque)
             if attaque_effets is not None:
                 datas["attaque_effets"] = json.dumps(attaque_effets)
             return datas

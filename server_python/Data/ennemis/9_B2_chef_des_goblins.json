@@ -5,6 +5,10 @@
     "nom":"Le chef des goblins",
     "description":"C'est le chef des goblins, c'est lui qui a gagné sa place de chef goblin par la force, et il n'a pas vraiment envie de la perdre maintenant !",
     "vie":[80,100],
-    "attaque":[20,30],
+    "attaque":{
+        "corps à corps": [20,30],
+        "magique": null,
+        "distance": null
+    },
     "attaque_effets":{"critique":30}
 }

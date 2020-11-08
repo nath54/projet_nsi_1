@@ -5,6 +5,10 @@
     "nom":"Hitler",
     "description":"C'est l'auteur de mein kampf, il veut instaurer son régime dans tout le royaume, se dispute avec satan car il n'a pas réussi a envoyer Juses en enfer POUR TOUJOURS !",
     "vie":[8000,10000],
-    "attaque":[200,300],
+    "attaque":{
+        "corps à corps": [200,300],
+        "magique": null,
+        "distance": null
+    },
     "attaque_effets":{"critique":300}
 }

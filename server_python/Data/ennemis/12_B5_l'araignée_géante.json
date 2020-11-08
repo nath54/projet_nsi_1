@@ -5,6 +5,10 @@
     "nom":"araignée géante",
     "description":"Une araignée énorme, elle en a aprés vous car vous avez éliminés sa progéniture, attention à vous ou vous serez sont prochain repas!",
     "vie":[60,70],
-    "attaque":[10,15],
+    "attaque":{
+        "corps à corps": [10,15],
+        "magique": null,
+        "distance": null
+    },
     "attaque_effets":{"poison":30}
 }
