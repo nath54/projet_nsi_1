@@ -47,6 +47,7 @@ class Perso(Combattant):
         self.histo_lieu = set()  # TODO: Marquer le lieu dans lequel le perso apparaît
         self.dialogue_en_cours = None
         self.interlocuteur = None
+        self.type_ = "perso"
 
     # region Format
     def format_invent(self):
@@ -187,7 +188,7 @@ Actuellement, votre attaque est :
     def desequiper(self, nom_obj, traiter_txt, id_obj=None):
         """Déséquipe un objet du personnage
 
-        Auteur: Hugo
+        Auteur: Hugo, Nathan
 
         """
         for type_, obj in self.equip.items():

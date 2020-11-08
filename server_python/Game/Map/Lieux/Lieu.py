@@ -71,6 +71,7 @@ class Lieu:
             self.objets.append(self.game.Objet(id_obj, self.game))
         self.lieux_accessibles = datas.get("lieux", [])
         self.map_ = game.map_
+        self.index = id_
 
     def aff(self):
         """Permet d'afficher la description d'un lieu.

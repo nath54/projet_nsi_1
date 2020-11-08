@@ -36,6 +36,7 @@ class Pnj(Etre):
         self.race = datas.get("race", "humain")
         self.dialogue = datas.get("dialogues", None)
         print(datas, self.dialogue)
+        self.type_ = "pnj"
 
     def __str__(self):
         """Renvoie une description du PNJ."""

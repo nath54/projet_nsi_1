@@ -10,5 +10,6 @@
         "magique": null,
         "distance": null
     },
-    "attaque_effets":{"brulure":15}
+    "attaque_effets":{"brulure":15},
+    "agressivite": 80
 }

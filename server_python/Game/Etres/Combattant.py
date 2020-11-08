@@ -40,6 +40,7 @@ class Combattant(Etre):
             "magique":None
         }
         self.esquive = 0
+        self.type_ = "combattant"
 
     def full_vie(self):
         """Rend toute sa santé au personnage.
@@ -118,6 +119,14 @@ class Combattant(Etre):
         assert all([type(a) in [int, float] for a in la]), "Ce ne sont pas des listes de nombres"
         return [a + n for a in la]
 
+    def moy_lst(self, l):
+        """Fonction qui renvoie la moyenne d'une liste de nombres
+
+        Auteur: Nathan
+        """
+        assert type(l) == list and all([type(n) in [int, float] for n in l]), "Ce n'est pas une liste de nombre !"
+        return sum(l)/len(l)
+
     def get_attaque(self, type_att="corps à corps"):
         print(f"\n\nGET_attaque : {self.effets}\n\n")
         att = self.attaque[type_att]
@@ -175,12 +184,13 @@ class Combattant(Etre):
         if attaque == None:
             msg = f"{self.nom} ne peut pas attaquer"
         elif r > cible.esquive:
+            msg = f"{self.nom} attaque {cible.nom}"
             # l'attaque est réussie
             degats = random.randint(attaque[0], attaque[1])
             cible.vie -= degats
             if cible.vie < 0:
                 cible.vie = 0
-            msg = f"{cible.nom} a subit {degats} dégats, il a maintenant {cible.vie} pv."
+            msg += f"\n{cible.nom} a subit {degats} dégats, il a maintenant {cible.vie} pv."
             for effet in self.effets_attaque.keys():
                 r = random.randint(0, 100)
                 if r <= self.effets_attaque[effet]:
@@ -194,9 +204,17 @@ class Combattant(Etre):
             else:
                 enleve = self.test_mort()
             if enleve:
-                msg += "\nL'ennemi est mort."
+                msg += f"\n{cible.nom} est mort."
+            # si l'ennemi se fait toucher, l'ennemi va etre ultra agressif
+            if cible.type_ in ["ennemis", "ennemi"]:
+                cible.agressivite = 100
         else:
             msg = f"{cible.nom} a esquivé l'attaque"
+            # on va augmenter l'agressivité de l'ennemi
+            if cible.type_ in ["ennemis", "ennemi"]:
+                cible.agressivite += 10
+                if cible.agressivite > 100:
+                    cible.agressivite = 100
         return msg
 
     def test_mort(self):

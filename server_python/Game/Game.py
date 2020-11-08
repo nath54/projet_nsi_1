@@ -43,8 +43,8 @@ class Game:
         self.Pnj = Pnj
         self.Ennemi = Ennemi
         self.map_ = Map()
-        # TODO
-        pass
+
+        self.server = None
 
     def start(self):
         """Lance le moteur de jeu.
@@ -65,3 +65,11 @@ class Game:
         for fich in os.listdir("Data/classes/"):
             data = self.jload("Data/classes/" + fich)
             self.classes[data["nom"]] = data
+
+    def get_all_persos_lieu(self, id_lieu):
+        persos = []
+        for cl in self.server.clients.values():
+            perso = cl["player"].perso
+            if perso.lieu == id_lieu:
+                persos.append(perso)
+        return persos
