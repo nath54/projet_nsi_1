@@ -1,6 +1,6 @@
 {
     "id":19,
-    "type": "arme",
+    "type": "Arme",
     "nom":"bouclier en tissus",
     "description":"il ne sert pas a grand chose...c'est un accessoire de mode",
     "perte de l'arme en attaquant à distance":true,

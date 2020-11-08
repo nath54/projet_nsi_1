@@ -1,6 +1,6 @@
 {
     "id":11,
-    "type": "arme",
+    "type": "Arme",
     "nom":"trident",
     "description":"ce trident est une arme très puissante; il peut être utilisé a distance comme au corps à corps.",
     "perte de l'arme en attaquant à distance":true,

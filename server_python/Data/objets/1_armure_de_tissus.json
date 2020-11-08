@@ -1,6 +1,6 @@
 {
     "id":1,
-    "type":"armure",
+    "type":"Armure",
     "nom":"Armure de Tissu",
     "description":"... Ou simple vêtement, c'est à votre préférence.",
     "effets":{

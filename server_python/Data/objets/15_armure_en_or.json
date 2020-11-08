@@ -1,6 +1,6 @@
 {
     "id":15,
-    "type":"armure",
+    "type":"Armure",
     "nom":"Armure en or",
     "description":"Comme son nom l'indique,cette armure est or : toujours impressionant n'est-ce pas?.",
     "effets":{

@@ -1,6 +1,6 @@
 {
     "id":2,
-    "type": "arme",
+    "type": "Arme",
     "nom":"épée de bois",
     "description":"",
     "perte de l'arme en attaquant à distance":true,

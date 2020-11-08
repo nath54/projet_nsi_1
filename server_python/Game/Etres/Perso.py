@@ -155,19 +155,6 @@ faiblesses : {self.faiblesses}
                 else:
                     obj[1] -= 1
 
-    def desequiper(self, nom_obj, id_obj=None):
-        """Déséquipe un objet du personnage
-
-        Auteur: Hugo
-
-        """
-        for key, val in self.equip:
-            if val.index == id_obj or val.nom == nom_obj:
-                self.equip[key] = None
-                self.add_to_invent(val.index)
-                return True
-        return False
-
     def add_to_invent(self, id_obj):
         """Ajoute un objet à l'inventaire
 
@@ -185,17 +172,34 @@ faiblesses : {self.faiblesses}
         if not exist:
             self.inventaire.append([obj, 1])
 
-    def equiper(self, nom_obj, id_obj=None):
-        """Équipe un objet à un personnage
+    def desequiper(self, nom_obj, traiter_txt, id_obj=None):
+        """Déséquipe un objet du personnage
 
         Auteur: Hugo
 
         """
-        for i in range(len(self.inventaire)):
-            t_obj = self.inventaire[i]
-            if t_obj.index == id_obj or t_obj.nom == nom_obj:
-                if t_obj.type in ["Amulette", "Arme", "Armure"]:
-                    del self.inventaire[i]
-                    self.equip[t_obj.type] = t_obj
-                    return True
-        return False
+        for type_, obj in self.equip:
+            if obj.index == id_obj or traiter_txt(obj.nom) == traiter_txt(nom_obj):
+                self.equip[type_] = None
+                self.add_to_invent(obj.index)
+                return False
+        return f"Vous n'aviez pas de {nom_obj} sur vous..."
+
+    def equiper(self, nom_obj, traiter_txt, id_obj=None):
+        """Équipe un objet à un personnage
+
+        Auteur: Hugo, Nathan
+
+        """
+        for obj, qt in self.inventaire:
+            if obj.index == id_obj or traiter_txt(obj.nom) == traiter_txt(nom_obj):
+                if obj.type in ["Amulette", "Arme", "Armure"]:
+                    if self.equipement[obj.type] is None:
+                        self.inventaire.remove([obj, qt])
+                        self.equip[obj.type] = obj
+                        return False
+                    else:
+                        return f"Il y a déjà un(e) {obj.type} équipé"
+                else:
+                    return f"L'objet selectionné n'est pas équipable, il est de type {obj.type}"
+        return "Objet non trouvé dans l'inventaire"

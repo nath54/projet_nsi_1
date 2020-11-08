@@ -1,6 +1,6 @@
 {
     "id":3,
-    "type": "arme",
+    "type": "Arme",
     "nom":"arc en carbone",
     "description":"arc en carbone, il est plus solide que l'arc en bois",
     "perte de l'arme en attaquant à distance":true,

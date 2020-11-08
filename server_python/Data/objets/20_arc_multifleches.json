@@ -1,8 +1,8 @@
 {
     "id":20,
-    "type": "arme",
-    "nom":"salve de fleche",
-    "description":"ça veut rien dire, mais manque d'inspi, tout ça...",
+    "type": "Arme",
+    "nom":"Arc multifleches",
+    "description":"Un arc qui permet de tirer plusieurs fleches a la fois",
     "perte de l'arme en attaquant à distance":true,
     "attaque_type":"attaque multiple",
     "effets":{

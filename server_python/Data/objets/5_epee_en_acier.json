@@ -1,6 +1,6 @@
 {
     "id":5,
-    "type": "arme",
+    "type": "Arme",
     "nom":"épée en acier",
     "description":"",
     "perte de l'arme en attaquant à distance":true,

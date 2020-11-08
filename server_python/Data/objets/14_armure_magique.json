@@ -1,6 +1,6 @@
 {
     "id":14,
-    "type":"armure",
+    "type":"Armure",
     "nom":"Armure magique",
     "description":"Comme son nom l'indique,cette armure est magique : impressionant n'est-ce pas?.",
     "effets":{

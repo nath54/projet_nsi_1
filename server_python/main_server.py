@@ -467,21 +467,21 @@ class Server:
         # Ce qui suit sont des commandes avec au moins 1 argument
         # commande desequiper
         elif is_one_of(action, self.commandes_dat["desequiper"]["com"]):
-            b = perso.desequiper(args[0])
-            if b:
+            erreur = perso.desequiper(args[0], traiter_txt)
+            if not erreur:
                 mess = f"Vous avez retiré {args[0]} !"
                 texte_fait = f"{nom_perso} a déséquipé {args[0]}"
             else:
-                mess = f"Vous n'aviez pas de {args[0]} sur vous..."
+                mess = erreur
             self.send(client, {"type": "message", "value": mess}, True)
         # commande equiper
         elif is_one_of(action, self.commandes_dat["equiper"]["com"]):
-            b = perso.equiper(args[0])
-            if b:
+            erreur = perso.equiper(args[0], traiter_txt)
+            if not erreur:
                 mess = f"Vous avez équipé {args[0]}"
                 texte_fait = f"{nom_perso} a équipé {args[0]}"
             else:
-                mess = f"Vous ne possédez pas '{args[0]}'"
+                mess = erreur
             self.send(client, {"type": "message", "value": mess}, True)
 
         # On définit l'objet ciblé avec lequel l'utilisateur voudra (peut-être) agir
@@ -551,27 +551,28 @@ class Server:
                     self.send(client, json.dumps({"type": "message", "value": "Probleme de syntaxe, "}))
                     return
 
-            for i in range(len(perso.inventaire)):
-                obj = perso.inventaire[i]
-                if traiter_txt(obj[0].nom) == traiter_txt(arg):
-                    if obj[1] < qt:
-                        mess = f"Vous ne pouvez jeter autant de {obj[0].nom} que ça !"
+            for obj, obj_qt in perso.inventaire:
+                if traiter_txt(obj.nom) == traiter_txt(arg):
+                    if obj_qt < qt:
+                        mess = f"Vous ne pouvez jeter autant de {obj.nom} que ça !"
                     else:
+                        # on rajoute les objets au lieu
                         for i in range(qt):
-                            new_obj = Objet(obj[0].index, self.game)
+                            new_obj = Objet(obj.index, self.game)
                             perso.game.map_.lieux[perso.lieu].objets.append(new_obj)
-                        if obj[1] == qt:
+                        # on enleve l'objet de l'inventaire
+                        if obj_qt == qt:
                             del perso.inventaire[i]
                             if qt == 1:
-                                mess = f"Vous avez jeté votre {obj[0].nom} !"
-                                texte_fait = f"{nom_perso} a jeté un/une {obj[0].nom}"
+                                mess = f"Vous avez jeté votre {obj.nom} !"
+                                texte_fait = f"{nom_perso} a jeté un/une {obj.nom}"
                             else:
-                                mess = f"Vous avez jeté tous vos {obj[0].nom} !"
-                                texte_fait = f"{nom_perso} a jeté tous ses {obj[0].nom}"
+                                mess = f"Vous avez jeté tous vos {obj.nom} !"
+                                texte_fait = f"{nom_perso} a jeté tous ses {obj.nom}"
                         else:
                             perso.inventaire[i][1] -= qt
-                            mess = f"Vous avez jeté {qt} de vos {obj[0].nom} !"
-                            texte_fait = f"{nom_perso} a jeté {qt} {obj[0].nom}"
+                            mess = f"Vous avez jeté {qt} de vos {obj.nom} !"
+                            texte_fait = f"{nom_perso} a jeté {qt} {obj.nom}"
             self.send(client, json.dumps({"type": "message", "value": mess}))
         # commande ouvrir
         elif is_one_of(action, self.commandes_dat["ouvrir"]["com"]):
