@@ -210,6 +210,12 @@ Actuellement, votre attaque est :
                     if self.equipement[obj.type] is None:
                         self.inventaire.remove([obj, qt])
                         self.equip[obj.type] = obj
+                        # on ajouet les effets de l'objet
+                        for k_effet, v_effet in obj.effets:
+                            if k_effet == "attaque":
+                                pass
+                            # TODO
+                            pass
                         return False
                     else:
                         return f"Il y a déjà un(e) {obj.type} équipé"
