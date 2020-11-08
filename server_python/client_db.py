@@ -252,7 +252,7 @@ class Client_mariadb:
                                                   "inventaire": "text",
                                                   "lieu": "int",
                                                   "quetes": "text",
-                                                  "equipement": "text", 
+                                                  "equipement": "text",
                                                   "vie": "int",
                                                   "vie_totale": "int",
                                                   "energie": "int",
@@ -364,7 +364,8 @@ class Client_mariadb:
               "description_": ["description", False],
               "vie_min": ["vie", False, 0], "vie_max": ["vie", False, 1],
               "attaque": ["attaque", True],
-              "attaque_effets": ["attaque_effets", True]}
+              "attaque_effets": ["attaque_effets", True],
+              "agressivite": ["agressivite", False]}
         for fich in os.listdir(pathd):
             if not fich.endswith(".json"):
                 continue
@@ -929,6 +930,12 @@ class Client_mariadb:
                    FROM quete
                    WHERE id=%s"""
         self.cursor.execute(query, (id_,))
+        datas = {
+            "nom": "Quete",
+            "description": "Une quete",
+            "récompense": [],
+            "condition": []
+        }
         for nom, desc, recompense, cond in self.cursor:
             datas["nom"] = nom
             datas["description"] = desc

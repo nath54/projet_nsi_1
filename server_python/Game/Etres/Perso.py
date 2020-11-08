@@ -96,9 +96,9 @@ class Perso(Combattant):
         cac = self.get_attaque("corps à corps")
         mag = self.get_attaque("magique")
         dist = self.get_attaque("distance")
-        txt_att_cac = "Rien" if cac == None else cac
-        txt_att_dist = "Rien" if dist == None else dist
-        txt_att_mag = "Rien" if mag == None else mag
+        txt_att_cac = "Rien" if cac is None else cac
+        txt_att_dist = "Rien" if dist is None else dist
+        txt_att_mag = "Rien" if mag is None else mag
 
         # region txt stats
         res = f"""STATS :
@@ -200,13 +200,13 @@ Actuellement, votre attaque est :
                 # on enleve les effets de l'objet
                 for k_effet, v_effet in obj.effets.items():
                     if k_effet == "attaque":
-                        if not "attaque" in self.effets.keys():
+                        if "attaque" not in self.effets.keys():
                             continue
                         for k_a, v_a in v_effet.items():
-                            if v_a != None:
+                            if v_a is not None:
                                 if type(v_a) in [int, float]:
                                     v_a = [v_a, v_a]
-                                if self.effets["attaque"][k_a] == None:
+                                if self.effets["attaque"][k_a] is None:
                                     self.effets["attaque"][k_a] = [0, 0]
                                 self.effets["attaque"][k_a] = self.sous_lsts(self.effets["attaque"][k_a], v_a)
                     # TODO
@@ -229,13 +229,13 @@ Actuellement, votre attaque est :
                         # on ajouet les effets de l'objet
                         for k_effet, v_effet in obj.effets.items():
                             if k_effet == "attaque":
-                                if not "attaque" in self.effets.keys():
+                                if "attaque" not in self.effets.keys():
                                     self.effets["attaque"] = {"corps à corps": None, "magique": None, "distance": None}
                                 for k_a, v_a in v_effet.items():
-                                    if v_a != None:
+                                    if v_a is not None:
                                         if type(v_a) in [int, float]:
                                             v_a = [v_a, v_a]
-                                        if self.effets["attaque"][k_a] == None:
+                                        if self.effets["attaque"][k_a] is None:
                                             self.effets["attaque"][k_a] = v_a
                                         else:
                                             self.effets["attaque"][k_a] = self.sum_lsts(self.effets["attaque"][k_a], v_a)

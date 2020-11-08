@@ -227,7 +227,6 @@ class Server:
         for cc in self.clients.keys():
             cc.send(message)
 
-
     def send(self, client, message, print_=False, important=False):
         """Envoie un message a un client précis.
 
@@ -361,14 +360,14 @@ class Server:
     def format_dialog(self, perso):
         #
         dial = perso.dialogue_en_cours
-        if dial == None:
+        if dial is None:
             return "Dialogue inexistant"
         print(dial)
         print(dial.keys())
         txt = list(dial.keys())[0] + "\n"
         #
         rd = dial[list(dial.keys())[0]]
-        if rd != None:
+        if rd is not None:
             x = 1
             for rep in rd.keys():
                 txt += f"\n\t({x}) {rep}"
@@ -426,7 +425,7 @@ class Server:
                 txt_help += f"\n\t- {t} : {tt} [{ttt}]"
             self.send(client, {"type": "message", "value": txt_help}, True)
         # commande 1-2-3-4-5-6-7-8-9 (réponse dialogue)
-        if perso.dialogue_en_cours != None and action in [str(n) for n in range(1,10)]:
+        if perso.dialogue_en_cours is not None and action in [str(n) for n in range(1, 10)]:
             idd = int(action) - 1
             dial = perso.dialogue_en_cours
             if idd >= len(dial.keys()):
@@ -448,7 +447,7 @@ class Server:
                 else:
                     texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
                 perso.interlocuteur = None
-            elif dsuiv == None:
+            elif dsuiv is None:
                 perso.dialogue_en_cours = None
                 self.send(client, {"type": "message", "value": "Fin du dialogue"}, True)
                 if perso.interlocuteur is not None:
@@ -457,7 +456,7 @@ class Server:
                     texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
                 perso.interlocuteur = None
 
-        elif perso.dialogue_en_cours != None:
+        elif perso.dialogue_en_cours is not None:
             self.send(client, {"type": "message", "value": "Quand vous êtes dans un dialogue, vous devez choisir la réponse que vous voulez répondre avec le nombre correspondant a votre réponse !"}, True)
             return
         # commande voir ; affiche les infos du lieu
@@ -468,7 +467,7 @@ class Server:
             if len(args) == 0 or args[0] == "":
                 self.send(client, {"type": "message", "value": perso.format_invent()}, True)
             else:
-                self.invent_multi_args(client, data)
+                self.invent_multi_args(client, perso, data)
         # commande equipement : affiche l'equipement
         elif is_one_of(action, self.commandes_dat["equipement"]["com"]):
             self.send(client, {"type": "message", "value": perso.format_equip()}, True)
@@ -602,7 +601,7 @@ class Server:
                             perso.inventaire[i][1] -= qt
                             mess = f"Vous avez jeté {qt} de vos {obj.nom} !"
                             texte_fait = f"{nom_perso} a jeté {qt} {obj.nom}"
-                            
+
             self.send(client, json.dumps({"type": "message", "value": mess}))
         # commande ouvrir
         elif is_one_of(action, self.commandes_dat["ouvrir"]["com"]):
@@ -643,8 +642,8 @@ class Server:
                     if action == "entrer":
                         idls.append(id_lieu)
                         eq_ap = False
+                        lieu = self.game.map_.lieux[id_lieu]
                         for lap in lieu.appellations:
-                            print(lap)
                             if are_texts_equals(lap, args[0]) or are_texts_equals(lap, " ".join(args)):
                                 eq_ap = True
                                 break
@@ -754,7 +753,7 @@ class Server:
                                 jr = json.loads(rep)
                                 cm = jr.get("commande", "")
                                 if jr.get("type", "") == "commande" and traiter_txt(cm) in ["1", "2"]:
-                                    tp_att = ["corps à corps", "distance"][int(cm)]
+                                    tp_att = ["corps à corps", "distance"][int(cm) - 1]
                                     br = True
                                 else:
                                     erreur = "Il y a eu une erreur lors de la reception du message !"
@@ -795,7 +794,7 @@ class Server:
         if texte_fait != "":
             self.send_all_except_c(client, json.dumps({"type": "message", "value": texte_fait}))
 
-    def invent_multi_args(self, perso, data):
+    def invent_multi_args(self, client, perso, data):
         """Si la commande entrée est 'inventaire ...'.
 
         Gère le cas où la commande entrée est 'inventaire voir ...' ou

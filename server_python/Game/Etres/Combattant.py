@@ -35,9 +35,9 @@ class Combattant(Etre):
         self.effets_attaque = {}
         self.effets = {}
         self.attaque = {
-            "corps à corps":None,
-            "distance":None,
-            "magique":None
+            "corps à corps": None,
+            "distance": None,
+            "magique": None
         }
         self.esquive = 0
         self.type_ = "combattant"
@@ -119,26 +119,25 @@ class Combattant(Etre):
         assert all([type(a) in [int, float] for a in la]), "Ce ne sont pas des listes de nombres"
         return [a + n for a in la]
 
-    def moy_lst(self, l):
+    def moy_lst(self, lst):
         """Fonction qui renvoie la moyenne d'une liste de nombres
 
         Auteur: Nathan
         """
-        assert type(l) == list and all([type(n) in [int, float] for n in l]), "Ce n'est pas une liste de nombre !"
-        return sum(l)/len(l)
+        assert type(lst) == list and all([type(n) in [int, float] for n in lst]), "Ce n'est pas une liste de nombre !"
+        return sum(lst) / len(lst)
 
     def get_attaque(self, type_att="corps à corps"):
-        print(f"\n\nGET_attaque : {self.effets}\n\n")
         att = self.attaque[type_att]
-        if att == None:
-            att = [0,0]
-        if self.attaque["magique"] != None and type_att != "magique":
+        if att is None:
+            att = [0, 0]
+        if self.attaque["magique"] is not None and type_att != "magique":
             att = self.sum_lsts(att, self.attaque["magique"])
         # on applique les effets
         for k_effet, v_effet in self.effets.items():
             if k_effet == "attaque":
                 for tpatt in list(set(["magique", type_att])):
-                    if v_effet[tpatt] != None:
+                    if v_effet[tpatt] is not None:
                         if type(v_effet[tpatt]) in [int, float]:
                             att = self.sum_lst_nb(att, v_effet[tpatt])
                         elif type(v_effet[tpatt]) == list:
@@ -161,7 +160,7 @@ class Combattant(Etre):
         for k_effet, v_effet in self.effets.items():
             if k_effet in ["defense", "défense"]:
                 for tpdef in lst_def:
-                    if v_effet[tpdef] != None:
+                    if v_effet[tpdef] is not None:
                         if type(v_effet[tpdef]) in [int, float]:
                             deff = self.sum_lst_nb(deff, v_effet[tpdef])
                         elif type(v_effet[tpdef]) == list:
@@ -181,7 +180,7 @@ class Combattant(Etre):
         r = random.randint(0, 100)
         attaque = self.get_attaque(type_att)
         msg = "Il ne s'est rien passé"
-        if attaque == None:
+        if attaque is None:
             msg = f"{self.nom} ne peut pas attaquer"
         elif r > cible.esquive:
             msg = f"{self.nom} attaque {cible.nom}"

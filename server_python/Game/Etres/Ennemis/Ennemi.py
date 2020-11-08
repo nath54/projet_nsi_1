@@ -33,9 +33,10 @@ class Ennemi(Combattant):
         self.type_ = datas["type"]
         self.description = datas["description"]
         self.attaque = datas["attaque"]
-        self.vie = random.randint(datas["vie"][0], datas["vie"][1])
-        self.effets_attaque = datas["attaque_effets"]
-        self.agressite = datas["agressivite"]
+        self.vie_totale = random.randint(datas["vie"][0], datas["vie"][1])
+        self.vie = self.vie_totale
+        self.effets_attaque = datas.get("attaque_effets", {})
+        self.agressivite = datas.get("agressivite", 0)
         # endregion
         if nb != -1:
             self.nom += "-" + str(nb)
@@ -46,7 +47,7 @@ class Ennemi(Combattant):
         Auteur: Nathan
 
         """
-        if random.randint(0,100) <= self.agressivite:  # si l'ennemi attaque
+        if random.randint(0, 100) <= self.agressivite:  # si l'ennemi attaque
             persos_l = self.game.get_all_persos_lieu(lieu)  # on recupere tous les persos dans ce lieu
             #
             if len(persos_l) >= 1:  # s'il y a des persos dans ce lieu
@@ -56,7 +57,7 @@ class Ennemi(Combattant):
                 tp_att = "corps à corps"
                 cac = self.get_attaque("corps à corps")
                 dist = self.get_attaque("distance")
-                if cac is None and dist is None: # l'ennemi ne peut pas attaquer
+                if cac is None and dist is None:  # l'ennemi ne peut pas attaquer
                     return
                 elif cac is None:
                     tp_att = "distance"
@@ -73,11 +74,12 @@ class Ennemi(Combattant):
                     if p.classe == "tank":  # on attaque en priorité les tanks
                         p_cible = p
                 #
-                if p_cible == None: # s'il n'y a pas de tanks dans ce lieu, on prend la premiere perso dans ce lieu
+                if p_cible is None:  # s'il n'y a pas de tanks dans ce lieu, on prend la premiere perso dans ce lieu
                     p_cible = persos_l[0]
                 # l'ennemi va attaquer le perso cible
-                self.attaque_cible(p_cible, tp_att)
-                
+                mess = self.attaque_cible(p_cible, tp_att)
+                mess = json.dumps({"type": "message", "value": mess})
+                self.game.server.send_all(mess)
 
     def __str__(self):
         """Renvoie une description de l'ennemi."""
