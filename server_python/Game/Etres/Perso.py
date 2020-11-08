@@ -92,9 +92,9 @@ class Perso(Combattant):
         txt_exp_1 = "    - " + "\n    - ".join([(str(key) + " : " + " / ".join([str(e) for e in self.experience[key]])) for key in self.experience])
         txt_exp = "points d'expériences du perso : \n" + txt_exp_1
 
-        txt_cac = "Rien"
-        txt_dist = "Rien"
-        txt_mag = "Rien"
+        txt_att_cac = "Rien"
+        txt_att_dist = "Rien"
+        txt_att_mag = "Rien"
 
         # region txt stats
         res = f"""STATS :
@@ -191,6 +191,10 @@ Actuellement, votre attaque est :
             if obj.index == id_obj or traiter_txt(obj.nom) == traiter_txt(nom_obj):
                 self.equip[type_] = None
                 self.add_to_invent(obj.index)
+                # on enleve les effets de l'objet
+                for k_effet, v_effet in obj.effets:
+                    # TODO
+                    pass
                 return False
         return f"Vous n'aviez pas de {nom_obj} sur vous..."
 
