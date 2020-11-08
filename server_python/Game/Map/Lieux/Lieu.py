@@ -90,6 +90,7 @@ class Lieu:
         txt_persos = ""
         txt_lieux = ""
 
+        self.persos = self.game.get_all_persos_lieu(self.index)
         if len(self.objets) >= 1:
             txt_objets = "\n\n" + random.choice(p_objs) + " :\n\t- " + "\n\t- ".join([objet.nom for objet in self.objets])
         if len(self.pnjs) >= 1:

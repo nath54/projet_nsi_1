@@ -239,6 +239,11 @@ class Server:
         """
         if print_:
             print(message)
+        #
+        p = self.clients[client]["player"].perso
+        if p is not None:
+            message.replace("@nom_perso", p.nom)
+        #
         message = json.dumps(message)
         message = message.encode(encoding="utf-8")
         size = sys.getsizeof(message)
@@ -483,6 +488,8 @@ class Server:
             self.on_close(client)
         # commande attendre : le perso du joueur attend un tour
         elif is_one_of(action, self.commandes_dat["attendre"]["com"]):  # Bof
+            self.send(client, {"type": "message", "value": "Votre flemme vous submerge pendant quelques instants, et vous ne faites rien pendant un tour... Les développeurs de ce jeu submergés eux aussi par la flemme vous remercient d'ailleurs."})
+            texte_fait = f"{nom_perso}, submergé par la flemme, ne fait rien pendant un tour."
             self.tour += 1
         # les prochaines commandes ont au moins un argument
         elif data_len <= 1:

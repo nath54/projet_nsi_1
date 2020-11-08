@@ -1,0 +1,12 @@
+{
+    "id":51,
+    "appellations":["hall du centre", "hall centre", "hall", "hall centre entrainement", "hall entrainement"],
+    "nom":"Hall du centre d'entrainement",
+    "region":"Tuto",
+    "description":"Vous êtes dans le hall du centre d'entrainement, vous pouvez voir des jeunes futurs héros ou zéros comme vous.",
+    "type":"ville",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[]
+}

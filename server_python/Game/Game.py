@@ -70,6 +70,6 @@ class Game:
         persos = []
         for cl in self.server.clients.values():
             perso = cl["player"].perso
-            if perso.lieu == id_lieu:
+            if perso is not None and perso.lieu == id_lieu:
                 persos.append(perso)
         return persos
