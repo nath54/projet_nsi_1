@@ -100,6 +100,15 @@ class Combattant(Etre):
         assert all([type(elt) in [int, float] for elt in la + lb]), "Ce ne sont pas des listes de nombres"
         return [la[x] + lb[x] for x in range(len(la))]
 
+    def sous_lsts(self, la, lb):
+        """Fonction qui permet la soustraction de deux listes de nombres de mêmes tailles
+
+        Auteur: Nathan
+        """
+        assert len(la) == len(lb), "Les deux listes n'ont pas la même taille !"
+        assert all([type(elt) in [int, float] for elt in la + lb]), "Ce ne sont pas des listes de nombres"
+        return [la[x] - lb[x] for x in range(len(la))]
+
     def sum_lst_nb(self, la, n):
         """Fonction qui permet la somme de tous les éléments d'une liste de nombres par un nombre
 
@@ -110,6 +119,7 @@ class Combattant(Etre):
         return [a + n for a in la]
 
     def get_attaque(self, type_att="corps à corps"):
+        print(f"\n\nGET_attaque : {self.effets}\n\n")
         att = self.attaque[type_att]
         if att == None:
             att = [0,0]

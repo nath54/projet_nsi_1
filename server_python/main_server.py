@@ -707,7 +707,7 @@ class Server:
                     texte_fait = f"{nom_perso} a voulu parler avec {pnj_cible.nom}, mais ce dernier n'a pas très envie de discuter avec {nom_perso}"
             else:
                 self.send(client, {"type": "message", "value": "vous voulez parler à un fantôme ? Oups, j'oubliais que les fantômes existent dans ce monde, pas comme votre interlocuteur ..."}, True)
-                return 
+                return
         # commande message
         elif is_one_of(action, self.commandes_dat["message"]["com"]):
             self.send_all_except_c(client, json.dumps({"type": "message", "value": self.clients[client]["player"].pseudo + " : " + " ".join(args)}))
@@ -724,12 +724,12 @@ class Server:
                         br = False
                         erreur = ""
                         while not br:
-                            rep = self.input_client(client, f"{erreur}\n\nComment voulez vous attaquer ?\n  - (1) : au corps à corps (dégats : {patt_cac})\n  - (2) : à distance (dégats : {patt_cac})")
+                            rep = self.input_client(client, f"{erreur}\n\nComment voulez vous attaquer ?\n  - (1) : au corps à corps (dégats : {patt_cac})\n  - (2) : à distance (dégats : {patt_dist})")
                             if is_json(rep):
                                 jr = json.loads(rep)
-                                ar = jr.get("arguments", "")
-                                if jr.get("type", "") == "commande" and traiter_txt(ar) in ["1", "2"]:
-                                    tp_att = ["corps à corps", "distance"][int(ar)]
+                                cm = jr.get("commande", "")
+                                if jr.get("type", "") == "commande" and traiter_txt(cm) in ["1", "2"]:
+                                    tp_att = ["corps à corps", "distance"][int(cm)]
                                     br = True
                                 else:
                                     erreur = "Il y a eu une erreur lors de la reception du message !"
