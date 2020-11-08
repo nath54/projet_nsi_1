@@ -73,6 +73,7 @@ def main():
     connection.commit()
     cursor.execute('GRANT ALL PRIVILEGES ON * TO pyuser@localhost;')
     connection.commit()
+    print("Database initialisé !")
     """
     # install python modules
     libs = ["sockets", "websockets"]
