@@ -69,7 +69,7 @@ def main():
     connection.commit()
     cursor.execute('CREATE DATABASE IF NOT EXISTS projet_nsi_1;')
     connection.commit()
-    cursor.execute('USE projet_nsi_1;')
+    cursor.execute('USE mysql;')
     connection.commit()
     cursor.execute('GRANT ALL PRIVILEGES ON * TO pyuser@localhost;')
     connection.commit()
