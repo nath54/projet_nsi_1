@@ -240,11 +240,13 @@ class Server:
         if print_:
             print(message)
         #
-        p = self.clients[client]["player"].perso
-        if p is not None:
-            message.replace("@nom_perso", p.nom)
-        #
         message = json.dumps(message)
+        #
+        if self.clients[client]["player"] is not None:
+            p = self.clients[client]["player"].perso
+            if p is not None:
+                message.replace("@nom_perso", p.nom)
+        #
         message = message.encode(encoding="utf-8")
         size = sys.getsizeof(message)
         if size > self.max_size:
@@ -419,16 +421,39 @@ class Server:
         # TODO : Il faudra appeler une fonction qui va executer les effets que
         # le personnage a pour commencer son tour
 
+        # On définit l'objet ciblé avec lequel l'utilisateur voudra (peut-être) agir
+        # region definition obj_cible
+        obj_cible = None
+        if len(args) >= 1:
+            for obj in perso.game.map_.lieux[perso.lieu].objets:
+                if are_texts_equals(obj.nom, args[0]) or traiter_txt(" ".join(args)).startswith(traiter_txt(obj.nom)):
+                    obj_cible = obj
+                    break
+        # endregion
+        # region definition obj_cible_inv
+        obj_cible_inv = None
+        if len(args) >= 1:
+            for obj, _ in perso.inventaire:
+                if are_texts_equals(obj.nom, args[0]) or traiter_txt(" ".join(args)).startswith(traiter_txt(obj.nom)):
+                    obj_cible_inv = obj
+                    break
+        # endregion
+        # region definition ennemi_cible
+        ennemi_cible = None
+        if len(args) >= 1:
+            for en in self.game.map_.lieux[perso.lieu].ennemis:
+                if are_texts_equals(args[0], en.nom) or traiter_txt(" ".join(args)).startswith(traiter_txt(en.nom)):
+                    ennemi_cible = en
+        # endregion
+        # region definition pnj_cible
+        pnj_cible = None
+        if len(args) >= 1:
+            for pn in self.game.map_.lieux[perso.lieu].pnjs:
+                if are_texts_equals(args[0], pn.nom) or traiter_txt(" ".join(args)).startswith(traiter_txt(pn.nom)):
+                    pnj_cible = pn
+        # endregion
+
         # Les premieres commandes sont des commandes à 0 ou plus arguments
-        # commande aide : affiche le message d'aide
-        if is_one_of(action, self.commandes_dat["aide"]["com"]):
-            txt_help = "COMMANDES :"
-            for key in self.commandes_dat.keys():
-                t = "'" + "', '".join(self.commandes_dat[key]["com"]) + "'"
-                tt = self.commandes_dat[key]["help"]
-                ttt = "Fonctionne" if self.commandes_dat[key]["fini"] else "Ne fonctionne pas"
-                txt_help += f"\n\t- {t} : {tt} [{ttt}]"
-            self.send(client, {"type": "message", "value": txt_help}, True)
         # commande 1-2-3-4-5-6-7-8-9 (réponse dialogue)
         if perso.dialogue_en_cours is not None and action in [str(n) for n in range(1, 10)]:
             idd = int(action) - 1
@@ -460,13 +485,21 @@ class Server:
                 else:
                     texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
                 perso.interlocuteur = None
-
         elif perso.dialogue_en_cours is not None:
             self.send(client, {"type": "message", "value": "Quand vous êtes dans un dialogue, vous devez choisir la réponse que vous voulez répondre avec le nombre correspondant a votre réponse !"}, True)
             return
+        # commande aide : affiche le message d'aide
+        elif is_one_of(action, self.commandes_dat["aide"]["com"]):
+            txt_help = "COMMANDES :"
+            for key in self.commandes_dat.keys():
+                t = "'" + "', '".join(self.commandes_dat[key]["com"]) + "'"
+                tt = self.commandes_dat[key]["help"]
+                ttt = "Fonctionne" if self.commandes_dat[key]["fini"] else "Ne fonctionne pas"
+                txt_help += f"\n\t- {t} : {tt} [{ttt}]"
+            self.send(client, {"type": "message", "value": txt_help}, True)
         # commande voir ; affiche les infos du lieu
         elif is_one_of(action, ["voir"]):
-            self.send(client, {"type": "message", "value": self.game.map_.lieux[perso.lieu].aff()}, True)
+            self.send(client, {"type": "message", "value": self.game.map_.lieux[perso.lieu].aff(perso)}, True)
         # commande inventaire : affiche l'inventaire
         elif is_one_of(action, self.commandes_dat["inventaire"]["com"]):
             if len(args) == 0 or args[0] == "":
@@ -516,41 +549,8 @@ class Server:
             else:
                 mess = erreur
             self.send(client, {"type": "message", "value": mess}, True)
-
-        # On définit l'objet ciblé avec lequel l'utilisateur voudra (peut-être) agir
-        # region definition obj_cible
-        obj_cible = None
-        if len(args) >= 1:
-            for obj in perso.game.map_.lieux[perso.lieu].objets:
-                if are_texts_equals(obj.nom, args[0]) or traiter_txt(" ".join(args)).startswith(traiter_txt(obj.nom)):
-                    obj_cible = obj
-                    break
-        # endregion
-        # region definition obj_cible_inv
-        obj_cible_inv = None
-        if len(args) >= 1:
-            for obj, _ in perso.inventaire:
-                if are_texts_equals(obj.nom, args[0]) or traiter_txt(" ".join(args)).startswith(traiter_txt(obj.nom)):
-                    obj_cible_inv = obj
-                    break
-        # endregion
-        # region definition ennemi_cible
-        ennemi_cible = None
-        if len(args) >= 1:
-            for en in self.game.map_.lieux[perso.lieu].ennemis:
-                if are_texts_equals(args[0], en.nom) or traiter_txt(" ".join(args)).startswith(traiter_txt(en.nom)):
-                    ennemi_cible = en
-        # endregion
-        # region definition pnj_cible
-        pnj_cible = None
-        if len(args) >= 1:
-            for pn in self.game.map_.lieux[perso.lieu].pnjs:
-                if are_texts_equals(args[0], pn.nom) or traiter_txt(" ".join(args)).startswith(traiter_txt(pn.nom)):
-                    pnj_cible = pn
-        # endregion
-
         # commande examiner
-        if is_one_of(action, self.commandes_dat["examiner"]["com"]):
+        elif is_one_of(action, self.commandes_dat["examiner"]["com"]):
             if obj_cible is None and ennemi_cible is None and obj_cible_inv is None and pnj_cible is None:
                 self.send(client, {"type": "message", "value": "Si je ne vois pas ce que je doit examiner, dois-je essayer d'en imaginer une description foireuse ?"}, True)
             elif obj_cible:
@@ -663,7 +663,7 @@ class Server:
             else:
                 lieu = self.game.map_.lieux[idls[0]]
                 perso.lieu = idls[0]
-                self.send(client, json.dumps({"type": "message", "value": f"Vous allez dans {lieu.nom}\n{lieu.aff()}"}))
+                self.send(client, json.dumps({"type": "message", "value": f"Vous allez dans {lieu.nom}\n{lieu.aff(perso)}"}))
                 texte_fait = f"{nom_perso} est entré dans le lieu {lieu.nom}"
         # commande sortir
         elif is_one_of(action, self.commandes_dat["sortir"]["com"]):
@@ -692,7 +692,7 @@ class Server:
             else:
                 lieu = self.game.map_.lieux[idls[0]]
                 perso.lieu = idls[0]
-                self.send(client, json.dumps({"type": "message", "value": f"Vous sortez de {lieu.nom}\n{lieu.aff()}"}))
+                self.send(client, json.dumps({"type": "message", "value": f"Vous sortez de {lieu.nom}\n{lieu.aff(perso)}"}))
                 texte_fait = f"{nom_perso} est sortit du lieu {lieu.nom}"
         # commande aller
         elif is_one_of(action, self.commandes_dat["aller"]["com"]):
@@ -703,7 +703,7 @@ class Server:
                     if action == args[0]:
                         lieu = self.game.map_.lieux[id_lieu]
                         texte_fait = f"{nom_perso} est allé à {lieu.nom}"
-                        self.send(client, {"type": "message", "value": f"Vous vous déplacez vers {lieu.nom}.\n{lieu.aff()}"}, True)
+                        self.send(client, {"type": "message", "value": f"Vous vous déplacez vers {lieu.nom}.\n{lieu.aff(perso)}"}, True)
                         perso.lieu = id_lieu
                         is_valid = True
             else:
@@ -718,7 +718,7 @@ class Server:
                     if are_texts_equals(lieu.nom, args[0]) or eq_ap:
                         perso.lieu = id_lieu
                         texte_fait = f"{nom_perso} est allé à {lieu.nom}"
-                        self.send(client, {"type": "message", "value": f"Vous vous déplacez vers {lieu.nom}.\n{lieu.aff()}"}, True)
+                        self.send(client, {"type": "message", "value": f"Vous vous déplacez vers {lieu.nom}.\n{lieu.aff(perso)}"}, True)
                         is_valid = True
                         break
             if not is_valid:
@@ -790,7 +790,10 @@ class Server:
         # commande mettre
         elif is_one_of(action, self.commandes_dat["mettre"]["com"]):
             pass
+        else:
+            self.send(client, json.dumps({"type": "message", "value": "J'ai pas compris ce que vous vouliez, pouvez vous répetez plus clairement, et si vous connaissez pas les commandes, vous pouvez taper 'aide' pour voir la liste des commandes disponibles."}))
 
+        # Tour des ennemis
         while self.tour >= 1:
             self.tour -= 1
             # tous les ennemis de tous les lieux font leur tour
@@ -833,7 +836,7 @@ class Server:
 
     def bienvenue(self, client):
         p = self.clients[client]["player"].perso
-        mess = {"type": "message", "value": f"Bienvenue !\nVous aller jouer au jeu {self.nom_du_jeu} et nous esperons que vous vous amuserez !\n\nVous êtes {p.nom}\nVie : {p.vie}/{p.vie_totale}\n\n{self.game.map_.lieux[p.lieu]}"}
+        mess = {"type": "message", "value": f"Bienvenue !\nVous aller jouer au jeu {self.nom_du_jeu} et nous esperons que vous vous amuserez !\n\nVous êtes {p.nom}\nVie : {p.vie}/{p.vie_totale}\n\n{self.game.map_.lieux[p.lieu].aff(p)}"}
         mess = json.dumps(mess)
         self.send(client, mess)
         mess = {"type": "message", "value": f"{p.nom} a rejoint la partie, il est dans le lieu : {self.game.map_.lieux[p.lieu].nom}"}

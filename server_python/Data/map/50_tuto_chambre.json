@@ -6,7 +6,7 @@
     "description":"Vous êtes dans une chambre du centre d'entrainement, vous dormez ici depuis maintenant 5 ans, et le fait que vous allez bientôt quitter cette endroit vous rend nostalgique ... ",
     "type":"ville",
     "pnjs":[],
-    "objets":[ [50, 1] ],
+    "objets":[ 50 ],
     "ennemis":[],
     "lieux":[]
 }
