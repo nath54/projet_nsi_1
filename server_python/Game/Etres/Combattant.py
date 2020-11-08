@@ -134,10 +134,39 @@ class Combattant(Etre):
                             att = self.sum_lst_nb(att, v_effet[tpatt])
                         elif type(v_effet[tpatt]) == list:
                             att = self.sum_lsts(att, v_effet[tpatt])
-        #
+        # l'attaque ne peut pas etre négative, et le premier numero doit être inférieur au second
+        if att[0] < 0:
+            att[0] = 0
+        if att[1] < 0:
+            att[1] = 0
+        if att[0] > att[1]:
+            att[0] = att[1]
         if att == [0, 0]:
             att = None
         return att
+
+    def get_defense(self, tp_def="corps à corps"):
+        deff = [0, 0]
+        lst_def = list(set(["magique", tp_def]))
+        # on applique les effets
+        for k_effet, v_effet in self.effets.items():
+            if k_effet in ["defense", "défense"]:
+                for tpdef in lst_def:
+                    if v_effet[tpdef] != None:
+                        if type(v_effet[tpdef]) in [int, float]:
+                            deff = self.sum_lst_nb(deff, v_effet[tpdef])
+                        elif type(v_effet[tpdef]) == list:
+                            deff = self.sum_lsts(deff, v_effet[tpdef])
+        # la défense ne peut pas etre négative, et le premier numero doit être inférieur au second
+        if deff[0] < 0:
+            deff[0] = 0
+        if deff[1] < 0:
+            deff[1] = 0
+        if deff[0] > deff[1]:
+            deff[0] = deff[1]
+        if deff == [0, 0]:
+            deff = None
+        return deff
 
     def attaque_cible(self, cible, type_att="corps à corps"):
         r = random.randint(0, 100)

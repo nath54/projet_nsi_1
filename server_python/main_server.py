@@ -127,6 +127,7 @@ class Server:
         directions = ["ouest", "est", "nord", "sud", "nord-ouest",
                       "nord-est", "sud-ouest", "sud-est"]
         self.directions = [traiter_txt(d) for d in directions]
+        self.tour = 0
 
     def start(self):
         """Lance le serveur.
@@ -195,7 +196,7 @@ class Server:
         """Envoie un message a tous les autres clients.
 
         Args:
-            client (socket.socket): Référence au client ayant envoyé le message
+            client (socket.socket): Référence au client dont il ne faut pas envoyer message
             message (str): Message à envoyer aux autres clients
 
         Auteur: Nathan
@@ -208,6 +209,23 @@ class Server:
         for autre_client in self.clients.keys():
             if client != autre_client:
                 autre_client.send(message)
+
+    def send_all(self, message):
+        """Envoie un message a tous les clients.
+
+        Args:
+            message (str): Message à envoyer aux clients
+
+        Auteur: Nathan
+
+        """
+        message = json.dumps(message)
+        message = message.encode(encoding="utf-8")
+        if sys.getsizeof(message) > self.max_size:
+            return
+        for cc in self.clients.keys():
+            cc.send(message)
+
 
     def send(self, client, message, print_=False, important=False):
         """Envoie un message a un client précis.
@@ -392,7 +410,6 @@ class Server:
 
         texte_fait = ""
         nom_perso = self.clients[client]["player"].perso.nom
-        tour = False  # si le perso a fait un tour
 
         # TODO : Il faudra appeler une fonction qui va executer les effets que
         # le personnage a pour commencer son tour
@@ -438,7 +455,7 @@ class Server:
                 else:
                     texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
                 perso.interlocuteur = None
-            
+
         elif perso.dialogue_en_cours != None:
             self.send(client, {"type": "message", "value": "Quand vous êtes dans un dialogue, vous devez choisir la réponse que vous voulez répondre avec le nombre correspondant a votre réponse !"}, True)
             return
@@ -759,11 +776,12 @@ class Server:
         elif is_one_of(action, self.commandes_dat["mettre"]["com"]):
             pass
 
-        if tour:
+        while self.tour >= 1:
+            self.tour -= 1
             # les ennemis font leur tour
             for en in self.game.map_.lieux[perso.lieu].ennemis:
                 en.tour(self.game.map_.lieux[perso.lieu])
-            # affichage de l'action du joueur au autres
+        # affichage de l'action du joueur au autres
         if texte_fait != "":
             self.send_all_except_c(client, json.dumps({"type": "message", "value": texte_fait}))
 
