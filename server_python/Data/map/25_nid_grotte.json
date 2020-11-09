@@ -1,0 +1,12 @@
+{
+    "id":25,
+    "appellations":["un nid","nid des araignées","nid araignéés"],
+    "nom":"Le nid des araignées",
+    "region":"Larion",
+    "description":"vous étes tomber des le nid des araignées, il y en a une énorme qui vous attend.",
+    "type":"grotte",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[12],
+    "lieux":[ [6,"sortir"] ]
+}
