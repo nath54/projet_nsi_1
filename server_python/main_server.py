@@ -185,13 +185,13 @@ class Server:
         """
         self.on_accept(client, infos)
         while True:
-            # try:
-            msg = client.recv(self.max_size)
-            self.on_message(client, infos, msg)
-            # except Exception as e:
-            #     print(e)
-            #     self.on_close(client)
-            #     return
+            try:
+                msg = client.recv(self.max_size)
+                self.on_message(client, infos, msg)
+            except Exception as e:
+                print(e)
+                self.on_close(client)
+                return
 
     def send_all_except_c(self, client, message):
         """Envoie un message a tous les autres clients.
@@ -358,10 +358,13 @@ class Server:
         Auteur: Nathan
 
         """
-        self.save(client)
-        print("Connexion fermée", client)
-        self.send(client, {"type": "connection fermée"})
-        del(self.clients[client])
+        # si le client n'a pas déjà été supprimé
+        if client in self.clients.keys():
+            self.save(client)
+            print("Connexion fermée", client)
+            self.send(client, {"type": "close"})
+            del(self.clients[client])
+            client.close()  # a tester
 
     def save(self, client):
         # TODO
