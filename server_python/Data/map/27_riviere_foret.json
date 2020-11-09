@@ -1,0 +1,12 @@
+{
+    "id":27,
+    "appellations":["rivière","bord de rivière","rivière forêt"],
+    "nom":"La rivière de Tergaron",
+    "region":"Larion",
+    "description":"C'est la rivière qui traverse la forêt de Tergaron, elle sépare le royaume des hommes et celui des elfes.",
+    "type":"foret",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [26,"sud"] , [28,"nord"] ]
+}

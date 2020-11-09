@@ -1,0 +1,15 @@
+{
+    "id":13,
+    "type":"ennemi",
+    "nom":"noll",
+    "race":"troll nain",
+    "description":"Les troll nain sont des enfants de troll et de nain, il en existe que très peu, et il se cache sous les pont pour empécher les gens de passer",
+    "vie":[10,15],
+    "attaque":{
+        "corps à corps": [2,6],
+        "magique": null,
+        "distance": null
+    },
+    "attaque_effets":{},
+    "agressivite": 70
+}
