@@ -689,7 +689,7 @@ class Client_mariadb:
 
         """
         for lieu in map.lieux.values():
-            save_lieu(lieu)
+            self.save_lieu(lieu)
 
     def save_lieu(self, lieu):
         """Permet de sauvegarder un lieu.
@@ -697,12 +697,37 @@ class Client_mariadb:
         Args:
             lieu(Lieu): Lieu à sauvegarder
 
-        Auteur: Hugo
+        Auteur: Hugo, Nathan
 
         """
-        query = """UPDATE persos
-                   SET nom = %s, description = %s, ennemis = %s,
-                       """
+        query = """UPDATE lieux
+                   SET ennemis = %s,
+                       objets = %s
+                       pnjs = %s,
+                       lieux = %s
+                    WHERE id = %s
+                """
+        ens = {}
+        for en in lieu.ennemis:
+            if en.index in ens.keys():
+                ens[en.index] += 1
+            else:
+                ens[en.index] = 1
+
+        objs = {}
+        for ob in lieu.objets:
+            if ob.index in objs.keys():
+                objs[ob.index] += 1
+            else:
+                objs[ob.index] = 1
+        self.cursor.execute(query,
+                            (
+                                json.dumps([el[0] if el[1] == 1 else list(el) for el in ens.items()]),
+                                json.dumps([el[0] if el[1] == 1 else list(el) for el in objs.items()]),
+                                json.dumps([pn.index for pn in lieu.pnjs]),
+                                json.dumps(lieu.lieux_accessibles),
+                                lieu.index
+                            ))
 
     def new_genre(self, genre):
         self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)", (genre,))
