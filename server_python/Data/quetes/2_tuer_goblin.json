@@ -1,0 +1,11 @@
+{
+    "id":2,
+    "nom":"tuer les goblins",
+    "description":"les tuer à mains nues : chouette",
+    "id_recompenses":[5],
+    "conditions":{
+        "type": "Extermination",
+        "objectif": 3,
+        "id_objectif": 1
+    }
+}
