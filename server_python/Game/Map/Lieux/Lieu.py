@@ -72,6 +72,7 @@ class Lieu:
         self.lieux_accessibles = datas.get("lieux", [])
         self.map_ = game.map_
         self.index = id_
+        self.tour = 0
 
     def aff(self, perso_=None):
         """Permet d'afficher la description d'un lieu.

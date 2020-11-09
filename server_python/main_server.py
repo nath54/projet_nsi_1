@@ -444,6 +444,7 @@ class Server:
 
         texte_fait = ""
         nom_perso = self.clients[client]["player"].perso.nom
+        tour_p = 0
         # endregion
 
         # TODO : Il faudra appeler une fonction qui va executer les effets que
@@ -517,7 +518,7 @@ class Server:
         elif is_one_of(action, self.commandes_dat["attendre"]["com"]):  # Bof
             self.send_message(client, "Votre flemme vous submerge pendant quelques instants, et vous ne faites rien pendant un tour... Les développeurs de ce jeu submergés eux aussi par la flemme vous remercient d'ailleurs.")
             texte_fait = f"{nom_perso}, submergé par la flemme, ne fait rien pendant un tour."
-            self.tour += 1
+            tour_p += 1
         # les prochaines commandes ont au moins un argument
         elif data_len <= 1:
             self.send_message(client, "Commande inconnue", True)
@@ -529,7 +530,7 @@ class Server:
             if not erreur:
                 mess = f"Vous avez retiré {args[0]} !"
                 texte_fait = f"{nom_perso} a déséquipé {args[0]}"
-                self.tour += 0.5
+                tour_p += 0.5
             else:
                 mess = erreur
             self.send_message(client, mess, True)
@@ -539,7 +540,7 @@ class Server:
             if not erreur:
                 mess = f"Vous avez équipé {args[0]}"
                 texte_fait = f"{nom_perso} a équipé {args[0]}"
-                self.tour += 0.5
+                tour_p += 0.5
             else:
                 mess = erreur
             self.send_message(client, mess, True)
@@ -566,7 +567,7 @@ class Server:
                 self.game.map_.lieux[perso.lieu].objets.remove(obj_cible)
                 self.send_message(client, f"Vous avez pris le/la {obj.nom}.")
                 texte_fait = f"{nom_perso} a pris {obj.nom}"
-                self.tour += 0.5
+                tour_p += 0.5
             else:
                 self.send_message(client, "Euh .... Vous essayez quand même de prendre quelque chose qui ne peut pas se prendre quand même là ! Je pense que vous devriez aller dans un hopital psychiatrique, parce que ce sera quoi le prochain stade ? Vous essayerez de prendre d'autre êtres vivants ?")
         # commande jeter
@@ -586,7 +587,7 @@ class Server:
                     if obj_qt < qt:
                         mess = f"Vous ne pouvez jeter autant de {obj.nom} que ça !"
                     else:
-                        self.tour += 0.5
+                        tour_p += 0.5
                         # on rajoute les objets au lieu
                         for i in range(qt):
                             new_obj = Objet(obj.index, self.game)
@@ -615,7 +616,7 @@ class Server:
                     obj_cible.ouvert = True
                     mess = f"Vous ouvrez ce superbe {obj_cible.nom}\n{obj_cible.format_contenu()}"
                     texte_fait = f"{nom_perso} a ouvert {obj_cible.nom}"
-                    self.tour += 0.5
+                    tour_p += 0.5
             else:
                 mess = "Comment ouvrir un objet qui ne possède pas d'ouverture..."
             self.send_message(client, mess, True)
@@ -626,7 +627,7 @@ class Server:
                     obj_cible.ouvert = False
                     mess = f"Vous avez refermé le {obj_cible.nom}."
                     texte_fait = f"{nom_perso} a fermé {obj_cible.nom}"
-                    self.tour += 0.5
+                    tour_p += 0.5
                 else:
                     mess = f"Vous avez refermé le/la {obj_cible.nom}, qui était déjà fermé... Quel exploit !"
             else:
@@ -790,7 +791,7 @@ class Server:
                     msg_result = perso.attaque_cible(ennemi_cible, tp_att)
                     self.send_message(client, msg_result)
                     texte_fait = f"{nom_perso} a attaqué {ennemi_cible.nom} :\n{msg_result}"
-                    self.tour += 1
+                    tour_p += 1
             else:
                 mes = "Je ne trouve pas cet ennemi, pour compenser, voulez vous que je me frappe moi-même ?"
                 self.send_message(client, mes)
@@ -812,11 +813,13 @@ class Server:
         else:
             self.send_message(client, "J'ai pas compris ce que vous vouliez, pouvez vous répetez plus clairement, et si vous connaissez pas les commandes, vous pouvez taper 'aide' pour voir la liste des commandes disponibles.")
 
+        self.game.map_.lieux[perso.lieu].tour += tour_p
+
         # Tour des ennemis
-        while self.tour >= 1:
-            self.tour -= 1
-            # tous les ennemis de tous les lieux font leur tour
-            for lieu in self.game.map_.lieux.values():
+        # tous les ennemis de tous les lieux font leur tour
+        for lieu in self.game.map_.lieux.values():
+            while lieu.tour >= 1:
+                lieu.tour -= 1
                 for en in lieu.ennemis:
                     en.tour(lieu.index)
         # affichage de l'action du joueur au autres
