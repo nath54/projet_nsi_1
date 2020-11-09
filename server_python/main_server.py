@@ -573,6 +573,8 @@ class Server:
                 self.send(client, {"type": "message", "value": f"Vous avez pris le/la {obj.nom}."})
                 texte_fait = f"{nom_perso} a pris {obj.nom}"
                 self.tour += 0.5
+            else:
+                self.send(client, {"type": "message", "value": "Euh .... Vous essayez quand même de prendre quelque chose qui ne peut pas se prendre quand même là ! Je pense que vous devriez aller dans un hopital psychiatrique, parce que ce sera quoi le prochain stade ? Vous essayerez de prendre d'autre êtres vivants ?"})
         # commande jeter
         elif is_one_of(action, self.commandes_dat["jeter"]["com"]):
             mess = "Impossible de jeter cet objet, vous avez vérifié au moins que vous le possedez ?"
