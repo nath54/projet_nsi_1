@@ -10,5 +10,6 @@
         "magique": null,
         "distance": null
     },
-    "attaque_effets":{}
+    "attaque_effets":{},
+    "agressivite": 70
 }

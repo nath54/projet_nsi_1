@@ -48,6 +48,7 @@ class Server:
         self.clients = {}
         self.server = None
         self.game = Game(jload)
+        self.game.server = self
         self.client_db = Client_mariadb(self.game)
         self.game.client_db = self.client_db
         self.version = 1
@@ -127,6 +128,7 @@ class Server:
         directions = ["ouest", "est", "nord", "sud", "nord-ouest",
                       "nord-est", "sud-ouest", "sud-est"]
         self.directions = [traiter_txt(d) for d in directions]
+        self.tour = 0
 
     def start(self):
         """Lance le serveur.
@@ -195,7 +197,7 @@ class Server:
         """Envoie un message a tous les autres clients.
 
         Args:
-            client (socket.socket): Référence au client ayant envoyé le message
+            client (socket.socket): Référence au client dont il ne faut pas envoyer message
             message (str): Message à envoyer aux autres clients
 
         Auteur: Nathan
@@ -209,6 +211,22 @@ class Server:
             if client != autre_client:
                 autre_client.send(message)
 
+    def send_all(self, message):
+        """Envoie un message a tous les clients.
+
+        Args:
+            message (str): Message à envoyer aux clients
+
+        Auteur: Nathan
+
+        """
+        message = json.dumps(message)
+        message = message.encode(encoding="utf-8")
+        if sys.getsizeof(message) > self.max_size:
+            return
+        for cc in self.clients.keys():
+            cc.send(message)
+
     def send(self, client, message, print_=False, important=False):
         """Envoie un message a un client précis.
 
@@ -221,7 +239,14 @@ class Server:
         """
         if print_:
             print(message)
+        #
         message = json.dumps(message)
+        #
+        if self.clients[client]["player"] is not None:
+            p = self.clients[client]["player"].perso
+            if p is not None:
+                message.replace("@nom_perso", p.nom)
+        #
         message = message.encode(encoding="utf-8")
         size = sys.getsizeof(message)
         if size > self.max_size:
@@ -342,14 +367,14 @@ class Server:
     def format_dialog(self, perso):
         #
         dial = perso.dialogue_en_cours
-        if dial == None:
+        if dial is None:
             return "Dialogue inexistant"
         print(dial)
         print(dial.keys())
         txt = list(dial.keys())[0] + "\n"
         #
         rd = dial[list(dial.keys())[0]]
-        if rd != None:
+        if rd is not None:
             x = 1
             for rep in rd.keys():
                 txt += f"\n\t({x}) {rep}"
@@ -392,104 +417,9 @@ class Server:
 
         texte_fait = ""
         nom_perso = self.clients[client]["player"].perso.nom
-        tour = False  # si le perso a fait un tour
 
         # TODO : Il faudra appeler une fonction qui va executer les effets que
         # le personnage a pour commencer son tour
-
-        # Les premieres commandes sont des commandes à 0 ou plus arguments
-        # commande aide : affiche le message d'aide
-        if is_one_of(action, self.commandes_dat["aide"]["com"]):
-            txt_help = "COMMANDES :"
-            for key in self.commandes_dat.keys():
-                t = "'" + "', '".join(self.commandes_dat[key]["com"]) + "'"
-                tt = self.commandes_dat[key]["help"]
-                ttt = "Fonctionne" if self.commandes_dat[key]["fini"] else "Ne fonctionne pas"
-                txt_help += f"\n\t- {t} : {tt} [{ttt}]"
-            self.send(client, {"type": "message", "value": txt_help}, True)
-        # commande 1-2-3-4-5-6-7-8-9 (réponse dialogue)
-        if perso.dialogue_en_cours != None and action in [str(n) for n in range(1,10)]:
-            idd = int(action) - 1
-            dial = perso.dialogue_en_cours
-            if idd >= len(dial.keys()):
-                self.send(client, {"type": "message", "value": "Vous voulez répondre une réponse inexistante"}, True)
-                return
-            dsuiv = dial[list(dial.keys())[idd]]
-            if type(dsuiv) == dict:
-                perso.dialogue_en_cours = dsuiv
-                self.send(client, {"type": "message", "value": self.format_dialog(perso)}, True)
-                perso.dialogue_en_cours = dsuiv[list(dsuiv.keys())[0]]
-            elif type(dsuiv) == list:
-                perso.dialogue_en_cours = None
-                t = "Fin du dialogue"
-                # TODO : faire que les effets en fin de dialogue s'appliquent
-                pass
-                self.send(client, {"type": "message", "value": "Fin du dialogue"}, True)
-                if perso.interlocuteur is not None:
-                    texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
-                else:
-                    texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
-                perso.interlocuteur = None
-            elif dsuiv == None:
-                perso.dialogue_en_cours = None
-                self.send(client, {"type": "message", "value": "Fin du dialogue"}, True)
-                if perso.interlocuteur is not None:
-                    texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
-                else:
-                    texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
-                perso.interlocuteur = None
-            
-        elif perso.dialogue_en_cours != None:
-            self.send(client, {"type": "message", "value": "Quand vous êtes dans un dialogue, vous devez choisir la réponse que vous voulez répondre avec le nombre correspondant a votre réponse !"}, True)
-            return
-        # commande voir ; affiche les infos du lieu
-        elif is_one_of(action, ["voir"]):
-            self.send(client, {"type": "message", "value": self.game.map_.lieux[perso.lieu].aff()}, True)
-        # commande inventaire : affiche l'inventaire
-        elif is_one_of(action, self.commandes_dat["inventaire"]["com"]):
-            if len(args) == 0 or args[0] == "":
-                self.send(client, {"type": "message", "value": perso.format_invent()}, True)
-            else:
-                self.invent_multi_args(client, data)
-        # commande equipement : affiche l'equipement
-        elif is_one_of(action, self.commandes_dat["equipement"]["com"]):
-            self.send(client, {"type": "message", "value": perso.format_equip()}, True)
-        # commande stats : affiche des stats
-        elif is_one_of(action, self.commandes_dat["stats"]["com"]):
-            if len(args) == 0:
-                print("stats :", perso.format_stats())
-                self.send(client, {"type": "message", "value": perso.format_stats()}, True)
-            else:
-                pass  # TODO: Afficher stats d'un autre Etre (bof)
-        # commande quit : le client quitte le jeu
-        elif is_one_of(action, self.commandes_dat["quit"]["com"]):
-            self.on_close(client)
-        # commande attendre : le perso du joueur attend un tour
-        elif is_one_of(action, self.commandes_dat["attendre"]["com"]):  # Bof
-            pass
-        # les prochaines commandes ont au moins un argument
-        elif data_len <= 1:
-            self.send(client, {"type": "message", "value": "Commande inconnue"}, True)
-
-        # Ce qui suit sont des commandes avec au moins 1 argument
-        # commande desequiper
-        elif is_one_of(action, self.commandes_dat["desequiper"]["com"]):
-            erreur = perso.desequiper(args[0], traiter_txt)
-            if not erreur:
-                mess = f"Vous avez retiré {args[0]} !"
-                texte_fait = f"{nom_perso} a déséquipé {args[0]}"
-            else:
-                mess = erreur
-            self.send(client, {"type": "message", "value": mess}, True)
-        # commande equiper
-        elif is_one_of(action, self.commandes_dat["equiper"]["com"]):
-            erreur = perso.equiper(args[0], traiter_txt)
-            if not erreur:
-                mess = f"Vous avez équipé {args[0]}"
-                texte_fait = f"{nom_perso} a équipé {args[0]}"
-            else:
-                mess = erreur
-            self.send(client, {"type": "message", "value": mess}, True)
 
         # On définit l'objet ciblé avec lequel l'utilisateur voudra (peut-être) agir
         # region definition obj_cible
@@ -523,8 +453,104 @@ class Server:
                     pnj_cible = pn
         # endregion
 
+        # Les premieres commandes sont des commandes à 0 ou plus arguments
+        # commande 1-2-3-4-5-6-7-8-9 (réponse dialogue)
+        if perso.dialogue_en_cours is not None and action in [str(n) for n in range(1, 10)]:
+            idd = int(action) - 1
+            dial = perso.dialogue_en_cours
+            if idd >= len(dial.keys()):
+                self.send(client, {"type": "message", "value": "Vous voulez répondre une réponse inexistante"}, True)
+                return
+            dsuiv = dial[list(dial.keys())[idd]]
+            if type(dsuiv) == dict:
+                perso.dialogue_en_cours = dsuiv
+                self.send(client, {"type": "message", "value": self.format_dialog(perso)}, True)
+                perso.dialogue_en_cours = dsuiv[list(dsuiv.keys())[0]]
+            elif type(dsuiv) == list:
+                perso.dialogue_en_cours = None
+                t = "Fin du dialogue"
+                # TODO : faire que les effets en fin de dialogue s'appliquent
+                pass
+                self.send(client, {"type": "message", "value": "Fin du dialogue"}, True)
+                if perso.interlocuteur is not None:
+                    texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+                else:
+                    texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+                perso.interlocuteur = None
+            elif dsuiv is None:
+                perso.dialogue_en_cours = None
+                self.send(client, {"type": "message", "value": "Fin du dialogue"}, True)
+                if perso.interlocuteur is not None:
+                    texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+                else:
+                    texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+                perso.interlocuteur = None
+        elif perso.dialogue_en_cours is not None:
+            self.send(client, {"type": "message", "value": "Quand vous êtes dans un dialogue, vous devez choisir la réponse que vous voulez répondre avec le nombre correspondant a votre réponse !"}, True)
+            return
+        # commande aide : affiche le message d'aide
+        elif is_one_of(action, self.commandes_dat["aide"]["com"]):
+            txt_help = "COMMANDES :"
+            for key in self.commandes_dat.keys():
+                t = "'" + "', '".join(self.commandes_dat[key]["com"]) + "'"
+                tt = self.commandes_dat[key]["help"]
+                ttt = "Fonctionne" if self.commandes_dat[key]["fini"] else "Ne fonctionne pas"
+                txt_help += f"\n\t- {t} : {tt} [{ttt}]"
+            self.send(client, {"type": "message", "value": txt_help}, True)
+        # commande voir ; affiche les infos du lieu
+        elif is_one_of(action, ["voir"]):
+            self.send(client, {"type": "message", "value": self.game.map_.lieux[perso.lieu].aff(perso)}, True)
+        # commande inventaire : affiche l'inventaire
+        elif is_one_of(action, self.commandes_dat["inventaire"]["com"]):
+            if len(args) == 0 or args[0] == "":
+                self.send(client, {"type": "message", "value": perso.format_invent()}, True)
+            else:
+                self.invent_multi_args(client, perso, data)
+        # commande equipement : affiche l'equipement
+        elif is_one_of(action, self.commandes_dat["equipement"]["com"]):
+            self.send(client, {"type": "message", "value": perso.format_equip()}, True)
+        # commande stats : affiche des stats
+        elif is_one_of(action, self.commandes_dat["stats"]["com"]):
+            if len(args) == 0:
+                print("stats :", perso.format_stats())
+                self.send(client, {"type": "message", "value": perso.format_stats()}, True)
+            else:
+                pass  # TODO: Afficher stats d'un autre Etre (bof)
+        # commande quit : le client quitte le jeu
+        elif is_one_of(action, self.commandes_dat["quit"]["com"]):
+            self.on_close(client)
+        # commande attendre : le perso du joueur attend un tour
+        elif is_one_of(action, self.commandes_dat["attendre"]["com"]):  # Bof
+            self.send(client, {"type": "message", "value": "Votre flemme vous submerge pendant quelques instants, et vous ne faites rien pendant un tour... Les développeurs de ce jeu submergés eux aussi par la flemme vous remercient d'ailleurs."})
+            texte_fait = f"{nom_perso}, submergé par la flemme, ne fait rien pendant un tour."
+            self.tour += 1
+        # les prochaines commandes ont au moins un argument
+        elif data_len <= 1:
+            self.send(client, {"type": "message", "value": "Commande inconnue"}, True)
+
+        # Ce qui suit sont des commandes avec au moins 1 argument
+        # commande desequiper
+        elif is_one_of(action, self.commandes_dat["desequiper"]["com"]):
+            erreur = perso.desequiper(args[0], traiter_txt)
+            if not erreur:
+                mess = f"Vous avez retiré {args[0]} !"
+                texte_fait = f"{nom_perso} a déséquipé {args[0]}"
+                self.tour += 0.5
+            else:
+                mess = erreur
+            self.send(client, {"type": "message", "value": mess}, True)
+        # commande equiper
+        elif is_one_of(action, self.commandes_dat["equiper"]["com"]):
+            erreur = perso.equiper(args[0], traiter_txt)
+            if not erreur:
+                mess = f"Vous avez équipé {args[0]}"
+                texte_fait = f"{nom_perso} a équipé {args[0]}"
+                self.tour += 0.5
+            else:
+                mess = erreur
+            self.send(client, {"type": "message", "value": mess}, True)
         # commande examiner
-        if is_one_of(action, self.commandes_dat["examiner"]["com"]):
+        elif is_one_of(action, self.commandes_dat["examiner"]["com"]):
             if obj_cible is None and ennemi_cible is None and obj_cible_inv is None and pnj_cible is None:
                 self.send(client, {"type": "message", "value": "Si je ne vois pas ce que je doit examiner, dois-je essayer d'en imaginer une description foireuse ?"}, True)
             elif obj_cible:
@@ -546,6 +572,7 @@ class Server:
                 self.game.map_.lieux[perso.lieu].objets.remove(obj_cible)
                 self.send(client, {"type": "message", "value": f"Vous avez pris le/la {obj.nom}."})
                 texte_fait = f"{nom_perso} a pris {obj.nom}"
+                self.tour += 0.5
         # commande jeter
         elif is_one_of(action, self.commandes_dat["jeter"]["com"]):
             mess = "Impossible de jeter cet objet, vous avez vérifié au moins que vous le possedez ?"
@@ -563,6 +590,7 @@ class Server:
                     if obj_qt < qt:
                         mess = f"Vous ne pouvez jeter autant de {obj.nom} que ça !"
                     else:
+                        self.tour += 0.5
                         # on rajoute les objets au lieu
                         for i in range(qt):
                             new_obj = Objet(obj.index, self.game)
@@ -580,6 +608,7 @@ class Server:
                             perso.inventaire[i][1] -= qt
                             mess = f"Vous avez jeté {qt} de vos {obj.nom} !"
                             texte_fait = f"{nom_perso} a jeté {qt} {obj.nom}"
+
             self.send(client, json.dumps({"type": "message", "value": mess}))
         # commande ouvrir
         elif is_one_of(action, self.commandes_dat["ouvrir"]["com"]):
@@ -590,6 +619,7 @@ class Server:
                     obj_cible.ouvert = True
                     mess = f"Vous ouvrez ce superbe {obj_cible.nom}\n{obj_cible.format_contenu()}"
                     texte_fait = f"{nom_perso} a ouvert {obj_cible.nom}"
+                    self.tour += 0.5
             else:
                 mess = "Comment ouvrir un objet qui ne possède pas d'ouverture..."
             self.send(client, {"type": "message", "value": mess}, True)
@@ -600,6 +630,7 @@ class Server:
                     obj_cible.ouvert = False
                     mess = f"Vous avez refermé le {obj_cible.nom}."
                     texte_fait = f"{nom_perso} a fermé {obj_cible.nom}"
+                    self.tour += 0.5
                 else:
                     mess = f"Vous avez refermé le/la {obj_cible.nom}, qui était déjà fermé... Quel exploit !"
             else:
@@ -618,8 +649,8 @@ class Server:
                     if action == "entrer":
                         idls.append(id_lieu)
                         eq_ap = False
+                        lieu = self.game.map_.lieux[id_lieu]
                         for lap in lieu.appellations:
-                            print(lap)
                             if are_texts_equals(lap, args[0]) or are_texts_equals(lap, " ".join(args)):
                                 eq_ap = True
                                 break
@@ -632,7 +663,7 @@ class Server:
             else:
                 lieu = self.game.map_.lieux[idls[0]]
                 perso.lieu = idls[0]
-                self.send(client, json.dumps({"type": "message", "value": f"Vous allez dans {lieu.nom}\n{lieu.aff()}"}))
+                self.send(client, json.dumps({"type": "message", "value": f"Vous allez dans {lieu.nom}\n{lieu.aff(perso)}"}))
                 texte_fait = f"{nom_perso} est entré dans le lieu {lieu.nom}"
         # commande sortir
         elif is_one_of(action, self.commandes_dat["sortir"]["com"]):
@@ -661,7 +692,7 @@ class Server:
             else:
                 lieu = self.game.map_.lieux[idls[0]]
                 perso.lieu = idls[0]
-                self.send(client, json.dumps({"type": "message", "value": f"Vous sortez de {lieu.nom}\n{lieu.aff()}"}))
+                self.send(client, json.dumps({"type": "message", "value": f"Vous sortez de {lieu.nom}\n{lieu.aff(perso)}"}))
                 texte_fait = f"{nom_perso} est sortit du lieu {lieu.nom}"
         # commande aller
         elif is_one_of(action, self.commandes_dat["aller"]["com"]):
@@ -672,7 +703,7 @@ class Server:
                     if action == args[0]:
                         lieu = self.game.map_.lieux[id_lieu]
                         texte_fait = f"{nom_perso} est allé à {lieu.nom}"
-                        self.send(client, {"type": "message", "value": f"Vous vous déplacez vers {lieu.nom}.\n{lieu.aff()}"}, True)
+                        self.send(client, {"type": "message", "value": f"Vous vous déplacez vers {lieu.nom}.\n{lieu.aff(perso)}"}, True)
                         perso.lieu = id_lieu
                         is_valid = True
             else:
@@ -687,7 +718,7 @@ class Server:
                     if are_texts_equals(lieu.nom, args[0]) or eq_ap:
                         perso.lieu = id_lieu
                         texte_fait = f"{nom_perso} est allé à {lieu.nom}"
-                        self.send(client, {"type": "message", "value": f"Vous vous déplacez vers {lieu.nom}.\n{lieu.aff()}"}, True)
+                        self.send(client, {"type": "message", "value": f"Vous vous déplacez vers {lieu.nom}.\n{lieu.aff(perso)}"}, True)
                         is_valid = True
                         break
             if not is_valid:
@@ -707,7 +738,7 @@ class Server:
                     texte_fait = f"{nom_perso} a voulu parler avec {pnj_cible.nom}, mais ce dernier n'a pas très envie de discuter avec {nom_perso}"
             else:
                 self.send(client, {"type": "message", "value": "vous voulez parler à un fantôme ? Oups, j'oubliais que les fantômes existent dans ce monde, pas comme votre interlocuteur ..."}, True)
-                return 
+                return
         # commande message
         elif is_one_of(action, self.commandes_dat["message"]["com"]):
             self.send_all_except_c(client, json.dumps({"type": "message", "value": self.clients[client]["player"].pseudo + " : " + " ".join(args)}))
@@ -724,12 +755,12 @@ class Server:
                         br = False
                         erreur = ""
                         while not br:
-                            rep = self.input_client(client, f"{erreur}\n\nComment voulez vous attaquer ?\n  - (1) : au corps à corps (dégats : {patt_cac})\n  - (2) : à distance (dégats : {patt_cac})")
+                            rep = self.input_client(client, f"{erreur}\n\nComment voulez vous attaquer ?\n  - (1) : au corps à corps (dégats : {patt_cac})\n  - (2) : à distance (dégats : {patt_dist})")
                             if is_json(rep):
                                 jr = json.loads(rep)
-                                ar = jr.get("arguments", "")
-                                if jr.get("type", "") == "commande" and traiter_txt(ar) in ["1", "2"]:
-                                    tp_att = ["corps à corps", "distance"][int(ar)]
+                                cm = jr.get("commande", "")
+                                if jr.get("type", "") == "commande" and traiter_txt(cm) in ["1", "2"]:
+                                    tp_att = ["corps à corps", "distance"][int(cm) - 1]
                                     br = True
                                 else:
                                     erreur = "Il y a eu une erreur lors de la reception du message !"
@@ -740,6 +771,7 @@ class Server:
                     msg_result = perso.attaque_cible(ennemi_cible, tp_att)
                     self.send(client, {"type": "message", "value": msg_result})
                     texte_fait = f"{nom_perso} a attaqué {ennemi_cible.nom} :\n{msg_result}"
+                    self.tour += 1
             else:
                 mes = "Je ne trouve pas cet ennemi, pour compenser, voulez vous que je me frappe moi-même ?"
                 self.send(client, {"type": "message", "value": mes})
@@ -758,16 +790,21 @@ class Server:
         # commande mettre
         elif is_one_of(action, self.commandes_dat["mettre"]["com"]):
             pass
+        else:
+            self.send(client, json.dumps({"type": "message", "value": "J'ai pas compris ce que vous vouliez, pouvez vous répetez plus clairement, et si vous connaissez pas les commandes, vous pouvez taper 'aide' pour voir la liste des commandes disponibles."}))
 
-        if tour:
-            # les ennemis font leur tour
-            for en in self.game.map_.lieux[perso.lieu].ennemis:
-                en.tour(self.game.map_.lieux[perso.lieu])
-            # affichage de l'action du joueur au autres
+        # Tour des ennemis
+        while self.tour >= 1:
+            self.tour -= 1
+            # tous les ennemis de tous les lieux font leur tour
+            for lieu in self.game.map_.lieux.values():
+                for en in lieu.ennemis:
+                    en.tour(lieu.index)
+        # affichage de l'action du joueur au autres
         if texte_fait != "":
             self.send_all_except_c(client, json.dumps({"type": "message", "value": texte_fait}))
 
-    def invent_multi_args(self, perso, data):
+    def invent_multi_args(self, client, perso, data):
         """Si la commande entrée est 'inventaire ...'.
 
         Gère le cas où la commande entrée est 'inventaire voir ...' ou
@@ -799,7 +836,7 @@ class Server:
 
     def bienvenue(self, client):
         p = self.clients[client]["player"].perso
-        mess = {"type": "message", "value": f"Bienvenue !\nVous aller jouer au jeu {self.nom_du_jeu} et nous esperons que vous vous amuserez !\n\nVous êtes {p.nom}\nVie : {p.vie}/{p.vie_totale}\n\n{self.game.map_.lieux[p.lieu]}"}
+        mess = {"type": "message", "value": f"Bienvenue !\nVous aller jouer au jeu {self.nom_du_jeu} et nous esperons que vous vous amuserez !\n\nVous êtes {p.nom}\nVie : {p.vie}/{p.vie_totale}\n\n{self.game.map_.lieux[p.lieu].aff(p)}"}
         mess = json.dumps(mess)
         self.send(client, mess)
         mess = {"type": "message", "value": f"{p.nom} a rejoint la partie, il est dans le lieu : {self.game.map_.lieux[p.lieu].nom}"}

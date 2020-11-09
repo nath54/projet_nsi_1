@@ -14,3 +14,4 @@ class Etre:
         self.description = ""
         self.race = ""
         self.game = game
+        self.type_ = "etre"

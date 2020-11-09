@@ -50,7 +50,7 @@ def main():
     password = input("password root : ")
     host = "localhost"
     p = input("port : ")
-    port = 3307 if p == "" else p
+    port = 3307 if p == "" else int(p)
     database = "mysql"
     try:
         connection = mariadb.connect(
@@ -73,6 +73,7 @@ def main():
     connection.commit()
     cursor.execute('GRANT ALL PRIVILEGES ON * TO pyuser@localhost;')
     connection.commit()
+    print("Database initialisé !")
     """
     # install python modules
     libs = ["sockets", "websockets"]

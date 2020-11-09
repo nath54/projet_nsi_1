@@ -10,5 +10,6 @@
         "magique": null,
         "distance": null
     },
-    "attaque_effets":{"glace":5}
+    "attaque_effets":{"glace":5},
+    "agressivite": 70
 }

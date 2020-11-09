@@ -177,7 +177,7 @@ class Client_mariadb:
                     (id INT PRIMARY KEY, type_ TEXT, nom TEXT,
                     race TEXT, description_ TEXT,
                     vie_min INT, vie_max INT, attaque TEXT,
-                    attaque_effets TEXT);""")
+                    attaque_effets TEXT, agressivite INT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
@@ -191,14 +191,14 @@ class Client_mariadb:
                     (id INT PRIMARY KEY, nom TEXT, appellations TEXT,
                     description_ TEXT, ennemis TEXT, pnjs TEXT, objets TEXT,
                     lieux TEXT);""")
-        # ennemis, pnjs, objets et lieux contiennent des listes parsées par JSON
+        # ennemis, pnjs, objets, lieux contiennent des listes parsées par JSON
         self.cursor.execute(query)
         self.connection.commit()
 
     def create_table_quete(self):
         """Crée la table `quete` dans la DB.
 
-        Auteur : Hugo
+        Auteur: Hugo
 
         """
         query = ("""CREATE TABLE IF NOT EXISTS quete
@@ -217,8 +217,11 @@ class Client_mariadb:
                     (genre TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
-        for genre in ["homme", "femme", "agenre", "androgyne", "bigender", "non-binaire"]:
-            self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)", (genre, ))
+        genre_base = ["homme", "femme", "agenre", "androgyne", "bigender",
+                      "non-binaire"]
+        for genre in genre_base:
+            self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)",
+                                (genre, ))
             self.connection.commit()
 # endregion
 
@@ -230,31 +233,55 @@ class Client_mariadb:
 
         """
         # Comptes
-        if force or self.get_schema("comptes") != {'id': 'int', 'pseudo': 'text',
-                                                   'email': 'text', 'password': 'text',
+        if force or self.get_schema("comptes") != {'id': 'int',
+                                                   'pseudo': 'text',
+                                                   'email': 'text',
+                                                   'password': 'text',
                                                    'perso_id': 'int'}:
             self.cursor.execute("DROP TABLE comptes")
             self.connection.commit()
             self.create_table_comptes()
             print("La table comptes a été mise à jour !")
         # Persos
-        if force or self.get_schema("persos") != {"id": "int", "nom": "text", "genre": "text",
-                                                  "race": "text", "classe": "text", "argent": "int", "experience": "text",
-                                                  "inventaire": "text", "lieu": "int", "quetes": "text",
-                                                  "equipement": "text", "vie": "int", "vie_totale": "int",
-                                                  "energie": "int", "energie_totale": "int", "charme": "int",
-                                                  "discretion": "int", "force_": "int", "agilite": "int",
-                                                  "magie": "int", "effets_attaque": "text", "bonus_esquive": "int",
-                                                  "sorts": "text", "resistances": "text", "faiblesses": "text"}:
+        if force or self.get_schema("persos") != {"id": "int", "nom": "text",
+                                                  "genre": "text",
+                                                  "race": "text",
+                                                  "classe": "text",
+                                                  "argent": "int",
+                                                  "experience": "text",
+                                                  "inventaire": "text",
+                                                  "lieu": "int",
+                                                  "quetes": "text",
+                                                  "equipement": "text",
+                                                  "vie": "int",
+                                                  "vie_totale": "int",
+                                                  "energie": "int",
+                                                  "energie_totale": "int",
+                                                  "charme": "int",
+                                                  "discretion": "int",
+                                                  "force_": "int",
+                                                  "agilite": "int",
+                                                  "magie": "int",
+                                                  "effets_attaque": "text",
+                                                  "bonus_esquive": "int",
+                                                  "sorts": "text",
+                                                  "resistances": "text",
+                                                  "faiblesses": "text"}:
             self.cursor.execute("DROP TABLE IF EXISTS persos")
             self.connection.commit()
             self.create_table_persos()
             print("La table persos a été mise à jour !")
         # Ennemis
-        if force or self.get_schema("ennemis") != {"id": "int", "type_": "text", "nom": "text",
-                                                   "race": "text", "description_": "text", "vie_min": "int",
-                                                   "vie_max": "int", "attaque": "text",
-                                                   "attaque_effets": "text"}:
+        if force or self.get_schema("ennemis") != {"id": "int",
+                                                   "type_": "text",
+                                                   "nom": "text",
+                                                   "race": "text",
+                                                   "description_": "text",
+                                                   "vie_min": "int",
+                                                   "vie_max": "int",
+                                                   "attaque": "text",
+                                                   "attaque_effets": "text",
+                                                   "agressivite": "int"}:
             self.cursor.execute("DROP TABLE IF EXISTS ennemis")
             self.connection.commit()
             self.create_table_ennemis()
@@ -337,7 +364,8 @@ class Client_mariadb:
               "description_": ["description", False],
               "vie_min": ["vie", False, 0], "vie_max": ["vie", False, 1],
               "attaque": ["attaque", True],
-              "attaque_effets": ["attaque_effets", True]}
+              "attaque_effets": ["attaque_effets", True],
+              "agressivite": ["agressivite", False]}
         for fich in os.listdir(pathd):
             if not fich.endswith(".json"):
                 continue
@@ -855,7 +883,7 @@ class Client_mariadb:
 
         """
         query = """SELECT type_, nom, race, description_, vie_min,
-                          vie_max, attaque, attaque_effets
+                          vie_max, attaque, attaque_effets, agressivite
                     FROM ennemis
                     WHERE id=%s"""
         self.cursor.execute(query, (id_,))
@@ -871,18 +899,20 @@ class Client_mariadb:
                 "magique": None,
                 "distance": None
             },
-            "attaque_effets": {}
+            "attaque_effets": {},
+            "agressivite": 0
         }
-        for type_, nom, race, description_, vie_min, vie_max, attaque, attaque_effets in results:
+        for type_, nom, race, description_, vie_min, vie_max, attaque, attaque_effets, agressivite in results:
             datas["id"] = id_
             datas["type"] = type_
             datas["nom"] = nom
             datas["description"] = description_
             datas["vie"] = [vie_min, vie_max]
+            datas["agressivite"] = agressivite
             if attaque is not None:
-                datas["attaque"] = json.dumps(attaque)
+                datas["attaque"] = json.loads(attaque)
             if attaque_effets is not None:
-                datas["attaque_effets"] = json.dumps(attaque_effets)
+                datas["attaque_effets"] = json.loads(attaque_effets)
             return datas
         return None
 
@@ -892,7 +922,7 @@ class Client_mariadb:
         Args:
             id_(int): L'identifiant de la quête
 
-        Auteur : Hugo
+        Auteur: Hugo
 
         """
         # CREATE TABLE IF NOT EXISTS quete (id INT PRIMARY KEY, nom TEXT, description TEXT, recompenses TEXT, conditions TEXT)
@@ -900,6 +930,12 @@ class Client_mariadb:
                    FROM quete
                    WHERE id=%s"""
         self.cursor.execute(query, (id_,))
+        datas = {
+            "nom": "Quete",
+            "description": "Une quete",
+            "récompense": [],
+            "condition": []
+        }
         for nom, desc, recompense, cond in self.cursor:
             datas["nom"] = nom
             datas["description"] = desc

@@ -10,5 +10,6 @@
         "magique": null,
         "distance": null
     },
-    "attaque_effets":{"poison":50,"critique":50}
+    "attaque_effets":{"poison":50,"critique":50},
+    "agressivite": 100
 }

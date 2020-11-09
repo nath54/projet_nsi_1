@@ -10,5 +10,6 @@
         "magique": null,
         "distance": null
     },
-    "attaque_effets":{"peste":10}
+    "attaque_effets":{"peste":10},
+    "agressivite": 30
 }

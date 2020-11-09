@@ -4,6 +4,7 @@ import json
 
 def cheat_code(server, client, commande):
     """Rajoute quelques petits cheat-codes dans le jeu :)
+    Pour faire un cheat code, il faut taper "\cheat nom du cheat"
 
     Returns:
         bool: True --> Une action a été faite
@@ -14,8 +15,10 @@ def cheat_code(server, client, commande):
     """
     action_faite = False
     perso = server.clients[client]["player"].perso
+    if perso is None:
+        return
     if commande == "sonto":
-        # game.pnj (le pére noel donne un cadeau)
+        # game.pnj (le père noel donne un cadeau)
         pass
     elif commande == "docteur":
         # game.objets (du soin)
@@ -46,6 +49,9 @@ def cheat_code(server, client, commande):
     elif commande == "brevis":
         server.send(client, json.dumps({"type": "message", "value": "Une brevis volante apparaît du ciel et vous annonce une très mauvaise nouvelle : `Je suis désolée, mais je vous enlève un point à la note de votre projet, vous n'aurez pas 21/20, mais 20/20, c'est vraiment dommage !`"}))
         action_faite = True
+    elif commande == "tuto":
+        server.clients[client]["player"].perso.lieu = 50
+        server.send(client, {"type": "message", "value": f"{server.game.map_.lieux[perso.lieu].aff()}"})
     # ...
     else:
         server.send(client, json.dumps({"type": "message", "value": "non mais ca va pas, ce n'est pas bien de tricher"}))

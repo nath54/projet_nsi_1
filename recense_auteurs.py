@@ -1,12 +1,29 @@
+"""
+Programme qui va parcourir tous les fichiers python et
+qui va recenser les auteurs de chaque fonction dans le fichier quiafaitquoi.md
 
+"""
 import os
 import io
 
 auteurs = {}
 
 
+def revfind(txt, mot, pos=None, passe=0):
+    if pos is None:
+        pos = len(txt) - 1
+    n = len(mot)
+    pr = -1
+    pa = pos
+    while pa > n and passe > 0:
+        if txt[pa - 3: pa] == mot:
+            pr = pa
+            passe -= 1
+        pa -= 1
+    return pr
+
+
 def examine(fich):
-    print(fich)
     #
     f = io.open(fich, 'r', encoding="utf-8")
     txt = f.read()  # .lower()
@@ -17,24 +34,15 @@ def examine(fich):
     while pos != -1:
         #
         fin_aut = txt.find("\n", pos)
-        #
-        deb_f = -1
-        pa = pos
-        while pa > 3:
-            if txt[pa - 3: pa] == "def":
-                deb_f = pa
-            pa -= 1
-        #
-        # deb_f = txt.rfind("def", pos)
+        deb_f = txt.rfind("def", 0, pos) + 3
         if deb_f != -1:
-            print(pos)
             fin_f = txt.find("(", deb_f)
             #
             aut = txt[pos + len(ta):fin_aut]
             fn = fich + " - " + txt[deb_f: fin_f]
             #
             if aut in auteurs.keys():
-                #if fn not in auteurs[aut]:
+                if fn not in auteurs[aut]:
                     auteurs[aut].append(fn)
             else:
                 auteurs[aut] = [fn]
@@ -44,7 +52,7 @@ def examine(fich):
 
 def parc(path):
     fichs = os.listdir(path)
-    print([f for f in fichs if f.endswith(".py")])
+    # print([f for f in fichs if f.endswith(".py")])
     for fi in fichs:
         if fi.endswith(".py"):
             examine(path + fi)
@@ -59,8 +67,6 @@ def ecrit():
         for fn in auteurs[a]:
             txt += "\n  - " + fn
     #
-    print(txt)
-    #
     f = io.open("quiafaitquoi.md", 'w', encoding="utf-8")
     f.write(txt)
     f.close()
@@ -70,6 +76,8 @@ def main():
     parc("./")
     #
     ecrit()
+    #
+    print("Auteurs recensés.")
 
 
 if __name__ == "__main__":

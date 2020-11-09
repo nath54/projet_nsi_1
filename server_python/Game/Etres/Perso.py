@@ -47,6 +47,7 @@ class Perso(Combattant):
         self.histo_lieu = set()  # TODO: Marquer le lieu dans lequel le perso apparaît
         self.dialogue_en_cours = None
         self.interlocuteur = None
+        self.type_ = "perso"
 
     # region Format
     def format_invent(self):
@@ -92,9 +93,12 @@ class Perso(Combattant):
         txt_exp_1 = "    - " + "\n    - ".join([(str(key) + " : " + " / ".join([str(e) for e in self.experience[key]])) for key in self.experience])
         txt_exp = "points d'expériences du perso : \n" + txt_exp_1
 
-        txt_att_cac = "Rien"
-        txt_att_dist = "Rien"
-        txt_att_mag = "Rien"
+        cac = self.get_attaque("corps à corps")
+        mag = self.get_attaque("magique")
+        dist = self.get_attaque("distance")
+        txt_att_cac = "Rien" if cac is None else cac
+        txt_att_dist = "Rien" if dist is None else dist
+        txt_att_mag = "Rien" if mag is None else mag
 
         # region txt stats
         res = f"""STATS :
@@ -184,15 +188,27 @@ Actuellement, votre attaque est :
     def desequiper(self, nom_obj, traiter_txt, id_obj=None):
         """Déséquipe un objet du personnage
 
-        Auteur: Hugo
+        Auteur: Hugo, Nathan
 
         """
-        for type_, obj in self.equip:
+        for type_, obj in self.equip.items():
+            if obj is None:
+                continue
             if obj.index == id_obj or traiter_txt(obj.nom) == traiter_txt(nom_obj):
                 self.equip[type_] = None
                 self.add_to_invent(obj.index)
                 # on enleve les effets de l'objet
-                for k_effet, v_effet in obj.effets:
+                for k_effet, v_effet in obj.effets.items():
+                    if k_effet == "attaque":
+                        if "attaque" not in self.effets.keys():
+                            continue
+                        for k_a, v_a in v_effet.items():
+                            if v_a is not None:
+                                if type(v_a) in [int, float]:
+                                    v_a = [v_a, v_a]
+                                if self.effets["attaque"][k_a] is None:
+                                    self.effets["attaque"][k_a] = [0, 0]
+                                self.effets["attaque"][k_a] = self.sous_lsts(self.effets["attaque"][k_a], v_a)
                     # TODO
                     pass
                 return False
@@ -210,6 +226,22 @@ Actuellement, votre attaque est :
                     if self.equipement[obj.type] is None:
                         self.inventaire.remove([obj, qt])
                         self.equip[obj.type] = obj
+                        # on ajouet les effets de l'objet
+                        for k_effet, v_effet in obj.effets.items():
+                            if k_effet == "attaque":
+                                if "attaque" not in self.effets.keys():
+                                    self.effets["attaque"] = {"corps à corps": None, "magique": None, "distance": None}
+                                for k_a, v_a in v_effet.items():
+                                    if v_a is not None:
+                                        if type(v_a) in [int, float]:
+                                            v_a = [v_a, v_a]
+                                        if self.effets["attaque"][k_a] is None:
+                                            self.effets["attaque"][k_a] = v_a
+                                        else:
+                                            self.effets["attaque"][k_a] = self.sum_lsts(self.effets["attaque"][k_a], v_a)
+                            # TODO
+                            pass
+                            print(self.effets)
                         return False
                     else:
                         return f"Il y a déjà un(e) {obj.type} équipé"

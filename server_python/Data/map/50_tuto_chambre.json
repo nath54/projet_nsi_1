@@ -1,0 +1,12 @@
+{
+    "id":50,
+    "appellations":["chambre","chambre du centre","chambre centre"],
+    "nom":"Chambre du centre d'entrainement",
+    "region":"Tuto",
+    "description":"Vous êtes dans une chambre du centre d'entrainement, vous dormez ici depuis maintenant 5 ans, et le fait que vous allez bientôt quitter cette endroit vous rend nostalgique ... ",
+    "type":"ville",
+    "pnjs":[],
+    "objets":[ 50 ],
+    "ennemis":[],
+    "lieux":[]
+}
