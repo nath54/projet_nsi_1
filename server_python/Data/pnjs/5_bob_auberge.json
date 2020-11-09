@@ -1,0 +1,22 @@
+{
+    "id":5,
+    "type":"pnj",
+    "nom":"Bob Le cuisto",
+    "race":"humain",
+    "description":"le cuisinier de l'auberge.",
+    "dialogues":{
+        "que puis-je pour vous !":{
+            "j'aimerait un paté de crabe s'il vous plait.":{
+                "tout de suite, prenner une table":null
+            },
+            "une choppe monsieur !":{
+                "il faudrait arretter de boir monsieur!":{
+                    "non je veut ma biére !":{
+                        "Vous ne serait plus autorisé ici !": null
+                    },
+                    "vous avez surement raison une dernière quand même ?":null
+                }
+            }
+        }
+    }
+}
