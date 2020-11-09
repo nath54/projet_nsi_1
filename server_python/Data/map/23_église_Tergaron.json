@@ -1,0 +1,12 @@
+{
+    "id":23,
+    "appellations":["une église","église Tergaron"],
+    "nom":"L'église de Tergaron",
+    "region":"Larion",
+    "description":"A l'interieur tout est silentieux, la seul chose que l'on entend c'est la musique de l'orge.",
+    "type":"ville",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [10,"ouest"] , [24,"est"] ]
+}
