@@ -1,0 +1,12 @@
+{
+    "id":5,
+    "nom":"amener des pommes",
+    "description":"amener lui des pommes pour faire une tarte aux pommes",
+    "id_recompenses":[17],
+    "conditions":{
+        "type": "FedEx",
+        "objectif": 10,
+        "id_objectif": 0,
+        "id_cible": 0
+    }
+}
