@@ -679,16 +679,16 @@ class Client_mariadb:
                                  json.dumps(perso.faiblesses), perso_id))
             self.connection.commit()
 
-    def save_map(self, map):
+    def save_map(self, map_):
         """Permet de sauvegarder la carte.
 
         Args:
-            map(Map): Instance de la carte
+            map_(Map): Instance de la carte
 
         Auteur: Hugo
 
         """
-        for lieu in map.lieux.values():
+        for lieu in map_.lieux.values():
             self.save_lieu(lieu)
 
     def save_lieu(self, lieu):
