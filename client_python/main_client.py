@@ -120,7 +120,7 @@ class Client:
     def debut(self):
         """Demande si l'on veut s'inscrire ou se connecter.
 
-        Auteur : Nathan
+        Auteur: Nathan
 
         """
         print("Voulez vous :\n  1) Vous inscrire ?\n  2) Vous connecter ?")
@@ -137,7 +137,7 @@ class Client:
 
         Quand le message a été reçu, on peut continuer le thread actuel
 
-        Auteur : Nathan
+        Auteur: Nathan
 
         """
         self.attente = True
@@ -148,7 +148,7 @@ class Client:
     def connexion(self):
         """Demande les informations pour se connecter.
 
-        Auteur : Nathan
+        Auteur: Nathan
         """
         print("\nConnection :\n")
         # pseudo
@@ -172,7 +172,7 @@ class Client:
     def inscription(self):
         """Demande les informations pour s'inscrire.
 
-        Auteur : Nathan
+        Auteur: Nathan
         """
         print("\nInscription :\n")
         # email
@@ -335,7 +335,7 @@ class Client:
     def test_nom(self, nom):
         """Teste si un nom est dans le bon format
 
-        Author: Léa
+        Auteur: Léa
 
         """
         if len(nom) < 2:
@@ -346,7 +346,7 @@ class Client:
     def creation_perso(self):
         """Demande les informations pour créer un personnage.
 
-        Auteur : Léa
+        Auteur: Léa
         """
         data_perso = {"type": "perso_cree", "nom": None, "race": None,
                       "classe": None, "genre": None}

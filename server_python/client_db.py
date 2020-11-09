@@ -198,7 +198,7 @@ class Client_mariadb:
     def create_table_quete(self):
         """Crée la table `quete` dans la DB.
 
-        Auteur : Hugo
+        Auteur: Hugo
 
         """
         query = ("""CREATE TABLE IF NOT EXISTS quete
@@ -922,7 +922,7 @@ class Client_mariadb:
         Args:
             id_(int): L'identifiant de la quête
 
-        Auteur : Hugo
+        Auteur: Hugo
 
         """
         # CREATE TABLE IF NOT EXISTS quete (id INT PRIMARY KEY, nom TEXT, description TEXT, recompenses TEXT, conditions TEXT)

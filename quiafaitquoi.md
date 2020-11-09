@@ -1,10 +1,11 @@
 
 
-":
-  - ./recense_auteurs.py -  examine
-
 Nathan:
   - ./client_python/main_client.py -  __init__
+  - ./client_python/main_client.py -  debut
+  - ./client_python/main_client.py -  attente_serv
+  - ./client_python/main_client.py -  connexion
+  - ./client_python/main_client.py -  inscription
   - ./client_python/main_client.py -  send
   - ./client_python/main_client.py -  start
   - ./client_python/main_client.py -  handle
@@ -14,25 +15,6 @@ Nathan:
   - ./client_python/main_client.py -  main
   - ./init_projet.py -  demande_install
   - ./init_projet.py -  main
-  - ./server_python/Player.py -  load_perso
-  - ./server_python/Game/Etres/Ennemis/Ennemi.py -  __init__
-  - ./server_python/Game/Etres/Ennemis/Ennemi.py -  tour
-  - ./server_python/Game/Etres/Ennemis/Ennemi.py -  __repr__
-  - ./server_python/Game/Etres/Combattant.py -  full_vie
-  - ./server_python/Game/Etres/Combattant.py -  full_energie
-  - ./server_python/Game/Etres/Combattant.py -  sum_lsts
-  - ./server_python/Game/Etres/Combattant.py -  sous_lsts
-  - ./server_python/Game/Etres/Combattant.py -  sum_lst_nb
-  - ./server_python/Game/Etres/Combattant.py -  moy_lst
-  - ./server_python/Game/Etres/Pnjs/Pnj.py -  load
-  - ./server_python/Game/Game.py -  __init__
-  - ./server_python/Game/Game.py -  start
-  - ./server_python/Game/Map/Lieux/Lieu.py -  aff
-  - ./server_python/Game/Map/Map.py -  load_from_bdd
-  - ./server_python/Game/Map/Map.py -  load_from_json
-  - ./server_python/Game/Map/Map.py -  create_lieu
-  - ./server_python/libs.py -  jload
-  - ./server_python/libs.py -  traiter_txt
   - ./server_python/client_db.py -  __init__
   - ./server_python/client_db.py -  test_version
   - ./server_python/client_db.py -  is_first_time
@@ -50,6 +32,25 @@ Nathan:
   - ./server_python/client_db.py -  get_lieux
   - ./server_python/client_db.py -  get_data_Lieu_DB
   - ./server_python/client_db.py -  get_data_Pnj_DB
+  - ./server_python/Game/Etres/Combattant.py -  full_vie
+  - ./server_python/Game/Etres/Combattant.py -  full_energie
+  - ./server_python/Game/Etres/Combattant.py -  sum_lsts
+  - ./server_python/Game/Etres/Combattant.py -  sous_lsts
+  - ./server_python/Game/Etres/Combattant.py -  sum_lst_nb
+  - ./server_python/Game/Etres/Combattant.py -  moy_lst
+  - ./server_python/Game/Etres/Ennemis/Ennemi.py -  __init__
+  - ./server_python/Game/Etres/Ennemis/Ennemi.py -  tour
+  - ./server_python/Game/Etres/Ennemis/Ennemi.py -  __repr__
+  - ./server_python/Game/Etres/Pnjs/Pnj.py -  load
+  - ./server_python/Game/Game.py -  __init__
+  - ./server_python/Game/Game.py -  start
+  - ./server_python/Game/Map/Lieux/Lieu.py -  aff
+  - ./server_python/Game/Map/Map.py -  load_from_bdd
+  - ./server_python/Game/Map/Map.py -  load_from_json
+  - ./server_python/Game/Map/Map.py -  create_lieu
+  - ./server_python/libs.py -  jload
+  - ./server_python/libs.py -  traiter_txt
+  - ./server_python/libs.py -  is_one_of
   - ./server_python/main_server.py -  __init__
   - ./server_python/main_server.py -  start
   - ./server_python/main_server.py -  handle
@@ -60,47 +61,57 @@ Nathan:
   - ./server_python/main_server.py -  on_message
   - ./server_python/main_server.py -  on_close
   - ./server_python/main_server.py -  main
+  - ./server_python/Player.py -  load_perso
+
+Léa:
+  - ./client_python/main_client.py -  test_nom
+  - ./client_python/main_client.py -  creation_perso
 
 Internet:
   - ./init_projet.py -  install
 
-TODO:
-  - ./server_python/Game/Quetes/Quete.py -  affichage
-  - ./server_python/Game/Etres/Combattant.py -  debut_tour
+":
+  - ./recense_auteurs.py -  examine
 
-Hugo, Nathan:
-  - ./server_python/Game/Etres/Perso.py -  __init__
-  - ./server_python/Game/Etres/Perso.py -  desequiper
-  - ./server_python/Game/Etres/Perso.py -  equiper
-  - ./server_python/Game/Objets/Objet.py -  __init__
-  - ./server_python/client_db.py -  test_compte_inscrit
-  - ./server_python/client_db.py -  get_data_obj_DB
+Alexis:
+  - ./server_python/cheat_code.py -  cheat_code
 
 Hugo:
+  - ./server_python/client_db.py -  create_table_quete
+  - ./server_python/client_db.py -  inscription
+  - ./server_python/client_db.py -  save_map
+  - ./server_python/client_db.py -  save_lieu
+  - ./server_python/client_db.py -  get_data_quetes_DB
+  - ./server_python/Game/Etres/Combattant.py -  soigne_PV
+  - ./server_python/Game/Etres/Combattant.py -  soigne_EN
   - ./server_python/Game/Etres/Perso.py -  format_invent
   - ./server_python/Game/Etres/Perso.py -  format_equip
   - ./server_python/Game/Etres/Perso.py -  format_stats
   - ./server_python/Game/Etres/Perso.py -  search_invent
   - ./server_python/Game/Etres/Perso.py -  consomme_item
   - ./server_python/Game/Etres/Perso.py -  add_to_invent
-  - ./server_python/Game/Etres/Combattant.py -  soigne_PV
-  - ./server_python/Game/Etres/Combattant.py -  soigne_EN
   - ./server_python/Game/Etres/Pnjs/Pnj.py -  __init__
   - ./server_python/Game/Map/Lieux/Lieu2.py -  __repr__
   - ./server_python/Game/Objets/Objet.py -  __repr__
   - ./server_python/Game/Objets/Objet.py -  format_contenu
   - ./server_python/libs.py -  are_texts_equals
-  - ./server_python/client_db.py -  inscription
-  - ./server_python/client_db.py -  save_map
-  - ./server_python/client_db.py -  save_lieu
   - ./server_python/main_server.py -  invent_multi_args
 
 Nathan, Hugo:
-  - ./server_python/Game/Etres/Combattant.py -  __init__
   - ./server_python/client_db.py -  init_database
   - ./server_python/client_db.py -  transfert_json_to_bdd
   - ./server_python/client_db.py -  get_data_Ennemi_DB
+  - ./server_python/Game/Etres/Combattant.py -  __init__
   - ./server_python/main_server.py -  commandes
 
-Alexis:
-  - ./server_python/cheat_code.py -  cheat_code
+Hugo, Nathan:
+  - ./server_python/client_db.py -  test_compte_inscrit
+  - ./server_python/client_db.py -  get_data_obj_DB
+  - ./server_python/Game/Etres/Perso.py -  __init__
+  - ./server_python/Game/Etres/Perso.py -  desequiper
+  - ./server_python/Game/Etres/Perso.py -  equiper
+  - ./server_python/Game/Objets/Objet.py -  __init__
+
+TODO:
+  - ./server_python/Game/Etres/Combattant.py -  debut_tour
+  - ./server_python/Game/Quetes/Quete.py -  affichage
