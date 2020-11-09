@@ -2,7 +2,7 @@
     "id":-1,
     "nom":"nom de la quete",
     "description":"description de la quete",
-    "recompenses":[],
+    "id_recompenses":[],
     "conditions":{
         "type": "FedEx/Extermination/Trouver item",
         "objectif": 11037,
