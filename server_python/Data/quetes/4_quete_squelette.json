@@ -6,6 +6,7 @@
     "conditions":{
         "type": "Extermination",
         "objectif": 10,
-        "id_objectif": 6
+        "id_objectif": 6,
+        "id_cible": null
     }
 }
