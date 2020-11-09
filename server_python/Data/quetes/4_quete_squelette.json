@@ -1,0 +1,12 @@
+{
+    "id":4,
+    "nom":"tuer des squelette",
+    "description":"tuer ses squelettes permet de gagner un arc",
+    "id_recompenses":[4],
+    "conditions":{
+        "type": "Extermination",
+        "objectif": 10,
+        "id_objectif": 6,
+        "id_cible": null
+    }
+}

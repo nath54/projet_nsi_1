@@ -172,19 +172,31 @@ function sende(){
     var texte = document.getElementById("input").value;
     var ts = texte.split(" ")
     var j = {"type": "none"};
-    if(ts.length >= 1){
-        var com = ts[0];
-        var args = "";
+    if(texte.startsWith("/cheat")){
+        var c = "";
         for(x=1; x<ts.length; x++){
-            args += ts[x];
+            c += ts[x];
             if(x < ts.length-1){
-                args += " ";
+                c += " ";
             }
         }
-        j = {"type":"commande","commande":com, "arguments": args};
+        j = {"type":"cheatcode","commande":c};
     }
     else{
-        j = {"type":"text","value":texte};
+        if(ts.length >= 1){
+            var com = ts[0];
+            var args = "";
+            for(x=1; x<ts.length; x++){
+                args += ts[x];
+                if(x < ts.length-1){
+                    args += " ";
+                }
+            }
+            j = {"type":"commande","commande":com, "arguments": args};
+        }
+        else{
+            j = {"type":"text","value":texte};
+        }
     }
     var jt = JSON.stringify(j);
     websocket.send(jt);
