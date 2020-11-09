@@ -7,6 +7,6 @@
     "type":"ville",
     "pnjs":[],
     "objets":[],
-    "ennemis":[],
+    "ennemis":[14],
     "lieux":[ [11,"ouest"] ]
 }
