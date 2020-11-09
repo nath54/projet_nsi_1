@@ -1,0 +1,12 @@
+{
+    "id":24,
+    "appellations":["un cimetière","cimetière Tergaron"],
+    "nom":"Le cimetière de la ville de Tergaron",
+    "region":"Larion",
+    "description":"Ici est enterrer toutes les personnes qui ont vécus a Tergaron.",
+    "type":"ville",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[4],
+    "lieux":[ [23,"ouest"] ]
+}
