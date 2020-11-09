@@ -1,0 +1,12 @@
+{
+    "id":28,
+    "appellations":["un pont","un petit pont"],
+    "nom":"Un petit pont",
+    "region":"Larion",
+    "description":"Un petit pont au coeur de la forêt",
+    "type":"foret",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[13],
+    "lieux":[ [27,"sud"] ]
+}

@@ -1,0 +1,12 @@
+{
+    "id":3,
+    "nom":"tuer la mère des rats",
+    "description":"demander a la grand-mère du village pour des conseils",
+    "id_recompenses":[8,9],
+    "conditions":{
+        "type": "Extermination",
+        "objectif": 1,
+        "id_objectif": 8,
+        "id_cible": null
+    }
+}

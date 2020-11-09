@@ -1,0 +1,12 @@
+{
+    "id":26,
+    "appellations":["une clairière","clairière"],
+    "nom":"La clairière de la forêt",
+    "region":"Larion",
+    "description":"Une clairière au coeur de la forêt.",
+    "type":"foret",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [3,"ouest"] , [27,"nord"] ]
+}
