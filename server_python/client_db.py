@@ -174,10 +174,9 @@ class Client_mariadb:
 
         """
         query = ("""CREATE TABLE IF NOT EXISTS ennemis
-                    (id INT PRIMARY KEY, type_ TEXT, nom TEXT,
-                    race TEXT, description_ TEXT,
-                    vie_min INT, vie_max INT, attaque TEXT,
-                    attaque_effets TEXT, agressivite INT);""")
+                    (id INT PRIMARY KEY, type_ TEXT, nom TEXT, race TEXT, 
+                     description_ TEXT, vie_min INT, vie_max INT, attaque TEXT,
+                     attaque_effets TEXT, agressivite INT, loot TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
@@ -281,7 +280,8 @@ class Client_mariadb:
                                                    "vie_max": "int",
                                                    "attaque": "text",
                                                    "attaque_effets": "text",
-                                                   "agressivite": "int"}:
+                                                   "agressivite": "int",
+                                                   "loot": "text"}:
             self.cursor.execute("DROP TABLE IF EXISTS ennemis")
             self.connection.commit()
             self.create_table_ennemis()
@@ -343,7 +343,7 @@ class Client_mariadb:
 
 # endregion
 
-# INSERT au premier lancement du serveur
+# region INSERT au premier lancement du serveur
     def transfert_json_to_bdd(self):
         """Transfére toutes les données des fichiers json vers la BDD.
 
@@ -512,6 +512,7 @@ class Client_mariadb:
         """
         # TODO
         pass
+# endregion
 
 # region INSCRIPTION / CONNEXION
     def inscription(self, pseudo, email, password):
@@ -594,7 +595,7 @@ class Client_mariadb:
 
 # endregion
 
-# FONCTIONS DE TYPES SET / NEW
+# region FONCTIONS DE TYPES SET / NEW
     def set_perso(self, player):
         """Enregistre un perso dans la BDD.
 
@@ -706,6 +707,8 @@ class Client_mariadb:
     def new_genre(self, genre):
         self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)", (genre,))
         self.connection.commit()
+
+# endregion
 
 # region GETTERS
     def get_schema(self, table_name):
@@ -882,15 +885,15 @@ class Client_mariadb:
         Auteur: Nathan, Hugo
 
         """
-        query = """SELECT type_, nom, race, description_, vie_min,
-                          vie_max, attaque, attaque_effets, agressivite
+        query = """SELECT type_, nom, race, description_, vie_min, vie_max, 
+                          attaque, attaque_effets, agressivite, loot
                     FROM ennemis
                     WHERE id=%s"""
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
         datas = {
             "id": 0,
-            "type": "ennemis",
+            "type": "ennemi",
             "nom": "Ennemi Méchant",
             "description": "Ennemi qui va t'attaquer parce qu'il est méchant et que les méchants ils attaquent les gentils...",
             "vie": [0, 1],
@@ -902,7 +905,7 @@ class Client_mariadb:
             "attaque_effets": {},
             "agressivite": 0
         }
-        for type_, nom, race, description_, vie_min, vie_max, attaque, attaque_effets, agressivite in results:
+        for type_, nom, race, description_, vie_min, vie_max, attaque, attaque_effets, agressivite, loot in results:
             datas["id"] = id_
             datas["type"] = type_
             datas["nom"] = nom
@@ -913,6 +916,8 @@ class Client_mariadb:
                 datas["attaque"] = json.loads(attaque)
             if attaque_effets is not None:
                 datas["attaque_effets"] = json.loads(attaque_effets)
+            if loot is not None:
+                datas["loot"] = json.loads(loot)
             return datas
         return None
 
@@ -944,3 +949,9 @@ class Client_mariadb:
             return datas
         return None
 # endregion
+
+    def perso_death(self, id_):
+        query = """DELETE FROM persos
+                   WHERE id=%s"""
+        self.cursor(query, (id_))
+        self.connection.commit()

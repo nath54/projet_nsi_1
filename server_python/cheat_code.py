@@ -52,6 +52,10 @@ def cheat_code(server, client, commande):
     elif commande == "tuto":
         server.clients[client]["player"].perso.lieu = 50
         server.send(client, {"type": "message", "value": f"{server.game.map_.lieux[perso.lieu].aff()}"})
+    elif commande == "suicide":
+        perso.vie = 0
+        server.send(client, {"type": "message", "value": "Vous avez pris le premier gun qui arrivait et bam, dans la tête, one shot, etc..."}, True)
+        perso.on_death()
     # ...
     else:
         server.send(client, json.dumps({"type": "message", "value": "non mais ca va pas, ce n'est pas bien de tricher"}))

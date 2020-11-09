@@ -63,7 +63,11 @@ class Perso(Combattant):
             return "Aïe, on dirait que la crise est passée par là."
         res = "Voici le contenu de votre inventaire :\n"
         for item in self.inventaire:
-            res += "\t" + f"- {item[0].nom} ({item[0].type})" + "\n"
+            res += "\t - "
+            if item[1] > 1:
+                res += f"{item[1]} {item[0].nom} ({item[0].type})" + "\n"
+            else:
+                res += f"{item[0].nom} ({item[0].type})" + "\n"
         return res
 
     def format_equip(self):
@@ -248,3 +252,14 @@ Actuellement, votre attaque est :
                 else:
                     return f"L'objet selectionné n'est pas équipable, il est de type {obj.type}"
         return "Objet non trouvé dans l'inventaire"
+
+    def on_death(self):
+        client = None
+        clients = self.game.server.clients
+        for cliente, datac in clients.items():  # TODO: SOCKET
+            if datac["player"].perso == self:
+                client = cliente
+        if client is not None:
+            self.game.server.send(client, {"type": "message", "message": "Vous êtes mort... Je sais, c'est dur. Heureusement, pour vous aider à vous en remettre, on a décidé d'être sympa avec vous, vous ne souffrirez plus ! Votre âme est désormais... Supprimée. Ne me remerciez, c'est la fin, pas de souffrance éternelle ! Bon du coup si vous voulez continuer votre aventure, va falloir envisager de refaire un autre héros, parce que sinon le monde court à sa perte. Enfin *ce* monde a pas vraiment de fin en soit."}, True)
+            id_ = self.client["player"].id_
+            self.game.client_db.perso_death(id_)

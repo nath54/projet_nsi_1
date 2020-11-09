@@ -29,9 +29,9 @@ class Combattant(Etre):
         """
         Etre.__init__(self, game)
         self.vie_totale = 0
-        self.full_vie()
+        self.vie = self.vie_totale
         self.energie_totale = 0
-        self.full_energie()
+        self.energie = self.energie_totale
         self.effets_attaque = {}
         self.effets = {}
         self.attaque = {
@@ -196,12 +196,9 @@ class Combattant(Etre):
                     # l'effet est infligé à l'adversaire
                     msg += f"\n{cible.nom} a subit l'effet {effet} !"
                     temps_restant = 0
-                    # ! A changer ! il faudra récupérer le temps d'un effet
+                    # TODO A changer ! il faudra récupérer le temps d'un effet
                     cible.effets[effet] = temps_restant
-            if cible.type_ in ["ennemis", "ennemi"]:
-                enleve = self.test_mort_cible(cible)
-            else:
-                enleve = self.test_mort()
+            enleve = self.test_mort_cible(cible)
             if enleve:
                 msg += f"\n{cible.nom} est mort."
             # si l'ennemi se fait toucher, l'ennemi va etre ultra agressif
@@ -224,6 +221,10 @@ class Combattant(Etre):
 
     def test_mort_cible(self, cible):
         if cible.vie <= 0:
-            self.game.map_.lieux[self.lieu].suppr_ennemi(cible)
-            return True
+            if cible.type_ in ["ennemi", "ennemis"]:
+                self.game.map_.lieux[self.lieu].suppr_ennemi(cible)
+                return True
+            elif cible.type_ in "perso":
+                cible
+                return True
         return False

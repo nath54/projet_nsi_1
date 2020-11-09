@@ -10,7 +10,7 @@ class Player:
         pseudo(str): Pseudo du compte
         password(str): Mot de passe du compte
         perso(Perso): Référence au personnage du compte
-        id(int) : l'identifiant du player dans la table comptes
+        id_(int) : l'identifiant du player dans la table comptes
 
     """
 

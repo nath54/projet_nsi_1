@@ -26,15 +26,15 @@ class Server:
     """Classe du serveur du jeu.
 
     Attributes:
-        host (str): Si vide, écoute toutes les cartes réseaux
+        host(str): Si vide, écoute toutes les cartes réseaux
                     Sinon, on met l'adresse IP que l'on veut
-        port (int): On utilise un port inutilisé
-        max_size (int): Taille maximale d'un message reçu
-        clients (dict): Clé -- socket.socket
+        port(int): On utilise un port inutilisé
+        max_size(int): Taille maximale d'un message reçu
+        clients(dict): Clé -- socket.socket
                         Val -- `dict` de propriétés relatives au client
-        server (socket): ???
+        server(socket): ???
+        version(int) : version du jeu (pour comparer avec la version de la BDD)
 
-        version(int) : version du jeu (pour la comparer avec la version de la bdd)
     """
 
     def __init__(self):
@@ -361,6 +361,7 @@ class Server:
         del(self.clients[client])
 
     def save(self, client):
+        # TODO
         player = self.clients[client]["player"]
         self.client_db.set_perso(player)
 
@@ -473,17 +474,17 @@ class Server:
                 pass
                 self.send(client, {"type": "message", "value": "Fin du dialogue"}, True)
                 if perso.interlocuteur is not None:
-                    texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+                    texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discussion, qui avait l'air terriblement ennuyante."
                 else:
-                    texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+                    texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discussion, qui avait l'air terriblement ennuyante."
                 perso.interlocuteur = None
             elif dsuiv is None:
                 perso.dialogue_en_cours = None
                 self.send(client, {"type": "message", "value": "Fin du dialogue"}, True)
                 if perso.interlocuteur is not None:
-                    texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+                    texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discussion, qui avait l'air terriblement ennuyante."
                 else:
-                    texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discution, qui avait l'air terriblement ennuyante."
+                    texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discussion, qui avait l'air terriblement ennuyante."
                 perso.interlocuteur = None
         elif perso.dialogue_en_cours is not None:
             self.send(client, {"type": "message", "value": "Quand vous êtes dans un dialogue, vous devez choisir la réponse que vous voulez répondre avec le nombre correspondant a votre réponse !"}, True)
