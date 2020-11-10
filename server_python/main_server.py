@@ -155,8 +155,8 @@ class Server:
         self.client_db.update()
 
         # On va vérifier les différentes versions des données de la bdd
-        if self.client_db.test_version(self.version):  # or True:
-            self.client_db.transfert_json_to_bdd()
+        # if self.client_db.test_version(self.version):  # or True:
+        #     self.client_db.transfert_json_to_bdd()
 
         # TODO: Faudra aussi lancer les différents éléments du jeu
         # On lance le jeu ici
@@ -384,8 +384,6 @@ class Server:
         dial = perso.dialogue_en_cours
         if dial is None or type(dial) == list:
             return "Fin du dialogue"
-        print(dial)
-        print(dial.keys())
         txt = list(dial.keys())[0] + "\n"
         #
         rd = dial[list(dial.keys())[0]]
@@ -395,8 +393,8 @@ class Server:
                 txt += f"\n\t({x}) {rep}"
                 x += 1
         else:
-            txt += "\nFin du dialogue"
-            perso.dialogue_en_cours = None
+            pass
+            # perso.dialogue_en_cours = None
         return txt
 
     def fin_dialogue(self, client, perso, nom_perso):
@@ -528,11 +526,12 @@ class Server:
                     tt = self.commandes_dat[key]["help"]
                     ttt = "Fonctionne" if self.commandes_dat[key]["fini"] else "Ne fonctionne pas encore"
                     txt_help += f"\n\t- {t} [{ttt}]"
-                txt_help += "\n\nVous pouvez obtenir plus d'infos sur une commande précise en "
+                txt_help += "\n\nVous pouvez obtenir plus d'infos sur une commande précise en tapant 'aide [nom de la commande]'"
             else:
-                for coms, t_aide in self.commandes_dat.items():
+                for vl in self.commandes_dat.values():
+                    coms, t_aide = vl["com"], vl["help"]
                     if is_one_of(arguments, coms):
-                        ttt = "Cette commande fonctionne" if self.commandes_dat[key]["fini"] else "Cette commande ne fonctionne pas encore"
+                        ttt = "Cette commande fonctionne" if vl["fini"] else "Cette commande ne fonctionne pas encore"
                         txt_help = "Commande : " + arguments + "\n" + t_aide + "\n" + ttt
             self.send_message(client, txt_help, True)
         # commande voir ; affiche les infos du lieu
@@ -774,23 +773,13 @@ class Server:
                     perso.dialogue_en_cours = pnj_cible.dialogue
                     perso.interlocuteur = pnj_cible
                     perso.test_dialogue()
-                    if perso.dialogue_en_cours is None:
-                        return
+                    if perso.dialogue_en_cours is None or type(perso.dialogue_en_cours) == list:
+                        texte_fait = self.fin_dialogue(client, perso, nom_perso)
                     self.send_message(client, f"Vous parlez avec {pnj_cible.nom}\n{self.format_dialog(perso)}", True)
                     perso.dialogue_en_cours = perso.dialogue_en_cours[list(perso.dialogue_en_cours.keys())[0]]
                     texte_fait = f"{nom_perso} a commencé à parler avec {pnj_cible.nom}"
                     time.sleep(0.1)
                     while perso.dialogue_en_cours is not None:
-                        #
-                        if type(perso.dialogue_en_cours) == dict:
-                            perso.test_dialogue()
-                            if perso.dialogue_en_cours is None or type(perso.dialogue_en_cours) == list:
-                                texte_fait = self.fin_dialogue(client, perso, nom_perso)
-                            self.send_message(client, self.format_dialog(perso), True)
-                            perso.dialogue_en_cours = perso.dialogue_en_cours[list(perso.dialogue_en_cours.keys())[0]]
-                            perso.test_dialogue()
-                        if perso.dialogue_en_cours is None or type(perso.dialogue_en_cours) == list:
-                            texte_fait = self.fin_dialogue(client, perso, nom_perso)
                         #
                         ii = self.input_bonne_reponse(client, "Que répondez vous ?", [str(v) for v in range(1, 3)])
                         idd = int(ii) - 1
@@ -799,6 +788,17 @@ class Server:
                             self.send_message(client, "Vous voulez répondre autre chose ? Comme si vous avez la liberté d'expression ici ...", True)
                             return
                         perso.dialogue_en_cours = dial[list(dial.keys())[idd]]
+                        #
+                        if type(perso.dialogue_en_cours) == dict:
+                            perso.test_dialogue()
+                            if perso.dialogue_en_cours is None or type(perso.dialogue_en_cours) == list:
+                                texte_fait = self.fin_dialogue(client, perso, nom_perso)
+                            if type(perso.dialogue_en_cours) == dict:
+                                self.send_message(client, self.format_dialog(perso), True)
+                                perso.dialogue_en_cours = perso.dialogue_en_cours[list(perso.dialogue_en_cours.keys())[0]]
+                                perso.test_dialogue()
+                        if perso.dialogue_en_cours is None or type(perso.dialogue_en_cours) == list:
+                            texte_fait = self.fin_dialogue(client, perso, nom_perso)
                 else:
                     self.send_message(client, "Votre interlocuteur n'a visiblement pas l'air d'avoir envie de parler, peut-être que vous êtes en train de l'embêter, ou bien il est muet, c'est aussi une possibilité ! ", True)
                     texte_fait = f"{nom_perso} a voulu parler avec {pnj_cible.nom}, mais ce dernier n'a pas très envie de discuter avec {nom_perso}"

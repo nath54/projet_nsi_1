@@ -53,9 +53,9 @@ class Game:
 
         """
         self.map_.load_from_bdd(self)
-        print("Débuggage (on vérifie que ça a bien tout créé)")
-        print("\nListe des lieux : ")
-        print(self.map_.lieux)
+        # print("Débuggage (on vérifie que ça a bien tout créé)")
+        # print("\nListe des lieux : ")
+        # print(self.map_.lieux)
 
     def load_races_classes(self):
         for fich in os.listdir("Data/races/"):
