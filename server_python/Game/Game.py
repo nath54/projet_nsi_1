@@ -69,7 +69,8 @@ class Game:
     def get_all_persos_lieu(self, id_lieu):
         persos = []
         for cl in self.server.clients.values():
-            perso = cl["player"].perso
-            if perso is not None and perso.lieu == id_lieu:
-                persos.append(perso)
+            if cl["player"] is not None:
+                perso = cl["player"].perso
+                if perso is not None and perso.lieu == id_lieu:
+                    persos.append(perso)
         return persos

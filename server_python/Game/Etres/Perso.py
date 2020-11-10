@@ -172,14 +172,13 @@ Actuellement, votre attaque est :
                 else:
                     obj[1] -= 1
 
-    def add_to_invent(self, id_obj):
+    def add_to_invent(self, obj):
         """Ajoute un objet à l'inventaire
 
         Auteur: Hugo
 
         """
         # TODO: obj = Objet(id_obj) qui créé l'objet depuis la DB
-        obj = Objet(id_obj, self.game)
         exist = False
         for i in self.inventaire:
             if i[0].nom == obj.nom:
@@ -268,14 +267,20 @@ Actuellement, votre attaque est :
         d = self.dialogue_en_cours
         if d is not None:
             if type(d) == dict:
-                pass
+                return
             elif type(d) == list:
                 for dl in d:
                     if dl[0] is None:
                         self.dialogue_en_cours = dl[1]
                     elif type(dl[0]) == list:
                         if dl[0][0] == "quete":
-                            if self.quete_actuelle is not None ane self.quete_actuelle.index == dl[0][1]
-                        
+                            if self.quete_actuelle is not None and self.quete_actuelle.index == dl[0][1]:
+                                self.dialogue_en_cours = dl[1]
+                                return
+                        elif dl[0][0] == "obj":
+                            for ob, _ in self.inventaire:
+                                if ob.index == dl[0][1]:
+                                    self.dialogue_en_cours = dl[1]
+                                    return
             else:
                 self.dialogue_en_cours = None

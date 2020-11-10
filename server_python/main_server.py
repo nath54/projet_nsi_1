@@ -185,13 +185,13 @@ class Server:
         """
         self.on_accept(client, infos)
         while True:
-            try:
+            # try:
                 msg = client.recv(self.max_size)
                 self.on_message(client, infos, msg)
-            except Exception as e:
-                print(e)
-                self.on_close(client)
-                return
+            # except Exception as e:
+            #     print(e)
+            #     self.on_close(client)
+            #     return
 
     def send_all_except_c(self, client, message):
         """Envoie un message a tous les autres clients.
@@ -370,7 +370,6 @@ class Server:
         # TODO
         player = self.clients[client]["player"]
         self.client_db.set_perso(player)
-        
 
     def format_dialog(self, perso):
         #
@@ -562,15 +561,18 @@ class Server:
                 self.send_message(client, f"{pnj_cible.__str__()}", True)
         # commande prendre
         elif is_one_of(action, self.commandes_dat["prendre"]["com"]):
+            print(obj_cible.nom)
             if obj_cible is None:
                 mess = "Honnêtement, j'adore le concept. Mais l'objet existe pas. Ou il est pas là. Au choix !"
                 self.send_message(client, mess, True)
                 return
             if obj_cible.type not in ["décor", "contenant"]:
-                perso.add_to_invent(obj.index)
+                print(obj_cible.nom)
+                perso.add_to_invent(obj_cible)
+                print(obj_cible.nom)
                 self.game.map_.lieux[perso.lieu].objets.remove(obj_cible)
-                self.send_message(client, f"Vous avez pris le/la {obj.nom}.")
-                texte_fait = f"{nom_perso} a pris {obj.nom}"
+                self.send_message(client, f"Vous avez pris le/la {obj_cible.nom}.")
+                texte_fait = f"{nom_perso} a pris {obj_cible.nom}"
                 tour_p += 0.5
             else:
                 self.send_message(client, "Euh .... Vous essayez quand même de prendre quelque chose qui ne peut pas se prendre quand même là ! Je pense que vous devriez aller dans un hopital psychiatrique, parce que ce sera quoi le prochain stade ? Vous essayerez de prendre d'autre êtres vivants ?")
@@ -728,9 +730,12 @@ class Server:
         # commande parler
         elif is_one_of(action, self.commandes_dat["parler"]["com"]):
             if pnj_cible is not None:
-                if type(pnj_cible.dialogue) == dict:
+                if type(pnj_cible.dialogue) in [dict, list]:
                     perso.dialogue_en_cours = pnj_cible.dialogue
                     perso.interlocuteur = pnj_cible
+                    perso.test_dialogue()
+                    if perso.dialogue_en_cours is None:
+                        return
                     self.send_message(client, f"Vous parlez avec {pnj_cible.nom}\n{self.format_dialog(perso)}", True)
                     perso.dialogue_en_cours = perso.dialogue_en_cours[list(perso.dialogue_en_cours.keys())[0]]
                     texte_fait = f"{nom_perso} a commencé à parler avec {pnj_cible.nom}"
@@ -745,8 +750,14 @@ class Server:
                         dsuiv = dial[list(dial.keys())[idd]]
                         if type(dsuiv) == dict:
                             perso.dialogue_en_cours = dsuiv
+                            perso.test_dialogue()
+                            if perso.dialogue_en_cours is None:
+                                return
                             self.send_message(client, self.format_dialog(perso), True)
                             perso.dialogue_en_cours = dsuiv[list(dsuiv.keys())[0]]
+                            perso.test_dialogue()
+                            if perso.dialogue_en_cours is None:
+                                return
                         elif type(dsuiv) == list:
                             perso.dialogue_en_cours = None
                             t = "Fin du dialogue"
