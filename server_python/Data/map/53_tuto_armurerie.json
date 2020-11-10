@@ -1,0 +1,12 @@
+{
+    "id":53,
+    "appellations":["armurerie", "armurerie centre"],
+    "nom":"armurerie du centre d'entrainement",
+    "region":"Tuto",
+    "description":"C'est une petite armurerie",
+    "type":"ville",
+    "pnjs":[ 51 ],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [52, "est"] ]
+}

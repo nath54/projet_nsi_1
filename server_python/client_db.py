@@ -174,7 +174,7 @@ class Client_mariadb:
 
         """
         query = ("""CREATE TABLE IF NOT EXISTS ennemis
-                    (id INT PRIMARY KEY, type_ TEXT, nom TEXT, race TEXT, 
+                    (id INT PRIMARY KEY, type_ TEXT, nom TEXT, race TEXT,
                      description_ TEXT, vie_min INT, vie_max INT, attaque TEXT,
                      attaque_effets TEXT, agressivite INT, loot TEXT);""")
         self.cursor.execute(query)
@@ -910,7 +910,7 @@ class Client_mariadb:
         Auteur: Nathan, Hugo
 
         """
-        query = """SELECT type_, nom, race, description_, vie_min, vie_max, 
+        query = """SELECT type_, nom, race, description_, vie_min, vie_max,
                           attaque, attaque_effets, agressivite, loot
                     FROM ennemis
                     WHERE id=%s"""

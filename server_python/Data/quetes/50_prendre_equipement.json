@@ -1,0 +1,10 @@
+{
+    "id":50,
+    "nom":"Récuperer son équipement",
+    "description":"Vous devez aller chercher une armure et une arme ",
+    "id_recompenses":[],
+    "conditions":{
+        "type": "parler",
+        "objectif": 1
+    }
+}

@@ -6,7 +6,7 @@
     "effets":{
         "défense":{
             "corps à corps": [0,1],
-            "magique": [0,1],
+            "magique": null,
             "distance": [0,1]
         }
     }

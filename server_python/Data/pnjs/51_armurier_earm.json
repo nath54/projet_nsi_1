@@ -1,0 +1,37 @@
+{
+    "id":51,
+    "type":"pnj",
+    "nom":"Earm",
+    "race":"humain",
+    "description":"Earm est l'armurier de ce centre d'entrainement, c'est lui qui répare et qui forge vos armes et vos armures.",
+    "dialogues":[
+        [["quete", 50], {
+            "Bonjour, que me voulez vous ?":{
+                "Euh, qu'est-ce que je dois faire déjà ?":{
+                    "Vous savez que vous pouvez taper la commande 'quete' pour afficher les détails de votre quete actuelle ?":{
+                        "Ah non, je ne le savais pas, merci pour l'info": null,
+                        "Mais je le savais déjà !":{
+                            "Bah pourquoi ne l'avez vous pas fait ?": null
+                        }
+                    }
+                },
+                "J'aimerais que vous me donniez une arme et une armure s'il vous plait !": {
+                    "D'accords, quelle arme voulez vous ?":{
+                        "Une épée de bois":{
+                            "Très bien, les voici. N'oublie pas de les équiper !": [{"objet": 2}, {"objet": 1}, {"quete finie": 50}]
+                        },
+                        "Un arc de bois":{
+                            "D'accord, les voici. N'oublie pas de les équiper !": [{"objet": 4}, {"objet": 1}, {"quete finie": 50}]
+                        },
+                        "Un bouclier de tissu":{
+                            "Pas de souci, les voici. N'oublie pas de les équiper !": [{"objet": 19}, {"objet": 1}, {"quete finie": 50}]
+                        }
+                    }
+                }
+            }
+        }],
+        [null, {"Je suis occupé ! Ne viens pas me déranger !": {
+            "D'accord": null
+        }}]
+    ]
+}

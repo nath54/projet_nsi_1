@@ -12,8 +12,8 @@
             "magique":null
         },
         "attaque":{
-            "corps à corps":0.1,
-            "distance":0.4,
+            "corps à corps":[0, 1],
+            "distance":[0, 4],
             "magique":null
         }
     }

@@ -186,8 +186,8 @@ class Server:
         self.on_accept(client, infos)
         while True:
             # try:
-                msg = client.recv(self.max_size)
-                self.on_message(client, infos, msg)
+            msg = client.recv(self.max_size)
+            self.on_message(client, infos, msg)
             # except Exception as e:
             #     print(e)
             #     self.on_close(client)
@@ -360,22 +360,30 @@ class Server:
         """
         # si le client n'a pas déjà été supprimé
         if client in self.clients.keys():
-            self.save(client)
+            self.save_client(client)
             print("Connexion fermée", client)
             self.send(client, {"type": "close"})
-            del(self.clients[client])
             client.close()  # a tester
+            del(self.clients[client])
 
-    def save(self, client):
+    def save_client(self, client):
         # TODO
         player = self.clients[client]["player"]
         self.client_db.set_perso(player)
 
+    def save_all(self):
+        # on sauvegarde tous les clients
+        for client in self.clients.keys():
+            self.save_client(client)
+        # on sauvegarde la map
+        self.client_db.save_map(self.game.map_)
+        print("Jeu sauvegardé !")
+
     def format_dialog(self, perso):
         #
         dial = perso.dialogue_en_cours
-        if dial is None:
-            return "Dialogue inexistant"
+        if dial is None or type(dial) == list:
+            return "Fin du dialogue"
         print(dial)
         print(dial.keys())
         txt = list(dial.keys())[0] + "\n"
@@ -390,6 +398,29 @@ class Server:
             txt += "\nFin du dialogue"
             perso.dialogue_en_cours = None
         return txt
+
+    def fin_dialogue(self, client, perso, nom_perso):
+        texte_fait = ""
+        if type(perso.dialogue_en_cours) == list:
+            perso.dialogue_en_cours = None
+            t = "Fin du dialogue"
+            # TODO : faire que les effets en fin de dialogue s'appliquent
+            pass
+            self.send_message(client, "Fin du dialogue", True)
+            if perso.interlocuteur is not None:
+                texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discussion, qui avait l'air terriblement ennuyante."
+            else:
+                texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discussion, qui avait l'air terriblement ennuyante."
+            perso.interlocuteur = None
+        if perso.dialogue_en_cours is None:
+            perso.dialogue_en_cours = None
+            self.send_message(client, "Fin du dialogue", True)
+            if perso.interlocuteur is not None:
+                texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discussion, qui avait l'air terriblement ennuyante."
+            else:
+                texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discussion, qui avait l'air terriblement ennuyante."
+            perso.interlocuteur = None
+        return texte_fait
 
     def input_client(self, client, message):
         nc = self.clients[client]["player"].pseudo
@@ -436,6 +467,7 @@ class Server:
         # region initialisation - traitement données
         data_len = len(data.keys())
         action = data["commande"]
+        arguments = data["arguments"]
         args = data["arguments"].split(" ")
         # on enleve les arguments vides :
         while "" in args:
@@ -488,12 +520,20 @@ class Server:
         # Les premieres commandes sont des commandes à 0 ou plus arguments
         # commande aide : affiche le message d'aide
         if is_one_of(action, self.commandes_dat["aide"]["com"]):
-            txt_help = "COMMANDES :"
-            for key in self.commandes_dat.keys():
-                t = "'" + "', '".join(self.commandes_dat[key]["com"]) + "'"
-                tt = self.commandes_dat[key]["help"]
-                ttt = "Fonctionne" if self.commandes_dat[key]["fini"] else "Ne fonctionne pas"
-                txt_help += f"\n\t- {t} : {tt} [{ttt}]"
+            txt_help = "N'essayez pas d'inventer de nouvelles commandes, il y en a déjà assez comme ca !"
+            if len(args) == 0:
+                txt_help = "COMMANDES DISPONIBLES :"
+                for key in self.commandes_dat.keys():
+                    t = "'" + "', '".join(self.commandes_dat[key]["com"]) + "'"
+                    tt = self.commandes_dat[key]["help"]
+                    ttt = "Fonctionne" if self.commandes_dat[key]["fini"] else "Ne fonctionne pas encore"
+                    txt_help += f"\n\t- {t} [{ttt}]"
+                txt_help += "\n\nVous pouvez obtenir plus d'infos sur une commande précise en "
+            else:
+                for coms, t_aide in self.commandes_dat.items():
+                    if is_one_of(arguments, coms):
+                        ttt = "Cette commande fonctionne" if self.commandes_dat[key]["fini"] else "Cette commande ne fonctionne pas encore"
+                        txt_help = "Commande : " + arguments + "\n" + t_aide + "\n" + ttt
             self.send_message(client, txt_help, True)
         # commande voir ; affiche les infos du lieu
         elif is_one_of(action, ["voir"]):
@@ -741,43 +781,24 @@ class Server:
                     texte_fait = f"{nom_perso} a commencé à parler avec {pnj_cible.nom}"
                     time.sleep(0.1)
                     while perso.dialogue_en_cours is not None:
+                        #
+                        if type(perso.dialogue_en_cours) == dict:
+                            perso.test_dialogue()
+                            if perso.dialogue_en_cours is None or type(perso.dialogue_en_cours) == list:
+                                texte_fait = self.fin_dialogue(client, perso, nom_perso)
+                            self.send_message(client, self.format_dialog(perso), True)
+                            perso.dialogue_en_cours = perso.dialogue_en_cours[list(perso.dialogue_en_cours.keys())[0]]
+                            perso.test_dialogue()
+                        if perso.dialogue_en_cours is None or type(perso.dialogue_en_cours) == list:
+                            texte_fait = self.fin_dialogue(client, perso, nom_perso)
+                        #
                         ii = self.input_bonne_reponse(client, "Que répondez vous ?", [str(v) for v in range(1, 3)])
                         idd = int(ii) - 1
                         dial = perso.dialogue_en_cours
                         if idd >= len(dial.keys()):
                             self.send_message(client, "Vous voulez répondre autre chose ? Comme si vous avez la liberté d'expression ici ...", True)
                             return
-                        dsuiv = dial[list(dial.keys())[idd]]
-                        if type(dsuiv) == dict:
-                            perso.dialogue_en_cours = dsuiv
-                            perso.test_dialogue()
-                            if perso.dialogue_en_cours is None:
-                                return
-                            self.send_message(client, self.format_dialog(perso), True)
-                            perso.dialogue_en_cours = dsuiv[list(dsuiv.keys())[0]]
-                            perso.test_dialogue()
-                            if perso.dialogue_en_cours is None:
-                                return
-                        elif type(dsuiv) == list:
-                            perso.dialogue_en_cours = None
-                            t = "Fin du dialogue"
-                            # TODO : faire que les effets en fin de dialogue s'appliquent
-                            pass
-                            self.send_message(client, "Fin du dialogue", True)
-                            if perso.interlocuteur is not None:
-                                texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discussion, qui avait l'air terriblement ennuyante."
-                            else:
-                                texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discussion, qui avait l'air terriblement ennuyante."
-                            perso.interlocuteur = None
-                        elif dsuiv is None:
-                            perso.dialogue_en_cours = None
-                            self.send_message(client, "Fin du dialogue", True)
-                            if perso.interlocuteur is not None:
-                                texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discussion, qui avait l'air terriblement ennuyante."
-                            else:
-                                texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discussion, qui avait l'air terriblement ennuyante."
-                            perso.interlocuteur = None
-
+                        perso.dialogue_en_cours = dial[list(dial.keys())[idd]]
                 else:
                     self.send_message(client, "Votre interlocuteur n'a visiblement pas l'air d'avoir envie de parler, peut-être que vous êtes en train de l'embêter, ou bien il est muet, c'est aussi une possibilité ! ", True)
                     texte_fait = f"{nom_perso} a voulu parler avec {pnj_cible.nom}, mais ce dernier n'a pas très envie de discuter avec {nom_perso}"
