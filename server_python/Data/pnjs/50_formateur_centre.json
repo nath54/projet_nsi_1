@@ -4,8 +4,18 @@
     "nom":"Formateur",
     "race":"humain",
     "description":"Le formateur du centre d'entrainement, ca fait 5 ans qu'il vous fait souffrir, a vous faire de la muscu, des entrainements d'armes, faire la vaisselle, passer la balais, chasser des rats pour que vous les mangiez ... Toutes sortes d'entrainement pour vous apprendre à être un héros, un un zéros au choix.",
-    "dialogues":{
-        "Vous êtes en retard !":{
+    "dialogues":[
+        [null, {"Ou est votre convocation ?":{
+            "ah mince, je l'ai oublié !":{
+                "Allez me la chercher tout de suite !":null
+            },
+            "J'en ai une ?":{
+                "Bien sur que oui que vous en avez une ! Trouvez la tout de suite !": null
+            }
+        }}
+            
+        ],
+        [["obj", {"Vous êtes en retard !":{
             "Mais j'ai pas entendu le coq de ce matin !":{
                 "Sale féniant ! Vous êtes tout le temps en retard ! Tous les jours depuis le début ! Cette escuse ne marche pas ! Vous allez 200 pompes avant l'examen pour punition !":{
                     "Maiiis": null
@@ -14,6 +24,6 @@
             "Je ne suis pas en retard ! C'est vous qui êtes en avance !":{
                 "Euuh, je ne vous permet pas de dire cela ! Bon, on va commencer, ":null
             }
-        }
-    }
+        }}]]
+    ]
 }

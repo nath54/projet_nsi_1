@@ -263,3 +263,19 @@ Actuellement, votre attaque est :
             self.game.server.send(client, {"type": "message", "message": "Vous êtes mort... Je sais, c'est dur. Heureusement, pour vous aider à vous en remettre, on a décidé d'être sympa avec vous, vous ne souffrirez plus ! Votre âme est désormais... Supprimée. Ne me remerciez, c'est la fin, pas de souffrance éternelle ! Bon du coup si vous voulez continuer votre aventure, va falloir envisager de refaire un autre héros, parce que sinon le monde court à sa perte. Enfin *ce* monde a pas vraiment de fin en soit."}, True)
             id_ = self.client["player"].id_
             self.game.client_db.perso_death(id_)
+
+    def test_dialogue(self):
+        d = self.dialogue_en_cours
+        if d is not None:
+            if type(d) == dict:
+                pass
+            elif type(d) == list:
+                for dl in d:
+                    if dl[0] is None:
+                        self.dialogue_en_cours = dl[1]
+                    elif type(dl[0]) == list:
+                        if dl[0][0] == "quete":
+                            if self.quete_actuelle is not None ane self.quete_actuelle.index == dl[0][1]
+                        
+            else:
+                self.dialogue_en_cours = None

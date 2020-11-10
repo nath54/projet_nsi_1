@@ -370,6 +370,7 @@ class Server:
         # TODO
         player = self.clients[client]["player"]
         self.client_db.set_perso(player)
+        
 
     def format_dialog(self, perso):
         #
