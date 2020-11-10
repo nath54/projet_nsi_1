@@ -37,6 +37,7 @@ class Perso(Combattant):
         self.lieu = None
         self.equip = {"Artéfact": None, "Armure": None, "Arme": None}
         self.inventaire = []
+        self.quetes = []
         self.argent = 0
         self.classe = ""  # TODO
         self.race = ""
@@ -48,6 +49,8 @@ class Perso(Combattant):
         self.dialogue_en_cours = None
         self.interlocuteur = None
         self.type_ = "perso"
+        self.quete_actuelle = None
+        self.quetes_en_attente = []
 
     # region Format
     def format_invent(self):
@@ -91,7 +94,7 @@ class Perso(Combattant):
         Returns:
             str: Stats du personnage (présentable)
 
-        Auteur: Hugo
+        Auteur: Hugo, Nathan
 
         """
         txt_exp_1 = "    - " + "\n    - ".join([(str(key) + " : " + " / ".join([str(e) for e in self.experience[key]])) for key in self.experience])
@@ -169,6 +172,7 @@ Actuellement, votre attaque est :
                 # TODO
                 if obj[1] == 1:
                     self.inventaire = [i for i in self.inventaire if i != obj]
+                    break
                 else:
                     obj[1] -= 1
 
@@ -253,6 +257,10 @@ Actuellement, votre attaque est :
         return "Objet non trouvé dans l'inventaire"
 
     def on_death(self):
+        """Fonction qui est appelée à la mort du personnage
+
+        Auteur: Hugo
+        """
         client = None
         clients = self.game.server.clients
         for cliente, datac in clients.items():  # TODO: SOCKET
@@ -264,6 +272,10 @@ Actuellement, votre attaque est :
             self.game.client_db.perso_death(id_)
 
     def test_dialogue(self):
+        """Fonction qui teste si un dialogue est dispo avec une quete, ou un objet dans l'inventaire
+
+        Auteur: Nathan
+        """
         d = self.dialogue_en_cours
         if d is not None:
             if type(d) == dict:
@@ -284,3 +296,12 @@ Actuellement, votre attaque est :
                                     return
             else:
                 self.dialogue_en_cours = None
+
+    def quete_finie(self, id_quete):
+        """Fonction qui fini la quete d'un perso
+
+        Auteur: Nathan
+        """
+        if self.quete_actuelle.index != id_quete:
+            raise UserWarning("Probleme quete finie, id différent !")
+        self.quetes.append(self.quete_actuelle)

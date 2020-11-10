@@ -398,12 +398,58 @@ class Server:
         return txt
 
     def fin_dialogue(self, client, perso, nom_perso):
+        """Fonction qui est appellée à la fin d'un dialogue avec un pnj
+
+        Auteur: Nathan
+        """
         texte_fait = ""
         if type(perso.dialogue_en_cours) == list:
             perso.dialogue_en_cours = None
             t = "Fin du dialogue"
             # TODO : faire que les effets en fin de dialogue s'appliquent
+            for effet in perso.dialogue_en_cours:
+                print("eeeeeeeeeffffffffffeeeeeeeeeeeeeettttttttt ", effet)
+                if type(effet) != dict or len(effet.items()) != 1:
+                    continue
+                e, v = list(effet.items())[0]
+                if e == "quete":
+                    if perso.quete_actuelle is not None:
+                        perso.quetes_en_attente.append(perso.quete_actuelle)
+                    perso.quete_actuelle = self.game.Quete(self.game, v)
+                    time.sleep(0.1)
+                    self.send_message(client, f"{perso.interlocuteur.nom} vous a donné une nouvelle quete a faire : {perso.quete_actuelle.nom}", True)
+                elif e == "objet":
+                    bon = False
+                    nom_obj = ""
+                    for obj, qt in perso.inventaire:
+                        if obj.index == v:
+                            qt += 1
+                            nom_obj = obj.nom
+                            bon = True
+                            break
+                    if not bon:
+                        obj = self.game.Objet(v, self.game)
+                        nom_obj = obj.nom
+                        perso.inventaire.append([obj])
+                    time.sleep(0.1)
+                    self.send_message(client, f"{perso.interlocuteur.nom} vous a donné {nom_obj}", True)
+                elif e == "quete finie":
+                    time.sleep(0.1)
+                    self.send_message(client, f"Vous avez finie la quete {perso.quete_actuelle.nom}", True)
+                    perso.quete_finie(v)
+                elif e == "prendre objet":
+                    for obj in perso.inventaire:
+                        if obj[0].index == v:
+                            time.sleep(0.1)
+                            self.send_message(client, f"{perso.interlocuteur.nom} vous a pris un/une {obj[0].nom}", True)
+                            if obj[1] == 1:
+                                self.inventaire = [i for i in self.inventaire if i != obj]
+                            else:
+                                obj[1] -= 1
+                            break
+
             pass
+            time.sleep(0.1)
             self.send_message(client, "Fin du dialogue", True)
             if perso.interlocuteur is not None:
                 texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discussion, qui avait l'air terriblement ennuyante."
@@ -600,15 +646,12 @@ class Server:
                 self.send_message(client, f"{pnj_cible.__str__()}", True)
         # commande prendre
         elif is_one_of(action, self.commandes_dat["prendre"]["com"]):
-            print(obj_cible.nom)
             if obj_cible is None:
                 mess = "Honnêtement, j'adore le concept. Mais l'objet existe pas. Ou il est pas là. Au choix !"
                 self.send_message(client, mess, True)
                 return
             if obj_cible.type not in ["décor", "contenant"]:
-                print(obj_cible.nom)
                 perso.add_to_invent(obj_cible)
-                print(obj_cible.nom)
                 self.game.map_.lieux[perso.lieu].objets.remove(obj_cible)
                 self.send_message(client, f"Vous avez pris le/la {obj_cible.nom}.")
                 texte_fait = f"{nom_perso} a pris {obj_cible.nom}"
