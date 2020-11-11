@@ -536,7 +536,6 @@ class Client_mariadb:
             # on crée la query :
             query = f"""INSERT INTO quete ({txt_values_query})
                        VALUES ({txt_query})"""
-            print(query)
             self.cursor.execute(query, tuple(values_query_args))
             self.connection.commit()
         # endregion

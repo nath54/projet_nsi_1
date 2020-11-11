@@ -305,4 +305,4 @@ Actuellement, votre attaque est :
         """
         if self.quete_actuelle.index != id_quete:
             raise UserWarning("Probleme quete finie, id différent !")
-        self.quetes.append(self.quete_actuelle)
+        self.quetes[self.quete_actuelle.index] = "finie"
