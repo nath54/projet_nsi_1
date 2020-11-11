@@ -387,7 +387,7 @@ class Server:
         txt = list(dial.keys())[0] + "\n"
         #
         rd = dial[list(dial.keys())[0]]
-        if rd is not None:
+        if type(rd) == dict:
             x = 1
             for rep in rd.keys():
                 txt += f"\n\t({x}) {rep}"
@@ -404,7 +404,6 @@ class Server:
         """
         texte_fait = ""
         if type(perso.dialogue_en_cours) == list:
-            perso.dialogue_en_cours = None
             t = "Fin du dialogue"
             # TODO : faire que les effets en fin de dialogue s'appliquent
             for effet in perso.dialogue_en_cours:
@@ -443,11 +442,10 @@ class Server:
                             time.sleep(0.1)
                             self.send_message(client, f"{perso.interlocuteur.nom} vous a pris un/une {obj[0].nom}", True)
                             if obj[1] == 1:
-                                self.inventaire = [i for i in self.inventaire if i != obj]
+                                perso.inventaire = [i for i in perso.inventaire if i != obj]
                             else:
                                 obj[1] -= 1
                             break
-
             pass
             time.sleep(0.1)
             self.send_message(client, "Fin du dialogue", True)
@@ -456,6 +454,7 @@ class Server:
             else:
                 texte_fait = f"{nom_perso} a fini de parler avec un Pnj. Ce dernier paraît soulagé d'avoir fini cette discussion, qui avait l'air terriblement ennuyante."
             perso.interlocuteur = None
+            perso.dialogue_en_cours = None
         if perso.dialogue_en_cours is None:
             perso.dialogue_en_cours = None
             self.send_message(client, "Fin du dialogue", True)

@@ -280,20 +280,21 @@ Actuellement, votre attaque est :
         if d is not None:
             if type(d) == dict:
                 return
-            elif type(d) == list:
+            elif type(d) == list and len(d) > 0:
                 for dl in d:
-                    if dl[0] is None:
-                        self.dialogue_en_cours = dl[1]
-                    elif type(dl[0]) == list:
-                        if dl[0][0] == "quete":
-                            if self.quete_actuelle is not None and self.quete_actuelle.index == dl[0][1]:
-                                self.dialogue_en_cours = dl[1]
-                                return
-                        elif dl[0][0] == "obj":
-                            for ob, _ in self.inventaire:
-                                if ob.index == dl[0][1]:
+                    if type(dl) == list:
+                        if dl[0] is None:
+                            self.dialogue_en_cours = dl[1]
+                        elif type(dl[0]) == list:
+                            if dl[0][0] == "quete":
+                                if self.quete_actuelle is not None and self.quete_actuelle.index == dl[0][1]:
                                     self.dialogue_en_cours = dl[1]
                                     return
+                            elif dl[0][0] == "obj":
+                                for ob, _ in self.inventaire:
+                                    if ob.index == dl[0][1]:
+                                        self.dialogue_en_cours = dl[1]
+                                        return
             else:
                 self.dialogue_en_cours = None
 
