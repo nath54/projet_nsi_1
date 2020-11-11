@@ -155,8 +155,8 @@ class Server:
         self.client_db.update()
 
         # On va vérifier les différentes versions des données de la bdd
-        # if self.client_db.test_version(self.version):  # or True:
-        #     self.client_db.transfert_json_to_bdd()
+        if self.client_db.test_version(self.version):  # or True:
+            self.client_db.transfert_json_to_bdd()
 
         # TODO: Faudra aussi lancer les différents éléments du jeu
         # On lance le jeu ici
@@ -429,7 +429,7 @@ class Server:
                     if not bon:
                         obj = self.game.Objet(v, self.game)
                         nom_obj = obj.nom
-                        perso.inventaire.append([obj])
+                        perso.inventaire.append([obj, 1])
                     time.sleep(0.1)
                     self.send_message(client, f"{perso.interlocuteur.nom} vous a donné {nom_obj}", True)
                 elif e == "quete finie":

@@ -202,7 +202,7 @@ class Client_mariadb:
         """
         query = ("""CREATE TABLE IF NOT EXISTS quete
                     (id INT PRIMARY KEY, nom TEXT, description TEXT,
-                     recompenses TEXT, conditions TEXT);""")
+                     id_recompenses TEXT, conditions TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
@@ -320,6 +320,16 @@ class Client_mariadb:
             self.connection.commit()
             self.create_table_pnjs()
             print("La table pnjs a été mise à jour !")
+        # Quete
+        if force or self.get_schema("quete") != {"id": "int",
+                                                 "nom": "text",
+                                                 "description": "text",
+                                                 "id_recompenses": "text",
+                                                 "conditions": "text"}:
+            self.cursor.execute("DROP TABLE IF EXISTS quete")
+            self.connection.commit()
+            self.create_table_quete()
+            print("La table quete a été mise à jour !")
         # Genres
         if force or self.get_schema("genres") != {"genre": "text"}:
             self.cursor.execute("DROP TABLE IF EXISTS genres")
@@ -496,20 +506,40 @@ class Client_mariadb:
             self.cursor.execute(query, tuple(values_query_args))
             self.connection.commit()
         # endregion
-        """
         # region Quêtes :
-        self.cursor.execute("TRUNCATE TABLE quetes")
+        self.cursor.execute("TRUNCATE TABLE quete")
         self.connection.commit()
         pathd = "Data/quetes/"
-        ks = {"id"}
+        # ks : key = key of json lieu , value[0] = name of column of db lieux
+        # value[1] = si json.dumps ou pas, value[2] = si list index ou pas
+        ks = {"id": ["id", False], "nom": ["nom", False],
+              "description": ["description", False],
+              "id_recompenses": ["id_recompenses", True],
+              "conditions": ["conditions", True]}
         for fich in os.listdir(pathd):
             if not fich.endswith(".json"):
                 continue
             d = jload(pathd + fich)
-            for key in d.keys:
-                pass
+            values_query = []
+            values_query_args = []
+            for key in ks.keys():
+                if ks[key][0] in d.keys():
+                    values_query.append(key)
+                    val = d[ks[key][0]]
+                    if len(ks[key]) == 3:
+                        val = val[ks[key][2]]
+                    if ks[key][1]:
+                        val = json.dumps(val)
+                    values_query_args.append(val)
+            txt_values_query = ", ".join(values_query)
+            txt_query = ", ".join(["%s" for _ in values_query])
+            # on crée la query :
+            query = f"""INSERT INTO quete ({txt_values_query})
+                       VALUES ({txt_query})"""
+            print(query)
+            self.cursor.execute(query, tuple(values_query_args))
+            self.connection.commit()
         # endregion
-        """
         # TODO
         pass
 # endregion
@@ -956,23 +986,23 @@ class Client_mariadb:
 
         """
         # CREATE TABLE IF NOT EXISTS quete (id INT PRIMARY KEY, nom TEXT, description TEXT, recompenses TEXT, conditions TEXT)
-        query = """SELECT nom, description, recompense, conditions
+        query = """SELECT nom, description, id_recompenses, conditions
                    FROM quete
                    WHERE id=%s"""
         self.cursor.execute(query, (id_,))
         datas = {
             "nom": "Quete",
             "description": "Une quete",
-            "récompense": [],
-            "condition": []
+            "id_recompenses": [],
+            "conditions": []
         }
         for nom, desc, recompense, cond in self.cursor:
             datas["nom"] = nom
             datas["description"] = desc
-            datas["recompense"] = json.loads(recompense)
-            datas["condition"] = json.loads(cond)
+            datas["id_recompenses"] = json.loads(recompense)
+            datas["conditions"] = json.loads(cond)
             return datas
-        return None
+        raise UserWarning(f"Aucune quete n'a été trouvée avec l'id {id_}")
 # endregion
 
     def perso_death(self, id_):
