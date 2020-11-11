@@ -37,7 +37,7 @@ class Perso(Combattant):
         self.lieu = None
         self.equip = {"Artéfact": None, "Armure": None, "Arme": None}
         self.inventaire = []
-        self.quetes = []
+        self.quetes = {}
         self.argent = 0
         self.classe = ""  # TODO
         self.race = ""

@@ -70,12 +70,27 @@ class Server:
             "stats": {"com": ["stats", "statistiques"],
                       "help": """Affiche les stats du perso""",
                       "fini": True},
-            "quit": {"com": ["quit", "exit"],
-                     "help": """Quitte le jeu""",
+            "quete": {"com": ["quete", "devoir", "travail"],
+                      "help": "Affiche la quete actuelle a faire",
+                      "fini": True},
+            "quetes finies": {"com": ["quete_finies", "a_faire"],
+                              "help": "Affiche les quetes que vous avez terminées",
+                              "fini": True},
+            "quetes en attentes": {"com": ["quetes_en_attente"],
+                                   "help": "Affiche les quetes que vous avez en attente",
+                                   "fini": False},
+            "faire quete": {"com": ["faire_quete"],
+                            "help": "Si vous n'avez pas deja de quete actuelle, met la quete demandée en quete actuelle",
+                            "fini": False},
+            "save": {"com": ["save", "sauvegarder", "save_game"],
+                     "help": "Sauvegarde la map et l'état des joueurs",
                      "fini": False},
+            "quit": {"com": ["quit", "exit", "close"],
+                     "help": """Quitte le jeu""",
+                     "fini": True},
             "attendre": {"com": ["attendre"],
                          "help": """Attends un tour""",
-                         "fini": False},
+                         "fini": True},
             "desequiper": {"com": ["desequiper"],
                            "help": """Desequipe un objet""",
                            "fini": True},
@@ -108,7 +123,7 @@ class Server:
                        "fini": True},
             "parler": {"com": ["parler", "discuter"],
                        "help": """Parle avec un pnj""",
-                       "fini": False},
+                       "fini": True},
             "message": {"com": ["message"],
                         "help": """Envoie un message dans le chat du jeu""",
                         "fini": True},
@@ -203,13 +218,11 @@ class Server:
         Auteur: Nathan
 
         """
-        message = json.dumps(message)
-        message = message.encode(encoding="utf-8")
         if sys.getsizeof(message) > self.max_size:
             return
         for autre_client in self.clients.keys():
             if client != autre_client:
-                autre_client.send(message)
+                self.send(autre_client, message)
 
     def send_all(self, message):
         """Envoie un message a tous les clients.
@@ -220,12 +233,8 @@ class Server:
         Auteur: Nathan
 
         """
-        message = json.dumps(message)
-        message = message.encode(encoding="utf-8")
-        if sys.getsizeof(message) > self.max_size:
-            return
         for cc in self.clients.keys():
-            cc.send(message)
+            self.send(cc, message)
 
     def send(self, client, message, print_=False, important=False):
         """Envoie un message a un client précis.
@@ -407,7 +416,6 @@ class Server:
             t = "Fin du dialogue"
             # TODO : faire que les effets en fin de dialogue s'appliquent
             for effet in perso.dialogue_en_cours:
-                print("eeeeeeeeeffffffffffeeeeeeeeeeeeeettttttttt ", effet)
                 if type(effet) != dict or len(effet.items()) != 1:
                     continue
                 e, v = list(effet.items())[0]
@@ -447,8 +455,6 @@ class Server:
                                 obj[1] -= 1
                             break
             pass
-            time.sleep(0.1)
-            self.send_message(client, "Fin du dialogue", True)
             if perso.interlocuteur is not None:
                 texte_fait = f"{nom_perso} a fini de parler avec {perso.interlocuteur.nom}. Ce dernier paraît soulagé d'avoir fini cette discussion, qui avait l'air terriblement ennuyante."
             else:
@@ -598,6 +604,39 @@ class Server:
                 self.send_message(client, perso.format_stats(), True)
             else:
                 pass  # TODO: Afficher stats d'un autre Etre (bof)
+        # commande quete : affiche la quete actuelle
+        elif is_one_of(action, self.commandes_dat["quete"]["com"]):
+            if perso.quete_actuelle is None:
+                self.send_message(client, "Vous n'avez visiblement rien a faire, il serait temps de trouver du travail, chômeur !")
+            else:
+                self.send_message(client, f"Quete : {perso.quete_actuelle.nom} :\n{perso.quete_actuelle.description}")
+        # commande quetes finies : affiche les quetes qui ont été finies
+        elif is_one_of(action, self.commandes_dat["quetes finies"]["com"]):
+            if len(perso.quetes.keys()) >= 1:
+                txt_qt = "Quetes finies :"
+                for qt_id, etat in perso.quetes:
+                    if etat == "finie":
+                        qt_nom = self.client_db.get_data_quetes_DB(qt_id)["nom"]
+                        txt_qt += f"\n\t- {qt_nom}"
+                self.send_message(client, txt_qt)
+            else:
+                self.send_message(client, "Je ne sais pas si c'est par flemme ou par manque de compétences, mais vous n'avez rien fait !")
+        # commande quetes en attentes : affiche les quetes qui sont en attentes
+        elif is_one_of(action, self.commandes_dat["quetes en attentes"]["com"]):
+            if len(perso.quetes_en_attente) >= 1:
+                txt_qt = "Quetes en attentes :"
+                for qt_id in perso.quetes_en_attente:
+                    qt_nom = self.client_db.get_data_quetes_DB(qt_id)["nom"]
+                    txt_qt += f"\n\t- {qt_nom}"
+                self.send_message(client, txt_qt)
+            else:
+                self.send_message(client, "Tel un maitre de l'organisation, vous avez géré vos efforts ")
+        # TODO : faire que les quetes finies et les quete en attentes soient dans le meme dictionnaire : perso.quetes
+        # commande save : le client sauvegarde le jeu
+        elif is_one_of(action, self.commandes_dat["save"]["com"]):
+            self.save_all()
+            mes = {"type": "message", "value": "Partie sauvegardée !"}
+            self.send_all(mes)
         # commande quit : le client quitte le jeu
         elif is_one_of(action, self.commandes_dat["quit"]["com"]):
             self.on_close(client)
