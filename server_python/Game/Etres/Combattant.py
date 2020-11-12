@@ -215,16 +215,18 @@ class Combattant(Etre):
 
     def test_mort(self):
         if self.vie <= 0:
-            self.game.map_.lieux[self.lieu].suppr_ennemi(self)
+            if self.type_ in ["ennemis", "ennemi"]:
+                self.game.map_.lieux[self.lieu].suppr_ennemi(self)
+            elif self.type_ in ["perso"]:
+                self.on_death()
             return True
         return False
 
-    def test_mort_cible(self, cible):
+    def test_mort_cible(self, cible, perso=None):
         if cible.vie <= 0:
             if cible.type_ in ["ennemi", "ennemis"]:
                 self.game.map_.lieux[self.lieu].suppr_ennemi(cible)
                 return True
-            elif cible.type_ in "perso":
-                cible
-                return True
+            elif cible.type_ in ["perso"]:
+                return self.test_mort()
         return False

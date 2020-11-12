@@ -52,6 +52,7 @@ class Server:
         self.client_db = Client_mariadb(self.game)
         self.game.client_db = self.client_db
         self.version = 1
+        # faudrait peut etre trouver un meilleur nom que ca quand meme
         self.nom_du_jeu = "Py RPG MasterClass Option text multijoueur"
         #
         self.commandes_dat = {
@@ -143,7 +144,8 @@ class Server:
         directions = ["ouest", "est", "nord", "sud", "nord-ouest",
                       "nord-est", "sud-ouest", "sud-est"]
         self.directions = [traiter_txt(d) for d in directions]
-        self.tour = 0
+        self.nb_actions = 0
+        self.nb_actions_save = 0
 
     def start(self):
         """Lance le serveur.
@@ -530,6 +532,12 @@ class Server:
         nom_perso = self.clients[client]["player"].perso.nom
         tour_p = 0
         # endregion
+
+        self.nb_actions += 1
+        if self.nb_actions >= self.nb_actions_save:
+            self.nb_actions = 0
+            self.save_all()
+            self.send_all({"type": "message", "value": "game saved"})
 
         # TODO : Il faudra appeler une fonction qui va executer les effets que
         # le personnage a pour commencer son tour

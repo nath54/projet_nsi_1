@@ -731,10 +731,10 @@ class Client_mariadb:
         """
         query = """UPDATE lieux
                    SET ennemis = %s,
-                       objets = %s
+                       objets = %s,
                        pnjs = %s,
                        lieux = %s
-                    WHERE id = %s
+                    WHERE id = %s;
                 """
         ens = {}
         for en in lieu.ennemis:
