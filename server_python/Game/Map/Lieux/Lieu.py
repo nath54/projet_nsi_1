@@ -112,6 +112,8 @@ class Lieu:
                                 if obj.index == c[1]:
                                     bon = True
                                     break
+            if bon:
+                lieux_accessibles.append(ls_lieu)
 
         self.persos = self.game.get_all_persos_lieu(self.index)
         if len(self.objets) >= 1:
