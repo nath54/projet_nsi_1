@@ -92,13 +92,14 @@ class Lieu:
         txt_lieux = ""
 
         lieux_accessibles = []
-        for l in self.lieux_accessibles:
+        for ls_lieu in self.lieux_accessibles:
+            print(ls_lieu)
             bon = True
-            if len(l) >= 3:
+            if len(ls_lieu) >= 3:
                 if perso_ is None:
                     bon = False
                 else:
-                    for c in l[2]:
+                    for c in ls_lieu[2]:
                         if type(c) != list:
                             continue
                         if c[0] == "quete":
