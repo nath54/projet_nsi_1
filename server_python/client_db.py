@@ -1043,7 +1043,27 @@ class Client_mariadb:
 # endregion
 
     def perso_death(self, id_):
-        query = """DELETE FROM persos
-                   WHERE id=%s"""
-        self.cursor(query, (id_))
+        """Fonction qui supprime un perso mort
+
+        Auteur: Hugo, Nathan
+        """
+        # on récupere l'id du perso
+        query = """SELECT perso.id FROM persos
+                   INNER JOIN comptes
+                   ON comptes.perso_id = persos.id WHERE compte.id=%s;"""
+        self.cursor.execute(query, (id_))
+        id_perso = None
+        results = [elt for elt in self.cursor]
+        if len(results) >= 1:
+            id_perso = results[0][0]
+        # on supprime le perso
+        query = """DELETE FROM persos WHERE id=%s;"""
+        self.cursor.execute(query, (id_perso))
         self.connection.commit()
+        # on enleve l'id du perso dans le compte
+        query = """UPDATE comptes
+                   SET perso_id = null
+                   WHERE id = %s;"""
+        self.cursor.execute(query, (id_))
+        self.connection.commit()
+

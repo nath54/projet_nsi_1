@@ -128,6 +128,10 @@ class Combattant(Etre):
         return sum(lst) / len(lst)
 
     def get_attaque(self, type_att="corps à corps"):
+        """Fonction qui récupère l'attaque d'un personnage
+
+        Auteur: Nathan
+        """
         att = self.attaque[type_att]
         if att is None:
             att = [0, 0]
@@ -154,6 +158,10 @@ class Combattant(Etre):
         return att
 
     def get_defense(self, tp_def="corps à corps"):
+        """Fonction qui récupère la défense d'un personnage
+
+        Auteur: Nathan
+        """
         deff = [0, 0]
         lst_def = list(set(["magique", tp_def]))
         # on applique les effets
@@ -177,6 +185,10 @@ class Combattant(Etre):
         return deff
 
     def attaque_cible(self, cible, type_att="corps à corps"):
+        """Ce combattant attaque un autre combattant
+
+        Auteur: Nathan
+        """
         r = random.randint(0, 100)
         attaque = self.get_attaque(type_att)
         msg = "Il ne s'est rien passé"
@@ -198,7 +210,9 @@ class Combattant(Etre):
                     temps_restant = 0
                     # TODO A changer ! il faudra récupérer le temps d'un effet
                     cible.effets[effet] = temps_restant
-            enleve = self.test_mort_cible(cible)
+            #
+            enleve = cible.test_mort()
+            #
             if enleve:
                 msg += f"\n{cible.nom} est mort."
             # si l'ennemi se fait toucher, l'ennemi va etre ultra agressif
@@ -214,6 +228,11 @@ class Combattant(Etre):
         return msg
 
     def test_mort(self):
+        """Fonction qui teste si ce combattant est mort
+        Adapté pour les persos, ennemis
+
+        Auteur: Nathan, Hugo
+        """
         if self.vie <= 0:
             if self.type_ in ["ennemis", "ennemi"]:
                 self.game.map_.lieux[self.lieu].suppr_ennemi(self)
@@ -223,6 +242,11 @@ class Combattant(Etre):
         return False
 
     def test_mort_cible(self, cible, perso=None):
+        """Fonction qui teste si le combattant cible est mort
+        Adapté pour les ennemis
+
+        Auteur: Nathan, Hugo
+        """
         if cible.vie <= 0:
             if cible.type_ in ["ennemi", "ennemis"]:
                 self.game.map_.lieux[self.lieu].suppr_ennemi(cible)

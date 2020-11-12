@@ -259,16 +259,18 @@ Actuellement, votre attaque est :
     def on_death(self):
         """Fonction qui est appelée à la mort du personnage
 
-        Auteur: Hugo
+        Auteur: Hugo, Nathan
         """
         client = None
+        datacl = None
         clients = self.game.server.clients
         for cliente, datac in clients.items():  # TODO: SOCKET
             if datac["player"].perso == self:
                 client = cliente
+                datacl = datac
         if client is not None:
             self.game.server.send(client, {"type": "message", "message": "Vous êtes mort... Je sais, c'est dur. Heureusement, pour vous aider à vous en remettre, on a décidé d'être sympa avec vous, vous ne souffrirez plus ! Votre âme est désormais... Supprimée. Ne me remerciez, c'est la fin, pas de souffrance éternelle ! Bon du coup si vous voulez continuer votre aventure, va falloir envisager de refaire un autre héros, parce que sinon le monde court à sa perte. Enfin *ce* monde a pas vraiment de fin en soit."}, True)
-            id_ = self.client["player"].id_
+            id_ = datacl["player"].id_
             self.game.client_db.perso_death(id_)
 
     def test_dialogue(self):
