@@ -42,9 +42,9 @@ class Player:
         self.perso.equipement = data_perso["equipement"]
         self.perso.lieu = data_perso["lieu"]
         self.perso.histo_lieu.add(data_perso["lieu"])
-        quetes = data_perso["quetes"]
         self.perso.quetes = {}
-        for id_q, dq in quetes:
+        quetes = data_perso["quetes"]
+        for id_q, dq in quetes.items():
             if type(dq) == dict:
                 if dq["etat"] == "finie":
                     self.perso.quetes[id_q] = "finie"
