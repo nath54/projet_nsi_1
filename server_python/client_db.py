@@ -797,6 +797,27 @@ class Client_mariadb:
                                 lieu.index
                             ))
 
+    def save_player(self, player):
+        """Sauvegarde la table player dans la BDD.
+        En fait, c'est quand le perso est mort que c'est utile,
+
+        Ne marche pas, n'est pas appelée au final
+
+        Auteur : Nathan
+
+        """
+        if player is None:
+            return
+        #
+        if player.perso is not None:
+            return
+        #
+        query = ("""UPDATE TABLE comptes
+                    SET perso_id=null
+                    WHERE id = %s;""")
+        self.cursor.execute(query, (player.id_, ))
+        self.connection.commit()
+
     def new_genre(self, genre):
         self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)", (genre,))
         self.connection.commit()

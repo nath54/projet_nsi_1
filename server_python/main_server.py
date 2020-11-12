@@ -414,7 +414,9 @@ class Server:
     def save_client(self, client):
         # TODO
         player = self.clients[client]["player"]
-        self.client_db.set_perso(player)
+        if player.perso is not None:
+            self.client_db.set_perso(player)
+        # self.client_db.save_player(player)
 
     def save_all(self):
         # on sauvegarde tous les clients
