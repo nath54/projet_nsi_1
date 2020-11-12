@@ -28,7 +28,8 @@ class Player:
             data_perso(dict<str: ???>): Dictionnaire contenant toutes les
                                         caractéristiques du personnage.
 
-        Auteur: Nathan
+        Auteur : Nathan
+
         """
         self.perso = Perso(self.game)
         self.player = self

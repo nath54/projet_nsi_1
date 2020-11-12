@@ -17,9 +17,9 @@ class Map:
         pass
 
     def load_from_bdd(self, game):
-        """Permet de charger la map depuis un fichier `.json`.
+        """Charge la map depuis la DB.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         id_lieux = game.client_db.get_lieux()
@@ -29,9 +29,9 @@ class Map:
             self.lieux[idl] = lieu
 
     def load_from_json(self, game):
-        """Permet de charger la map depuis un fichier `.json`.
+        """Charge la map depuis un fichier `.json`.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         emplacement = "Data/map/"
@@ -48,7 +48,7 @@ class Map:
         Args:
             datalieu(dict<???>): ???
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         lieu = game.Lieu(game, datalieu["id"])

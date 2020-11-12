@@ -24,7 +24,7 @@ class Game:
     def __init__(self, jload):
         """Initie ce qui est essentiel pour le jeu (Map).
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.jload = jload
@@ -49,7 +49,7 @@ class Game:
     def start(self):
         """Lance le moteur de jeu.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.map_.load_from_bdd(self)

@@ -30,7 +30,7 @@ class Objet:
             game(Game): Référence à la partie
             id(int): Index de l'objet à utiliser
 
-        Auteur: Hugo, Nathan
+        Auteur : Hugo, Nathan
 
         """
         self.index = index
@@ -51,9 +51,9 @@ class Objet:
         self.ouvert = datas["ouvert"]
 
     def __repr__(self):
-        """Permet d'afficher une description de l'objet.
+        """Affiche une description de l'objet.
 
-        Auteur: Hugo
+        Auteur : Hugo
 
         """
         n = "\n"
@@ -66,7 +66,7 @@ class Objet:
     def format_contenu(self):
         """Formate le contenu d'un objet
 
-        Auteur: Hugo
+        Auteur : Hugo
 
         """
         if len(self.contenu) > 0:

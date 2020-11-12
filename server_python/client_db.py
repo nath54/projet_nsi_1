@@ -39,7 +39,7 @@ class Client_mariadb:
     def __init__(self, game):
         """Initialise les caractéristiques de la base de données.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         # Faudra se mettre d'accord sur ça
@@ -75,7 +75,7 @@ class Client_mariadb:
     def test_version(self, version):
         """Vérifie si la version de la BDD est inférieure à celle du serveur.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.cursor.execute("SHOW TABLES LIKE 'version_';")
@@ -101,7 +101,7 @@ class Client_mariadb:
             bool: False = Ce n'est pas le premier lancement du serveur
                   True = C'est la première fois qu'on lance le serveur
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.cursor.execute("SHOW TABLES LIKE 'comptes';")
@@ -115,7 +115,7 @@ class Client_mariadb:
     def create_table_comptes(self):
         """Crée la table comptes dans la BDD.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         query = ("""CREATE TABLE IF NOT EXISTS comptes
@@ -127,7 +127,7 @@ class Client_mariadb:
     def create_table_persos(self):
         """Crée la table perso dans la BDD.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         query = ("""CREATE TABLE IF NOT EXISTS persos
@@ -145,7 +145,7 @@ class Client_mariadb:
     def create_table_objets(self):
         """Crée la table objets dans la BDD.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         query = ("""CREATE TABLE IF NOT EXISTS objets
@@ -158,7 +158,7 @@ class Client_mariadb:
     def create_table_pnjs(self):
         """Crée la table pnjs dans la BDD.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         query = ("""CREATE TABLE IF NOT EXISTS pnjs
@@ -170,7 +170,7 @@ class Client_mariadb:
     def create_table_ennemis(self):
         """Crée la table ennemis dans la BDD.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         query = ("""CREATE TABLE IF NOT EXISTS ennemis
@@ -183,7 +183,7 @@ class Client_mariadb:
     def create_table_lieux(self):
         """Crée la table lieux dans la BDD.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         query = ("""CREATE TABLE IF NOT EXISTS lieux
@@ -197,7 +197,7 @@ class Client_mariadb:
     def create_table_quete(self):
         """Crée la table `quete` dans la DB.
 
-        Auteur: Hugo
+        Auteur : Hugo
 
         """
         query = ("""CREATE TABLE IF NOT EXISTS quete
@@ -209,7 +209,7 @@ class Client_mariadb:
     def create_table_genre(self):
         """Crée la table genre dans la BDD.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         query = ("""CREATE TABLE IF NOT EXISTS genres
@@ -226,7 +226,7 @@ class Client_mariadb:
     def create_table_version(self):
         """Crée la table version dans la BDD.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         query = ("""CREATE TABLE IF NOT EXISTS version_
@@ -242,7 +242,7 @@ class Client_mariadb:
     def update(self, force=False):
         """Réinitialise les tables de mauvais format ou qui n'existent pas.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         # Comptes
@@ -356,9 +356,9 @@ class Client_mariadb:
             self.create_table_version()
 
     def init_database(self):
-        """Permet de créer toutes les tables au premier lancement.
+        """Créé toutes les tables au premier lancement.
 
-        Auteur: Nathan, Hugo
+        Auteur : Nathan, Hugo
 
         """
         self.create_table_comptes()
@@ -378,7 +378,7 @@ class Client_mariadb:
         """Transfére toutes les données des fichiers json vers la BDD.
 
         Etat : TODO Commencé, à finir
-        Auteur: Nathan, Hugo
+        Auteur : Nathan, Hugo
 
         """
         print("Transfert des donnnées json vers la BDD...")
@@ -573,7 +573,7 @@ class Client_mariadb:
 
 # region INSCRIPTION / CONNEXION
     def inscription(self, pseudo, email, password):
-        """Permet de créer un compte.
+        """Créé un compte.
 
         Args:
             pseudo(str): Pseudo du compte à créer
@@ -584,7 +584,7 @@ class Client_mariadb:
             bool: False = L'inscription n'a pas pu être complétée
                   True = Inscription réussie
 
-        Auteur: Hugo
+        Auteur : Hugo
 
         """
         self.cursor.execute("""INSERT INTO comptes (pseudo, email, password)
@@ -607,7 +607,8 @@ class Client_mariadb:
         renvoie False s'il n'y a pas d'erreurs
         renvoie un string contenant un message d'erreur s'il y a une erreur
 
-        Auteur: Hugo, Nathan
+        Auteur : Hugo, Nathan
+
         """
         self.cursor.execute("SELECT pseudo, email FROM comptes")
         c = self.cursor
@@ -629,7 +630,7 @@ class Client_mariadb:
             bool/str: False --> Pas d'erreur
                       str --> Message d'erreur
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.cursor.execute("SELECT password, id FROM comptes WHERE pseudo=%s",
@@ -659,7 +660,7 @@ class Client_mariadb:
         Args:
             player(Player): Joueur à enregistrer.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         id_ = player.id_
@@ -752,7 +753,7 @@ class Client_mariadb:
         Args:
             map_(Map): Instance de la carte
 
-        Auteur: Hugo
+        Auteur : Hugo
 
         """
         for lieu in map_.lieux.values():
@@ -764,7 +765,7 @@ class Client_mariadb:
         Args:
             lieu(Lieu): Lieu à sauvegarder
 
-        Auteur: Hugo, Nathan
+        Auteur : Hugo, Nathan
 
         """
         query = """UPDATE lieux
@@ -826,7 +827,7 @@ class Client_mariadb:
         Args:
             id_(int): ID du compte
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         query = """SELECT nom, genre, race, classe, argent,  experience,
@@ -879,7 +880,7 @@ class Client_mariadb:
     def get_lieux(self):
         """Récupère les ID des lieux
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         query = "SELECT id FROM lieux;"
@@ -896,7 +897,7 @@ class Client_mariadb:
         Returns:
             Objet/None: Objet d'id `id_` ou None si pas trouvé
 
-        Auteur: Hugo, Nathan
+        Auteur : Hugo, Nathan
 
         """
         self.cursor.execute("""SELECT nom, description_, type_, effets,
@@ -924,7 +925,7 @@ class Client_mariadb:
         Args:
             id_(int): Identifiant du Lieu
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         query = "SELECT nom, appellations, description_, ennemis, pnjs, objets, lieux, appellations FROM lieux WHERE id = %s;"
@@ -950,7 +951,7 @@ class Client_mariadb:
         Args:
             id_(int): Identifiant du PNJ
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         query = """SELECT nom, description_, race, dialogue FROM pnjs
@@ -975,7 +976,7 @@ class Client_mariadb:
         Args:
             id_(int): L'identifiant de l'ennemi
 
-        Auteur: Nathan, Hugo
+        Auteur : Nathan, Hugo
 
         """
         query = """SELECT type_, nom, race, description_, vie_min, vie_max,
@@ -1020,7 +1021,7 @@ class Client_mariadb:
         Args:
             id_(int): L'identifiant de la quête
 
-        Auteur: Hugo
+        Auteur : Hugo
 
         """
         # CREATE TABLE IF NOT EXISTS quete (id INT PRIMARY KEY, nom TEXT, description TEXT, recompenses TEXT, conditions TEXT)
@@ -1046,7 +1047,8 @@ class Client_mariadb:
     def perso_death(self, id_):
         """Fonction qui supprime un perso mort
 
-        Auteur: Hugo, Nathan
+        Auteur : Hugo, Nathan
+
         """
         # on récupere l'id du perso
         query = """SELECT persos.id FROM persos

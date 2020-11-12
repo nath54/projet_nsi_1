@@ -21,7 +21,7 @@ class Ennemi(Combattant):
         Args:
             index(int): Identifiant unique de l'ennemi
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         Combattant.__init__(self, game)
@@ -42,9 +42,9 @@ class Ennemi(Combattant):
             self.nom += "-" + str(nb)
 
     def tour(self, lieu):
-        """Fonction appelée au tour de l'ennemi
+        """Joue le tour de l'ennemi
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         if random.randint(0, 100) <= self.agressivite:  # si l'ennemi attaque
@@ -90,7 +90,7 @@ class Ennemi(Combattant):
     def __repr__(self):
         """Renvoie une description plus détaillée de l'ennemi
 
-        Auteur: Nathan
+        Auteur : Nathan
         """
         return f"""
 Ennemi :

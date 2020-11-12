@@ -43,7 +43,7 @@ class Quete:
         Doit donner les récompenses au joueur et l'enlever de son journal de
         quête.
 
-        Auteur:
+        Auteur : TODO
 
         """
         # TODO
@@ -52,6 +52,7 @@ class Quete:
     def affichage(self):
         """Affiche le contenu d'une quête.
 
-        Auteur: TODO
+        Auteur : TODO
+
         """
         pass
