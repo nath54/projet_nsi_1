@@ -1,0 +1,12 @@
+{
+    "id":54,
+    "appellations":["cave entrainement", "cave"],
+    "nom":"Centre d'entrainement",
+    "region":"Tuto",
+    "description":"C'est le centre d'entrainement dans lequel on vous a formé pendant 5 ans afin de vaincre les ennemis du royaume, sauf que maintenant, si vous êtes ici, c'est pour obtenir votre diplome enfin attendu !",
+    "type":"ville",
+    "pnjs":[ ],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [53, "haut"]]
+}
