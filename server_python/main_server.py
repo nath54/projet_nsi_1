@@ -620,12 +620,15 @@ class Server:
                 self.send_message(client, f"Quete : {perso.quete_actuelle.nom} :\n{perso.quete_actuelle.description}")
         # commande quetes finies : affiche les quetes qui ont été finies
         elif is_one_of(action, self.commandes_dat["quetes finies"]["com"]):
+            qt_fins = []
+            for qt_id, etat in perso.quetes:
+                if etat == "finie":
+                    qt_fins.append(qt_id)
             if len(perso.quetes.keys()) >= 1:
                 txt_qt = "Quetes finies :"
-                for qt_id, etat in perso.quetes:
-                    if etat == "finie":
-                        qt_nom = self.client_db.get_data_quetes_DB(qt_id)["nom"]
-                        txt_qt += f"\n\t- {qt_nom}"
+                for qt_id in qt_fins:
+                    qt_nom = self.client_db.get_data_quetes_DB(qt_id)["nom"]
+                    txt_qt += f"\n\t- {qt_nom}"
                 self.send_message(client, txt_qt)
             else:
                 self.send_message(client, "Je ne sais pas si c'est par flemme ou par manque de compétences, mais vous n'avez rien fait !")
@@ -935,6 +938,7 @@ class Server:
         # commande mettre
         elif is_one_of(action, self.commandes_dat["mettre"]["com"]):
             pass
+        # Il n'y a plus de commandes apres ca
         else:
             self.send_message(client, "J'ai pas compris ce que vous vouliez, pouvez vous répetez plus clairement, et si vous connaissez pas les commandes, vous pouvez taper 'aide' pour voir la liste des commandes disponibles.")
 
