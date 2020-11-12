@@ -99,6 +99,8 @@ class Lieu:
                     bon = False
                 else:
                     for c in l[2]:
+                        if type(c) != list:
+                            continue
                         if c[0] == "quete":
                             if perso_.quete_actuelle is None or perso.quete_actuelle.index != c[1]:
                                 bon = False
