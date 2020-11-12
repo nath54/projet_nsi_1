@@ -1,5 +1,5 @@
 # projet_nsi_1
- 
+
 ## Consignes :
 
 Groupes de 3 ou 4.
@@ -17,15 +17,15 @@ Exemples de projets possibles :
 1) un système de cahier de texte numérique ( les profs doivent pouvoir donner et modifier des devoirs aux élèves de leurs classes, et les élèves doivent voir les informations qui leur sont destinés)
 2) un système de messagerie ( on peut écrire des messages à quelqu’un, qui pourra les consulter plus tard, et éventuellement répondre, les transférer, les supprimer)
 3) des jeux ( rpg textuel, ou autre ) ( un joueur doit pouvoir retrouver son état d’avancement dans le jeu lorsqu’il se reconnecte )
-4) forum de discussion 
+4) forum de discussion
 ....
 
 Si vous avez une idée mais ne savez pas si ça rentre dans le cadre, n’hésitez pas à me demander.
 
 Ne partez pas dans un truc trop compliqué !
 
-## Membres du groupe : 
-  
+## Membres du groupe :
+
   - Nathan Cerisara : [Compte Github](https://github.com/nath54)
   - Hugo Perrin : [Compte Github](https://github.com/er1t-h)
   - Lea Smolareck : [Compte Github](https://github.com/AisuKetsueki)
@@ -33,20 +33,15 @@ Ne partez pas dans un truc trop compliqué !
 
 Les indications de ce que chaqun a fait seront dans le fichier `qui_a_fait_quoi.md` à la racine du projet.
 
-## Structure du projet : 
+## Structure du projet :
 
 Le projet est structuré en plusieurs parties, on a :
- 
+
  - `server_python` : C'est la la partie serveur du projet, c'est elle qui interagit avec les différents clients et qui accede a la base de donnée (on utilisera mariadb) pour y stocker des données
  - `client_python` : C'est la partie client du projet, c'est à travers elle que les différents joueurs vont pouvoir interagir avec le serveur
- - `client_web` : Je l'ai rajouté en bonus, car c'est quand même plus agréable de jouer à un jeu sur une page web bien organisée que sur un petit terminal python (avis personnel de Nathan Cerisara)
+ - `client_web` : Je l'ai rajouté en bonus, car c'est quand même plus agréable de jouer à un jeu sur une page web bien organisée que sur un petit terminal python (il y a eu dernierement des modifications du serveur et je n'ai pas eu le temps depuis de tester le client web, il peut donc ne plus marcher)
 
 ## Instructions d'utilisation
 
 Vous pouvez voir les instructions [ici](instructions.md)
-
-(Arriveront quand le projet sera quasiment terminé)
-
-
-
 
