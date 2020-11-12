@@ -71,6 +71,9 @@ class Server:
             "stats": {"com": ["stats", "statistiques"],
                       "help": """Affiche les stats du perso""",
                       "fini": True},
+            "joueurs": {"com": ["joueurs", "players"],
+                        "help": "Affiche la liste des joueurs qui sont connectés",
+                        "fini": True},
             "quete": {"com": ["quete", "devoir", "travail"],
                       "help": "Affiche la quete actuelle a faire",
                       "fini": True},
@@ -597,6 +600,24 @@ class Server:
         # commande voir ; affiche les infos du lieu
         elif is_one_of(action, ["voir"]):
             self.send_message(client, self.game.map_.lieux[perso.lieu].aff(perso), True)
+        # commande joueurs ; affiche les joueurs connectés
+        elif is_one_of(action, ["joueurs"]):
+            txt_j = ""
+            if len(self.clients.values()) == 1:
+                txt_j = "Il n'y a pas d'autres joueurs connectés, vous êtes la seule personne a arpenter ce dangereux monde, ramenez des amis ! ;)"
+            elif len(self.clients.values()) >= 2:
+                txt_j = "Joueurs connectés :"
+                for cl in self.clients.keys():
+                    if cl != client:
+                        pcl = self.clients[cl]["player"].perso
+                        txt_j += f"\n\t- {pcl.nom}"
+                        if pcl.lieu == perso.lieu:
+                            txt_j += " [Même lieu que vous]"
+                        else:
+                            txt_j += f" [{self.game.map_.lieux[pcl.lieu].nom}]"
+            else:
+                txt_j = "Erreur, apparement, il semblerait qu'il n'y ait aucun clients connectés au serveur alors que vous l'êtes..."
+            self.send_message(client, txt_j, True)
         # commande inventaire : affiche l'inventaire
         elif is_one_of(action, self.commandes_dat["inventaire"]["com"]):
             if len(args) == 0 or args[0] == "":
