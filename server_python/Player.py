@@ -42,7 +42,23 @@ class Player:
         self.perso.equipement = data_perso["equipement"]
         self.perso.lieu = data_perso["lieu"]
         self.perso.histo_lieu.add(data_perso["lieu"])
-        self.perso.quetes = data_perso["quetes"]
+        quetes = data_perso["quetes"]
+        self.perso.quetes = {}
+        for id_q, dq in quetes:
+            if type(dq) == dict:
+                if dq["etat"] == "finie":
+                    self.perso.quetes[id_q] = "finie"
+                elif dq["etat"] == "en attente":
+                    qt = self.game.Quete(self.game, id_q)
+                    qt.compteur = dq["compteur"]
+                    self.perso.quetes_en_attente.append(qt)
+                elif dq["etat"] == "actuelle":
+                    qt = self.game.Quete(self.game, id_q)
+                    qt.compteur = dq["compteur"]
+                    self.perso.quete_actuelle = qt
+            elif dq == "finie":
+                self.perso.quetes[id_q] = "finie"
+
         self.perso.argent = data_perso["argent"]
 
         self.perso.vie = data_perso["vie"]

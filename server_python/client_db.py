@@ -377,7 +377,7 @@ class Client_mariadb:
     def transfert_json_to_bdd(self, version=None):
         """Transfére toutes les données des fichiers json vers la BDD.
 
-        Etat : TODO Commencé, à continuer
+        Etat : TODO Commencé, à finir
         Auteur: Nathan, Hugo
 
         """
@@ -670,8 +670,18 @@ class Client_mariadb:
         perso_id = results[0][0] if len(results) >= 1 else None
         perso = player.perso
         inventaire = [[obj[0].index, obj[1]] for obj in perso.inventaire]
+        # on va mettre toutes les quetes, finies ou non dans un dict
+        quetes = {}
+        for k, v in perso.quetes.items():
+            quetes[k] = {"etat": v}
+        for qt in perso.quetes_en_attente:
+            quetes[qt.index] = {"etat": "en attente", "compteur": qt.compteur}
+        if perso.quete_actuelle is not None:
+            quetes[perso.quete_actuelle.index] = {"etat": "actuelle", "compteur": perso.quete_actuelle.compteur}
+        #
         if perso_id is None:
             # si non on va lui en créer un
+            #
             self.cursor.execute("""INSERT INTO persos
                                    (nom, genre, race, classe, argent,
                                     experience, inventaire, lieu, quetes,
@@ -688,7 +698,7 @@ class Client_mariadb:
                                  perso.classe, perso.argent,
                                  json.dumps(perso.experience),
                                  json.dumps([[obj.index, qt] for obj, qt in perso.inventaire]),
-                                 perso.lieu, json.dumps(perso.quetes),
+                                 perso.lieu, json.dumps(quetes),
                                  json.dumps(perso.equipement), perso.vie,
                                  perso.vie_totale, perso.energie,
                                  perso.energie_totale, perso.charme,
@@ -723,7 +733,7 @@ class Client_mariadb:
                                  perso.race, perso.classe, perso.argent,
                                  json.dumps(perso.experience),
                                  json.dumps(inventaire),
-                                 perso.lieu, json.dumps(perso.quetes),
+                                 perso.lieu, json.dumps(quetes),
                                  json.dumps(perso.equipement), perso.vie,
                                  perso.vie_totale, perso.energie,
                                  perso.energie_totale, perso.charme,

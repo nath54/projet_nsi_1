@@ -422,6 +422,7 @@ class Server:
                     continue
                 e, v = list(effet.items())[0]
                 if e == "quete":
+                    # on met la quete actuelle en attente s'il y en a une
                     if perso.quete_actuelle is not None:
                         perso.quetes_en_attente.append(perso.quete_actuelle)
                     perso.quete_actuelle = self.game.Quete(self.game, v)
@@ -673,7 +674,7 @@ class Server:
             self.send_message(client, mess, True)
         # commande equiper
         elif is_one_of(action, self.commandes_dat["equiper"]["com"]):
-            erreur = perso.equiper(args[0], traiter_txt)
+            erreur = perso.equiper(arguments, traiter_txt)
             if not erreur:
                 mess = f"Vous avez équipé {args[0]}"
                 texte_fait = f"{nom_perso} a équipé {args[0]}"
