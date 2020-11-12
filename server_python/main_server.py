@@ -145,7 +145,7 @@ class Server:
                       "nord-est", "sud-ouest", "sud-est"]
         self.directions = [traiter_txt(d) for d in directions]
         self.nb_actions = 0
-        self.nb_actions_save = 0
+        self.nb_actions_save = 8
 
     def start(self):
         """Lance le serveur.
