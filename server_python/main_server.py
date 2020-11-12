@@ -173,7 +173,7 @@ class Server:
 
         # On va vérifier les différentes versions des données de la bdd
         if self.client_db.test_version(self.version):  # or True:
-            self.client_db.transfert_json_to_bdd()
+            self.client_db.transfert_json_to_bdd(self.version)
 
         # TODO: Faudra aussi lancer les différents éléments du jeu
         # On lance le jeu ici

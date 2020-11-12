@@ -78,12 +78,12 @@ class Client_mariadb:
         Auteur: Nathan
 
         """
-        self.cursor.execute("SHOW TABLES LIKE 'version';")
+        self.cursor.execute("SHOW TABLES LIKE 'version_';")
         results = [elt for elt in self.cursor]
         if len(results) == 0:
             return True
         else:
-            self.cursor.execute("SELECT version FROM version;")
+            self.cursor.execute("SELECT version_ FROM version_;")
             results = [elt for elt in self.cursor]
             if len(results) == 0:
                 return True
@@ -222,6 +222,20 @@ class Client_mariadb:
             self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)",
                                 (genre, ))
             self.connection.commit()
+
+    def create_table_version(self):
+        """Crée la table version dans la BDD.
+
+        Auteur: Nathan
+
+        """
+        query = ("""CREATE TABLE IF NOT EXISTS version_
+                    (version_ int);""")
+        self.cursor.execute(query)
+        self.connection.commit()
+        self.cursor.execute("INSERT INTO version_ (version_) VALUES (%s)",
+                            (0, ))
+        self.connection.commit()
 # endregion
 
 # region UPDATE
@@ -335,6 +349,11 @@ class Client_mariadb:
             self.cursor.execute("DROP TABLE IF EXISTS genres")
             self.connection.commit()
             self.create_table_genre()
+        # version
+        if force or self.get_schema("version_") != {"version_": "int"}:
+            self.cursor.execute("DROP TABLE IF EXISTS version_")
+            self.connection.commit()
+            self.create_table_version()
 
     def init_database(self):
         """Permet de créer toutes les tables au premier lancement.
@@ -350,11 +369,12 @@ class Client_mariadb:
         self.create_table_lieux()
         self.create_table_quete()
         self.create_table_genre()
+        self.create_table_version()
 
 # endregion
 
 # region INSERT au premier lancement du serveur
-    def transfert_json_to_bdd(self):
+    def transfert_json_to_bdd(self, version=None):
         """Transfére toutes les données des fichiers json vers la BDD.
 
         Etat : TODO Commencé, à continuer
@@ -539,6 +559,14 @@ class Client_mariadb:
             self.cursor.execute(query, tuple(values_query_args))
             self.connection.commit()
         # endregion
+
+        # region version
+        if version is not None:
+            query = "UPDATE version_ SET version_=%s"
+            self.cursor.execute(query, (version,))
+            self.connection.commit()
+        # endregion
+
         # TODO
         pass
 # endregion
