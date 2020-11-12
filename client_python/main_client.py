@@ -21,7 +21,10 @@ chars = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
 
 
 def test_email(txt):
-    """Vérifie qu'un mail a le bon format."""
+    """Vérifie qu'un mail a le bon format.
+
+    Auteur: Nathan
+    """
     t = txt.split("@")
     if len(t) != 2:
         print("ERREUR /!\\ : "
@@ -39,7 +42,10 @@ def test_email(txt):
 
 
 def test_pseudo(txt):
-    """Vérifie qu'un pseudo a le bon format."""
+    """Vérifie qu'un pseudo a le bon format.
+
+    Auteur : Nathan
+    """
     if len(txt) < 4:
         print("ERREUR /!\\ Pseudo : Minimum 4 caractères !")
         return True
@@ -54,7 +60,10 @@ def test_pseudo(txt):
 
 
 def test_password(txt):
-    """Vérifie qu'un mot de passe a le bon format."""
+    """Vérifie qu'un mot de passe a le bon format.
+
+    Auteur: Nathan
+    """
     if len(txt) < 8:
         print("ERREUR /!\\ Mot de passe : Minimum 8 caractères !")
         return True
@@ -69,7 +78,10 @@ def test_password(txt):
 
 
 def is_json(myjson):
-    """Teste si un str est en format json."""
+    """Teste si un str est en format json.
+
+    Auteur: Nathan
+    """
     try:
         json.loads(myjson)
     except ValueError:
@@ -251,24 +263,24 @@ class Client:
         """
         self.on_connect()
         while True:
-            # try:
-            msg = self.client.recv(self.max_size)
-            msg = msg.decode(encoding="utf-8")
-            if self.debug:
-                print("recu : ", msg)
-            # print("recu : ", json.loads(msg))
-            if len(msg) == 0:
-                raise UserWarning("message vide")
-            if not self.ws:
-                self.on_message(msg)
-            else:
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
-                loop.run_until_complete(self.webserver.on_message(msg))
-            # except Exception as e:
-            #     print(e)
-            #     self.on_close()
-            #     return
+            try:
+                msg = self.client.recv(self.max_size)
+                msg = msg.decode(encoding="utf-8")
+                if self.debug:
+                    print("recu : ", msg)
+                # print("recu : ", json.loads(msg))
+                if len(msg) == 0:
+                    raise UserWarning("message vide")
+                if not self.ws:
+                    self.on_message(msg)
+                else:
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+                    loop.run_until_complete(self.webserver.on_message(msg))
+            except Exception as e:
+                print(e)
+                self.on_close()
+                return
 
     def on_connect(self):
         """Réaction si la connexion est acceptée."""
@@ -320,6 +332,9 @@ class Client:
             elif data["type"] == "genres":
                 self.genres = json.loads(data["genres"])
 
+            elif data["type"] == "close":
+                self.on_close()
+
             elif data["type"] == "message":
                 print("\n" + str(data["value"]) + "\n")
 
@@ -329,7 +344,9 @@ class Client:
         Auteur: Nathan
 
         """
+        self.encours = False
         print("connection fermée")
+        input("appuyer pour fermer le client du jeu...")
         exit()
 
     def test_nom(self, nom):
@@ -431,6 +448,9 @@ class Client:
         """
         while self.encours:
             txt = input("")
+            # si le jeu a été quitté pendant l'input
+            if not self.encours:
+                return
             t = txt.split(" ")
             if len(t) >= 1:
                 if txt.startswith("/cheat "):

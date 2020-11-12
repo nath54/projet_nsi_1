@@ -7,13 +7,13 @@
     "attaque_type":"attaque unique",
     "effets":{
         "cout energie":{
-            "corps à corps":0.5,
+            "corps à corps":1,
             "distance":0.5,
             "magique":null
         },
         "attaque":{
-            "corps à corps":0.1,
-            "distance":0.5,
+            "corps à corps":[0, 1],
+            "distance":[0, 5],
             "magique":null
         }
     }

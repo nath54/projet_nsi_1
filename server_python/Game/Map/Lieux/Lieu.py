@@ -72,6 +72,7 @@ class Lieu:
         self.lieux_accessibles = datas.get("lieux", [])
         self.map_ = game.map_
         self.index = id_
+        self.tour = 0
 
     def aff(self, perso_=None):
         """Permet d'afficher la description d'un lieu.
@@ -90,6 +91,30 @@ class Lieu:
         txt_persos = ""
         txt_lieux = ""
 
+        lieux_accessibles = []
+        for ls_lieu in self.lieux_accessibles:
+            print(ls_lieu)
+            bon = True
+            if len(ls_lieu) >= 3:
+                if perso_ is None:
+                    bon = False
+                else:
+                    for c in ls_lieu[2]:
+                        if type(c) != list:
+                            continue
+                        if c[0] == "quete":
+                            if perso_.quete_actuelle is None or perso.quete_actuelle.index != c[1]:
+                                bon = False
+                                break
+                        if c[0] == "objet":
+                            bon = False
+                            for obj, qt in perso.inventaire:
+                                if obj.index == c[1]:
+                                    bon = True
+                                    break
+            if bon:
+                lieux_accessibles.append(ls_lieu)
+
         self.persos = self.game.get_all_persos_lieu(self.index)
         if len(self.objets) >= 1:
             txt_objets = "\n\n" + random.choice(p_objs) + " :\n\t- " + "\n\t- ".join([objet.nom for objet in self.objets])
@@ -100,9 +125,9 @@ class Lieu:
         prs = [perso.nom for perso in self.persos if perso != perso_]
         if len(prs) >= 1:
             txt_persos = "\n\n" + random.choice(p_persos) + " :\n\t- " + '\n\t- '.join(prs)
-        if len(self.lieux_accessibles) >= 1:
+        if len(lieux_accessibles) >= 1:
             txt_lieux = "\n\n" + random.choice(p_lieux) + " :\n\t- " + "\n\t- ".join([self.map_.lieux[lieu[0]].nom + " [" + lieu[1] + "]"
-                                                                                      for lieu in self.lieux_accessibles])
+                                                                                      for lieu in lieux_accessibles])
 
         return f"""
 Vous êtes dans {self.nom}

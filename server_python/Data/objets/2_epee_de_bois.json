@@ -8,12 +8,12 @@
     "effets":{
         "cout energie":{
             "corps à corps":0.5,
-            "distance":0.5,
+            "distance":null,
             "magique":null
         },
         "attaque":{
             "corps à corps":[0, 3],
-            "distance":[0, 1],
+            "distance":null,
             "magique":null
         }
     }

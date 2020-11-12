@@ -6,6 +6,7 @@
     "conditions":{
         "type": "FedEx/Extermination/Trouver item",
         "objectif": 11037,
-        "id_objectif": 53
+        "id_objectif": 53,
+        "id_cible": "id du pnj a qui donner"
     }
 }

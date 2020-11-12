@@ -78,12 +78,12 @@ class Client_mariadb:
         Auteur: Nathan
 
         """
-        self.cursor.execute("SHOW TABLES LIKE 'version';")
+        self.cursor.execute("SHOW TABLES LIKE 'version_';")
         results = [elt for elt in self.cursor]
         if len(results) == 0:
             return True
         else:
-            self.cursor.execute("SELECT version FROM version;")
+            self.cursor.execute("SELECT version_ FROM version_;")
             results = [elt for elt in self.cursor]
             if len(results) == 0:
                 return True
@@ -174,10 +174,9 @@ class Client_mariadb:
 
         """
         query = ("""CREATE TABLE IF NOT EXISTS ennemis
-                    (id INT PRIMARY KEY, type_ TEXT, nom TEXT,
-                    race TEXT, description_ TEXT,
-                    vie_min INT, vie_max INT, attaque TEXT,
-                    attaque_effets TEXT, agressivite INT);""")
+                    (id INT PRIMARY KEY, type_ TEXT, nom TEXT, race TEXT,
+                     description_ TEXT, vie_min INT, vie_max INT, attaque TEXT,
+                     attaque_effets TEXT, agressivite INT, loot TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
@@ -203,7 +202,7 @@ class Client_mariadb:
         """
         query = ("""CREATE TABLE IF NOT EXISTS quete
                     (id INT PRIMARY KEY, nom TEXT, description TEXT,
-                     recompenses TEXT, conditions TEXT);""")
+                     id_recompenses TEXT, conditions TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
@@ -223,6 +222,20 @@ class Client_mariadb:
             self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)",
                                 (genre, ))
             self.connection.commit()
+
+    def create_table_version(self):
+        """Crée la table version dans la BDD.
+
+        Auteur: Nathan
+
+        """
+        query = ("""CREATE TABLE IF NOT EXISTS version_
+                    (version_ int);""")
+        self.cursor.execute(query)
+        self.connection.commit()
+        self.cursor.execute("INSERT INTO version_ (version_) VALUES (%s)",
+                            (0, ))
+        self.connection.commit()
 # endregion
 
 # region UPDATE
@@ -281,7 +294,8 @@ class Client_mariadb:
                                                    "vie_max": "int",
                                                    "attaque": "text",
                                                    "attaque_effets": "text",
-                                                   "agressivite": "int"}:
+                                                   "agressivite": "int",
+                                                   "loot": "text"}:
             self.cursor.execute("DROP TABLE IF EXISTS ennemis")
             self.connection.commit()
             self.create_table_ennemis()
@@ -320,11 +334,26 @@ class Client_mariadb:
             self.connection.commit()
             self.create_table_pnjs()
             print("La table pnjs a été mise à jour !")
+        # Quete
+        if force or self.get_schema("quete") != {"id": "int",
+                                                 "nom": "text",
+                                                 "description": "text",
+                                                 "id_recompenses": "text",
+                                                 "conditions": "text"}:
+            self.cursor.execute("DROP TABLE IF EXISTS quete")
+            self.connection.commit()
+            self.create_table_quete()
+            print("La table quete a été mise à jour !")
         # Genres
         if force or self.get_schema("genres") != {"genre": "text"}:
             self.cursor.execute("DROP TABLE IF EXISTS genres")
             self.connection.commit()
             self.create_table_genre()
+        # version
+        if force or self.get_schema("version_") != {"version_": "int"}:
+            self.cursor.execute("DROP TABLE IF EXISTS version_")
+            self.connection.commit()
+            self.create_table_version()
 
     def init_database(self):
         """Permet de créer toutes les tables au premier lancement.
@@ -340,14 +369,15 @@ class Client_mariadb:
         self.create_table_lieux()
         self.create_table_quete()
         self.create_table_genre()
+        self.create_table_version()
 
 # endregion
 
-# INSERT au premier lancement du serveur
-    def transfert_json_to_bdd(self):
+# region INSERT au premier lancement du serveur
+    def transfert_json_to_bdd(self, version=None):
         """Transfére toutes les données des fichiers json vers la BDD.
 
-        Etat : TODO Commencé, à continuer
+        Etat : TODO Commencé, à finir
         Auteur: Nathan, Hugo
 
         """
@@ -496,22 +526,50 @@ class Client_mariadb:
             self.cursor.execute(query, tuple(values_query_args))
             self.connection.commit()
         # endregion
-        """
         # region Quêtes :
-        self.cursor.execute("TRUNCATE TABLE quetes")
+        self.cursor.execute("TRUNCATE TABLE quete")
         self.connection.commit()
         pathd = "Data/quetes/"
-        ks = {"id"}
+        # ks : key = key of json lieu , value[0] = name of column of db lieux
+        # value[1] = si json.dumps ou pas, value[2] = si list index ou pas
+        ks = {"id": ["id", False], "nom": ["nom", False],
+              "description": ["description", False],
+              "id_recompenses": ["id_recompenses", True],
+              "conditions": ["conditions", True]}
         for fich in os.listdir(pathd):
             if not fich.endswith(".json"):
                 continue
             d = jload(pathd + fich)
-            for key in d.keys:
-                pass
+            values_query = []
+            values_query_args = []
+            for key in ks.keys():
+                if ks[key][0] in d.keys():
+                    values_query.append(key)
+                    val = d[ks[key][0]]
+                    if len(ks[key]) == 3:
+                        val = val[ks[key][2]]
+                    if ks[key][1]:
+                        val = json.dumps(val)
+                    values_query_args.append(val)
+            txt_values_query = ", ".join(values_query)
+            txt_query = ", ".join(["%s" for _ in values_query])
+            # on crée la query :
+            query = f"""INSERT INTO quete ({txt_values_query})
+                       VALUES ({txt_query})"""
+            self.cursor.execute(query, tuple(values_query_args))
+            self.connection.commit()
         # endregion
-        """
+
+        # region version
+        if version is not None:
+            query = "UPDATE version_ SET version_=%s"
+            self.cursor.execute(query, (version,))
+            self.connection.commit()
+        # endregion
+
         # TODO
         pass
+# endregion
 
 # region INSCRIPTION / CONNEXION
     def inscription(self, pseudo, email, password):
@@ -594,7 +652,7 @@ class Client_mariadb:
 
 # endregion
 
-# FONCTIONS DE TYPES SET / NEW
+# region FONCTIONS DE TYPES SET / NEW
     def set_perso(self, player):
         """Enregistre un perso dans la BDD.
 
@@ -612,8 +670,18 @@ class Client_mariadb:
         perso_id = results[0][0] if len(results) >= 1 else None
         perso = player.perso
         inventaire = [[obj[0].index, obj[1]] for obj in perso.inventaire]
+        # on va mettre toutes les quetes, finies ou non dans un dict
+        quetes = {}
+        for k, v in perso.quetes.items():
+            quetes[k] = {"etat": v}
+        for qt in perso.quetes_en_attente:
+            quetes[qt.index] = {"etat": "en attente", "compteur": qt.compteur}
+        if perso.quete_actuelle is not None:
+            quetes[perso.quete_actuelle.index] = {"etat": "actuelle", "compteur": perso.quete_actuelle.compteur}
+        #
         if perso_id is None:
             # si non on va lui en créer un
+            #
             self.cursor.execute("""INSERT INTO persos
                                    (nom, genre, race, classe, argent,
                                     experience, inventaire, lieu, quetes,
@@ -630,7 +698,7 @@ class Client_mariadb:
                                  perso.classe, perso.argent,
                                  json.dumps(perso.experience),
                                  json.dumps([[obj.index, qt] for obj, qt in perso.inventaire]),
-                                 perso.lieu, json.dumps(perso.quetes),
+                                 perso.lieu, json.dumps(quetes),
                                  json.dumps(perso.equipement), perso.vie,
                                  perso.vie_totale, perso.energie,
                                  perso.energie_totale, perso.charme,
@@ -665,7 +733,7 @@ class Client_mariadb:
                                  perso.race, perso.classe, perso.argent,
                                  json.dumps(perso.experience),
                                  json.dumps(inventaire),
-                                 perso.lieu, json.dumps(perso.quetes),
+                                 perso.lieu, json.dumps(quetes),
                                  json.dumps(perso.equipement), perso.vie,
                                  perso.vie_totale, perso.energie,
                                  perso.energie_totale, perso.charme,
@@ -678,17 +746,17 @@ class Client_mariadb:
                                  json.dumps(perso.faiblesses), perso_id))
             self.connection.commit()
 
-    def save_map(self, map):
+    def save_map(self, map_):
         """Permet de sauvegarder la carte.
 
         Args:
-            map(Map): Instance de la carte
+            map_(Map): Instance de la carte
 
         Auteur: Hugo
 
         """
-        for lieu in map.lieux.values():
-            save_lieu(lieu)
+        for lieu in map_.lieux.values():
+            self.save_lieu(lieu)
 
     def save_lieu(self, lieu):
         """Permet de sauvegarder un lieu.
@@ -696,16 +764,43 @@ class Client_mariadb:
         Args:
             lieu(Lieu): Lieu à sauvegarder
 
-        Auteur: Hugo
+        Auteur: Hugo, Nathan
 
         """
-        query = """UPDATE persos
-                   SET nom = %s, description = %s, ennemis = %s,
-                       """
+        query = """UPDATE lieux
+                   SET ennemis = %s,
+                       objets = %s,
+                       pnjs = %s,
+                       lieux = %s
+                    WHERE id = %s;
+                """
+        ens = {}
+        for en in lieu.ennemis:
+            if en.index in ens.keys():
+                ens[en.index] += 1
+            else:
+                ens[en.index] = 1
+
+        objs = {}
+        for ob in lieu.objets:
+            if ob.index in objs.keys():
+                objs[ob.index] += 1
+            else:
+                objs[ob.index] = 1
+        self.cursor.execute(query,
+                            (
+                                json.dumps([el[0] if el[1] == 1 else list(el) for el in ens.items()]),
+                                json.dumps([el[0] if el[1] == 1 else list(el) for el in objs.items()]),
+                                json.dumps([pn.index for pn in lieu.pnjs]),
+                                json.dumps(lieu.lieux_accessibles),
+                                lieu.index
+                            ))
 
     def new_genre(self, genre):
         self.cursor.execute("INSERT INTO genres (genre) VALUES (%s)", (genre,))
         self.connection.commit()
+
+# endregion
 
 # region GETTERS
     def get_schema(self, table_name):
@@ -882,15 +977,15 @@ class Client_mariadb:
         Auteur: Nathan, Hugo
 
         """
-        query = """SELECT type_, nom, race, description_, vie_min,
-                          vie_max, attaque, attaque_effets, agressivite
+        query = """SELECT type_, nom, race, description_, vie_min, vie_max,
+                          attaque, attaque_effets, agressivite, loot
                     FROM ennemis
                     WHERE id=%s"""
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
         datas = {
             "id": 0,
-            "type": "ennemis",
+            "type": "ennemi",
             "nom": "Ennemi Méchant",
             "description": "Ennemi qui va t'attaquer parce qu'il est méchant et que les méchants ils attaquent les gentils...",
             "vie": [0, 1],
@@ -902,7 +997,7 @@ class Client_mariadb:
             "attaque_effets": {},
             "agressivite": 0
         }
-        for type_, nom, race, description_, vie_min, vie_max, attaque, attaque_effets, agressivite in results:
+        for type_, nom, race, description_, vie_min, vie_max, attaque, attaque_effets, agressivite, loot in results:
             datas["id"] = id_
             datas["type"] = type_
             datas["nom"] = nom
@@ -913,6 +1008,8 @@ class Client_mariadb:
                 datas["attaque"] = json.loads(attaque)
             if attaque_effets is not None:
                 datas["attaque_effets"] = json.loads(attaque_effets)
+            if loot is not None:
+                datas["loot"] = json.loads(loot)
             return datas
         return None
 
@@ -926,21 +1023,27 @@ class Client_mariadb:
 
         """
         # CREATE TABLE IF NOT EXISTS quete (id INT PRIMARY KEY, nom TEXT, description TEXT, recompenses TEXT, conditions TEXT)
-        query = """SELECT nom, description, recompense, conditions
+        query = """SELECT nom, description, id_recompenses, conditions
                    FROM quete
                    WHERE id=%s"""
         self.cursor.execute(query, (id_,))
         datas = {
             "nom": "Quete",
             "description": "Une quete",
-            "récompense": [],
-            "condition": []
+            "id_recompenses": [],
+            "conditions": []
         }
         for nom, desc, recompense, cond in self.cursor:
             datas["nom"] = nom
             datas["description"] = desc
-            datas["recompense"] = json.loads(recompense)
-            datas["condition"] = json.loads(cond)
+            datas["id_recompenses"] = json.loads(recompense)
+            datas["conditions"] = json.loads(cond)
             return datas
-        return None
+        raise UserWarning(f"Aucune quete n'a été trouvée avec l'id {id_}")
 # endregion
+
+    def perso_death(self, id_):
+        query = """DELETE FROM persos
+                   WHERE id=%s"""
+        self.cursor(query, (id_))
+        self.connection.commit()

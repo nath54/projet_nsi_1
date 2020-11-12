@@ -26,7 +26,8 @@ class Quete:
         """Initialise la quête."""
         self.game = game
         self.id = id_
-        data = game.client_db.get_data_quetes_DB()
+        self.index = id_
+        data = game.client_db.get_data_quetes_DB(self.index)
         self.nom = data["nom"]
         self.description = data["description"]
         self.compteur = 0

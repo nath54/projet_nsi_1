@@ -37,6 +37,7 @@ class Perso(Combattant):
         self.lieu = None
         self.equip = {"Artéfact": None, "Armure": None, "Arme": None}
         self.inventaire = []
+        self.quetes = {}
         self.argent = 0
         self.classe = ""  # TODO
         self.race = ""
@@ -48,6 +49,8 @@ class Perso(Combattant):
         self.dialogue_en_cours = None
         self.interlocuteur = None
         self.type_ = "perso"
+        self.quete_actuelle = None
+        self.quetes_en_attente = []
 
     # region Format
     def format_invent(self):
@@ -63,7 +66,11 @@ class Perso(Combattant):
             return "Aïe, on dirait que la crise est passée par là."
         res = "Voici le contenu de votre inventaire :\n"
         for item in self.inventaire:
-            res += "\t" + f"- {item[0].nom} ({item[0].type})" + "\n"
+            res += "\t - "
+            if item[1] > 1:
+                res += f"{item[1]} {item[0].nom} ({item[0].type})" + "\n"
+            else:
+                res += f"{item[0].nom} ({item[0].type})" + "\n"
         return res
 
     def format_equip(self):
@@ -87,7 +94,7 @@ class Perso(Combattant):
         Returns:
             str: Stats du personnage (présentable)
 
-        Auteur: Hugo
+        Auteur: Hugo, Nathan
 
         """
         txt_exp_1 = "    - " + "\n    - ".join([(str(key) + " : " + " / ".join([str(e) for e in self.experience[key]])) for key in self.experience])
@@ -165,17 +172,17 @@ Actuellement, votre attaque est :
                 # TODO
                 if obj[1] == 1:
                     self.inventaire = [i for i in self.inventaire if i != obj]
+                    break
                 else:
                     obj[1] -= 1
 
-    def add_to_invent(self, id_obj):
+    def add_to_invent(self, obj):
         """Ajoute un objet à l'inventaire
 
         Auteur: Hugo
 
         """
         # TODO: obj = Objet(id_obj) qui créé l'objet depuis la DB
-        obj = Objet(id_obj, self.game)
         exist = False
         for i in self.inventaire:
             if i[0].nom == obj.nom:
@@ -248,3 +255,54 @@ Actuellement, votre attaque est :
                 else:
                     return f"L'objet selectionné n'est pas équipable, il est de type {obj.type}"
         return "Objet non trouvé dans l'inventaire"
+
+    def on_death(self):
+        """Fonction qui est appelée à la mort du personnage
+
+        Auteur: Hugo
+        """
+        client = None
+        clients = self.game.server.clients
+        for cliente, datac in clients.items():  # TODO: SOCKET
+            if datac["player"].perso == self:
+                client = cliente
+        if client is not None:
+            self.game.server.send(client, {"type": "message", "message": "Vous êtes mort... Je sais, c'est dur. Heureusement, pour vous aider à vous en remettre, on a décidé d'être sympa avec vous, vous ne souffrirez plus ! Votre âme est désormais... Supprimée. Ne me remerciez, c'est la fin, pas de souffrance éternelle ! Bon du coup si vous voulez continuer votre aventure, va falloir envisager de refaire un autre héros, parce que sinon le monde court à sa perte. Enfin *ce* monde a pas vraiment de fin en soit."}, True)
+            id_ = self.client["player"].id_
+            self.game.client_db.perso_death(id_)
+
+    def test_dialogue(self):
+        """Fonction qui teste si un dialogue est dispo avec une quete, ou un objet dans l'inventaire
+
+        Auteur: Nathan
+        """
+        d = self.dialogue_en_cours
+        if d is not None:
+            if type(d) == dict:
+                return
+            elif type(d) == list and len(d) > 0:
+                for dl in d:
+                    if type(dl) == list:
+                        if dl[0] is None:
+                            self.dialogue_en_cours = dl[1]
+                        elif type(dl[0]) == list:
+                            if dl[0][0] == "quete":
+                                if self.quete_actuelle is not None and self.quete_actuelle.index == dl[0][1]:
+                                    self.dialogue_en_cours = dl[1]
+                                    return
+                            elif dl[0][0] == "obj":
+                                for ob, _ in self.inventaire:
+                                    if ob.index == dl[0][1]:
+                                        self.dialogue_en_cours = dl[1]
+                                        return
+            else:
+                self.dialogue_en_cours = None
+
+    def quete_finie(self, id_quete):
+        """Fonction qui fini la quete d'un perso
+
+        Auteur: Nathan
+        """
+        if self.quete_actuelle.index != id_quete:
+            raise UserWarning("Probleme quete finie, id différent !")
+        self.quetes[self.quete_actuelle.index] = "finie"

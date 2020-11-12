@@ -1,0 +1,12 @@
+{
+    "id":54,
+    "appellations":["cave entrainement", "cave"],
+    "nom":"Cave",
+    "region":"Tuto",
+    "description":"Un cave glauque et sombre, l'air a une odeur désagréable et il fait froid. Heureusement qu'il y a quelques torches encore allumées, vous pouvez quand même voir un peu devant vous.",
+    "type":"grotte",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [53, "haut"]]
+}

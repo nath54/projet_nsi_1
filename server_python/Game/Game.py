@@ -53,9 +53,9 @@ class Game:
 
         """
         self.map_.load_from_bdd(self)
-        print("Débuggage (on vérifie que ça a bien tout créé)")
-        print("\nListe des lieux : ")
-        print(self.map_.lieux)
+        # print("Débuggage (on vérifie que ça a bien tout créé)")
+        # print("\nListe des lieux : ")
+        # print(self.map_.lieux)
 
     def load_races_classes(self):
         for fich in os.listdir("Data/races/"):
@@ -69,7 +69,8 @@ class Game:
     def get_all_persos_lieu(self, id_lieu):
         persos = []
         for cl in self.server.clients.values():
-            perso = cl["player"].perso
-            if perso is not None and perso.lieu == id_lieu:
-                persos.append(perso)
+            if cl["player"] is not None:
+                perso = cl["player"].perso
+                if perso is not None and perso.lieu == id_lieu:
+                    persos.append(perso)
         return persos

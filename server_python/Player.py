@@ -10,7 +10,7 @@ class Player:
         pseudo(str): Pseudo du compte
         password(str): Mot de passe du compte
         perso(Perso): Référence au personnage du compte
-        id(int) : l'identifiant du player dans la table comptes
+        id_(int) : l'identifiant du player dans la table comptes
 
     """
 
@@ -42,7 +42,23 @@ class Player:
         self.perso.equipement = data_perso["equipement"]
         self.perso.lieu = data_perso["lieu"]
         self.perso.histo_lieu.add(data_perso["lieu"])
-        self.perso.quetes = data_perso["quetes"]
+        self.perso.quetes = {}
+        quetes = data_perso["quetes"]
+        for id_q, dq in quetes.items():
+            if type(dq) == dict:
+                if dq["etat"] == "finie":
+                    self.perso.quetes[id_q] = "finie"
+                elif dq["etat"] == "en attente":
+                    qt = self.game.Quete(self.game, id_q)
+                    qt.compteur = dq["compteur"]
+                    self.perso.quetes_en_attente.append(qt)
+                elif dq["etat"] == "actuelle":
+                    qt = self.game.Quete(self.game, id_q)
+                    qt.compteur = dq["compteur"]
+                    self.perso.quete_actuelle = qt
+            elif dq == "finie":
+                self.perso.quetes[id_q] = "finie"
+
         self.perso.argent = data_perso["argent"]
 
         self.perso.vie = data_perso["vie"]
