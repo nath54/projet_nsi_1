@@ -252,5 +252,5 @@ class Combattant(Etre):
                 self.game.map_.lieux[self.lieu].suppr_ennemi(cible)
                 return True
             elif cible.type_ in ["perso"]:
-                return self.test_mort()
+                return cible.test_mort()
         return False
