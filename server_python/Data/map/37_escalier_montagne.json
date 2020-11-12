@@ -1,0 +1,12 @@
+{
+    "id":37,
+    "appellations":["escalier pierre","passage montagne"],
+    "nom":"Les escalier de pierre",
+    "region":"Larion",
+    "description":"Des ecaliers faconnés dans la roche par les nains pour grimper au sommet des grandes montagnes de l'ouest",
+    "type":"montagne",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [34,"est"] , [38,"ouest"] ]
+}

@@ -1,0 +1,12 @@
+{
+    "id":32,
+    "appellations":["un champ","champ de maïs"],
+    "nom":"Un champ de maïs",
+    "region":"Larion",
+    "description":"Un champ qui appartient surment au fermier.",
+    "type":"prairie",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [19,"est"] , [21,"sud"] , [30,"nord"] ]
+}

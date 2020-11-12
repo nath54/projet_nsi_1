@@ -1,0 +1,12 @@
+{
+    "id":29,
+    "appellations":["embarcation","petites embarcations"],
+    "nom":"des petites embarcations",
+    "region":"Larion",
+    "description":"Des petites embarcation au bord du lac, elles sont à disposition",
+    "type":"lac",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [21,"est"] , [30,"nord"] , [31,"ouest"] ]
+}

@@ -1,0 +1,12 @@
+{
+    "id":31,
+    "appellations":["un lac","lac Tergaron"],
+    "nom":"Le lac de Tergaron",
+    "region":"Larion",
+    "description":"Ce lac se situe au pied des montagnes de l'ouest.",
+    "type":"lac",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [29,"est"] , [33,"nord"] , [34,"sud"] , [35,"ouest"] ]
+}

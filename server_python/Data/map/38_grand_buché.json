@@ -1,0 +1,12 @@
+{
+    "id":38,
+    "appellations":["un buché","buché Tergaron","grandes buché"],
+    "nom":"Grand buché d'alerte",
+    "region":"Larion",
+    "description":"Les grand buchés de Tergaron servent à donner l'alerte dans tout le pays",
+    "type":"montagne",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [37,"est"] ]
+}

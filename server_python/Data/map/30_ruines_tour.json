@@ -1,0 +1,12 @@
+{
+    "id":30,
+    "appellations":["des ruines","ruines tour"],
+    "nom":"Les ruines d'une tour",
+    "region":"Larion",
+    "description":"Ce sont les ruines d'une ancienne tour de guet, elle permettait de surveiller le lac",
+    "type":"ville",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [29,"sud"] , [32,"est"] , [33,"ouest"] ]
+}

@@ -1,0 +1,12 @@
+{
+    "id":34,
+    "appellations":["un ruisseau","un petit ruisseau"],
+    "nom":"Un petit ruisseau",
+    "region":"Larion",
+    "description":"Un petit ruisseau qui s'écoulle depuis le lac.",
+    "type":"lac",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [31,"nord"] ]
+}

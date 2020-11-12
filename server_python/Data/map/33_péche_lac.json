@@ -1,0 +1,12 @@
+{
+    "id":33,
+    "appellations":["endroit de péche","nord du lac"],
+    "nom":"Un petit coin de péche",
+    "region":"Larion",
+    "description":"Un petit coin de péche au nord du lac, il y a beaucoup de roseaus et de grenouilles.",
+    "type":"lac",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [30,"est"] , [31,"sud"] ]
+}

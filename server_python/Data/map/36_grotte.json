@@ -1,0 +1,12 @@
+{
+    "id":36,
+    "appellations":["grotte","grotte Tergaron","grotte chutes"],
+    "nom":"La grotte sous les chutes",
+    "region":"Larion",
+    "description":"Cette grotte est cachée derière les chutes.",
+    "type":"grotte",
+    "pnjs":[],
+    "objets":[],
+    "ennemis":[],
+    "lieux":[ [35,"sortir"] ]
+}
