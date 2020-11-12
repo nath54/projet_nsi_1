@@ -839,7 +839,8 @@ class Client_mariadb:
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
         if len(results) == 0:
-            raise UserWarning(f"Il n'y a pas de perso avec l'id {id_}")
+            # raise UserWarning(f"Il n'y a pas de perso avec l'id {id_}")
+            return None
         #
         d = results[0]
         data_perso = {

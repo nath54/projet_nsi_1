@@ -175,9 +175,12 @@ class Client:
         self.send(json.dumps({"type": "connection", "pseudo": pseudo,
                               "password": password}))
         self.attente_serv()
-        # print("recu !")
         if self.etat == "connecté":
             # print("Connecté")
+            self.interface()
+        elif self.etat == "creation_perso":
+            data_perso = self.creation_perso()
+            self.send(json.dumps(data_perso))
             self.interface()
         else:
             self.debut()
@@ -312,6 +315,11 @@ class Client:
                 self.etat = "connecté"
                 self.attente = False
 
+            elif data["type"] == "connection successed but creation perso":
+                print("Connection acceptée, mais il faut créer un nouveau perso")
+                self.etat = "creation_perso"
+                self.attente = False
+
             elif data["type"] == "inscription successed":
                 print("Inscription acceptée")
                 self.etat = "connecté"
@@ -335,6 +343,21 @@ class Client:
 
             elif data["type"] == "close":
                 self.on_close()
+
+            elif data["type"] == "mort":
+                txt = """Vous êtes mort.
+Tout votre équipement a été posé la ou vous êtes mort
+Le perso est mort, et sera supprimé
+Votre compte ne sera pas supprimé, vous pouvez toujours vous y connecter,
+Vous devrez d'ailleur à la prochaine connection recréer un perso.
+
+Le client va se fermer, si vous voulez continuer a jouer a ce formidable jeu,
+Et bien, bah, relancez le client...
+
+                """
+                input(txt)
+                self.encours = False
+                exit()
 
             elif data["type"] == "message":
                 print("\n" + str(data["value"]) + "\n")

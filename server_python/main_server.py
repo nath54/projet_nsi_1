@@ -205,13 +205,13 @@ class Server:
         """
         self.on_accept(client, infos)
         while True:
-            # try:
-            msg = client.recv(self.max_size)
-            self.on_message(client, infos, msg)
-            # except Exception as e:
-            #     print(e)
-            #     self.on_close(client)
-            #     return
+            try:
+                msg = client.recv(self.max_size)
+                self.on_message(client, infos, msg)
+            except Exception as e:
+                print(e)
+                self.on_close(client)
+                return
 
     def send_all_except_c(self, client, message):
         """Envoie un message a tous les autres clients.
@@ -313,22 +313,33 @@ class Server:
             data = json.loads(message)
             cl = self.clients[client]
             if "player" not in cl.keys() or cl["player"] is None:
-                dict_ = {"type": "not connected",
-                         "value": "Veuillez vous connecter pour jouer"}
-                self.send(client, dict_, True)
                 pas_connecte = True
             elif cl["player"].perso is None:
-                dict_ = {"type": "genres", "genres": json.dumps(db.get_genres())}
-                self.send(client, dict_, True)
-                time.sleep(0.1)
-                self.send(client, {"type": "creation perso"}, True)
                 perso_cree = False
             if data["type"] == "cheat_code":
                 if not pas_connecte and perso_cree:
                     cheat_code(self, client, data["commande"])
+                elif pas_connecte:
+                    dict_ = {"type": "not connected",
+                             "value": "Veuillez vous connecter pour jouer"}
+                    self.send(client, dict_, True)
+                elif not perso_cree:
+                    dict_ = {"type": "genres", "genres": json.dumps(db.get_genres())}
+                    self.send(client, dict_, True)
+                    time.sleep(0.1)
+                    self.send(client, {"type": "creation perso"}, True)
             elif data["type"] == "commande":
                 if not pas_connecte and perso_cree:
                     self.commandes(client, data)
+                elif pas_connecte:
+                    dict_ = {"type": "not connected",
+                             "value": "Veuillez vous connecter pour jouer"}
+                    self.send(client, dict_, True)
+                elif not perso_cree:
+                    dict_ = {"type": "genres", "genres": json.dumps(db.get_genres())}
+                    self.send(client, dict_, True)
+                    time.sleep(0.1)
+                    self.send(client, {"type": "creation perso"}, True)
             elif data["type"] == "inscription":
                 pseudo = data["pseudo"]
                 email = data["email"]
@@ -357,12 +368,21 @@ class Server:
                 if erreur:
                     self.send(client, {"type": "connection failed", "value": erreur}, True)
                 else:
-                    self.send(client, {"type": "connection successed"}, True)
                     self.clients[client]["player"] = Player(pseudo, self.game, id_)
+                    # il faut aussi gerer le client qui est mort, et qui du coup, n'a plus de perso
                     data_perso = self.client_db.get_perso(id_)
-                    self.clients[client]["player"].load_perso(data_perso)
-                    # il faudra sans doute envoyer d'autres infos, comme une clé de connexion par exemple
-                    self.bienvenue(client)
+                    if data_perso is not None:
+                        self.send(client, {"type": "connection successed"}, True)
+                        self.clients[client]["player"].load_perso(data_perso)
+                        # il faudra sans doute envoyer d'autres infos, comme une clé de connexion par exemple
+                        self.bienvenue(client)
+                    else:
+                        self.send(client, {"type": "connection successed but creation perso"}, True)
+                        time.sleep(0.1)
+                        dict_ = {"type": "genres", "genres": json.dumps(db.get_genres())}
+                        self.send(client, dict_, True)
+                        time.sleep(0.1)
+                        self.send(client, {"type": "creation perso"}, True)
             elif data["type"] == "perso_cree":
                 if data["genre"] == "autre" and data["genre"] not in db.get_genres():
                     db.new_genre(data["genre"])

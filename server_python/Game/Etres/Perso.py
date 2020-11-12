@@ -1,5 +1,6 @@
 from Game.Etres.Combattant import Combattant
 from Game.Objets.Objet import Objet
+import time
 
 
 class Perso(Combattant):
@@ -280,6 +281,9 @@ Actuellement, votre attaque est :
             self.game.client_db.perso_death(id_)
             datacl["player"].perso_id = None
             self.game.server.save_all()
+            time.sleep(0.1)
+            dicte = {"type": "mort"}
+            self.game.server.send(client, dicte)
 
     def test_dialogue(self):
         """Fonction qui teste si un dialogue est dispo avec une quete, ou un objet dans l'inventaire
