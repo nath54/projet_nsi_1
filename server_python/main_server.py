@@ -308,16 +308,26 @@ class Server:
         db = self.client_db
         print(f"{self.clients[client]} : {message}")
         if is_json(message):
+            pas_connecte = False
+            perso_cree = True
             data = json.loads(message)
+            cl = self.clients[client]
+            if "player" not in cl.keys() or cl["player"] is None:
+                dict_ = {"type": "not connected",
+                         "value": "Veuillez vous connecter pour jouer"}
+                self.send(client, dict_, True)
+                pas_connecte = True
+            elif cl["player"].perso is None:
+                dict_ = {"type": "genres", "genres": json.dumps(db.get_genres())}
+                self.send(client, dict_, True)
+                time.sleep(0.1)
+                self.send(client, {"type": "creation perso"}, True)
+                perso_cree = False
             if data["type"] == "cheat_code":
-                cheat_code(self, client, data["commande"])
-            if data["type"] == "commande":
-                cl = self.clients[client]
-                if (not ("player" in cl.keys())) or (cl["player"] is None):
-                    dict_ = {"type": "not connected",
-                             "value": "Veuillez vous connecter pour jouer"}
-                    self.send(client, dict_)
-                else:
+                if not pas_connecte and perso_cree:
+                    cheat_code(self, client, data["commande"])
+            elif data["type"] == "commande":
+                if not pas_connecte and perso_cree:
                     self.commandes(client, data)
             elif data["type"] == "inscription":
                 pseudo = data["pseudo"]
@@ -326,17 +336,17 @@ class Server:
                 erreur = db.test_compte_inscrit(pseudo, email)
                 if erreur:
                     dict_ = {"type": "inscription failed", "value": erreur}
-                    self.send(client, dict_)
+                    self.send(client, dict_, True)
                 else:
                     reussi, id_ = db.inscription(pseudo, email, password)
                     if reussi:
                         self.clients[client]["player"] = Player(pseudo, self.game, id_)
-                        self.send(client, {"type": "inscription successed"})
+                        self.send(client, {"type": "inscription successed"}, True)
                         time.sleep(0.1)
                         dict_ = {"type": "genres", "genres": json.dumps(db.get_genres())}
-                        self.send(client, dict_)
+                        self.send(client, dict_, True)
                         time.sleep(0.1)
-                        self.send(client, {"type": "creation perso"})
+                        self.send(client, {"type": "creation perso"}, True)
                         # il faudra sans doute envoyer d'autres infos, comme une clé de connexion par exemple
                     else:
                         raise UserWarning("ERREUR : La BDD a échoué")
@@ -345,9 +355,9 @@ class Server:
                 password = data["password"]
                 erreur, id_ = self.client_db.test_connexion(pseudo, password)
                 if erreur:
-                    self.send(client, {"type": "connection failed", "value": erreur})
+                    self.send(client, {"type": "connection failed", "value": erreur}, True)
                 else:
-                    self.send(client, {"type": "connection successed"})
+                    self.send(client, {"type": "connection successed"}, True)
                     self.clients[client]["player"] = Player(pseudo, self.game, id_)
                     data_perso = self.client_db.get_perso(id_)
                     self.clients[client]["player"].load_perso(data_perso)

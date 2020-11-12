@@ -269,9 +269,17 @@ Actuellement, votre attaque est :
                 client = cliente
                 datacl = datac
         if client is not None:
-            self.game.server.send(client, {"type": "message", "message": "Vous êtes mort... Je sais, c'est dur. Heureusement, pour vous aider à vous en remettre, on a décidé d'être sympa avec vous, vous ne souffrirez plus ! Votre âme est désormais... Supprimée. Ne me remerciez, c'est la fin, pas de souffrance éternelle ! Bon du coup si vous voulez continuer votre aventure, va falloir envisager de refaire un autre héros, parce que sinon le monde court à sa perte. Enfin *ce* monde a pas vraiment de fin en soit."}, True)
+            self.game.server.send_message(client, "Vous êtes mort... Je sais, c'est dur. Heureusement, pour vous aider à vous en remettre, on a décidé d'être sympa avec vous, vous ne souffrirez plus ! Votre âme est désormais... Supprimée. Ne me remerciez, c'est la fin, pas de souffrance éternelle ! Bon du coup si vous voulez continuer votre aventure, va falloir envisager de refaire un autre héros, parce que sinon le monde court à sa perte. Enfin *ce* monde a pas vraiment de fin en soit.", True)
+            perso = datacl["player"].perso
+            lieu = self.game.map_.lieux[perso.lieu]
+            for obj, qt in perso.inventaire:
+                for _ in range(qt):
+                    lieu.objets.append(obj)
+            perso.inventaire = []
             id_ = datacl["player"].id_
             self.game.client_db.perso_death(id_)
+            datacl["player"].perso_id = None
+            self.game.server.save_all()
 
     def test_dialogue(self):
         """Fonction qui teste si un dialogue est dispo avec une quete, ou un objet dans l'inventaire

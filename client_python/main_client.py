@@ -156,6 +156,7 @@ class Client:
         print("\nEn attente du serveur ...\n")
         while self.attente:
             pass
+        print("Fin de l'attente...")
 
     def connexion(self):
         """Demande les informations pour se connecter.
