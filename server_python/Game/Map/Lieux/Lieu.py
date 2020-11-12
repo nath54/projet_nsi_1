@@ -95,7 +95,7 @@ class Lieu:
         for l in self.lieux_accessibles:
             bon = True
             if len(l) >= 3:
-                if perso_.id is None:
+                if perso_ is None:
                     bon = False
                 else:
                     for c in l[2]:
