@@ -3,7 +3,7 @@
     "type":"boss",
     "race":"araignée",
     "nom":"araignée géante",
-    "description":"Une araignée énorme, elle en a aprés vous car vous avez éliminés sa progéniture, attention à vous ou vous serez sont prochain repas!",
+    "description":"Une araignée énorme, elle en a après vous car vous avez éliminés sa progéniture, attention à vous, ou vous serez son prochain repas !",
     "vie":[60,70],
     "attaque":{
         "corps à corps": [10,15],

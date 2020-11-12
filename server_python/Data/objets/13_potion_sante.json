@@ -2,7 +2,7 @@
     "id":13,
     "nom":"potion santée",
     "type":"consommable",
-    "description":"elle augmente la vie entre 10 et 12.",
+    "description":"En dépit du goû, cette potion régénère une dizaine de PV.",
     "effets":{
         "manger":{
             "santé":[10,12],

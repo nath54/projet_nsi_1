@@ -3,7 +3,7 @@
     "appellations":["chateau","chateau de Tergaron","chateau Tergaron","chateau de la ville Tergaron","Tergaron chateau"],
     "nom":"La salle du trône du chateau de Tergaron",
     "region":"Larion",
-    "description":"La salle du trône du chateau de Tergaron, le roi est assis sur son trône, il a l'air sérieux.",
+    "description":"La salle du trône du château de Tergaron, le roi est assis sur son trône. Il a l'air sérieux.",
     "type":"chateau",
     "pnjs":[ 3, 3, 4],
     "objets":[],

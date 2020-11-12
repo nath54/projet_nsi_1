@@ -2,8 +2,8 @@
     "id":20,
     "type": "Arme",
     "nom":"Arc multifleches",
-    "description":"Un arc qui permet de tirer plusieurs fleches a la fois",
-    "perte de l'arme en attaquant à distance":true,
+    "description":"Un arc qui permet de tirer plusieurs flèches a la fois",
+    "perte de l'arme en attaquant à distance":false,
     "attaque_type":"attaque multiple",
     "effets":{
         "cout energie":{

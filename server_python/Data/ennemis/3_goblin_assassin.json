@@ -1,9 +1,9 @@
 {
     "id":3,
     "type":"ennemi",
-    "nom":"goblin assassin",
-    "race":"goblin",
-    "description":"Les goblins assassin sont des goblins entrainés dans le but de tuer, ils n'ont pas beaucoup de vie, mais font beaucoup de dégats !",
+    "nom":"gobelin assassin",
+    "race":"gobelin",
+    "description":"Les gobelins assassin sont des gobelins entrainés dans le but de tuer, ils n'ont pas beaucoup de vie, mais font beaucoup de dégats !",
     "vie":[5,8],
     "attaque":{
         "corps à corps": [30,40],

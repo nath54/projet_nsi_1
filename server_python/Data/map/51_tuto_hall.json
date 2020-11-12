@@ -1,9 +1,9 @@
 {
     "id":51,
-    "appellations":["hall du centre", "hall centre", "hall", "hall centre entrainement", "hall entrainement"],
-    "nom":"Hall du centre d'entrainement",
+    "appellations":["hall du centre", "hall centre", "hall", "hall centre entraînement", "hall entraînement"],
+    "nom":"Hall du centre d'entraînement",
     "region":"Tuto",
-    "description":"Vous êtes dans le hall du centre d'entrainement, vous pouvez voir des jeunes futurs héros ou zéros comme vous.",
+    "description":"Vous êtes dans le hall du centre d'entraînement. Vous apercevez voir des jeunes futurs héros. Mais surtout une bonne majorité de zéros. Comme vous.",
     "type":"ville",
     "pnjs":[],
     "objets":[],

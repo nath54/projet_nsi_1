@@ -1,7 +1,7 @@
 {
     "id":2,
-    "nom":"tuer les goblins",
-    "description":"les tuer à mains nues : chouette",
+    "nom":"tuer les gobelins",
+    "description":"Vraiment besoin de description pour ça ? Tue 3 gobelins, et à toi l'épée en acier !",
     "id_recompenses":[5],
     "conditions":{
         "type": "Extermination",

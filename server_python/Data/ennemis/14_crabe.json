@@ -3,7 +3,7 @@
     "type":"ennemi",
     "nom":"crabe",
     "race":"crabe",
-    "description":"Les crabe sont des animaux marin, leur viande est très savoureuse, Bob est Carlos les cuisiniers de l'auberge peuvent vous en faire un bon paté de crabe.",
+    "description":"Les crabes sont des animaux marin, leur viande est très savoureuse, Bob et Carlos, les cuisiniers de l'auberge, peuvent vous en faire un bon paté de crabe.",
     "vie":[1,4],
     "attaque":{
         "corps à corps": [0,2],

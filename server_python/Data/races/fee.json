@@ -1,6 +1,6 @@
 {
     "nom":"fée",
-    "description":"Les fées sont des créatures magiques plutôt faibles physiquement, mais qui ont de gros bonus dans la magie",
+    "description":"Les fées sont des créatures magiques plutôt faibles physiquement, mais qui ont beaucoup d'affinité avec la magie",
     "vie": -15,
     "charme": 10,
     "discretion": 10,

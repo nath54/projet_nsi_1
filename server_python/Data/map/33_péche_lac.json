@@ -1,9 +1,9 @@
 {
     "id":33,
-    "appellations":["endroit de péche","nord du lac"],
-    "nom":"Un petit coin de péche",
+    "appellations":["endroit de pêche","nord du lac"],
+    "nom":"Un petit coin de pêche",
     "region":"Larion",
-    "description":"Un petit coin de péche au nord du lac, il y a beaucoup de roseaus et de grenouilles.",
+    "description":"Un petit coin de pêche au nord du lac. On y trouve beaucoup de roseaux et de grenouilles.",
     "type":"lac",
     "pnjs":[],
     "objets":[],

@@ -1,7 +1,7 @@
 {
     "id":4,
     "nom":"tuer des squelette",
-    "description":"tuer ses squelettes permet de gagner un arc",
+    "description":"Tuer des skelets, gagner un arc, simple comme bonjour !",
     "id_recompenses":[4],
     "conditions":{
         "type": "Extermination",

@@ -3,7 +3,7 @@
     "type":"boss",
     "race":"rat",
     "nom":"La mère des rats",
-    "description":"Un rat qui fait deux fois la taille et le poids d'un homme normal, c'est elle qui dirige tous les rats de la ville, elle peut vraiment etre dangereuse",
+    "description":"Un rat qui fait deux fois la taille et le poids d'un homme normal, c'est elle qui dirige tous les rats de la ville, elle peut vraiment être dangereuse",
     "vie":[40,50],
     "attaque":{
         "corps à corps": [5,10],

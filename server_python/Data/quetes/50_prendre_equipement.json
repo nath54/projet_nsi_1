@@ -1,7 +1,7 @@
 {
     "id":50,
     "nom":"Récuperer son équipement",
-    "description":"Vous devez aller chercher une armure et une arme ",
+    "description":"Vous devez aller chercher une armure et une arme chez le maître Earm",
     "id_recompenses":[],
     "conditions":{
         "type": "parler",

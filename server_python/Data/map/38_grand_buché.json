@@ -1,9 +1,9 @@
 {
     "id":38,
-    "appellations":["un buché","buché Tergaron","grandes buché"],
-    "nom":"Grand buché d'alerte",
+    "appellations":["un bûcher","bûcher Tergaron","grand bûcher"],
+    "nom":"Grand bûcher d'alerte",
     "region":"Larion",
-    "description":"Les grand buchés de Tergaron servent à donner l'alerte dans tout le pays",
+    "description":"Les grand bûchers de Tergaron servent à donner l'alerte dans tout le pays. Le signal de fumée est en effet visible dans tout le royaume.",
     "type":"montagne",
     "pnjs":[],
     "objets":[],

@@ -3,7 +3,7 @@
     "appellations":["une route","une grande route"],
     "nom":"Le grande route",
     "region":"Larion",
-    "description":"Cette route permet de sortir de la ville, vers l'ouest",
+    "description":"Cette route permet de sortir Tergaron, vers l'ouest.",
     "type":"ville",
     "pnjs":[],
     "objets":[],

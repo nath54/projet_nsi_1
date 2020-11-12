@@ -2,7 +2,7 @@
     "id":11,
     "type": "Arme",
     "nom":"trident",
-    "description":"ce trident est une arme très puissante; il peut être utilisé a distance comme au corps à corps.",
+    "description":"Ce trident est une arme très puissante; il peut être utilisé a distance comme au corps à corps. Poséidon en serait jaloux.",
     "perte de l'arme en attaquant à distance":true,
     "attaque_type":"attaque unique",
     "effets":{

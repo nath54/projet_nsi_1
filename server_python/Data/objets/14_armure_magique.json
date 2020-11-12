@@ -2,7 +2,7 @@
     "id":14,
     "type":"Armure",
     "nom":"Armure magique",
-    "description":"Comme son nom l'indique,cette armure est magique : impressionant n'est-ce pas?.",
+    "description":"Comme son nom l'indique, cette armure est magique. Impressionant, n'est-ce pas ?",
     "effets":{
         "défense":{
             "corps à corps": [4,7],

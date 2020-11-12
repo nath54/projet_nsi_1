@@ -2,6 +2,6 @@
     "id":50,
     "nom":"Convocation examen",
     "type":"clé",
-    "description":"Une feuille de papier sur laquelle vous pouvez lire : \n'''\nCONVOCATION de @nom_perso pour examen de fin d'entrainement\n\nMonsieur, Madame @nom_perso, vous êtes convoqué à 8 heures précises du matin le Lunedit 12 Fievrier de l'année -42 avant JC.\nNous vous prions de ne pas venir en retard ou pas du tout sous peine d'annulation de l'examen et d'une exclusion de ce centre d'entrainement.\nCette convocation est à ammener au lieu de l'examen, qui est la salle principale du centre d'entrainement.\n\nMes encouragements les plus sinceres,\nMonsieur le directeur.\n'''",
+    "description":"Une feuille de papier sur laquelle vous pouvez lire : \n'''\nCONVOCATION de @nom_perso pour examen de fin d'entraînement\n\nMonsieur, Madame @nom_perso, vous êtes convoqué à 8 heures précises du matin le Lunedit 12 Fievrier de l'année -42 avant JC.\nNous vous prions de ne pas venir en retard ou pas du tout sous peine d'annulation de l'examen et d'une exclusion de ce centre d'entraînement.\nCette convocation est à amener au lieu de l'examen, qui est la salle principale du centre d'entraînement.\n\nMes encouragements les plus sincères,\nMonsieur le directeur.\n'''",
     "effets":{}
 }

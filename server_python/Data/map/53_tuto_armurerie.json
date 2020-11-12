@@ -1,9 +1,9 @@
 {
     "id":53,
     "appellations":["armurerie", "armurerie centre"],
-    "nom":"armurerie du centre d'entrainement",
+    "nom":"armurerie du centre d'entraînement",
     "region":"Tuto",
-    "description":"C'est une petite armurerie",
+    "description":"C'est une petite armurerie, tout ce qu'il y a de plus classique",
     "type":"ville",
     "pnjs":[ 51 ],
     "objets":[],

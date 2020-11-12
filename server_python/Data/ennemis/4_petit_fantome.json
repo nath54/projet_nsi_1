@@ -1,9 +1,9 @@
 {
     "id":4,
     "type":"ennemi",
-    "nom":"petit fantome",
+    "nom":"petit fantôme",
     "race":"mort-vivant",
-    "description":"Fantome !",
+    "description":"Fantôme !",
     "vie":[10,14],
     "attaque":{
         "corps à corps": [5,7],

@@ -2,7 +2,7 @@
     "id":18,
     "type": "Arme",
     "nom":"bouclier magique",
-    "description":"Le bouclier est l'arme défensive la plus ancienne et destinée à parer une attaque , il est aussi magique.",
+    "description":"Un peu comme le bouclier normal, mais en magique, pour toujours plus de puissance.",
     "perte de l'arme en attaquant à distance":true,
     "attaque_type":"attaque unique",
     "effets":{

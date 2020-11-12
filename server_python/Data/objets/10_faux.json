@@ -2,7 +2,7 @@
     "id":10,
     "type": "Arme",
     "nom":"faux en acier",
-    "description":"cette faux est une arme très puissante; elle peut être utilisé a distance comme au corps à corps.",
+    "description":"Cette faux est une arme très puissante ; elle peut être utilisé a distance comme au corps à corps. En soit, n'importe quelle arme peut-être lancée, donc rien de très surprenant j'imagine...",
     "perte de l'arme en attaquant à distance":true,
     "attaque_type":"attaque unique",
     "effets":{

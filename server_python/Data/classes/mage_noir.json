@@ -1,6 +1,6 @@
 {
     "nom":"mage noir",
-    "description":"Un mage noir excelle dans la sorcellerie maudite, il peut invoquer des créatures ou controler des cadavres",
+    "description":"Un mage noir excelle dans la sorcellerie maudite, il peut invoquer des créatures ou contrôler des cadavres",
     "force": -3,
     "vie": -5,
     "magie": 10,

@@ -1,7 +1,7 @@
 {
     "id":3,
     "nom":"tuer la mère des rats",
-    "description":"demander a la grand-mère du village pour des conseils",
+    "description":"Demander à la grand-mère du village des conseils.",
     "id_recompenses":[8,9],
     "conditions":{
         "type": "Extermination",

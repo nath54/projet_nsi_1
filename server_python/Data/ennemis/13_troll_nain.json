@@ -3,7 +3,7 @@
     "type":"ennemi",
     "nom":"noll",
     "race":"troll nain",
-    "description":"Les troll nain sont des enfants de troll et de nain, il en existe que très peu, et il se cache sous les pont pour empécher les gens de passer",
+    "description":"Les trolls nain sont des enfants de troll et de nain, il n'en existe que très peu, et ils se cachent sous les ponts pour empêcher les gens de passer.",
     "vie":[10,15],
     "attaque":{
         "corps à corps": [2,6],

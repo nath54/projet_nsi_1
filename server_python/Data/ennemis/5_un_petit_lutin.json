@@ -3,7 +3,7 @@
     "type":"ennemi",
     "nom":"Patrique",
     "race":"lutin",
-    "description":"Les lutin sont des petits être très avare, ils garde la plupart du temps de l'or au pied des arc en ciel, il n'est pas très résistant mais très argneux, ATTENTION à son tréfle à quatre feuilles, il lui apporte beaucoup de chance !",
+    "description":"Les lutins sont des petits êtres très avare, ils gardent la plupart du temps de l'or au pied des arc en ciel, il n'est pas très résistant mais très hargneux, ATTENTION à son trèfle à quatre feuilles, il lui apporte beaucoup de chance !",
     "vie":[20,40],
     "attaque":{
         "corps à corps": [5,10],

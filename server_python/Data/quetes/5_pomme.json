@@ -1,7 +1,7 @@
 {
     "id":5,
     "nom":"amener des pommes",
-    "description":"amener lui des pommes pour faire une tarte aux pommes",
+    "description":"Amenez-lui des pommes pour faire une tarte aux pommes (qui sait, vous pourrez peut-être en profiter...)",
     "id_recompenses":[17],
     "conditions":{
         "type": "FedEx",

@@ -1,9 +1,9 @@
 {
     "id":20,
-    "appellations":["des enclots","des enclots pour animaux"],
-    "nom":"Les enclots de la ferme",
+    "appellations":["des enclos","des enclos pour animaux"],
+    "nom":"Les enclos de la ferme",
     "region":"Larion",
-    "description":"Ce vieu bateau est à l'arret depuis suremment longtemps",
+    "description":"Dans ces enclos sont parqués des vaches. Elles n'ont pas l'air au meilleur de leur forme. Je doute que les produits de cette ferme soient vraiment 'frais'",
     "type":"prairie",
     "pnjs":[],
     "objets":[],

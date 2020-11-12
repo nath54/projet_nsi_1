@@ -1,9 +1,9 @@
 {
     "id":52,
-    "appellations":["centre entrainement", "centre"],
-    "nom":"Centre d'entrainement",
+    "appellations":["centre entraînement", "centre"],
+    "nom":"Centre d'entraînement",
     "region":"Tuto",
-    "description":"C'est le centre d'entrainement dans lequel on vous a formé pendant 5 ans afin de vaincre les ennemis du royaume, sauf que maintenant, si vous êtes ici, c'est pour obtenir votre diplome enfin attendu !",
+    "description":"C'est le centre d'entraînement dans lequel on vous a formé pendant 5 ans, afin de vaincre les ennemis du royaume. Mais si vous êtes ici maintenant, c'est pour obtenir votre diplôme tant attendu !",
     "type":"ville",
     "pnjs":[ 50 ],
     "objets":[],

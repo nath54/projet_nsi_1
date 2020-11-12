@@ -1,7 +1,7 @@
 {
     "id":1,
     "nom":"tuer les rats",
-    "description":"tout est dans le nom de la quête: tue des rats et tout ce passeras bien",
+    "description":"Tout est dans le nom de la quête : tue des rats et tout se passera bien !",
     "id_recompenses":[1],
     "conditions":{
         "type": "Extermination",

@@ -2,7 +2,7 @@
     "id":2,
     "type": "Arme",
     "nom":"épée de bois",
-    "description":"",
+    "description":"De manière assez surprenante pour une épée, elle est plus à utiliser comme arme contondante que tranchante. Enfin, pour vous, continuez d'utiliser 'attaquer', ça ne changera rien...",
     "perte de l'arme en attaquant à distance":true,
     "attaque_type":"attaque unique",
     "effets":{

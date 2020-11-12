@@ -2,7 +2,7 @@
     "id":5,
     "type": "Arme",
     "nom":"épée en acier",
-    "description":"",
+    "description":"Une épée tout ce qui a de plus classique. Contrairement à l'épée en bois, celle-ci est tranchante.",
     "perte de l'arme en attaquant à distance":true,
     "attaque_type":"attaque unique",
     "effets":{

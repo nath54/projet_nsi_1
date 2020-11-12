@@ -1,6 +1,6 @@
 {
     "nom":"nain",
-    "description":"Les nains sont forts et résistants, peu habiles, mais ont des grands avantages dans les grottes et les montagnes",
+    "description":"Les nains sont forts et résistants, peu habiles. Leurs terrains de prédilection sont grottes et les montagnes.",
     "force": 2,
     "vie": 5,
     "agilite": -2,

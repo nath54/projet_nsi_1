@@ -2,7 +2,7 @@
     "id":6,
     "nom":"coffre",
     "type":"contenant",
-    "description":"ce coffre permet de stocké des objets",
+    "description":"ce coffre permet de stocker des objets",
     "effets":{},
     "contenu":[],
     "verrouille":false,

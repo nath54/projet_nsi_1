@@ -1,6 +1,6 @@
 {
     "nom":"elfe noir",
-    "description":"Les elfes noirs sont des elfes qui sont tombés du côté obscur, ils ont une connaissance des sortileges maudits, n'ont pas de faiblesses contre le feu comme les autres elfes, mais contre des sortileges bénits",
+    "description":"Les elfes noirs sont des elfes qui sont tombés du côté obscur, ils ont une connaissance des sortilèges maudits, n'ont pas de faiblesses contre le feu comme les autres elfes, mais sont vulnérables face aux sortilèges bénis",
     "vie": 5,
     "force": 3,
     "magie": 5

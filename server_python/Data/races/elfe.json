@@ -1,6 +1,6 @@
 {
     "nom":"elfe",
-    "description":"Les elfes sont les habitants de la forêt, ils ressemblent aux humains, mais ont des oreilles pointues, une peau plus verte pâle, et ont une bien meilleure longévité que les humains, ils ont des faiblesses contre le feu, mais sont plutôt habiles",
+    "description":"Les elfes sont les habitants de la forêt, ils ressemblent aux humains, mais ont des oreilles pointues, une peau plus verte pâle, et ont une bien meilleure longévité que les humains. Faible contre le feu, ils ont néanmoins une bonne habilité",
     "vie": 10,
     "force": 1,
     "charme": 1,

@@ -3,9 +3,9 @@
     "type":"pnj",
     "nom":"Garde",
     "race":"humain",
-    "description":"Un garde.",
+    "description":"Un garde. Oui, pas plus de description.",
     "dialogues":{
-        "Avez vous parler au roi ?":{
+        "Avez-vous parlé au roi ?":{
             "Oui":{ 
                 "Ah OK.":null
             },

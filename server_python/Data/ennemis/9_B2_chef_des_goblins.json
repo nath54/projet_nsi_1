@@ -1,9 +1,9 @@
 {
     "id":9,
     "type":"boss",
-    "race":"goblin",
-    "nom":"Le chef des goblins",
-    "description":"C'est le chef des goblins, c'est lui qui a gagné sa place de chef goblin par la force, et il n'a pas vraiment envie de la perdre maintenant !",
+    "race":"gobelin",
+    "nom":"Le chef des gobelins",
+    "description":"C'est le chef des gobelins, c'est lui qui a gagné sa place de chef gobelin par la force, et il n'a pas vraiment envie de la perdre maintenant !",
     "vie":[80,100],
     "attaque":{
         "corps à corps": [20,30],

@@ -2,7 +2,7 @@
     "id":19,
     "type": "Arme",
     "nom":"bouclier en tissus",
-    "description":"il ne sert pas a grand chose...c'est un accessoire de mode",
+    "description":"Il permet en plus de ça de transporter des objets ! Ah... Mais c'est un sac en fait...",
     "perte de l'arme en attaquant à distance":true,
     "attaque_type":"attaque unique",
     "effets":{

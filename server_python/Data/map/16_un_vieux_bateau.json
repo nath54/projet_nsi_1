@@ -1,9 +1,9 @@
 {
     "id":16,
     "appellations":["un bateau","un vieux bateau"],
-    "nom":"Le vieu bateau",
+    "nom":"Le vieux bateau",
     "region":"Larion",
-    "description":"Ce vieux bateau est à l'arrêt depuis sûrement longtemps",
+    "description":"Ce vieux bateau a depuis longtemps fait son temps... À se demander si le terme 'épave' ne conviendrait pas mieux...",
     "type":"ville",
     "pnjs":[],
     "objets":[],

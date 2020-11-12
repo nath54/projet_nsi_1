@@ -3,34 +3,37 @@
     "type":"pnj",
     "nom":"Earm",
     "race":"humain",
-    "description":"Earm est l'armurier de ce centre d'entrainement, c'est lui qui répare et qui forge vos armes et vos armures.",
+    "description":"Earm est l'armurier de ce centre d'entraînement, c'est lui qui répare et qui forge vos armes et vos armures.",
     "dialogues":[
         [["quete", 50], {
             "Bonjour, que me voulez vous ?":{
                 "Euh, qu'est-ce que je dois faire déjà ?":{
-                    "Vous savez que vous pouvez taper la commande 'quete' pour afficher les détails de votre quete actuelle ?":{
+                    "Vous savez que vous pouvez taper la commande 'quete' pour afficher les détails de votre quête actuelle ?":{
                         "Ah non, je ne le savais pas, merci pour l'info": null,
                         "Mais je le savais déjà !":{
                             "Bah pourquoi ne l'avez vous pas fait ?": null
+                        },
+                        "Euuuuh... C'est quoi une commande ? Une quête ?":{
+                            "À vrai dire j'en ai strictement aucune idée. Mais bon, qui sait, gardez ça en tête.":null
                         }
                     }
                 },
                 "J'aimerais que vous me donniez une arme et une armure s'il vous plait !": {
                     "D'accords, quelle arme voulez vous ?":{
                         "Une épée de bois":{
-                            "Très bien, les voici. N'oublie pas de les équiper !": [{"objet": 2}, {"objet": 1}, {"quete finie": 50}]
+                            "Très bien, voici votre épée, et votre armure. N'oubliez pas de les équiper !": [{"objet": 2}, {"objet": 1}, {"quete finie": 50}]
                         },
                         "Un arc de bois":{
-                            "D'accord, les voici. N'oublie pas de les équiper !": [{"objet": 4}, {"objet": 1}, {"quete finie": 50}]
+                            "D'accord... Et voici votre superbe arc et votre rutilante armure ! N'oubliez pas de les équiper !": [{"objet": 4}, {"objet": 1}, {"quete finie": 50}]
                         },
                         "Un bouclier de tissu":{
-                            "Pas de souci, les voici. N'oublie pas de les équiper !": [{"objet": 19}, {"objet": 1}, {"quete finie": 50}]
+                            "Pas de souci, laissez moi aller chercher ça... Et voilà un superbe bouclier de tissu, accompagné d'une magnifique armure de tissu ! N'oubliez pas de les équiper !": [{"objet": 19}, {"objet": 1}, {"quete finie": 50}]
                         }
                     }
                 }
             }
         }],
-        [null, {"Je suis occupé ! Ne viens pas me déranger !": {
+        [null, {"Je suis occupé ! Ne venez pas me déranger !": {
             "D'accord": null
         }}]
     ]

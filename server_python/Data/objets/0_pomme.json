@@ -2,7 +2,7 @@
     "id":0,
     "nom":"Pomme",
     "type":"consommable",
-    "description":"Une belle pomme bien rouge, elle a l'air vraiment délicieuse",
+    "description":"Une belle pomme bien rouge. Elle a l'air vraiment délicieuse",
     "effets":{
         "manger":{"santé":[2,4],"usage_unique":true}
     }

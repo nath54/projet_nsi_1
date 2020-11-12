@@ -3,7 +3,7 @@
     "type":"ennemi",
     "nom":"araignée",
     "race":"araignée",
-    "description":"Les araignée son faible mais attaquent en groupe, leur venin n'est pas très dangereux, mais est mortel en grande quantité, se sont de grande tisseuses !",
+    "description":"Les araignées sont faibles mais attaquent en groupe, leur venin n'est pas très dangereux, mais est mortel en grande quantité, ce sont de grandes tisseuses !",
     "vie":[1,4],
     "attaque":{
         "corps à corps": [0,2],

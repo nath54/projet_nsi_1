@@ -1,6 +1,6 @@
 {
     "nom": "orc",
-    "description": "Les orcs ne sont pas très intelligents et habiles, mais ils sont forts et résistants",
+    "description": "Les orcs ne sont pas très intelligents, ni habiles. Par contre, ils sont forts et résistants.",
     "force": 5,
     "charme": -3,
     "agilite": -3,

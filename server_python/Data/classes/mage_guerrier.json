@@ -1,6 +1,6 @@
 {
     "nom":"mage guerrier",
-    "description":"Un mage guerrier est équilibré dans les combats aux corps à corps et la maitrise des sorts de combats",
+    "description":"Un mage guerrier est équilibré dans les combats aux corps à corps et la maîtrise des sorts de combats",
     "force": 1,
     "vie": 2,
     "magie": 2,

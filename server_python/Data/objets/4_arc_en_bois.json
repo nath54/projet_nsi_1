@@ -2,8 +2,8 @@
     "id":4,
     "type": "Arme",
     "nom":"arc en bois",
-    "description":"arc en bois,il est moins performant que l'arc en carbone et fait depenser plus d'énergie.",
-    "perte de l'arme en attaquant à distance":true,
+    "description":"Un arc en bois. Moins performant qu'un arc en carbone, il demande plus d'énergie pour le manier.",
+    "perte de l'arme en attaquant à distance":false,
     "attaque_type":"attaque unique",
     "effets":{
         "cout energie":{
