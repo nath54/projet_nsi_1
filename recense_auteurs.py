@@ -29,7 +29,7 @@ def examine(fich):
     txt = f.read()  # .lower()
     f.close()
     #
-    ta = "Auteur: "
+    ta = "Auteur : "
     pos = txt.find(ta, 0)
     while pos != -1:
         #

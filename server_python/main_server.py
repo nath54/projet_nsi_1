@@ -40,7 +40,8 @@ class Server:
     def __init__(self):
         """Initialise le serveur de jeu.
 
-        Auteur: Nathan
+        Auteur : Nathan
+
         """
         self.host = ""
         self.port = 9876
@@ -157,7 +158,7 @@ class Server:
         jusqu'à 5 connexions simultanées.
         On va aussi lancer le jeu ici, bdd, Game, ...
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
 
@@ -200,7 +201,7 @@ class Server:
                                     qui gérer l'interaction
             infos (couple): couple d'informations : ip, ???
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.on_accept(client, infos)
@@ -220,7 +221,7 @@ class Server:
             client (socket.socket): Référence au client dont il ne faut pas envoyer message
             message (str): Message à envoyer aux autres clients
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         if sys.getsizeof(message) > self.max_size:
@@ -230,25 +231,25 @@ class Server:
                 self.send(autre_client, message)
 
     def send_all(self, message):
-        """Envoie un message a tous les clients.
+        """Envoie un message à tous les clients.
 
         Args:
             message (str): Message à envoyer aux clients
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         for cc in self.clients.keys():
             self.send(cc, message)
 
     def send(self, client, message, print_=False, important=False):
-        """Envoie un message a un client précis.
+        """Envoie un message à un client précis.
 
         Args:
             client (socket.socket): Référence au client ayant envoyé le message
             message (str): Message à envoyer aux autres clients
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         if print_:
@@ -283,7 +284,7 @@ class Server:
             client (socket.socket) Référence au client qui s'est connecté
             i (couple): couple d'informations : ip, ???
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.clients[client] = {"player": None}
@@ -299,7 +300,7 @@ class Server:
             infos (couple): couple d'informations : ip, ???
             message (str): Message tapé par l'utilisateur.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         message = message.decode(encoding="utf-8")
@@ -379,7 +380,7 @@ class Server:
         Args:
             client(socket): Référence au client ayant fermé son application
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         # si le client n'a pas déjà été supprimé
@@ -424,7 +425,8 @@ class Server:
     def fin_dialogue(self, client, perso, nom_perso):
         """Fonction qui est appellée à la fin d'un dialogue avec un pnj
 
-        Auteur: Nathan
+        Auteur : Nathan
+
         """
         texte_fait = ""
         if type(perso.dialogue_en_cours) == list:
@@ -526,7 +528,7 @@ class Server:
             data(dict): un dictionnaire contenant les éléments d'une commande
                 exemple : {"command": "attaquer", "arguments": "ennemi"}
 
-        Auteur: Nathan, Hugo
+        Auteur : Nathan, Hugo
 
         """
         # region initialisation - traitement données
@@ -997,7 +999,7 @@ class Server:
             perso(Perso): Personnage demandant l'action
             data(dict): Dict contenant les informations de la commande
 
-        Auteur: Hugo
+        Auteur : Hugo
 
         """
         compl = data.get("arg_1", "")
@@ -1029,7 +1031,7 @@ class Server:
     def main(self):
         """Met en route le serveur.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.start()

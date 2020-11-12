@@ -23,8 +23,9 @@ class Combattant(Etre):
         """Instancie le Combattant.
 
         Args:
+            game(Game): Instance de la partie.
 
-        Auteur: Nathan, Hugo
+        Auteur : Nathan, Hugo
 
         """
         Etre.__init__(self, game)
@@ -45,7 +46,7 @@ class Combattant(Etre):
     def full_vie(self):
         """Rend toute sa santé au personnage.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.vie = self.vie_totale
@@ -53,7 +54,7 @@ class Combattant(Etre):
     def full_energie(self):
         """Rend toute son énergie au personnage.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.energie = self.energie_totale
@@ -64,7 +65,7 @@ class Combattant(Etre):
         Args:
             nombre(int): Quantité de vie à récupérer
 
-        Auteur: Hugo
+        Auteur : Hugo
 
         """
         self.vie += nombre
@@ -77,7 +78,7 @@ class Combattant(Etre):
         Args:
             nombre(int): Quantité d'énergie à récupérer
 
-        Auteur: Hugo
+        Auteur : Hugo
 
         """
         self.energie += nombre
@@ -87,50 +88,55 @@ class Combattant(Etre):
     def debut_tour(self):
         """Applique au personnage les effets qu'il a
 
-        Auteur: TODO
+        Auteur : TODO
 
         """
         pass
 
     def sum_lsts(self, la, lb):
-        """Fonction qui permet la somme de deux listes de nombres de mêmes tailles
+        """Additionne de deux listes de nombres de même taille.
 
-        Auteur: Nathan
+        Auteur : Nathan
+
         """
         assert len(la) == len(lb), "Les deux listes n'ont pas la même taille !"
         assert all([type(elt) in [int, float] for elt in la + lb]), "Ce ne sont pas des listes de nombres"
         return [la[x] + lb[x] for x in range(len(la))]
 
     def sous_lsts(self, la, lb):
-        """Fonction qui permet la soustraction de deux listes de nombres de mêmes tailles
+        """Soustrait deux listes de nombres de même taille.
 
-        Auteur: Nathan
+        Auteur : Nathan
+
         """
         assert len(la) == len(lb), "Les deux listes n'ont pas la même taille !"
         assert all([type(elt) in [int, float] for elt in la + lb]), "Ce ne sont pas des listes de nombres"
         return [la[x] - lb[x] for x in range(len(la))]
 
     def sum_lst_nb(self, la, n):
-        """Fonction qui permet la somme de tous les éléments d'une liste de nombres par un nombre
+        """Additionne tous les éléments d'une liste de nombres par un nombre.
 
-        Auteur: Nathan
+        Auteur : Nathan
+
         """
         assert type(n) in [int, float], "Le nombre donné n'est pas un nombre"
         assert all([type(a) in [int, float] for a in la]), "Ce ne sont pas des listes de nombres"
         return [a + n for a in la]
 
     def moy_lst(self, lst):
-        """Fonction qui renvoie la moyenne d'une liste de nombres
+        """Renvoie la moyenne d'une liste de nombres.
 
-        Auteur: Nathan
+        Auteur : Nathan
+
         """
         assert type(lst) == list and all([type(n) in [int, float] for n in lst]), "Ce n'est pas une liste de nombre !"
         return sum(lst) / len(lst)
 
     def get_attaque(self, type_att="corps à corps"):
-        """Fonction qui récupère l'attaque d'un personnage
+        """Récupère l'attaque d'un personnage
 
-        Auteur: Nathan
+        Auteur : Nathan
+
         """
         att = self.attaque[type_att]
         if att is None:
@@ -158,9 +164,10 @@ class Combattant(Etre):
         return att
 
     def get_defense(self, tp_def="corps à corps"):
-        """Fonction qui récupère la défense d'un personnage
+        """Récupère la défense d'un personnage
 
-        Auteur: Nathan
+        Auteur : Nathan
+
         """
         deff = [0, 0]
         lst_def = list(set(["magique", tp_def]))
@@ -185,9 +192,10 @@ class Combattant(Etre):
         return deff
 
     def attaque_cible(self, cible, type_att="corps à corps"):
-        """Ce combattant attaque un autre combattant
+        """Attaque de ce combattant à un autre combattant
 
-        Auteur: Nathan
+        Auteur : Nathan
+
         """
         r = random.randint(0, 100)
         attaque = self.get_attaque(type_att)
@@ -210,9 +218,7 @@ class Combattant(Etre):
                     temps_restant = 0
                     # TODO A changer ! il faudra récupérer le temps d'un effet
                     cible.effets[effet] = temps_restant
-            #
             enleve = cible.test_mort()
-            #
             if enleve:
                 msg += f"\n{cible.nom} est mort."
             # si l'ennemi se fait toucher, l'ennemi va etre ultra agressif
@@ -228,10 +234,12 @@ class Combattant(Etre):
         return msg
 
     def test_mort(self):
-        """Fonction qui teste si ce combattant est mort
+        """Teste si ce combattant est mort
+
         Adapté pour les persos, ennemis
 
-        Auteur: Nathan, Hugo
+        Auteur : Nathan, Hugo
+
         """
         if self.vie <= 0:
             if self.type_ in ["ennemis", "ennemi"]:
@@ -242,10 +250,12 @@ class Combattant(Etre):
         return False
 
     def test_mort_cible(self, cible, perso=None):
-        """Fonction qui teste si le combattant cible est mort
+        """Teste si le combattant cible est mort.
+
         Adapté pour les ennemis
 
-        Auteur: Nathan, Hugo
+        Auteur : Nathan, Hugo
+
         """
         if cible.vie <= 0:
             if cible.type_ in ["ennemi", "ennemis"]:

@@ -75,12 +75,12 @@ class Lieu:
         self.tour = 0
 
     def aff(self, perso_=None):
-        """Permet d'afficher la description d'un lieu.
+        """Affiche la description d'un lieu.
 
         Fonction appelée par le serveur qui affiche le lieu lors de l'arrivée
         dans celui-ci lors d'un evenement important, ou à la demande du joueur.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         TODO: À améliorer/revoir
 

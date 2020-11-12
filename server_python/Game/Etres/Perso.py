@@ -30,7 +30,7 @@ class Perso(Combattant):
     def __init__(self, game):
         """Instancie le personnage.
 
-        Auteur: Hugo, Nathan
+        Auteur : Hugo, Nathan
 
         """
         Combattant.__init__(self, game)
@@ -59,7 +59,7 @@ class Perso(Combattant):
         Returns:
             str: Contenu de l'inventaire (présentable)
 
-        Auteur: Hugo
+        Auteur : Hugo
 
         """
         if len(self.inventaire) == 0:
@@ -79,7 +79,7 @@ class Perso(Combattant):
         Returns:
             str: Équipement du personnage (présentable)
 
-        Auteur: Hugo
+        Auteur : Hugo
 
         """
         res = "Voici votre équipement :\n"
@@ -94,7 +94,7 @@ class Perso(Combattant):
         Returns:
             str: Stats du personnage (présentable)
 
-        Auteur: Hugo, Nathan
+        Auteur : Hugo, Nathan
 
         """
         txt_exp_1 = "    - " + "\n    - ".join([(str(key) + " : " + " / ".join([str(e) for e in self.experience[key]])) for key in self.experience])
@@ -148,7 +148,7 @@ Actuellement, votre attaque est :
             nom_obj(str): Nom de l'objet à trouver
             id_obj(int): ID de l'objet à trouver
 
-        Auteur: Hugo
+        Auteur : Hugo
 
         """
         if id_obj is None:
@@ -164,7 +164,7 @@ Actuellement, votre attaque est :
         Args:
             objet(Objet): L'Objet à consommer
 
-        Auteur: Hugo
+        Auteur : Hugo
 
         """
         for obj in self.inventaire:
@@ -179,7 +179,7 @@ Actuellement, votre attaque est :
     def add_to_invent(self, obj):
         """Ajoute un objet à l'inventaire
 
-        Auteur: Hugo
+        Auteur : Hugo
 
         """
         # TODO: obj = Objet(id_obj) qui créé l'objet depuis la DB
@@ -195,7 +195,7 @@ Actuellement, votre attaque est :
     def desequiper(self, nom_obj, traiter_txt, id_obj=None):
         """Déséquipe un objet du personnage
 
-        Auteur: Hugo, Nathan
+        Auteur : Hugo, Nathan
 
         """
         for type_, obj in self.equip.items():
@@ -224,7 +224,7 @@ Actuellement, votre attaque est :
     def equiper(self, nom_obj, traiter_txt, id_obj=None):
         """Équipe un objet à un personnage
 
-        Auteur: Hugo, Nathan
+        Auteur : Hugo, Nathan
 
         """
         for obj, qt in self.inventaire:
@@ -257,9 +257,9 @@ Actuellement, votre attaque est :
         return "Objet non trouvé dans l'inventaire"
 
     def on_death(self):
-        """Fonction qui est appelée à la mort du personnage
+        """Réaction à la mort du personnage.
 
-        Auteur: Hugo, Nathan
+        Auteur : Hugo, Nathan
         """
         client = None
         datacl = None
@@ -282,9 +282,10 @@ Actuellement, votre attaque est :
             self.game.server.save_all()
 
     def test_dialogue(self):
-        """Fonction qui teste si un dialogue est dispo avec une quete, ou un objet dans l'inventaire
+        """Teste si un dialogue est dispo avec une quête, ou un objet dans l'inventaire
 
-        Auteur: Nathan
+        Auteur : Nathan
+
         """
         d = self.dialogue_en_cours
         if d is not None:
@@ -311,7 +312,8 @@ Actuellement, votre attaque est :
     def quete_finie(self, id_quete):
         """Fonction qui fini la quete d'un perso
 
-        Auteur: Nathan
+        Auteur : Nathan
+
         """
         if self.quete_actuelle.index != id_quete:
             raise UserWarning("Probleme quete finie, id différent !")

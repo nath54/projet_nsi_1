@@ -23,7 +23,8 @@ chars = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
 def test_email(txt):
     """Vérifie qu'un mail a le bon format.
 
-    Auteur: Nathan
+    Auteur : Nathan
+
     """
     t = txt.split("@")
     if len(t) != 2:
@@ -45,6 +46,7 @@ def test_pseudo(txt):
     """Vérifie qu'un pseudo a le bon format.
 
     Auteur : Nathan
+
     """
     if len(txt) < 4:
         print("ERREUR /!\\ Pseudo : Minimum 4 caractères !")
@@ -62,7 +64,8 @@ def test_pseudo(txt):
 def test_password(txt):
     """Vérifie qu'un mot de passe a le bon format.
 
-    Auteur: Nathan
+    Auteur : Nathan
+
     """
     if len(txt) < 8:
         print("ERREUR /!\\ Mot de passe : Minimum 8 caractères !")
@@ -80,7 +83,8 @@ def test_password(txt):
 def is_json(myjson):
     """Teste si un str est en format json.
 
-    Auteur: Nathan
+    Auteur : Nathan
+
     """
     try:
         json.loads(myjson)
@@ -101,9 +105,9 @@ class Client:
     """
 
     def __init__(self):
-        """Caractéristiques du socket.
+        """Initie les caractéristiques du socket.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.host = input("Host ? (si vide sera localshost)\n : ")
@@ -132,7 +136,7 @@ class Client:
     def debut(self):
         """Demande si l'on veut s'inscrire ou se connecter.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         print("Voulez vous :\n  1) Vous inscrire ?\n  2) Vous connecter ?")
@@ -149,7 +153,7 @@ class Client:
 
         Quand le message a été reçu, on peut continuer le thread actuel
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.attente = True
@@ -161,7 +165,8 @@ class Client:
     def connexion(self):
         """Demande les informations pour se connecter.
 
-        Auteur: Nathan
+        Auteur : Nathan
+
         """
         print("\nConnection :\n")
         # pseudo
@@ -185,7 +190,8 @@ class Client:
     def inscription(self):
         """Demande les informations pour s'inscrire.
 
-        Auteur: Nathan
+        Auteur : Nathan
+
         """
         print("\nInscription :\n")
         # email
@@ -229,7 +235,7 @@ class Client:
         Args:
             message(str): Le message à envoyer au serveur
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         message = message.encode(encoding="utf-8")
@@ -244,12 +250,12 @@ class Client:
             self.client.send(message)
 
     def start(self):
-        """Permet de démarrer la connexion au serveur.
+        """Démarre la connexion au serveur.
 
         Connexion avec le protocole TCP/IP, utilisation d'un thread pour la
         fonction `handle()` afin de ne pas encombrer le thread principal.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -257,9 +263,9 @@ class Client:
         _thread.start_new_thread(self.handle, ())
 
     def handle(self):
-        """Permet de gérer les messages reçus.
+        """Gère les messages reçus.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.on_connect()
@@ -294,7 +300,7 @@ class Client:
         Args:
             mess(str): Le message reçu
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         if is_json(mess):
@@ -342,7 +348,7 @@ class Client:
     def on_close(self):
         """Réaction en cas de fermeture/problème.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.encours = False
@@ -353,7 +359,7 @@ class Client:
     def test_nom(self, nom):
         """Teste si un nom est dans le bon format
 
-        Auteur: Léa
+        Auteur : Léa
 
         """
         if len(nom) < 2:
@@ -364,7 +370,8 @@ class Client:
     def creation_perso(self):
         """Demande les informations pour créer un personnage.
 
-        Auteur: Léa
+        Auteur : Léa
+
         """
         data_perso = {"type": "perso_cree", "nom": None, "race": None,
                       "classe": None, "genre": None}
@@ -444,7 +451,7 @@ class Client:
     def interface(self):
         """Permet à l'utilisateur d'écrire et d'envoyer des messages.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         while self.encours:
@@ -467,7 +474,7 @@ class Client:
     def main(self):
         """Fonction principale du client.
 
-        Auteur: Nathan
+        Auteur : Nathan
 
         """
         self.start()

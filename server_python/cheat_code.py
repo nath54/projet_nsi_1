@@ -10,7 +10,7 @@ def cheat_code(server, client, commande):
         bool: True --> Une action a été faite
               False --> Aucune action effectuée
 
-    Auteur: Alexis
+    Auteur : Alexis
 
     """
     action_faite = False
