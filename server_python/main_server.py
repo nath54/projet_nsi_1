@@ -781,6 +781,8 @@ class Server:
             mess = "Impossible de jeter cet objet, vous avez vérifié au moins que vous le possedez ?"
             mess += "\nAussi, essayez  d'écrire le nom del'objet avec des _ a la placde des espaces"
             mess += "\nexemple : lacher epee_en_bois"
+            if len(args) == 0:
+                return
             arg = args[0]
             qt = args[1] if len(args) > 1 else 1
             if type(qt) != int:
