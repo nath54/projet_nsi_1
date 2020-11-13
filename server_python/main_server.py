@@ -58,8 +58,8 @@ class Server:
         # données des commandes
         self.commandes_dat = {
             "aide": {"com": ["aide", "help", "commandes"],
-                     "help": """Affiche ce message d'aide""",
-                     "fini": False},
+                     "help": """Affiche ce message d'aide, et des messages d'aides plus précis pour les commandes mises en arguments (ex : aide aller)""",
+                     "fini": True},
             "voir": {"com": ["voir"],
                      "help": """Affiche les infos du lieu""",
                      "fini": True},
@@ -83,13 +83,13 @@ class Server:
                               "fini": True},
             "quetes en attentes": {"com": ["quetes_en_attente"],
                                    "help": "Affiche les quêtes que vous avez en attente",
-                                   "fini": False},
+                                   "fini": True},
             "faire quete": {"com": ["faire_quete"],
                             "help": "Si vous n'avez pas déjà de quête actuelle, met la quête demandée en quête actuelle",
                             "fini": False},
             "save": {"com": ["save", "sauvegarder", "save_game"],
                      "help": "Sauvegarde la map et l'état des joueurs",
-                     "fini": False},
+                     "fini": True},
             "quit": {"com": ["quit", "exit", "close"],
                      "help": """Quitte le jeu""",
                      "fini": True},
@@ -97,19 +97,19 @@ class Server:
                          "help": """Attends un tour""",
                          "fini": True},
             "desequiper": {"com": ["desequiper"],
-                           "help": """Déséquipe un objet""",
+                           "help": """Déséquipe un objet, vous devrez preciser le nom complet de l'objet (ex: 'desequiper epee de bois')""",
                            "fini": True},
             "equiper": {"com": ["equiper"],
-                        "help": """Équipe un objet""",
+                        "help": """Équipe un objet, vous devrez preciser le nom complet de l'objet (ex: 'equiper epee de bois')""",
                         "fini": True},
             "examiner": {"com": ["examiner"],
-                         "help": """Affiche la description d'un objet""",
+                         "help": """Affiche la description d'un objet, vous devrez preciser le nom complet de l'objet""",
                          "fini": True},
             "prendre": {"com": ["prendre", "ramasser"],
-                        "help": """Prend l'objet et le rajoute dans l'inventaire""",
+                        "help": """Prend l'objet et le rajoute dans l'inventaire, vous devrez preciser le nom complet de l'objet (ex : 'prendre epee de bois')""",
                         "fini": True},
             "jeter": {"com": ["jeter", "lacher"],
-                      "help": """Enlève l'objet de l'inventaire""",
+                      "help": """Enlève l'objet de l'inventaire, vous devrez preciser le nom complet de l'objet (ex : 'lacher epee_de_bois')""",
                       "fini": True},
             "ouvrir": {"com": ["ouvrir"],
                        "help": """Ouvre un objet qui s'ouvre""",
@@ -118,22 +118,22 @@ class Server:
                        "help": """Ferme un objet qui se ferme""",
                        "fini": True},
             "aller": {"com": ["aller", "bouger"],
-                      "help": """Déplace le personnage dans un autre lieu""",
+                      "help": """Déplace le personnage dans un autre lieu, vous pouvez faire 'aller [nord/sud/est/ouest]' quand c'est possible, mais sinon, vous pouvez aussi utiliser la commande de cette facon : 'aller place', 'aller foret' ...""",
                       "fini": True},
             "entrer": {"com": ["entrer", "rentrer"],
-                       "help": """Le personnage rentre dans un lieu (exemple : une maison)""",
+                       "help": """Le personnage rentre dans un lieu (exemple : 'entrer maison'), si vous ne pouvez entrer que vers un seul lieu, vous pouvez utiliser 'entrer' tout seul, sans arguments, dans le cas contraire, il faudra preciser le lieu vers lequel vous voulez entrer.""",
                        "fini": True},
             "sortir": {"com": ["sortir", "quitter"],
-                       "help": """Le personnage sort d'un lieu (exemple : une maison)""",
+                       "help": """Le personnage sort d'un lieu (exemple : 'entrer maison'), si vous ne pouvez sortir que vers un seul lieu, vous pouvez utiliser 'sortir' tout seul, sans arguments, dans le cas contraire, il faudra preciser le lieu vers lequel vous voulez sortir.""",
                        "fini": True},
             "parler": {"com": ["parler", "discuter"],
-                       "help": """Parle avec un PNJ""",
+                       "help": """Parle avec un PNJ, vous devrez mettre le nom complet du pnj (ex : 'parler vieux paysan')""",
                        "fini": True},
             "message": {"com": ["message"],
-                        "help": """Envoie un message dans le chat du jeu""",
+                        "help": """Envoie un message dans le chat du jeu, ce message sera lisible pas tous les joueurs""",
                         "fini": True},
             "attaquer": {"com": ["attaquer", "taper", "tabasser", "frapper"],
-                         "help": """Attaque un ennemi""",
+                         "help": """Attaque un ennemi, vous devrez mettre le nom de l'ennemi complet (exemple : 'taper petit fantome' ou 'taper goblin-1') """,
                          "fini": True},
             "sort": {"com": ["sortilege", "sort", "magie"],
                      "help": """Lance un sortilège""",
@@ -780,14 +780,14 @@ class Server:
         elif is_one_of(action, self.commandes_dat["jeter"]["com"]):
             mess = "Impossible de jeter cet objet, vous avez vérifié au moins que vous le possedez ?"
             mess += "\nAussi, essayez  d'écrire le nom del'objet avec des _ a la placde des espaces"
-            mess += "\nxemplee : lacher epee_en_bois"
+            mess += "\nexemple : lacher epee_en_bois"
             arg = args[0]
             qt = args[1] if len(args) > 1 else 1
             if type(qt) != int:
                 try:
                     qt = int(qt)
                 except Exception:
-                    self.send_message(client, "Probleme de syntaxe, ")
+                    self.send_message(client, "Probleme de syntaxe, vous devez preciser le nom complet de l'objet en remplacant les espaces par des '_', exemple : 'lacher epee_de_bois'")
                     return
 
             for obj, obj_qt in perso.inventaire:
