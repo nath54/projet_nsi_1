@@ -55,7 +55,7 @@ class Server:
         self.version = 1
         # faudrait peut etre trouver un meilleur nom que ca quand meme
         self.nom_du_jeu = "Py RPG MasterClass Option text multijoueur"
-        #
+        # données des commandes
         self.commandes_dat = {
             "aide": {"com": ["aide", "help", "commandes"],
                      "help": """Affiche ce message d'aide""",
