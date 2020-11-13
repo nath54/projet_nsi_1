@@ -425,7 +425,7 @@ Et bien, bah, relancez le client...
             "nain": "Les nains sont forts et résistants, peu habiles, mais ont des grands avantages dans les grottes et les montagnes",
             "fée": "Les fées sont des créatures magiques plutôt faibles physiquement, mais qui ont de gros bonus dans la magie"
         }
-        # pareil, ca va changer
+        # pareil, ça va changer
         lst_genres = self.genres
         # c'est pour faire plaisir à tout le monde
         print("Création du personnage : \n")
@@ -445,19 +445,19 @@ Et bien, bah, relancez le client...
         # race
         print("\nQuel est la race de votre personnage ?\n")
         race = input("race : ")
-        while race not in lst_races.keys():
+        while lower(race) not in lst_races.keys():
             print("ERREUR /!\\ : La race n'est pas dans la liste !")
             race = input("race : ")
         data_perso["race"] = race
 
-        # On affiche les races
+        # On affiche les classes
         print("\n\nClasses Disponibles : ")
         for n, d in lst_classes.items():
             print(f"  - {n} : {d}\n")
         # classe
         print("\nQuel est la classe de votre personnage ?\n")
         classe = input("classe : ")
-        while classe not in lst_classes.keys():
+        while lower(classe) not in lst_classes.keys():
             print("ERREUR /!\\ : La classe n'est pas dans la liste !")
             classe = input("classe : ")
         data_perso["classe"] = classe
