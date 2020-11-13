@@ -97,19 +97,19 @@ class Server:
                          "help": """Attends un tour""",
                          "fini": True},
             "desequiper": {"com": ["desequiper"],
-                           "help": """Déséquipe un objet, vous devrez preciser le nom complet de l'objet (ex: 'desequiper epee de bois')""",
+                           "help": """Déséquipe un objet, vous devrez préciser le nom complet de l'objet (ex: 'desequiper epee_de_bois')""",
                            "fini": True},
             "equiper": {"com": ["equiper"],
-                        "help": """Équipe un objet, vous devrez preciser le nom complet de l'objet (ex: 'equiper epee de bois')""",
+                        "help": """Équipe un objet, vous devrez préciser le nom complet de l'objet (ex: 'equiper epee_de_bois')""",
                         "fini": True},
             "examiner": {"com": ["examiner"],
-                         "help": """Affiche la description d'un objet, vous devrez preciser le nom complet de l'objet""",
+                         "help": """Affiche la description d'un objet, vous devrez préciser le nom complet de l'objet""",
                          "fini": True},
             "prendre": {"com": ["prendre", "ramasser"],
-                        "help": """Prend l'objet et le rajoute dans l'inventaire, vous devrez preciser le nom complet de l'objet (ex : 'prendre epee de bois')""",
+                        "help": """Prend l'objet et le rajoute dans l'inventaire, vous devrez préciser le nom complet de l'objet (ex : 'prendre epee_de_bois')""",
                         "fini": True},
             "jeter": {"com": ["jeter", "lacher"],
-                      "help": """Enlève l'objet de l'inventaire, vous devrez preciser le nom complet de l'objet (ex : 'lacher epee_de_bois')""",
+                      "help": """Enlève l'objet de l'inventaire, vous devrez préciser le nom complet de l'objet (ex : 'lacher epee_de_bois')""",
                       "fini": True},
             "ouvrir": {"com": ["ouvrir"],
                        "help": """Ouvre un objet qui s'ouvre""",
@@ -121,19 +121,19 @@ class Server:
                       "help": """Déplace le personnage dans un autre lieu, vous pouvez faire 'aller [nord/sud/est/ouest]' quand c'est possible, mais sinon, vous pouvez aussi utiliser la commande de cette facon : 'aller place', 'aller foret' ...""",
                       "fini": True},
             "entrer": {"com": ["entrer", "rentrer"],
-                       "help": """Le personnage rentre dans un lieu (exemple : 'entrer maison'), si vous ne pouvez entrer que vers un seul lieu, vous pouvez utiliser 'entrer' tout seul, sans arguments, dans le cas contraire, il faudra preciser le lieu vers lequel vous voulez entrer.""",
+                       "help": """Le personnage rentre dans un lieu (exemple : 'entrer maison'), si vous ne pouvez entrer que vers un seul lieu, vous pouvez utiliser 'entrer' tout seul, sans arguments, dans le cas contraire, il faudra préciser le lieu vers lequel vous voulez entrer.""",
                        "fini": True},
             "sortir": {"com": ["sortir", "quitter"],
-                       "help": """Le personnage sort d'un lieu (exemple : 'entrer maison'), si vous ne pouvez sortir que vers un seul lieu, vous pouvez utiliser 'sortir' tout seul, sans arguments, dans le cas contraire, il faudra preciser le lieu vers lequel vous voulez sortir.""",
+                       "help": """Le personnage sort d'un lieu (exemple : 'entrer maison'), si vous ne pouvez sortir que vers un seul lieu, vous pouvez utiliser 'sortir' tout seul, sans arguments, dans le cas contraire, il faudra préciser le lieu vers lequel vous voulez sortir.""",
                        "fini": True},
             "parler": {"com": ["parler", "discuter"],
-                       "help": """Parle avec un PNJ, vous devrez mettre le nom complet du pnj (ex : 'parler vieux paysan')""",
+                       "help": """Parle avec un PNJ, vous devrez mettre le nom complet du PNJ (ex : 'parler vieux_paysan')""",
                        "fini": True},
             "message": {"com": ["message"],
-                        "help": """Envoie un message dans le chat du jeu, ce message sera lisible pas tous les joueurs""",
+                        "help": """Envoie un message dans le chat du jeu, ce message sera lisible par tous les joueurs""",
                         "fini": True},
             "attaquer": {"com": ["attaquer", "taper", "tabasser", "frapper"],
-                         "help": """Attaque un ennemi, vous devrez mettre le nom de l'ennemi complet (exemple : 'taper petit fantome' ou 'taper goblin-1') """,
+                         "help": """Attaque un ennemi, vous devrez mettre le nom de l'ennemi complet (exemple : 'taper petit_fantome' ou 'taper goblin-1') """,
                          "fini": True},
             "sort": {"com": ["sortilege", "sort", "magie"],
                      "help": """Lance un sortilège""",
@@ -197,9 +197,9 @@ class Server:
         """Gère l'interaction serveur-client.
 
         Args:
-            client (socket.socket): Référence au client avec
-                                    qui gérer l'interaction
-            infos (couple): couple d'informations : ip, ???
+            client(socket.socket): Référence au client avec qui gérer
+                                   l'interaction
+            infos(tuple<???, ???>): Couple d'informations : IP et ???
 
         Auteur : Nathan
 
@@ -218,8 +218,9 @@ class Server:
         """Envoie un message a tous les autres clients.
 
         Args:
-            client (socket.socket): Référence au client dont il ne faut pas envoyer message
-            message (str): Message à envoyer aux autres clients
+            client(socket.socket): Référence au client auquel il ne faut pas
+                                   envoyer de message
+            message(str): Message à envoyer
 
         Auteur : Nathan
 
@@ -246,22 +247,23 @@ class Server:
         """Envoie un message à un client précis.
 
         Args:
-            client (socket.socket): Référence au client ayant envoyé le message
-            message (str): Message à envoyer aux autres clients
+            client(socket.socket): Référence au client ayant envoyé le message
+            message(str): Message à envoyer aux autres clients
+            print_(bool): False --> N'affiche rien lorsqu'utilisé
+                           True --> Affiche le message envoyé
+            important(bool): False --> Un message d'erreur peut être envoyé
+                              True --> Un UserWarning peut être envoyé
 
         Auteur : Nathan
 
         """
         if print_:
             print(message)
-        #
         message = json.dumps(message)
-        #
         if self.clients[client]["player"] is not None:
             p = self.clients[client]["player"].perso
             if p is not None:
                 message.replace("@nom_perso", p.nom)
-        #
         message = message.encode(encoding="utf-8")
         size = sys.getsizeof(message)
         if size > self.max_size:
@@ -275,14 +277,22 @@ class Server:
             client.send(message)
 
     def send_message(self, client, message, important=False):
+        """Envoie un message à un client
+
+        Args:
+            message(str): Message à envoyer (pas sous la forme dict)
+
+        Auteur : ???
+
+        """
         self.send(client, {"type": "message", "value": message}, important)
 
     def on_accept(self, client, i):
         """Réaction si une connexion entrante est acceptée.
 
         Args:
-            client (socket.socket) Référence au client qui s'est connecté
-            i (couple): couple d'informations : ip, ???
+            client(socket.socket): Référence au client qui s'est connecté
+            i(tuple<???, ???>): couple d'informations : IP et ???
 
         Auteur : Nathan
 
@@ -296,8 +306,8 @@ class Server:
         """Réaction si un message est reçu.
 
         Args:
-            client (socket.socket): Référence au client ayant envoyé le message
-            infos (couple): couple d'informations : ip, ???
+            client(socket.socket): Référence au client ayant envoyé le message
+            infos(tuple<???, ???>): couple d'informations : IP et ???
             message (str): Message tapé par l'utilisateur.
 
         Auteur : Nathan
@@ -412,6 +422,14 @@ class Server:
             del(self.clients[client])
 
     def save_client(self, client):
+        """Sauvegarde un personnage
+
+        Args:
+            client(socket.socket): Socket associé au perso
+
+        Auteur : ???
+
+        """
         # TODO
         player = self.clients[client]["player"]
         if player is not None and player.perso is not None:
@@ -419,6 +437,11 @@ class Server:
         # self.client_db.save_player(player)
 
     def save_all(self):
+        """Sauvegarde tous les clients et la map
+
+        Auteur : ???
+
+        """
         # on sauvegarde tous les clients
         for client in self.clients.keys():
             self.save_client(client)
@@ -427,7 +450,14 @@ class Server:
         print("Jeu sauvegardé !")
 
     def format_dialog(self, perso):
-        #
+        """Met en forme le dialogue
+
+        Args:
+            perso(Perso): Référence au perso en dialogue
+
+        Auteur : ???
+
+        """
         dial = perso.dialogue_en_cours
         if dial is None or type(dial) == list:
             return "Fin du dialogue"
@@ -448,7 +478,12 @@ class Server:
         return txt
 
     def fin_dialogue(self, client, perso, nom_perso):
-        """Fonction qui est appellée à la fin d'un dialogue avec un pnj
+        """Gère la fin d'un dialogue avec un PNJ
+
+        Args:
+            client(socket.socket): Référence au client
+            perso(Perso): Personnage qui a fini de parler.
+            nom_perso(str): Nom du perso en question.
 
         Auteur : Nathan
 
@@ -519,9 +554,14 @@ class Server:
         return texte_fait
 
     def input_client(self, client, message):
-        """Fonction qui attends une réponse du client
+        """Attends une réponse du client
+
+        Args:
+            client(socket.socket): Référence au client
+            message(str): Message à envoyer pour guider l'input du client
 
         Auteur: Nathan
+
         """
         nc = self.clients[client]["player"].pseudo
         print(f"En attente d'une réponse du player {nc}")
@@ -531,10 +571,15 @@ class Server:
         return mess
 
     def input_bonne_reponse(self, client, message, brs):
-        """Fonction qui attend une réponse du client,
-        mais il faut que cette réponse soit dans la liste des réponses possibles
+        """Attend une réponse du client dans la liste des réponses possibles.
+
+        Args:
+            client(socket.socket): Référence au client
+            message(str): Message à envoyer pour guider l'input du client
+            brs(list<str>): Liste des réponses possibles
 
         Auteur: Nathan
+
         """
         assert len(brs) >= 1, "Il doit y avoir au moins une réponse possible"
         br = False
@@ -563,8 +608,10 @@ class Server:
 
         Args:
             client(socket): Personne qui a entré la commande
-            data(dict): un dictionnaire contenant les éléments d'une commande
-                exemple : {"command": "attaquer", "arguments": "ennemi"}
+            data(dict<str: str>): un dictionnaire contenant les éléments d'une
+                                  commande.
+                                  exemple : {"command": "attaquer",
+                                             "arguments": "ennemi"}
 
         Auteur : Nathan, Hugo
 
@@ -700,7 +747,7 @@ class Server:
                     txt_qt += f"\n\t- {qt_nom}"
                 self.send_message(client, txt_qt)
             else:
-                self.send_message(client, "Je ne sais pas si c'est par flemme ou par manque de compétences, mais vous n'avez rien fait !")
+                self.send_message(client, "Je ne sais pas si c'est par flemme ou par manque de compétence, mais vous n'avez rien fait !")
         # commande quetes en attentes : affiche les quetes qui sont en attentes
         elif is_one_of(action, self.commandes_dat["quetes en attentes"]["com"]):
             if len(perso.quetes_en_attente) >= 1:
@@ -710,7 +757,7 @@ class Server:
                     txt_qt += f"\n\t- {qt_nom}"
                 self.send_message(client, txt_qt)
             else:
-                self.send_message(client, "Tel un maitre de l'organisation, vous avez géré vos efforts et vous n'avez donc aucun retards dans vos travaux a faire.")
+                self.send_message(client, "Tel un maître de l'organisation, vous avez géré vos efforts, et vous n'avez donc aucun retard dans vos travaux à faire.")
         # TODO : faire que les quetes finies et les quete en attentes soient dans le meme dictionnaire : perso.quetes
         # commande save : le client sauvegarde le jeu
         elif is_one_of(action, self.commandes_dat["save"]["com"]):
@@ -778,11 +825,9 @@ class Server:
                 self.send_message(client, "Euh .... Vous essayez quand même de prendre quelque chose qui ne peut pas se prendre quand même là ! Je pense que vous devriez aller dans un hopital psychiatrique, parce que ce sera quoi le prochain stade ? Vous essayerez de prendre d'autre êtres vivants ?")
         # commande jeter
         elif is_one_of(action, self.commandes_dat["jeter"]["com"]):
-            mess = "Impossible de jeter cet objet, vous avez vérifié au moins que vous le possedez ?"
-            mess += "\nAussi, essayez  d'écrire le nom del'objet avec des _ a la placde des espaces"
+            mess = "Impossible de jeter cet objet, avez-vous au moins vérifié que vous le possédez ?"
+            mess += "\nAussi, essayez  d'écrire le nom de l'objet avec des _ à la place des espaces"
             mess += "\nexemple : lacher epee_en_bois"
-            if len(args) == 0:
-                return
             arg = args[0]
             qt = args[1] if len(args) > 1 else 1
             if type(qt) != int:
@@ -1030,8 +1075,16 @@ class Server:
     # endregion
 
     def bienvenue(self, client):
+        """Envoie un message de bienvenue au client
+
+        Args:
+            client(socket.socket): Référence au client se connectant.
+
+        Auteur : ???
+
+        """
         p = self.clients[client]["player"].perso
-        mess = {"type": "message", "value": f"Bienvenue !\nVous aller jouer au jeu {self.nom_du_jeu} et nous esperons que vous vous amuserez !\n\nVous êtes {p.nom}\nVie : {p.vie}/{p.vie_totale}\n\n{self.game.map_.lieux[p.lieu].aff(p)}"}
+        mess = {"type": "message", "value": f"Bienvenue !\nVous aller jouer au jeu {self.nom_du_jeu} et nous espérons que vous vous amuserez !\n\nVous êtes {p.nom}\nVie : {p.vie}/{p.vie_totale}\n\n{self.game.map_.lieux[p.lieu].aff(p)}"}
         mess = json.dumps(mess)
         self.send(client, mess)
         mess = {"type": "message", "value": f"{p.nom} a rejoint la partie, il est dans le lieu : {self.game.map_.lieux[p.lieu].nom}"}

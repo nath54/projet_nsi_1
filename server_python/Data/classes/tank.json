@@ -1,6 +1,6 @@
 {
     "nom":"tank",
-    "description":"Un tank est un guerrier spécialisé dans la défense, il défend ses alliés et encaisse les gros dégats à leurs place, mais en contrepartie il ne fait pas beaucoup de dégâts en attaque",
+    "description":"Un tank est un guerrier spécialisé dans la défense, il défend ses alliés et encaisse les gros dégats à leurs place, mais en contrepartie il ne fait pas beaucoup de dégâts en attaque.",
     "vie": 40,
     "force": -2,
     "agilite": -2,

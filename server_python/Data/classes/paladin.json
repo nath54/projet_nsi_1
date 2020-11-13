@@ -1,6 +1,6 @@
 {
     "nom":"paladin",
-    "description":"Un paladin est un guerrier qui connaît des sorts de soutiens, il peut à la fois se battre et soigner ses alliés",
+    "description":"Un paladin est un guerrier qui connaît des sorts de soutien, il peut à la fois se battre et soigner ses alliés",
     "vie": 5,
     "force": 2,
     "charme": 10,

@@ -222,7 +222,6 @@ class Client:
                                   "password": password, "email": email}))
             # on attend la réponse du serveur
             self.attente_serv()
-            #
             if self.etat == "connecté":
                 # on recevra un autre
                 self.attente_serv()
@@ -406,28 +405,25 @@ Et bien, bah, relancez le client...
             "guerrier": "Un guerrier sait se battre au corps à corps, il est fort et il porte facilement tout type d'armure",
             "archer": "Un archer sait se battre à distance, et est plutôt agile",
             "prêtre": "Un prêtre excelle dans les sorts de soutiens, mais n'est pas très bon en attaque",
-            "mage noir": "Un mage noir excelle dans la sorcellerie maudite, il peut invoquer des créatures ou controler des cadavres",
-            "mage guerrier": "Un mage guerrier est équilibré dans les combats aux corps à corps et la maitrise des sorts de combats",
+            "mage noir": "Un mage noir excelle dans la sorcellerie maudite, il peut invoquer des créatures ou contrôler des cadavres",
+            "mage guerrier": "Un mage guerrier est équilibré dans les combats aux corps à corps et la maîtrise des sorts de combat",
             "assassin": "Un assassin est habile et précis, il rate peu et esquive beaucoup, mais n'est pas très fort physiquement",
-            "voleur": "Un voleur est habile et esquive beaucoup, il peut voler des pnjs et des ennemis",
-            "paladin": "Un paladin est un guerrier qui connait des sorts de soutiens, il peut à la fois se battre et soigner ses alliés",
+            "voleur": "Un voleur est habile et esquive beaucoup, il peut voler des PNJ et des ennemis",
+            "paladin": "Un paladin est un guerrier qui connaît des sorts de soutien, il peut à la fois se battre et soigner ses alliés",
             "barbare": "Un barbare est un guerrier qui a vécu loin de la société civilisé, il se bat avec son instinct animal, et peut même devenir un berseker",
-            "tank": "Un tank est un guerrier spécialisé dans la défense, il défend ses alliés et encaisse les gros dégats à leurs place, mais en contrepartie il ne fait pas beaucoup de dégats en attaque"
+            "tank": "Un tank est un guerrier spécialisé dans la défense, il défend ses alliés et encaisse les gros dégats à leurs place, mais en contrepartie il ne fait pas beaucoup de dégâts en attaque."
         }
-        #
         lst_races = {
-            "humain": "Les humains sont la race la plus présente sur la planete, ils sont équilibrés",
-            "drakonien": "Les drakoniens sont des créatures mi-homme mi-dragon, ils ont une peau solide, et ont des facilités pour lancer des sorts de feu. Ils ont une apparence humaine en tant normal (même s'ils ont un bien meilleur physique que les humains ordinaires), mais ont une forme plus draconienne lors des combats",
-            "elfe": "Les elfes sont les habitants de la forêt, ils ressemblent aux humains, mais ont des oreilles pointues, une peau plus verte pâle, et ont une bien meilleure longévité que les humains, ils ont des faiblesses contre le feu, mais sont plutôt habiles",
-            "elfe noir": "Les elfes noirs sont des elfes qui sont tombés du côté obscur, ils ont une connaissance des sortileges maudits, n'ont pas de faiblesses contre le feu comme les autres elfes, mais contre des sortileges bénits",
-            "demi-elfe": "Les demi-elfes sont des enfants d'homme et d'elfe",
-            "orc": "Les orcs ne sont pas très intelligents et habiles, mais ils sont forts et résistants",
-            "nain": "Les nains sont forts et résistants, peu habiles, mais ont des grands avantages dans les grottes et les montagnes",
-            "fée": "Les fées sont des créatures magiques plutôt faibles physiquement, mais qui ont de gros bonus dans la magie"
+            "humain": "Les humains sont la race la plus présente sur la planète, ils sont équilibrés",
+            "drakonien": "Les drakôniens sont des créatures mi-homme mi-dragon, ils ont une peau solide, et ont des facilités pour lancer des sorts de feu. Ils ont une apparence humaine en tant normal (même s'ils ont un bien meilleur physique que les humains ordinaires), mais ont une forme plus draconienne lors des combats",
+            "elfe": "Les elfes sont les habitants de la forêt, ils ressemblent aux humains, mais ont des oreilles pointues, une peau plus verte pâle, et ont une bien meilleure longévité que les humains. Faible contre le feu, ils ont néanmoins une bonne habilité",
+            "elfe noir": "Les elfes noirs sont des elfes qui sont tombés du côté obscur, ils ont une connaissance des sortilèges maudits, n'ont pas de faiblesses contre le feu comme les autres elfes, mais sont vulnérables face aux sortilèges bénis",
+            "demi-elfe": "Les demi-elfes sont des enfants d'homme et d'elfe. Pourquoi pas demi-humain à ce moment ? C'est comme ça.",
+            "orc": "Les orcs ne sont pas très intelligents, ni habiles. Par contre, ils sont forts et résistants.",
+            "nain": "Les nains sont forts et résistants, mais peu habiles. Leurs terrains de prédilection sont grottes et les montagnes.",
+            "fée": "Les fées sont des créatures magiques plutôt faibles physiquement, mais qui ont beaucoup d'affinité avec la magie. Normal pour des créatures magique en fait, j'imagine..."
         }
-        # pareil, ça va changer
         lst_genres = self.genres
-        # c'est pour faire plaisir à tout le monde
         print("Création du personnage : \n")
         # nom
         print("Quel est le nom de votre personnage ?\n")

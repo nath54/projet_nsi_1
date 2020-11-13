@@ -1,6 +1,6 @@
 {
     "nom":"voleur",
-    "description":"Un voleur est habile et esquive beaucoup, il peut voler des pnjs et des ennemis",
+    "description":"Un voleur est habile et esquive beaucoup, il peut voler des PNJ et des ennemis",
     "vie": -2,
     "force": -2,
     "agilite": 5,
