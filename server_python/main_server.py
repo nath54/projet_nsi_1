@@ -433,7 +433,7 @@ class Server:
             return "Fin du dialogue"
         tint = ""
         if perso.interlocuteur is not None:
-            tint = f"{perso.interlocuteur.nom} : "
+            tint = f"\n{perso.interlocuteur.nom} : "
         txt = tint + list(dial.keys())[0] + "\n"
         #
         rd = dial[list(dial.keys())[0]]
