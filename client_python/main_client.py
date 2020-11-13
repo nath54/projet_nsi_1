@@ -181,6 +181,7 @@ class Client:
             password = input("mot de passe : ")
         self.send(json.dumps({"type": "connection", "pseudo": pseudo,
                               "password": password}))
+        # on attend la réponse du serveur
         self.attente_serv()
         if self.etat == "connecté":
             # print("Connecté")
@@ -219,10 +220,11 @@ class Client:
             # on peut envoyer les infos
             self.send(json.dumps({"type": "inscription", "pseudo": pseudo,
                                   "password": password, "email": email}))
-            print("En attente du serveur ... ")
+            # on attend la réponse du serveur
             self.attente_serv()
-            # print("recu !")
+            #
             if self.etat == "connecté":
+                # on recevra un autre
                 self.attente_serv()
                 if self.etat == "creation_perso":
                     data_perso = self.creation_perso()
@@ -280,7 +282,7 @@ class Client:
                 msg = msg.decode(encoding="utf-8")
                 if self.debug:
                     print("recu : ", msg)
-                # print("recu : ", json.loads(msg))
+                #
                 if len(msg) == 0:
                     raise UserWarning("message vide")
                 if not self.ws:
@@ -296,7 +298,6 @@ class Client:
 
     def on_connect(self):
         """Réaction si la connexion est acceptée."""
-        # TODO
         pass
 
     def on_message(self, mess):
@@ -317,41 +318,41 @@ class Client:
                     return
             if type(data) != dict:
                 return
-            # print("on_message : ", data)
+            #
             if data["type"] == "connection successed":
                 print("Connection acceptée")
                 self.etat = "connecté"
                 self.attente = False
-
+            #
             elif data["type"] == "connection successed but creation perso":
                 print("Connection acceptée, mais il faut créer un nouveau perso")
                 self.etat = "creation_perso"
                 self.attente = False
-
+            #
             elif data["type"] == "inscription successed":
                 print("Inscription acceptée")
                 self.etat = "connecté"
                 self.attente = False
-
+            #
             elif data["type"] == "connection failed":
                 print("Connection refusée\nerreur : " + data["value"])
                 self.attente = False
-
+            #
             elif data["type"] == "inscription failed":
                 print("Inscription refusée\nerreur : " + data["value"])
                 self.attente = False
-
+            #
             elif data["type"] == "creation perso":
                 # print("creation perso")
                 self.etat = "creation_perso"
                 self.attente = False
-
+            #
             elif data["type"] == "genres":
                 self.genres = json.loads(data["genres"])
-
+            #
             elif data["type"] == "close":
                 self.on_close()
-
+            #
             elif data["type"] == "mort":
                 txt = """Vous êtes mort.
 Tout votre équipement a été posé la ou vous êtes mort
@@ -366,7 +367,7 @@ Et bien, bah, relancez le client...
                 input(txt)
                 self.encours = False
                 exit()
-
+            #
             elif data["type"] == "message":
                 print("\n" + str(data["value"]) + "\n")
 
@@ -413,7 +414,7 @@ Et bien, bah, relancez le client...
             "barbare": "Un barbare est un guerrier qui a vécu loin de la société civilisé, il se bat avec son instinct animal, et peut même devenir un berseker",
             "tank": "Un tank est un guerrier spécialisé dans la défense, il défend ses alliés et encaisse les gros dégats à leurs place, mais en contrepartie il ne fait pas beaucoup de dégats en attaque"
         }
-
+        #
         lst_races = {
             "humain": "Les humains sont la race la plus présente sur la planete, ils sont équilibrés",
             "drakonien": "Les drakoniens sont des créatures mi-homme mi-dragon, ils ont une peau solide, et ont des facilités pour lancer des sorts de feu. Ils ont une apparence humaine en tant normal (même s'ils ont un bien meilleur physique que les humains ordinaires), mais ont une forme plus draconienne lors des combats",
@@ -424,11 +425,9 @@ Et bien, bah, relancez le client...
             "nain": "Les nains sont forts et résistants, peu habiles, mais ont des grands avantages dans les grottes et les montagnes",
             "fée": "Les fées sont des créatures magiques plutôt faibles physiquement, mais qui ont de gros bonus dans la magie"
         }
-
         # pareil, ca va changer
         lst_genres = self.genres
         # c'est pour faire plaisir à tout le monde
-
         print("Création du personnage : \n")
         # nom
         print("Quel est le nom de votre personnage ?\n")
