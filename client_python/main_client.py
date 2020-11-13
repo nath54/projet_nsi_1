@@ -445,7 +445,7 @@ Et bien, bah, relancez le client...
         # race
         print("\nQuel est la race de votre personnage ?\n")
         race = input("race : ")
-        while lower(race) not in lst_races.keys():
+        while race.lower() not in lst_races.keys():
             print("ERREUR /!\\ : La race n'est pas dans la liste !")
             race = input("race : ")
         data_perso["race"] = race
@@ -457,7 +457,7 @@ Et bien, bah, relancez le client...
         # classe
         print("\nQuel est la classe de votre personnage ?\n")
         classe = input("classe : ")
-        while lower(classe) not in lst_classes.keys():
+        while classe.lower() not in lst_classes.keys():
             print("ERREUR /!\\ : La classe n'est pas dans la liste !")
             classe = input("classe : ")
         data_perso["classe"] = classe
