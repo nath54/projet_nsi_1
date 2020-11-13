@@ -77,6 +77,7 @@ class Player:
         self.perso.resistances = data_perso["resistances"]
         self.perso.faiblesses = data_perso["faiblesses"]
         self.perso.attaque = data_perso["attaque"]
+        self.perso.effets = data_perso["effets"]
 
         inv = [[Objet(obj[0], self.game), obj[1]] for obj in data_perso["inventaire"]]
         self.perso.inventaire = inv
@@ -119,7 +120,8 @@ class Player:
             "bonus_esquive": 0,
             "sorts": {},
             "resistances": {},
-            "faiblesses": {}
+            "faiblesses": {},
+            "effets": {}
         }
 
         # on applique les valeurs des races
@@ -163,12 +165,13 @@ class Player:
         self.perso.vie_totale = valeurs["vie"]
         self.perso.vie = self.perso.vie_totale
         self.perso.inventaire = valeurs["inventaire"]
-        self.perso.equipement = valeurs["equipement"]
+        self.perso.equip = valeurs["equipement"]
         self.perso.effets_attaque = valeurs["effets_attaque"]
         self.perso.bonus_esquive = valeurs["bonus_esquive"]
         self.perso.sorts = valeurs["sorts"]
         self.perso.resistances = valeurs["resistances"]
         self.perso.faiblesses = valeurs["faiblesses"]
+        self.perso.effets = valeurs["effets"]
         # on charge les objets
         self.perso.inventaire = [[self.game.Objet(obj_id, self.game), qt] for obj_id, qt in self.perso.inventaire]
         # minimum

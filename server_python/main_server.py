@@ -431,7 +431,10 @@ class Server:
         dial = perso.dialogue_en_cours
         if dial is None or type(dial) == list:
             return "Fin du dialogue"
-        txt = list(dial.keys())[0] + "\n"
+        tint = ""
+        if perso.interlocuteur is not None:
+            tint = f"{perso.interlocuteur.nom} : "
+        txt = tint + list(dial.keys())[0] + "\n"
         #
         rd = dial[list(dial.keys())[0]]
         if type(rd) == dict:

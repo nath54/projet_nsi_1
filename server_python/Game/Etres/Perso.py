@@ -195,9 +195,9 @@ Actuellement, votre attaque est :
 
     def save_equipement(self):
         equipement = []
-        for e in self.equipement.values():
+        for e in self.equip.values():
             if e is not None:
-                equipement.append(e)
+                equipement.append(e.index)
         return equipement
 
     def desequiper(self, nom_obj, traiter_txt, id_obj=None):
@@ -238,7 +238,7 @@ Actuellement, votre attaque est :
         for obj, qt in self.inventaire:
             if obj.index == id_obj or traiter_txt(obj.nom) == traiter_txt(nom_obj):
                 if obj.type in ["Amulette", "Arme", "Armure"]:
-                    if self.equipement[obj.type] is None:
+                    if self.equip[obj.type] is None:
                         self.inventaire.remove([obj, qt])
                         self.equip[obj.type] = obj
                         # on ajouet les effets de l'objet

@@ -138,7 +138,8 @@ class Client_mariadb:
                     vie INT, vie_totale INT, energie INT, energie_totale INT,
                     charme INT, discretion INT, force_ INT, agilite INT,
                     magie INT, effets_attaque TEXT, bonus_esquive INT,
-                    sorts TEXT, resistances TEXT, faiblesses TEXT, attaque TEXT);""")
+                    sorts TEXT, resistances TEXT, faiblesses TEXT, attaque TEXT,
+                    effets TEXT);""")
         self.cursor.execute(query)
         self.connection.commit()
 
@@ -280,7 +281,8 @@ class Client_mariadb:
                                                   "sorts": "text",
                                                   "resistances": "text",
                                                   "faiblesses": "text",
-                                                  "attaque": "text"}:
+                                                  "attaque": "text",
+                                                  "effets": "text"}:
             self.cursor.execute("DROP TABLE IF EXISTS persos")
             self.connection.commit()
             self.create_table_persos()
@@ -681,8 +683,6 @@ class Client_mariadb:
         if perso.quete_actuelle is not None:
             quetes[perso.quete_actuelle.index] = {"etat": "actuelle", "compteur": perso.quete_actuelle.compteur}
         #
-        equipements = perso.save_equipment()
-        #
         if perso_id is None:
             # si non on va lui en créer un
             #
@@ -693,17 +693,17 @@ class Client_mariadb:
                                     energie_totale, charme, discretion,
                                     force_, agilite, magie, effets_attaque,
                                     bonus_esquive, sorts, resistances,
-                                    faiblesses, attaque)
+                                    faiblesses, attaque, effets)
                                    VALUES
                                    (%s, %s, %s, %s, %s,  %s, %s, %s, %s, %s,
                                     %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                                    %s, %s, %s, %s, %s);""",
+                                    %s, %s, %s, %s, %s, %s);""",
                                 (perso.nom, perso.genre, perso.race,
                                  perso.classe, perso.argent,
                                  json.dumps(perso.experience),
                                  json.dumps([[obj.index, qt] for obj, qt in perso.inventaire]),
                                  perso.lieu, json.dumps(quetes),
-                                 json.dumps(perso.equipement), perso.vie,
+                                 json.dumps(perso.save_equipement()), perso.vie,
                                  perso.vie_totale, perso.energie,
                                  perso.energie_totale, perso.charme,
                                  perso.discretion, perso.force, perso.agilite,
@@ -711,7 +711,8 @@ class Client_mariadb:
                                  perso.bonus_esquive, json.dumps(perso.sorts),
                                  json.dumps(perso.resistances),
                                  json.dumps(perso.faiblesses),
-                                 json.dumps(perso.attaque)))
+                                 json.dumps(perso.attaque),
+                                 json.dumps(perso.effets)))
             self.connection.commit()
             self.cursor.execute("SELECT id FROM persos WHERE nom = %s AND race = %s AND classe = %s AND genre = %s ORDER BY id DESC;", (perso.nom, perso.race, perso.classe, perso.genre))
             perso_id = [elt[0] for elt in self.cursor][0]
@@ -732,14 +733,15 @@ class Client_mariadb:
                                        agilite = %s, magie = %s,
                                        effets_attaque = %s, bonus_esquive = %s,
                                        sorts = %s, resistances = %s,
-                                       faiblesses = %s, attaque = %s
+                                       faiblesses = %s, attaque = %s,
+                                       effets = %s
                                    WHERE id=%s;""",
                                 (perso.nom, perso.genre,
                                  perso.race, perso.classe, perso.argent,
                                  json.dumps(perso.experience),
                                  json.dumps(inventaire),
                                  perso.lieu, json.dumps(quetes),
-                                 json.dumps(perso.equipement), perso.vie,
+                                 json.dumps(perso.save_equipement()), perso.vie,
                                  perso.vie_totale, perso.energie,
                                  perso.energie_totale, perso.charme,
                                  perso.discretion, perso.force,
@@ -749,7 +751,9 @@ class Client_mariadb:
                                  json.dumps(perso.sorts),
                                  json.dumps(perso.resistances),
                                  json.dumps(perso.faiblesses),
-                                 json.dumps(perso.attaque), perso_id))
+                                 json.dumps(perso.attaque),
+                                 json.dumps(perso.effets),
+                                 perso_id))
             self.connection.commit()
 
     def save_map(self, map_):
@@ -861,7 +865,8 @@ class Client_mariadb:
                     vie, vie_totale, energie, energie_totale,
                     charme, discretion, force_, agilite, magie,
                     effets_attaque, bonus_esquive, sorts,
-                    resistances, faiblesses, attaque FROM persos INNER JOIN comptes ON
+                    resistances, faiblesses, attaque,
+                    effets FROM persos INNER JOIN comptes ON
                     comptes.perso_id = persos.id WHERE comptes.id=%s"""
         self.cursor.execute(query, (id_,))
         results = [elt for elt in self.cursor]
@@ -895,7 +900,8 @@ class Client_mariadb:
             "sorts": json.loads(d[21]),
             "resistances": json.loads(d[22]),
             "faiblesses": json.loads(d[23]),
-            "attaque": json.loads(d[24])
+            "attaque": json.loads(d[24]),
+            "effets": json.loads(d[25])
         }
         return data_perso
 
