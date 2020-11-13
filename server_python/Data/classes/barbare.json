@@ -4,5 +4,6 @@
     "vie": 10,
     "force": 10,
     "discretion": -5,
-    "agilite": -2
+    "agilite": -2,
+    "inventaire": [ [2, 1], [1, 1] ]
 }

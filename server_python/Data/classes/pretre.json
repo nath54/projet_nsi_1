@@ -4,5 +4,6 @@
     "magie": 15,
     "vie": -5,
     "force": -2,
-    "agilite": -2
+    "agilite": -2,
+    "inventaire": [ [2, 1], [1, 1] ]
 }

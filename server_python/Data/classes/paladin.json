@@ -4,5 +4,6 @@
     "vie": 5,
     "force": 2,
     "charme": 10,
-    "magie": 1
+    "magie": 1,
+    "inventaire": [ [2, 1], [1, 1] ]
 }
