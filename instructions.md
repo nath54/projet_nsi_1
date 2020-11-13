@@ -54,7 +54,7 @@ Windows :
  - Vous pouvez directement executer le fichier `start_server.bat` [ici](start_server.bat)
 
 Linux :
- - Vous pouvez directement executer le fichier `start_server.sn` [ici](start_server.sh)
+ - Vous pouvez directement executer le fichier `start_server.sh` [ici](start_server.sh)
 
 ### Manuellement :
 
@@ -69,7 +69,7 @@ Windows :
  - Vous pouvez directement executer le fichier `start_client.bat` [ici](start_client.bat)
 
 Linux :
- - Vous pouvez directement executer le fichier `start_client.sn` [ici](start_client.sh)
+ - Vous pouvez directement executer le fichier `start_client.sh` [ici](start_client.sh)
 
 ### Manuellement :
 

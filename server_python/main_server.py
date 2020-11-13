@@ -458,6 +458,7 @@ class Server:
                 if type(effet) != dict or len(effet.items()) != 1:
                     continue
                 e, v = list(effet.items())[0]
+                # quete : le pnj donne une quete au perso
                 if e == "quete":
                     # on met la quete actuelle en attente s'il y en a une
                     if perso.quete_actuelle is not None:
@@ -465,6 +466,7 @@ class Server:
                     perso.quete_actuelle = self.game.Quete(self.game, v)
                     time.sleep(0.1)
                     self.send_message(client, f"{perso.interlocuteur.nom} vous a donné une nouvelle quete a faire : {perso.quete_actuelle.nom}", True)
+                # objet : le pnj donne un objet au perso
                 elif e == "objet":
                     bon = False
                     nom_obj = ""
@@ -480,11 +482,13 @@ class Server:
                         perso.inventaire.append([obj, 1])
                     time.sleep(0.1)
                     self.send_message(client, f"{perso.interlocuteur.nom} vous a donné {nom_obj}", True)
+                # quete finie : le perso a fini une quete
                 elif e == "quete finie":
                     time.sleep(0.1)
                     self.send_message(client, f"Vous avez finie la quete {perso.quete_actuelle.nom}", True)
                     perso.quete_finie(v)
                 elif e == "prendre objet":
+                    # prendre objet : le pnj prend un objet de l'inventaire du perso
                     for obj in perso.inventaire:
                         if obj[0].index == v:
                             time.sleep(0.1)
@@ -512,6 +516,10 @@ class Server:
         return texte_fait
 
     def input_client(self, client, message):
+        """Fonction qui attends une réponse du client
+
+        Auteur: Nathan
+        """
         nc = self.clients[client]["player"].pseudo
         print(f"En attente d'une réponse du player {nc}")
         self.send_message(client, message)
@@ -520,6 +528,11 @@ class Server:
         return mess
 
     def input_bonne_reponse(self, client, message, brs):
+        """Fonction qui attend une réponse du client,
+        mais il faut que cette réponse soit dans la liste des réponses possibles
+
+        Auteur: Nathan
+        """
         assert len(brs) >= 1, "Il doit y avoir au moins une réponse possible"
         br = False
         erreur = ""
