@@ -181,5 +181,6 @@ class Player:
             self.perso.magie = 1
         if self.perso.energie_totale < 1:
             self.perso.energie_totale = 1
-        if self.perso.vie_totale < 1:
-            self.perso.vie_totale = 1
+        if self.perso.vie_totale < 5:
+            self.perso.vie_totale = 5
+            self.perso.vie = 5

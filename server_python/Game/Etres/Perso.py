@@ -285,6 +285,8 @@ Actuellement, votre attaque est :
             time.sleep(0.1)
             dicte = {"type": "mort"}
             self.game.server.send(client, dicte)
+            #
+            self.game.server.on_close(client)
 
     def test_dialogue(self):
         """Teste si un dialogue est dispo avec une quête, ou un objet dans l'inventaire

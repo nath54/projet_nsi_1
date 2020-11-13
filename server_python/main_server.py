@@ -414,7 +414,7 @@ class Server:
     def save_client(self, client):
         # TODO
         player = self.clients[client]["player"]
-        if player.perso is not None:
+        if player is not None and player.perso is not None:
             self.client_db.set_perso(player)
         # self.client_db.save_player(player)
 
@@ -654,10 +654,7 @@ class Server:
             self.send_message(client, txt_j, True)
         # commande inventaire : affiche l'inventaire
         elif is_one_of(action, self.commandes_dat["inventaire"]["com"]):
-            if len(args) == 0 or args[0] == "":
-                self.send_message(client, perso.format_invent(), True)
-            else:
-                self.invent_multi_args(client, perso, data)
+            self.send_message(client, perso.format_invent(), True)
         # commande equipement : affiche l'equipement
         elif is_one_of(action, self.commandes_dat["equipement"]["com"]):
             self.send_message(client, perso.format_equip(), True)
@@ -903,7 +900,6 @@ class Server:
                     lieu = self.game.map_.lieux[id_lieu]
                     eq_ap = False
                     for lap in lieu.appellations:
-                        print(lap)
                         if are_texts_equals(lap, args[0]) or are_texts_equals(lap, " ".join(args)):
                             eq_ap = True
                             break
@@ -1013,34 +1009,6 @@ class Server:
         if texte_fait != "":
             self.send_all_except_c(client, json.dumps({"type": "message", "value": texte_fait}))
 
-    def invent_multi_args(self, client, perso, data):
-        """Si la commande entrée est 'inventaire ...'.
-
-        Gère le cas où la commande entrée est 'inventaire voir ...' ou
-        'inventaire utiliser ...'
-
-        Args:
-            perso(Perso): Personnage demandant l'action
-            data(dict): Dict contenant les informations de la commande
-
-        Auteur : Hugo
-
-        """
-        compl = data.get("arg_1", "")
-        nom_obj = data.get("arg_2", "")
-        if compl in ["voir", "examiner"]:
-            objet = perso.search_invent(nom_obj)
-            if objet is not None:
-                self.send(client, objet, True)
-            else:
-                self.send(client, "Désolé, vous ne possédez pas cet objet.", True)
-        elif compl == "utiliser":
-            objet = perso.search_invent(nom_obj)
-            if objet is not None:
-                perso.consomme_item(objet)
-                self.send(client, f"{nom_obj} a été consommé !", True)
-            else:
-                self.send(client, "Désolé, vous ne possédez pas cet objet.", True)
     # endregion
 
     def bienvenue(self, client):

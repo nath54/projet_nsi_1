@@ -148,7 +148,7 @@ class Client:
         else:
             self.connexion()
 
-    def attente_serv(self):
+    def attente_serv(self, aff=True, aff_rec=False):
         """Attends la réception d'un message.
 
         Quand le message a été reçu, on peut continuer le thread actuel
@@ -157,10 +157,12 @@ class Client:
 
         """
         self.attente = True
-        print("\nEn attente du serveur ...\n")
+        if aff:
+            print("\nEn attente du serveur ...\n")
         while self.attente:
             pass
-        print("Fin de l'attente...")
+        if aff_rec:
+            print("Serveur recu...")
 
     def connexion(self):
         """Demande les informations pour se connecter.
