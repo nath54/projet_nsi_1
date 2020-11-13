@@ -729,10 +729,10 @@ class Server:
         # Ce qui suit sont des commandes avec au moins 1 argument
         # commande desequiper
         elif is_one_of(action, self.commandes_dat["desequiper"]["com"]):
-            erreur = perso.desequiper(args[0], traiter_txt)
+            erreur = perso.desequiper(arguments, traiter_txt)
             if not erreur:
-                mess = f"Vous avez retiré {args[0]} !"
-                texte_fait = f"{nom_perso} a déséquipé {args[0]}"
+                mess = f"Vous avez retiré {arguments} !"
+                texte_fait = f"{nom_perso} a déséquipé {arguments}"
                 tour_p += 0.5
             else:
                 mess = erreur
@@ -741,8 +741,8 @@ class Server:
         elif is_one_of(action, self.commandes_dat["equiper"]["com"]):
             erreur = perso.equiper(arguments, traiter_txt)
             if not erreur:
-                mess = f"Vous avez équipé {args[0]}"
-                texte_fait = f"{nom_perso} a équipé {args[0]}"
+                mess = f"Vous avez équipé {arguments}"
+                texte_fait = f"{nom_perso} a équipé {arguments}"
                 tour_p += 0.5
             else:
                 mess = erreur

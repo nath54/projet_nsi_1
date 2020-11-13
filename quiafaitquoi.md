@@ -14,7 +14,8 @@ A completer ...
 
 ### Alexis :
 
-A imaginé et créé la fonction cheat_code, et a créé quasiment tous les lieux de la map
+A imaginé et créé la fonction cheat_code, et a créé quasiment tous les lieux de la map, et quelques pnjs.
+Aussi des ennemis, et des boss.
 
 ### Léa :
 

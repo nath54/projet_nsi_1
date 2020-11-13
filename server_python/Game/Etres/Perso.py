@@ -193,6 +193,13 @@ Actuellement, votre attaque est :
         if not exist:
             self.inventaire.append([obj, 1])
 
+    def save_equipement(self):
+        equipement = []
+        for e in self.equipement.values():
+            if e is not None:
+                equipement.append(e)
+        return equipement
+
     def desequiper(self, nom_obj, traiter_txt, id_obj=None):
         """Déséquipe un objet du personnage
 

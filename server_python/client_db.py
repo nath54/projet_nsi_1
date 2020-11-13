@@ -680,6 +680,10 @@ class Client_mariadb:
         if perso.quete_actuelle is not None:
             quetes[perso.quete_actuelle.index] = {"etat": "actuelle", "compteur": perso.quete_actuelle.compteur}
         #
+        equipements = perso.save_equipment()
+        for e in perso.equipement.values():
+            perso.desequiper(self, e.nom, traiter_txt, id_obj=e.index)
+        #
         if perso_id is None:
             # si non on va lui en créer un
             #
