@@ -10,7 +10,9 @@ sur le moteur du jeu.
 
 ### Hugo :
 
-A completer ...
+A travaillé sur la DB, ainsi que certaines commandes à entrer en jeu.
+A aussi corrigé les textes, que ce soit docstring ou .json
+Nettoyage de code pour essayer de les adapter aux normes Python. (un maximum)
 
 ### Alexis :
 
