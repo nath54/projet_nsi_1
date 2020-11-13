@@ -1,7 +1,7 @@
 {
     "id":17,
-    "appellations":["une route","une grande route"],
-    "nom":"Le grande route",
+    "appellations":["route","une route","une grande route"],
+    "nom":"grande route",
     "region":"Larion",
     "description":"Cette route permet de sortir Tergaron, vers l'ouest.",
     "type":"ville",
