@@ -710,7 +710,7 @@ class Server:
                     txt_qt += f"\n\t- {qt_nom}"
                 self.send_message(client, txt_qt)
             else:
-                self.send_message(client, "Tel un maitre de l'organisation, vous avez géré vos efforts ")
+                self.send_message(client, "Tel un maitre de l'organisation, vous avez géré vos efforts et vous n'avez donc aucun retards dans vos travaux a faire.")
         # TODO : faire que les quetes finies et les quete en attentes soient dans le meme dictionnaire : perso.quetes
         # commande save : le client sauvegarde le jeu
         elif is_one_of(action, self.commandes_dat["save"]["com"]):
